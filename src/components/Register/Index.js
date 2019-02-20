@@ -4,9 +4,9 @@ import {View, Text, Button} from 'react-native'
 class Register extends Component {
 
     reg() {
-        firstname = "harsh"
+        firstname = "Harsh"
         lastname = "Bhatia"
-        email = "zest2019.trainee062@gmail.com"
+        email = "yjyjessoss-3175@yopmail.com"
         password = "Test@123"
         confirmPassword = "Test@123"
         jobTitle = "intern"
@@ -20,6 +20,38 @@ class Register extends Component {
 
         console.warn(firstname,lastname,email,password,confirmPassword,jobTitle,countryId,
             phoneNumber,userLatitude,userLongitude,userAgent,userTimeZoneOffSet)
+
+
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api//account/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                firstname: firstname,
+                lastname: lastname,
+                email: email,
+                password: password,
+                confirmPassword: confirmPassword,
+                jobTitle: jobTitle,
+                companyName: companyName,
+                countryId: countryId,
+                phoneNumber: phoneNumber,
+                userLatitude: userLatitude,
+                userLongitude: userLongitude,
+                userAgent: userAgent,
+                userTimeZoneOffSet: userTimeZoneOffSet
+            }),
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            console.warn(responseJson["message"])
+            
+        })
+        .catch((error) => {
+            console.warn(error);
+        });
+
+
     }
 
 

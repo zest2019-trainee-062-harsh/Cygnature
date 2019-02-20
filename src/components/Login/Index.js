@@ -3,7 +3,6 @@ import {StyleSheet, View, Text, Image, KeyboardAvoidingView} from 'react-native'
 
 import { Dimensions } from "react-native";
 import Form from './Form';
-import Container from './Container';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
