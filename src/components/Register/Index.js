@@ -10,7 +10,7 @@ class Register extends Component {
         password
         confirmPassword
         jobTitle
-        companyNam
+        companyName
         countryId
         phoneNumber
         userLatitude = "4.092356",
