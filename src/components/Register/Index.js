@@ -4,19 +4,22 @@ import {View, Text, Button} from 'react-native'
 class Register extends Component {
 
     reg() {
-        firstname
-        lastname
-        email
-        password
-        confirmPassword
-        jobTitle
-        companyName
-        countryId
-        phoneNumber
+        firstname = "harsh"
+        lastname = "Bhatia"
+        email = "zest2019.trainee062@gmail.com"
+        password = "Test@123"
+        confirmPassword = "Test@123"
+        jobTitle = "intern"
+        companyName = "cygnet"
+        countryId = "91"
+        phoneNumber = "8905003200"
         userLatitude = "4.092356",
         userLongitude = "-56.062161",
         userAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0 Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0",
         userTimeZoneOffSet = "+05:30"
+
+        console.warn(firstname,lastname,email,password,confirmPassword,jobTitle,countryId,
+            phoneNumber,userLatitude,userLongitude,userAgent,userTimeZoneOffSet)
     }
 
 
