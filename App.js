@@ -1,19 +1,21 @@
 
 import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
-import Login from './src/components/Login/Index';
 import Register from './src/components/Register/Index';
+import Login from './src/components/Login/Index';
+import SplashScreen from './src/components/SplashScreen/Index';
+
 
 export default class App extends Component {
   render() {
     return (
       <View>
-        <Register />
+        {/* <Register /> */}
+        <Login />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  
 });

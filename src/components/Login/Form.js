@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {View, StyleSheet, Text, TextInput, TouchableOpacity, StatusBar, Button} from 'react-native'
 import { CheckBox } from 'react-native-elements'
+import {Actions} from 'react-native-router-flux'
 
  
 class Form extends Component {
@@ -71,8 +72,8 @@ class Form extends Component {
                         <Text style = { styles.buttonText }>LOGIN</Text>
                     </TouchableOpacity>
                     <CheckBox
-                    title="Remeber ME"/>
-                     <TouchableOpacity onPress={_ =>this.openReg()} style = { styles.buttonContainer }>
+                    title="Remember ME"/>
+                     <TouchableOpacity onPress={Actions.register} style = { styles.buttonContainer }>
                         <Text style = { styles.buttonText }>New User</Text>
                     </TouchableOpacity>
 
