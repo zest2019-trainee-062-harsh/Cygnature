@@ -6,7 +6,7 @@ class Register extends Component {
     reg() {
         firstname = "Harsh"
         lastname = "Bhatia"
-        email = "yjyjessoss-3175@yopmail.com"
+        email = "yjyjessoss-3180@yopmail.com"
         password = "Test@123"
         confirmPassword = "Test@123"
         jobTitle = "intern"
