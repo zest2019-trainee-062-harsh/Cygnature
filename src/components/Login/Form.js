@@ -92,7 +92,6 @@ class Form extends Component {
                     keyboardType="email-address"
                     autoCapitalize="none"
                     autoCorrect={false}
-                    ref={(input) => this.emailInput = input}
                     onSubmitEditing={() => this.passwordInput.focus()}
                     onChangeText={text => this.validate(text)}
                     style= { styles.boxTI }>
