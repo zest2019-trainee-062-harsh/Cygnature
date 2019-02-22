@@ -1,12 +1,57 @@
 import React, {Component} from 'react'
-import {View, Text, Button} from 'react-native'
+import {View, Text, Button,TextInput} from 'react-native'
  
 class Register extends Component {
 
+    state = {
+        register: null,
+        message: ''
+    }
+
+    checkuser(text) {
+        ema= text
+
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
+        
+        if(reg.test(ema) === false)
+        {
+        return false;
+        }
+        else {
+            this.setState({email:ema})
+         
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/check-user-exists/'+(ema), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => response.json())
+        .then((responseJson) => {
+           
+            bva=responseJson["data"]
+            message=responseJson["message"]
+            this.setState({register: bva[0], message: message})
+            //console.warn(this.state.register)
+            
+        })
+        .catch((error) => {
+            console.warn(error);
+        });
+    }
+    }
     reg() {
-        firstname = "Harsh"
+       
+
+        if(this.state.register ==  true)
+        {
+            console.warn(this.state.message)
+        }
+        else
+        {
+            console.warn("REgistring")
+            firstname = "Harsh"
         lastname = "Bhatia"
-        email = "yjyjessoss-3180@yopmail.com"
+        email = this.state.email
         password = "Test@123"
         confirmPassword = "Test@123"
         jobTitle = "intern"
@@ -22,7 +67,7 @@ class Register extends Component {
             phoneNumber,userLatitude,userLongitude,userAgent,userTimeZoneOffSet)
 
 
-            return fetch('http://cygnatureapipoc.stagingapplications.com/api//account/register', {
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -52,13 +97,22 @@ class Register extends Component {
         });
 
 
+        }
+        
+
     }
 
 
      render() {
          return (
              <View>
-                <Button title="call" onPress={_ =>this.reg()} />
+                 <TextInput
+                 returnKeyType= "done"
+                 onChangeText= {text =>this.checkuser(text)}
+                 />
+                <Button title="call" 
+                onPress={() =>  this.reg()} />
+                
              </View>
                 )
          }
