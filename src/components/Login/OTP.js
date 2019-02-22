@@ -8,10 +8,14 @@ var height = Dimensions.get('window').height; //full height
 class OTP extends Component {
 
     state = {
-        mobileNumber: 977
+        mobileNumber: 977,
+        defaultotp: 12345,
+        otp: ""
     }
 
-    handleNext(value) {
+    handleNext(text,value) {
+        this.state.otp = this.state.otp + text
+        
         switch(value) {
             case 1:
                 this.OTPInput1.focus()
@@ -30,11 +34,16 @@ class OTP extends Component {
         }
     }
     checkOTP() {
-        console.warn("check")
+        if(this.state.otp == this.state.defaultotp) {
+            console.warn("REDIRECT")
+        }
+        else {
+            console.warn("OTP not Match")
+        }
     }
 
     resendOTP() {
-        console.warn("resend")
+        console.warn("OTP SEND")
     }
 
      render() {
@@ -55,7 +64,7 @@ class OTP extends Component {
                         maxLength={1}
                         keyboardType="numeric"
                         returnKeyType="next"
-                        onChangeText={_ => this.handleNext(1)}
+                        onChangeText={text => this.handleNext(text,1)}
                         underlineColorAndroid='black'
                         placeholderTextColor='black'
                         style={styles.OTPTI} 
@@ -65,7 +74,7 @@ class OTP extends Component {
                         maxLength={1}
                         keyboardType="numeric"
                         returnKeyType="next"
-                        onChangeText={_ => this.handleNext(2)}  
+                        onChangeText={text => this.handleNext(text,2)}
                         ref={(input) => this.OTPInput1 = input}
                         underlineColorAndroid='black'
                         placeholderTextColor='black'
@@ -75,7 +84,7 @@ class OTP extends Component {
                         maxLength={1}
                         keyboardType="numeric"
                         returnKeyType="next"
-                        onChangeText={_ => this.handleNext(3)}  
+                        onChangeText={text => this.handleNext(text,3)}  
                         ref={(input) => this.OTPInput2 = input}  
                         underlineColorAndroid='black'
                         placeholderTextColor='black'
@@ -85,7 +94,7 @@ class OTP extends Component {
                         maxLength={1}
                         keyboardType="numeric"
                         returnKeyType="next"
-                        onChangeText={_ => this.handleNext(4)}  
+                        onChangeText={text => this.handleNext(text,4)}  
                         ref={(input) => this.OTPInput3 = input}  
                         underlineColorAndroid='black'
                         placeholderTextColor='black'
@@ -95,7 +104,7 @@ class OTP extends Component {
                         maxLength={1}
                         keyboardType="numeric"
                         returnKeyType="done"
-                        onChangeText={_ => this.handleNext(5)}  
+                        onChangeText={text => this.handleNext(text,5)}  
                         ref={(input) => this.OTPInput4 = input}  
                         underlineColorAndroid='black'
                         placeholderTextColor='black'
