@@ -24,7 +24,7 @@ class Register extends Component {
     // }
      
     onPressFlag(){
-        this.setState({zrzestzestzestzest
+        this.setState({
             pickerData: this.phone.getPickerData(),
             countryData:this.myCountryPicker.open()
         })
