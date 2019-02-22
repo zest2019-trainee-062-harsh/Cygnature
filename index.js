@@ -13,7 +13,7 @@ import React, {Component} from 'react';
 import {AppRegistry} from 'react-native';
 import Login from './src/components/Login/Index'
 import {Router, Scene, Stack} from 'react-native-router-flux'
-import SplashScreen from './src/components/SplashScreen/Index';
+import SplashScreen from './src/components/SplashScreen/index';
 
 class Main extends Component{
     render(){
