@@ -1,25 +1,64 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, Text, TextInput, TouchableOpacity, StatusBar, Button} from 'react-native'
+import {View, StyleSheet, Text, TextInput, TouchableOpacity, StatusBar, Alert} from 'react-native'
 import { CheckBox } from 'react-native-elements'
-import {Actions} from 'react-native-router-flux'
 
  
 class Form extends Component {
  
     state = {
+        checked: false,
         email: ' ',
-        password: ' '
+        password: ' ',
+        val: false
     }
+    onChangeCheck() {
+        this.setState({ checked: !this.state.checked})
+    }
+    
 
     openReg() {
         console.warn("reg")
     }
-
+    validate = (text) => {
+        //console.warn(text);
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
+        if(reg.test(text) === false)
+        {
+        //console.warn("Email is Not Correct");
+        //this.setState({email:text})
+        return false;
+        }
+        else {
+          this.setState({email:text})
+          //console.warn("Email is Correct");
+        }
+        }
     checkCred() {
-        const { email, password } = this.state
+        const { email, password, val } = this.state
         console.warn(email,password)
 
-        
+        if(email == null || email == " ") {
+            Alert.alert(
+                'Error!',
+                'Please Enter E-Mail',
+                [
+                  {text: 'OK', onPress: () => console.warn('OK Pressed')},
+                ],
+                {cancelable: false},
+              );
+        }
+        else if(password == null || password == " ") {
+            Alert.alert(
+                'Error!',
+                'Please Enter Password',
+                [
+                  {text: 'OK', onPress: () => console.warn('OK Pressed')},
+                ],
+                {cancelable: false},
+              );
+              
+        }
+        /*
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/login', {
             method: 'POST',
             headers: {
@@ -36,7 +75,7 @@ class Form extends Component {
         })
         .catch((error) => {
             console.warn(error);
-        });
+        });*/
     }
 
     render() {
@@ -54,7 +93,7 @@ class Form extends Component {
                     autoCapitalize="none"
                     autoCorrect={false}
                     onSubmitEditing={() => this.passwordInput.focus()}
-                    onChangeText={text => this.setState({email: text})}
+                    onChangeText={text => this.validate(text)}
                     style= { styles.boxTI }>
                     </TextInput>
                     <Text style = { styles.boxLabel }>Password</Text>
@@ -65,18 +104,21 @@ class Form extends Component {
                     returnKeyType="go"
                     ref={(input) => this.passwordInput = input}
                     onChangeText={text => this.setState({password: text})}
-                    secureTextEntry
+                    secureTextEntry={this.state.checked}
                     style= { styles.boxTI }>
                     </TextInput>
+                    <CheckBox
+                    title='Remeber ME'
+                    uncheckedColor='green'
+                    checked={this.state.checked}
+                    containerStyle={{backgroundColor:'rgba(255,255,255,0.7)'}}
+                    onPress={() => this.onChangeCheck()} />
                     <TouchableOpacity onPress={_ =>this.checkCred()} style = { styles.buttonContainer }>
                         <Text style = { styles.buttonText }>LOGIN</Text>
                     </TouchableOpacity>
-                    <CheckBox
-                    title="Remember ME"/>
-                     <TouchableOpacity onPress={Actions.register} style = { styles.buttonContainer }>
+                    <TouchableOpacity onPress={_ =>this.openReg()} style = { styles.buttonContainer }>
                         <Text style = { styles.buttonText }>New User</Text>
-                    </TouchableOpacity>
-
+                    </TouchableOpacity>  
              </View>
                 )
          }
@@ -88,7 +130,7 @@ export default Form
 const styles = StyleSheet.create({
     container: {
         padding:40,
-        marginBottom: 50
+        marginBottom: 80
     },
     boxLabel: {
         fontSize: 18,
@@ -103,7 +145,8 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         backgroundColor: '#718093',
-        paddingVertical: 10
+        paddingVertical: 10,
+        margin: 5
     },
     buttonText: {
         textAlign: 'center',

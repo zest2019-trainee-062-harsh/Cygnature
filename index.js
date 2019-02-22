@@ -18,8 +18,13 @@ import SplashScreen from './src/components/SplashScreen/Index';
 class Main extends Component{
     render(){
         return(
-            <View>
-            </View>
+            <Router>
+                <Stack key="root" >
+                <Scene key="splash" component={SplashScreen} />
+                {/* <Scene key="login" title="Login" component={Login} />
+                <Scene key="register" title="Register" component={Register} /> */}
+                </Stack>
+            </Router>
         );
     }
 }
