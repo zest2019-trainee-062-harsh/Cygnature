@@ -43,7 +43,7 @@ class OTP extends Component {
     }
 
     resendOTP() {
-        console.warn("OTP SEND")
+        console.warn("OTP SENDED")
     }
 
      render() {
