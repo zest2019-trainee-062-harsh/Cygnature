@@ -1,64 +1,17 @@
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity,TextInput, StyleSheet, Image,} from 'react-native'
-
+import {StyleSheet,View, Text,TextInput, Button,Image,TouchableHighlight} from 'react-native'
 import { Dimensions } from "react-native";
 // import ModalPicker from 'react-native-modal-picker';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 
-
 class Register extends Component {
 
-    state = {
-        register: null,
-        message: ''
-    }
-
-    checkuser(text) {
-        ema= text
-
-        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
-        
-        if(reg.test(ema) === false)
-        {
-        return false;
-        }
-        else {
-            this.setState({email:ema})
-         
-        return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/check-user-exists/'+(ema), {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }).then((response) => response.json())
-        .then((responseJson) => {
-           
-            bva=responseJson["data"]
-            message=responseJson["message"]
-            this.setState({register: bva[0], message: message})
-            //console.warn(this.state.register)
-            
-        })
-        .catch((error) => {
-            console.warn(error);
-        });
-    }
-    }
     reg() {
-       
-
-        if(this.state.register ==  true)
-        {
-            console.warn(this.state.message)
-        }
-        else
-        {
-            console.warn("REgistring")
-            firstname = "Harsh"
+        firstname = "Harsh"
         lastname = "Bhatia"
-        email = this.state.email
+        email = "yjyjessoss-3179@yopmail.com"
         password = "Test@123"
         confirmPassword = "Test@123"
         jobTitle = "intern"
@@ -74,7 +27,7 @@ class Register extends Component {
             phoneNumber,userLatitude,userLongitude,userAgent,userTimeZoneOffSet)
 
 
-            return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/register', {
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api//account/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -104,28 +57,13 @@ class Register extends Component {
         });
 
 
-        }
-        
-
     }
-
 
      render() {
          return (
-             
-
-
-<View style={{flex: 1}}>
-            <View style={{width: width, height: height - 90}}>
-            
             <View style={styles.container}>
-            
-            <Image
-                source={require('../../../img/logo.png')}
-                />
             <Text style = { styles.boxTitle }>Personal Details</Text>
-
-            <View style={styles.inputContainer}>
+              <View style={styles.inputContainer}>
                 <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/male-user/ultraviolet/50/3498db'}}/>
                 <TextInput style= { styles.inputs }
                      returnKeyType="next"
@@ -138,6 +76,7 @@ class Register extends Component {
 
                 />
                 </View>
+
                 <View style={styles.inputContainer}>
                 <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/male-user/ultraviolet/50/3498db'}}/>
                 <TextInput style= { styles.inputs }
@@ -181,7 +120,7 @@ class Register extends Component {
                 <View style={styles.inputContainer}>
                 <Image style={styles.inputIcon} source={{uri: 'https://img.icons8.com/ultraviolet/2x/password.png'}}/>
                 <TextInput style= { styles.inputs }
-                     returnKeyType="done"
+                     returnKeyType="next"
                      placeholder="Confirm Password"
                      secureTextEntry={true}
                      placeholderTextColor="gray"
@@ -190,21 +129,12 @@ class Register extends Component {
                      autoCorrect={false}
                 />
                 </View>
-            </View>
-            </View>{/* Main container end */}
-
-
-            <View style={{width: width, height: 200}}>
-            
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={{backgroundColor:'blue'}}>
-    <Text style={styles.signUpText}>Next</Text>
-</TouchableOpacity>
+                <View style={styles.buttonContainer}>
+                    <Button style={styles.signUpText} title="Next" onPress={_ =>this.reg()}/>
                 </View>
-            
-            </View>
-        </View>
-                )
+            </View> 
+                   
+            )
          }
      }
 
@@ -212,26 +142,27 @@ export default Register
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#A3CB38',
+        backgroundColor: '#7f8fa6',
         width: width,
         height: height,
         resizeMode: 'cover',
         justifyContent:'center',
         alignItems:'center',
-        flex: 1
     },
     inputContainer: {
         backgroundColor: 'rgba(255,255,255,0.7)',
-        borderRadius:40,
-        width:width,
+        borderRadius:30,
+        width:250,
         height:45,
         marginBottom:10,
         marginTop:10,
+        marginLeft:20,
+        marginRight: 20,
         flexDirection: 'row',
         alignItems:'center',
     },
     inputs: {
-        height:height,
+        height:45,
         marginLeft:16,
         borderBottomColor: '#FFFFFF',
         flex:1,
@@ -244,25 +175,23 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
       },
     boxTitle:{
-        margin: 10,
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: 'white'
+        margin: 5,
+        fontSize: 22,
+        color: '#003d5a'
     },
     buttonContainer: {
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end',
-        width:width,
+        height:60,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop:170, 
+        width:1000,
+        borderRadius:30,
         backgroundColor: "#718093",
-        
       },
       signUpText: {
         color: '#ffffff',
-        textAlign: 'center',
-        width:110,
-        height:70,
-        textAlignVertical: 'center'
+        textAlign: 'right',
         
       }
 })
