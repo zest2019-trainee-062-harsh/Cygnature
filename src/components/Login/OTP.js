@@ -28,9 +28,7 @@ class OTP extends Component {
                 break;
             case 4:
                 this.OTPInput4.focus()
-                break;
-
-                
+                break;                
         }
     }
     checkOTP() {
