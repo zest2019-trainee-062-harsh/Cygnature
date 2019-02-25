@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, TouchableOpacity,TextInput, StyleSheet, Image,} from 'react-native'
+const util = require('util');
 
 import { Dimensions } from "react-native";
 
@@ -7,14 +8,15 @@ var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 
 
-class Screen1 extends Component {
+class Screen2 extends Component {
+    static navigationOptions = {
+        header: null
+    }
 
     state = {
         register: null,
         message: ''
     }
-
-
 
      render() {
          return (
@@ -65,9 +67,9 @@ class Screen1 extends Component {
             
             <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={_ => this.reg()} style={{backgroundColor:'blue', margin: 10}}>
-    <Text style={styles.signUpText}>Done</Text>
-</TouchableOpacity>
-                </View>
+                <Text style={styles.signUpText}>Done</Text>
+                </TouchableOpacity>
+            </View>
             
             </View>
         </View>
@@ -75,7 +77,7 @@ class Screen1 extends Component {
          }
      }
 
-export default Screen1
+export default Screen2
 
 const styles = StyleSheet.create({
     container: {

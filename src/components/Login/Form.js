@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {View, StyleSheet, Text, TextInput, TouchableOpacity, StatusBar, Alert} from 'react-native'
 import { CheckBox } from 'react-native-elements'
+import { Actions } from 'react-native-router-flux'
 
  
 class Form extends Component {
@@ -13,6 +14,10 @@ class Form extends Component {
     }
     onChangeCheck() {
         this.setState({ checked: !this.state.checked})
+    }
+
+    newuser(){
+        Actions.login()
     }
     
 
@@ -116,7 +121,7 @@ class Form extends Component {
                     <TouchableOpacity onPress={_ =>this.checkCred()} style = { styles.buttonContainer }>
                         <Text style = { styles.buttonText }>LOGIN</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={_ =>this.openReg()} style = { styles.buttonContainer }>
+                    <TouchableOpacity onPress={this.newuser} onPress={_ =>this.openReg()} style = { styles.buttonContainer }>
                         <Text style = { styles.buttonText }>New User</Text>
                     </TouchableOpacity>  
              </View>

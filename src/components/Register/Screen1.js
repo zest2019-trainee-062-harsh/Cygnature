@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import {View, Text, TouchableOpacity,TextInput, StyleSheet, Image,} from 'react-native'
+import { StackNavigator } from 'react-navigation'
+const util = require('util');
 
 import { Dimensions } from "react-native";
 
@@ -8,6 +10,9 @@ var height = Dimensions.get('window').height; //full height
 
 
 class Screen1 extends Component {
+    static navigationOptions = {
+        header: null
+    }
 
     state = {
         register: null,
@@ -57,6 +62,8 @@ class Screen1 extends Component {
     }
 
      render() {
+
+        var {navigate} = this.props.navigation;
          return (
              
 
@@ -145,10 +152,10 @@ class Screen1 extends Component {
             <View style={{width: width, height: 200}}>
             
             <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={_ => this.next()} style={{backgroundColor:'blue', margin: 10}}>
-    <Text style={styles.signUpText}>Next</Text>
-</TouchableOpacity>
-                </View>
+                <TouchableOpacity onPress={_ => this.next()} onPress={()=> navigate("Second")} style={{backgroundColor:'blue', margin: 10}}>
+                <Text style={styles.signUpText}>Next</Text>
+                </TouchableOpacity>
+            </View>
             
             </View>
         </View>
