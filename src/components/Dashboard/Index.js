@@ -7,6 +7,9 @@ var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
 
 class Dashboard extends Component {
+    floatClicked=() => {
+        alert("clicked")
+    }
      render() {
          return (
              <View style={{flex:1}}>
@@ -43,6 +46,9 @@ class Dashboard extends Component {
                         </TouchableOpacity>
                     </View>
                 
+                    <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
+                            <Text style={styles.floatButtonText}>+</Text>
+                    </TouchableOpacity>
                 </View>
              </View>
                 )
@@ -110,6 +116,20 @@ const styles = StyleSheet.create({
        fontSize:16,
        color: '#0000EE',
    },
-
+   floatButton: {
+       position: 'absolute',
+       width:50,
+       height: 50,
+       backgroundColor: 'green',
+       borderRadius: 30,
+       bottom: 35,
+       right: 5,
+       alignItems: 'center',
+       justifyContent: 'center',
+   },
+   floatButtonText: {
+       color: 'white',
+       fontSize: 25
+   },
 
 })
