@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity,TextInput, StyleSheet, Image,} from 'react-native'
+import {View, Text, TouchableOpacity,TextInput, StyleSheet, Image} from 'react-native'
 const util = require('util');
-
+// import PhoneInput from 'react-native-phone-input'
 import { Dimensions } from "react-native";
 
 var width = Dimensions.get('window').width; //full width
@@ -18,12 +18,26 @@ class Screen2 extends Component {
         message: ''
     }
 
+    // componentDidMount(){
+    //     this.setState({
+    //         pickerData: this.phone.getPickerData()
+    //     })
+    // }
+     
+    // onPressFlag(){
+    //     this.myCountryPicker.open()
+    // }
+     
+    // selectCountry(country){
+    //     this.phone.selectCountry(country.iso2)
+    // }
+
+
      render() {
+        var {navigate} = this.props.navigation;
          return (
-             
 
-
-<View style={{flex: 1}}>
+    <View style={{flex: 1}}>
             <View style={{width: width, height: height - 90}}>
             
             <View style={styles.container}>
@@ -57,7 +71,20 @@ class Screen2 extends Component {
                      
                 />
                 </View>
-                <Text>PLACE PHONE NUMBER INPUT HERE</Text>
+    
+                <View style={styles.inputContainer}>
+                {/* <PhoneInput  style= { styles.inputs }
+                    ref={(ref) => { this.phone = ref; }}
+                    onPressFlag={this.onPressFlag}
+                    returnKeyType="next"
+                    placeholder="Phone number"
+                    placeholderTextColor="gray"
+                    underlineColorAndroid='transparent'
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                /> */}
+                
+                </View>
 
             </View>
             </View>{/* Main container end */}
@@ -66,7 +93,7 @@ class Screen2 extends Component {
             <View style={{width: width, height: 200}}>
             
             <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={_ => this.reg()} style={{backgroundColor:'blue', margin: 10}}>
+                <TouchableOpacity onPress={()=> navigate("Login")}  style={{backgroundColor:'blue', margin: 10}}>
                 <Text style={styles.signUpText}>Done</Text>
                 </TouchableOpacity>
             </View>
