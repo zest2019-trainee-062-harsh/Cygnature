@@ -1,10 +1,26 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, Text, TextInput, TouchableOpacity, StatusBar, Alert} from 'react-native'
-import { CheckBox } from 'react-native-elements'
+import {StyleSheet, 
+    View,
+    Text,
+    TextInput, 
+    TouchableOpacity, 
+    StatusBar,
+    Alert, 
+    Image, 
+    KeyboardAvoidingView} from 'react-native'
 
- 
-class Form extends Component {
- 
+import { CheckBox } from 'react-native-elements'
+import { Dimensions } from "react-native";
+
+const util = require('util');
+var width = Dimensions.get('window').width; //full width
+var height = Dimensions.get('window').height; //full height
+
+class Login extends Component {
+    static navigationOptions = {
+        header: null
+    }
+
     state = {
         checked: false,
         email: ' ',
@@ -14,7 +30,8 @@ class Form extends Component {
     onChangeCheck() {
         this.setState({ checked: !this.state.checked})
     }
-    
+
+       
 
     openReg() {
         console.warn("reg")
@@ -58,29 +75,25 @@ class Form extends Component {
               );
               
         }
-        /*
-        return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-            }),
-        }).then((response) => response.json())
-        .then((responseJson) => {
-            console.warn(responseJson.data)
-            
-        })
-        .catch((error) => {
-            console.warn(error);
-        });*/
     }
 
-    render() {
+        render(){
+
+    var {navigate} = this.props.navigation;
          return (
-             <View style = { styles.container }>
+            
+            <KeyboardAvoidingView behavior="padding" style={styles.container}> 
+            
+            <View style={styles.logoContainer}>
+                <Image
+                source={require('../../../img/logo.png')}
+                />
+                <Text style = { styles.boxTitle }>Login to your account</Text>
+                  
+                
+            </View>
+            <View style={ styles.formContainer }>
+            <View style = { styles.container }>
              <StatusBar
                 barStyle="light-content" />
                     <Text style = { styles.boxLabel }>E-Mail</Text>
@@ -113,19 +126,24 @@ class Form extends Component {
                     checked={this.state.checked}
                     containerStyle={{backgroundColor:'rgba(255,255,255,0.7)'}}
                     onPress={() => this.onChangeCheck()} />
-                    <TouchableOpacity onPress={_ =>this.checkCred()} style = { styles.buttonContainer }>
-                        <Text style = { styles.buttonText }>LOGIN</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={_ =>this.openReg()} style = { styles.buttonContainer }>
+                    <TouchableOpacity onPress={()=> navigate("Dashboard")} style = { styles.buttonContainer }>
+                        <Text style = { styles.buttonText }>LOGIN</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={()=> navigate("First")} style = { styles.buttonContainer }>
                         <Text style = { styles.buttonText }>New User</Text>
-                    </TouchableOpacity>  
+                    </TouchableOpacity>
+                    
+                   
              </View>
+            </View>  
+                    
+        </KeyboardAvoidingView>
+            
                 )
-         }
-     }
+            }
+        }
+        
 
-export default Form
-
+export default Login
 
 const styles = StyleSheet.create({
     container: {
@@ -153,4 +171,25 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         fontWeight: 'bold'
     },
+    bkImg: {
+        width: width,
+        height: height,
+        resizeMode: 'cover'
+    },
+    container: {
+        backgroundColor: '#7f8fa6',
+        width: width,
+        height: height
+    },
+    logoContainer: {
+        alignItems: 'center',
+        flexGrow: 1,
+        justifyContent: 'center'
+    },
+    boxTitle: {
+        margin: 10,
+        fontSize: 22,
+        color: '#003d5a'
+    },
+
 })

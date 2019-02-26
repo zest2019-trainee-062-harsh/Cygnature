@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {View, StyleSheet,Text, TouchableOpacity} from 'react-native'
+const util = require('util');
  
 import { Dimensions } from "react-native";
 
@@ -7,10 +8,15 @@ var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
 
 class Dashboard extends Component {
+    static navigationOptions = {
+        header: null
+    }
+ 
     floatClicked=() => {
         alert("clicked")
     }
      render() {
+        var {navigate} = this.props.navigation;
          return (
              <View style={{flex:1}}>
                 <View style={styles.mainContainer}>
