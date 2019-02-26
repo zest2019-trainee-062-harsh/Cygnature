@@ -6,10 +6,6 @@ import { Dimensions } from "react-native";
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
 
-
-
-import { connect } from 'react-redux'
-
 class Dashboard extends Component {
     floatClicked=() => {
         alert("clicked")
@@ -22,7 +18,7 @@ class Dashboard extends Component {
                     <View style={styles.box1}>
                         <View style={styles.boxHalf}>
                             <Text style={styles.box1Text}>
-                            {this.props.counter} {"\n"}{"\n"} Need to Sign
+                                0 {"\n"}{"\n"} Need to Sign
                             </Text>
                         </View>
                         <View style={styles.boxHalf}>
@@ -50,7 +46,7 @@ class Dashboard extends Component {
                         </TouchableOpacity>
                     </View>
                 
-                    <TouchableOpacity style={styles.floatButton} onPress={() => this.props.increaseCounter()}>
+                    <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
                             <Text style={styles.floatButtonText}>+</Text>
                     </TouchableOpacity>
                 </View>
@@ -59,23 +55,7 @@ class Dashboard extends Component {
          }
      }
 
-
-
-function mapStateToProps(state) {
-    return {
-        counter: state.counter
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        increaseCounter: () => dispatch({ type: 'INCREASE_COUNTER' }),
-        decreaseCounter: () => dispatch({ type: 'DECREASE_COUNTER' }),
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
-
+export default Dashboard
 
 
 
