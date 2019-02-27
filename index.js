@@ -1,32 +1,40 @@
-// import {AppRegistry} from 'react-native'
-// import AppNavigator from './src/components/StackNavigator/StackNavigator.js'
-// import {name as appName} from './app.json'
+import {AppRegistry} from 'react-native'
+import AppStackNavigator from './src/components/AppStackNavigator/AppStackNavigator'
 
-// AppRegistry.registerComponent('Cygnature', () => AppNavigator)
+AppRegistry.registerComponent('Cygnature', () => AppStackNavigator)
 
-/**
- * @format
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
+// import React, {Component} from 'react';
+// import {AppRegistry} from 'react-native';
+// import {Router, Scene, Stack} from 'react-native-router-flux'
+// import Login from './src/components/Login/Index'
+// import Register from './src/components/Register/Index'
+// import SplashScreen from './src/components/SplashScreen/Index';
 
-import React, {Component} from 'react';
-import {AppRegistry} from 'react-native';
-import Login from './src/components/Login/Index'
-import {Router, Scene, Stack} from 'react-native-router-flux'
-import SplashScreen from './src/components/SplashScreen/index';
+// class Main extends Component{
+//     constructor(props){
+//         super(props);
+//         this.state = {
+//             currentScreen: 'Splash'
+//         };
+//         setTimeout(() => {
+//             console.log('Done some tasks about 3 seconds')
+//             this.setState({ currentScreen: 'Login'})
+//         }, 3000)
+//     }
 
-class Main extends Component{
-    render(){
-        return(
-            <Router>
-                <Stack key="root" >
-                <Scene key="splash" component={SplashScreen} />
-                {/* <Scene key="login" title="Login" component={Login} />
-                <Scene key="register" title="Register" component={Register} /> */}
-                </Stack>
-            </Router>
-        );
-    }
-}
+//     render(){
+//         const { currentScreen } = this.state
+//         let mainScreen = currentScreen === 'Splash' ? <SplashScreen /> : <Login />
+//         return(
+//             <Router>
+//                 <Stack key="root" >
+//                     <Scene key="splash" component={SplashScreen} />
+//                     <Scene key="login" title="Login" component={Login} />
+//                     <Scene key="register" title="Register" component={Register} />
+//                 </Stack>
+//             </Router>
+//         );
+//     }
+// }
 
-AppRegistry.registerComponent('Cygnature', () => Main);
+// AppRegistry.registerComponent('Cygnature', () => Main);

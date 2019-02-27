@@ -3,9 +3,17 @@ import {
   AppRegistry, Text, View, StyleSheet, StatusBar, Animated, Dimensions,
 } from 'react-native';
 import { italic } from 'ansi-colors';
+import { Actions } from 'react-native-router-flux';
 
 var {height, width} = Dimensions.get('window')
 export default class SplashScreen extends Component{
+  constructor(props) {
+    super(props);
+    setInterval(() => {
+      this.state = ({ timer: 0 })
+      this.setState({timer: this.state.timer + 1})
+    }, 1000)
+  }
 
   state = {
     logoOpacity: new Animated.Value(0),

@@ -8,7 +8,7 @@ export default class App extends Component {
   render() {
     return (
       <View>
-        <SplashScreen />
+        <Login />
       </View>
     );
   }
