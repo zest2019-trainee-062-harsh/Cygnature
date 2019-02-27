@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, TouchableOpacity,TextInput, StyleSheet, Image} from 'react-native'
 const util = require('util');
-// import PhoneInput from 'react-native-phone-input'
 import { Dimensions } from "react-native";
 
 var width = Dimensions.get('window').width; //full width
@@ -17,20 +16,6 @@ class Screen2 extends Component {
         register: null,
         message: ''
     }
-
-    // componentDidMount(){
-    //     this.setState({
-    //         pickerData: this.phone.getPickerData()
-    //     })
-    // }
-     
-    // onPressFlag(){
-    //     this.myCountryPicker.open()
-    // }
-     
-    // selectCountry(country){
-    //     this.phone.selectCountry(country.iso2)
-    // }
 
 
      render() {
@@ -73,17 +58,7 @@ class Screen2 extends Component {
                 </View>
     
                 <View style={styles.inputContainer}>
-                {/* <PhoneInput  style= { styles.inputs }
-                    ref={(ref) => { this.phone = ref; }}
-                    onPressFlag={this.onPressFlag}
-                    returnKeyType="next"
-                    placeholder="Phone number"
-                    placeholderTextColor="gray"
-                    underlineColorAndroid='transparent'
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                /> */}
-                
+               
                 </View>
 
             </View>

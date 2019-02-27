@@ -10,9 +10,9 @@ import {StyleSheet,
     KeyboardAvoidingView} from 'react-native'
 
 import { CheckBox } from 'react-native-elements'
-import { Dimensions } from "react-native";
+import { Dimensions } from "react-native"
+ 
 
-const util = require('util');
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 
@@ -25,13 +25,14 @@ class Login extends Component {
         checked: false,
         email: ' ',
         password: ' ',
-        val: false
+        val: false,
     }
+
+   
+
     onChangeCheck() {
         this.setState({ checked: !this.state.checked})
     }
-
-       
 
     openReg() {
         console.warn("reg")
@@ -49,7 +50,7 @@ class Login extends Component {
           this.setState({email:text})
           //console.warn("Email is Correct");
         }
-        }
+    }
     checkCred() {
         const { email, password, val } = this.state
         console.warn(email,password)
@@ -80,9 +81,58 @@ class Login extends Component {
         render(){
 
     var {navigate} = this.props.navigation;
+    var {email, password} = this.state;
+    function call(text) {
+        switch(text) {
+            case "Reg_First":
+                navigate("Reg_First", {name: 'Harsh'})
+                return
+
+            case "Dashboard":
+
+            
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+            }),
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            //console.warn(responseJson.data)
+            if(responseJson.data == null) {
+                Alert.alert(
+                    'Login Failed!',
+                    'Please Check Email/Password',
+                    [
+                      {text: 'OK'},
+                    ],
+                    {cancelable: false},
+                  );
+            }
+            else {
+                console.warn("Redirecting")
+                navigate("Dashboard")
+            }
+            
+        })
+        .catch((error) => {
+            console.warn(error);
+        })
+                
+                return
+            
+        }
+        
+        
+        
+    }
          return (
             
-            <KeyboardAvoidingView behavior="padding" style={styles.container}> 
+            <KeyboardAvoidingView behavior="padding" style={styles.maincontainer}> 
             
             <View style={styles.logoContainer}>
                 <Image
@@ -117,7 +167,7 @@ class Login extends Component {
                     returnKeyType="go"
                     ref={(input) => this.passwordInput = input}
                     onChangeText={text => this.setState({password: text})}
-                    secureTextEntry={this.state.checked}
+                    secureTextEntry
                     style= { styles.boxTI }>
                     </TextInput>
                     <CheckBox
@@ -126,9 +176,12 @@ class Login extends Component {
                     checked={this.state.checked}
                     containerStyle={{backgroundColor:'rgba(255,255,255,0.7)'}}
                     onPress={() => this.onChangeCheck()} />
-                    <TouchableOpacity onPress={()=> navigate("Dashboard")} style = { styles.buttonContainer }>
+
+                    <TouchableOpacity onPress={()=> call("Dashboard")} style = { styles.buttonContainer }>
                         <Text style = { styles.buttonText }>LOGIN</Text></TouchableOpacity>
-                    <TouchableOpacity onPress={()=> navigate("First")} style = { styles.buttonContainer }>
+                      
+                
+                    <TouchableOpacity onPress={()=> call("Reg_First")} style = { styles.buttonContainer }>
                         <Text style = { styles.buttonText }>New User</Text>
                     </TouchableOpacity>
                     
@@ -176,7 +229,7 @@ const styles = StyleSheet.create({
         height: height,
         resizeMode: 'cover'
     },
-    container: {
+    maincontainer: {
         backgroundColor: '#7f8fa6',
         width: width,
         height: height

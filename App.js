@@ -9,8 +9,8 @@ import Dash from './src/components/Dashboard/Dash.js'
 
 const AppNavigator = createStackNavigator({
   Login: {screen: Loginscreen},
-  First: {screen: Screen1},
-  Second: {screen: Screen2},
+  Reg_First: {screen: Screen1},
+  Reg_Second: {screen: Screen2},
   Dashboard: {screen: Dash},  
 });
 

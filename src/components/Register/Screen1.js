@@ -63,7 +63,10 @@ class Screen1 extends Component {
 
      render() {
 
-        var {navigate} = this.props.navigation;
+        var {navigate} = this.props.navigation
+        const {state} = this.props.navigation;
+        
+console.warn("PROPS " + state.params.name);
          return (
              
 
@@ -152,7 +155,7 @@ class Screen1 extends Component {
             <View style={{width: width, height: 200}}>
             
             <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={_ => this.next()} onPress={()=> navigate("Second")} style={{backgroundColor:'blue', margin: 10}}>
+                <TouchableOpacity onPress={_ => this.next()} style={{backgroundColor:'blue', margin: 10}}>
                 <Text style={styles.signUpText}>Next</Text>
                 </TouchableOpacity>
             </View>
