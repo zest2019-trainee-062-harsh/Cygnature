@@ -1,7 +1,6 @@
-import Login from '.Login/Login'
-import SplashScreen from './SplashScreen/SplashScreen';
+import Login from '../Login/Index'
+import SplashScreen from '../SplashScreen/Index';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-
 const AppNavigator = createStackNavigator({
     //Screens
     Splash: {
