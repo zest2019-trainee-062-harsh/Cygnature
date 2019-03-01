@@ -63,12 +63,7 @@ class Screen1 extends Component {
      render() {
 
         var {navigate} = this.props.navigation
-        const {state} = this.props.navigation;
-        
-console.warn("PROPS " + state.params.name);
          return (
-             
-
 
 <View style={{flex: 1}}>
             <View style={{width: width, height: height - 90}}>

@@ -1,11 +1,14 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, Image, TextInput, TouchableOpacity} from 'react-native'
+import {View, Text, StyleSheet, Image, TextInput, TouchableOpacity, StatusBar} from 'react-native'
  
 import { Dimensions } from "react-native";
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 class OTP extends Component {
+    static navigationOptions = {
+    header: null
+}
 
     state = {
         mobileNumber: 977,
@@ -33,7 +36,7 @@ class OTP extends Component {
     }
     checkOTP() {
         if(this.state.otp == this.state.defaultotp) {
-            console.warn("REDIRECT")
+            this.props.navigation.navigate("Dashboard")
         }
         else {
             console.warn("OTP not Match")
@@ -45,12 +48,23 @@ class OTP extends Component {
     }
 
      render() {
+        var {navigate} = this.props.navigation;
          return (
              <View style={styles.container}>
+              <StatusBar
+                backgroundColor="#6eab52"
+                    barStyle="light-content" />
                 <View  style={styles.logoContainer}>
                     <Image
-                    source={require('../../../img/logo.png')}
+                    source={require('../../../img/logo-white.png')}
                     />
+                     <View style={{marginLeft: 20}}>
+                    <Text style={{ color:"white", marginTop: this.state.titleMarginTop}}>
+                        <Text>• Authenticate &nbsp; &nbsp;</Text>
+                        <Text style={{fontStyle: "italic"}}>• Sign&nbsp; &nbsp;</Text>
+                        <Text>• Protect</Text>
+                    </Text>
+                </View>
                 </View>
                 <View style={styles.box}>
                     <Text style={styles.boxTitle}>Verify OTP</Text>
@@ -63,8 +77,8 @@ class OTP extends Component {
                         keyboardType="numeric"
                         returnKeyType="next"
                         onChangeText={text => this.handleNext(text,1)}
-                        underlineColorAndroid='black'
-                        placeholderTextColor='black'
+                        underlineColorAndroid='white'
+                        placeholderTextColor='white'
                         style={styles.OTPTI} 
                         placeholder="-" 
                         /> 
@@ -74,8 +88,8 @@ class OTP extends Component {
                         returnKeyType="next"
                         onChangeText={text => this.handleNext(text,2)}
                         ref={(input) => this.OTPInput1 = input}
-                        underlineColorAndroid='black'
-                        placeholderTextColor='black'
+                        underlineColorAndroid='white'
+                        placeholderTextColor='white'
                         style={styles.OTPTI} 
                         placeholder="-" /> 
                         <TextInput
@@ -84,8 +98,8 @@ class OTP extends Component {
                         returnKeyType="next"
                         onChangeText={text => this.handleNext(text,3)}  
                         ref={(input) => this.OTPInput2 = input}  
-                        underlineColorAndroid='black'
-                        placeholderTextColor='black'
+                        underlineColorAndroid='white'
+                        placeholderTextColor='white'
                         style={styles.OTPTI} 
                         placeholder="-" /> 
                         <TextInput
@@ -94,8 +108,8 @@ class OTP extends Component {
                         returnKeyType="next"
                         onChangeText={text => this.handleNext(text,4)}  
                         ref={(input) => this.OTPInput3 = input}  
-                        underlineColorAndroid='black'
-                        placeholderTextColor='black'
+                        underlineColorAndroid='white'
+                        placeholderTextColor='white'
                         style={styles.OTPTI} 
                         placeholder="-" /> 
                         <TextInput
@@ -104,8 +118,8 @@ class OTP extends Component {
                         returnKeyType="done"
                         onChangeText={text => this.handleNext(text,5)}  
                         ref={(input) => this.OTPInput4 = input}  
-                        underlineColorAndroid='black'
-                        placeholderTextColor='black'
+                        underlineColorAndroid='white'
+                        placeholderTextColor='white'
                         style={styles.OTPTI} 
                         placeholder="-" /> 
                     </View>
@@ -128,24 +142,25 @@ export default OTP
 
 const styles = StyleSheet.create({
     container: {
-        marginTop:100,
         width: width,
-        height: height
+        height: height,
+        backgroundColor: "#414345"
     },
     logoContainer: {
+        marginTop: 100,
         alignItems: 'center',
         justifyContent: 'center'
     },
     box: {
         marginTop: 80,
         margin: 20,
-        borderColor: 'black',
+        borderColor: 'white',
         borderWidth:1,
     },
     boxTitle: {
         margin: 15,
         fontSize: 22,
-        color: '#003d5a',
+        color: 'white',
         fontWeight: 'bold'
     },
     boxSubTitle: {
@@ -159,12 +174,12 @@ const styles = StyleSheet.create({
         marginLeft:20,
         margin: 10,
         fontSize: 16,
-        color: 'grey',
+        color: 'white',
     },
     boxHeader: {
         marginTop: 20,
         fontSize: 16,
-        color: 'grey',
+        color: 'white',
         textAlign: 'center',
         fontWeight: 'bold',
     },
@@ -176,7 +191,8 @@ const styles = StyleSheet.create({
     OTPTI: {
         textAlign: 'center',
         width: 50,
-        margin: 8,  
+        margin: 8, 
+        color:'white', 
     },
     footerContainer: {
         flexDirection: 'row',
@@ -184,7 +200,8 @@ const styles = StyleSheet.create({
         marginBottom: 60,
     },
     buttonContainer: {
-        backgroundColor: '#003d5a',
+        backgroundColor: '#6eab52',
+        borderRadius: 5,
         paddingVertical: 10,
         marginLeft: 20,
         width: 150

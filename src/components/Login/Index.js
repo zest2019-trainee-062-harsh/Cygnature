@@ -77,50 +77,49 @@ class Login extends Component {
         }
     }
 
-    render(){
-        var {navigate} = this.props.navigation;
-        var {email, password} = this.state;
-        function call(text) {
-            switch(text){
-                case "Reg_First":
-                navigate('Reg_First', {name: ' '})
-                return
+    call(text) {
+        switch(text){
+            case "Reg_First":
+            this.props.navigation.navigate('Reg_First')
+            return
 
-                case "Dashboard":
-                return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/login',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: password,
-                }),
-                }).then((response) => response.json())
-                .then((responseJson) => {
-                    //console.warn(responseJson.data)
-                    if(responseJson.data == null) {
-                        Alert.alert(
-                            'Login Failed!',
-                            'Please Check Email/Password',
-                            [
-                            {text: 'OK'},
-                            ],
-                            {cancelable: false},
-                        );
-                    }
-                    else {
-                        console.warn("Redirecting")
-                        navigate('Dashboard')
-                    }
-                    
-                })
-                .catch((error) => {
-                    console.warn(error);
-                })
-                return
-            }
+            case "Dashboard":
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/login',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: this.state.email,
+                password: this.state.password,
+            }),
+            }).then((response) => response.json())
+            .then((responseJson) => {
+                //console.warn(responseJson.data)
+                if(responseJson.data == null) {
+                    Alert.alert(
+                        'Login Failed!',
+                        'Please Check Email/Password',
+                        [
+                        {text: 'OK'},
+                        ],
+                        {cancelable: false},
+                    );
+                }
+                else {
+                    this.props.navigation.navigate('OTP')
+                }
+                
+            })
+            .catch((error) => {
+                console.warn(error);
+            })
+            return
         }
+    }
+
+    render(){
+        
         return(
             <KeyboardAvoidingView behavior="padding" style={styles.maincontainer}>
             <View style={styles.logoContainer}>
@@ -141,6 +140,7 @@ class Login extends Component {
             <ScrollView>
             <View style = { styles.container }>
                 <StatusBar
+                backgroundColor="#6eab52"
                     barStyle="light-content" />
                     {/* <Text style = { styles.boxLabel }>E-Mail</Text> */}
                     <TextInput
@@ -165,22 +165,23 @@ class Login extends Component {
                         style= { styles.boxTI }>
                     </TextInput>
 
-                    {/* 
-                        Remember ME
+                 
+                       
                         <CheckBox
                             title='Remember Me'
-                            uncheckedColor='green'
+                            uncheckedColor="#414345"
+                            checkedColor="#6eab52"
+                            size={20}
                             checked={this.state.checked}
                             containerStyle={{backgroundColor:'rgba(255,255,255,0.7)'}}
                             onPress={() => this.onChangeCheck()}
                         />
-                    */}
+                    
 
-                    <TouchableOpacity onPress={()=> call("Dashboard")} style = { styles.buttonContainer }>
+                    <TouchableOpacity onPress={()=> this.call("Dashboard")} style = { styles.buttonContainer }>
                         <Text style = { styles.buttonText }>Login</Text>
                     </TouchableOpacity>
-                    <Text style = { styles.boxLabel }>New Here?</Text>
-                    <TouchableOpacity onPress={()=> call("Reg_First")} style = { styles.buttonContainerNew }>
+                    <TouchableOpacity onPress={()=> this.call("Reg_First")} style = { styles.buttonContainer }>
                         <Text style = { styles.buttonText }>Create an account</Text>
                     </TouchableOpacity>
                 </View>
@@ -213,7 +214,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Helvetica'
     },
     buttonContainer: {
-        backgroundColor: 'green',
+        backgroundColor: '#6eab52',
         paddingVertical: 10,
         margin: 5,
         borderRadius: 5
@@ -242,11 +243,5 @@ const styles = StyleSheet.create({
         margin: 10,
         fontSize: 22,
         color: '#003d5a'
-    },
-    buttonContainerNew: {
-        backgroundColor: 'forestgreen',
-        paddingVertical: 10,
-        margin: 5,
-        borderRadius: 5
     }
 })

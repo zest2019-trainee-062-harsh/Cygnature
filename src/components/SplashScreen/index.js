@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-  AppRegistry, Text, View, StyleSheet, StatusBar, Animated, Dimensions,
+  AppRegistry, Text, View, StyleSheet, StatusBar, Animated, Dimensions
 } from 'react-native';
 
 //Getting device heigth and width
@@ -23,12 +23,12 @@ export default class SplashScreen extends Component{
       //animations by sequence
       Animated.timing(this.state.logoOpacity, {
         toValue: 1,
-        duration: 300
+        duration: 500
       }),
       //Animate Text
       Animated.timing(this.state.titleMarginTop, {
         toValue: 10,
-        duration: 800
+        duration: 1000
       })
     ]).start(() => {
       //End of animations
@@ -39,7 +39,9 @@ export default class SplashScreen extends Component{
   render(){
     return(
       <View style={Styles.container}>
-        <StatusBar backgroundColor="#4f6d7a"  barStyle= "light-content"/>
+      <StatusBar
+                backgroundColor="#414345"
+                    barStyle="light-content" />
         <View style={Styles.container}>
           <Animated.Image
                 source={require('../../../img/logo-white.png')}
