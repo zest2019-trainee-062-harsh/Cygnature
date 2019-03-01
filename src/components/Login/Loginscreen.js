@@ -85,10 +85,15 @@ class Login extends Component {
     function call(text) {
         switch(text) {
             case "Reg_First":
-                navigate("Reg_First", {name: 'Harsh'})
+                navigate("Reg_First")
                 return
 
-            case "Dashboard":
+                case "Dashboard":
+                navigate("Dashboard")
+                return
+
+            
+            case "Otp":
 
             
             return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/login', {
@@ -115,7 +120,7 @@ class Login extends Component {
             }
             else {
                 console.warn("Redirecting")
-                navigate("Dashboard")
+                navigate("Otp")
             }
             
         })
@@ -148,7 +153,7 @@ class Login extends Component {
                 barStyle="light-content" />
                     <Text style = { styles.boxLabel }>E-Mail</Text>
                     <TextInput 
-                    underlineColorAndroid='black'
+                    underlineColorAndroid='transparent'
                     placeholderTextColor='black'
                     placeholder = "Enter your e-mail"
                     returnKeyType="next"
@@ -161,10 +166,10 @@ class Login extends Component {
                     </TextInput>
                     <Text style = { styles.boxLabel }>Password</Text>
                     <TextInput 
-                    underlineColorAndroid='black'
+                    underlineColorAndroid='transparent'
                     placeholderTextColor='black'
                     placeholder = "Enter your password"
-                    returnKeyType="go"
+                    returnKeyType="done"
                     ref={(input) => this.passwordInput = input}
                     onChangeText={text => this.setState({password: text})}
                     secureTextEntry
@@ -177,7 +182,7 @@ class Login extends Component {
                     containerStyle={{backgroundColor:'rgba(255,255,255,0.7)'}}
                     onPress={() => this.onChangeCheck()} />
 
-                    <TouchableOpacity onPress={()=> call("Dashboard")} style = { styles.buttonContainer }>
+                    <TouchableOpacity onPress={()=> call("Otp")} style = { styles.buttonContainer }>
                         <Text style = { styles.buttonText }>LOGIN</Text></TouchableOpacity>
                       
                 
@@ -203,12 +208,13 @@ const styles = StyleSheet.create({
         padding:40,
         marginBottom: 80
     },
-    boxLabel: {
+        boxLabel: {
         fontSize: 18,
         fontWeight: 'bold',
         color: 'black'
     },
     boxTI: {
+        borderRadius: 40,
         backgroundColor: 'rgba(255,255,255,0.7)',
         paddingHorizontal: 20,
         marginBottom: 15,

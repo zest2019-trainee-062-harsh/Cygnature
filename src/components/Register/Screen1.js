@@ -16,7 +16,11 @@ class Screen1 extends Component {
 
     state = {
         register: null,
-        message: ''
+        message: '',
+        data: [
+            name= "harsh",
+            age=20
+        ]
     }
 
     checkuser(text) {
@@ -64,12 +68,11 @@ class Screen1 extends Component {
      render() {
 
         var {navigate} = this.props.navigation
-        const {state} = this.props.navigation;
         
-console.warn("PROPS " + state.params.name);
+        console.warn(this.state.data[0])
+       
          return (
              
-
 
 <View style={{flex: 1}}>
             <View style={{width: width, height: height - 90}}>

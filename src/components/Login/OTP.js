@@ -6,6 +6,9 @@ import { Dimensions } from "react-native";
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 class OTP extends Component {
+    static navigationOptions = {
+        header: null
+    }
 
     state = {
         mobileNumber: 977,
@@ -31,20 +34,24 @@ class OTP extends Component {
                 break;                
         }
     }
-    checkOTP() {
-        if(this.state.otp == this.state.defaultotp) {
-            console.warn("REDIRECT")
-        }
-        else {
-            console.warn("OTP not Match")
-        }
-    }
-
+   
     resendOTP() {
         console.warn("OTP SENDED")
     }
 
      render() {
+         
+    var {navigate} = this.props.navigation;
+        function checkOTP() {
+            if(this.state.otp == this.state.defaultotp) {
+                //console.warn("REDIRECT")
+                navigate("Reg_First")
+            }
+            else {
+                console.warn("OTP not Match")
+            }
+        }
+    
          return (
              <View style={styles.container}>
                 <View  style={styles.logoContainer}>
