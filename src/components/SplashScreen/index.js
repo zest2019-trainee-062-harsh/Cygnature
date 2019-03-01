@@ -3,13 +3,15 @@ import {
   AppRegistry, Text, View, StyleSheet, StatusBar, Animated, Dimensions,
 } from 'react-native';
 
-var {height, width} = Dimensions.get('window')
-export default class SplashScreen extends Component{
+//Getting device heigth and width
+var {height} = Dimensions.get('window')
 
+export default class SplashScreen extends Component{
   static navigationOptions = {
     header: null
   }
 
+  //Initial Animation Values
   state = {
     logoOpacity: new Animated.Value(0),
     titleMarginTop: new Animated.Value(height/2)
@@ -33,6 +35,7 @@ export default class SplashScreen extends Component{
       this.props.navigation.navigate('Login')
     })
   }
+
   render(){
     return(
       <View style={Styles.container}>
@@ -55,6 +58,7 @@ export default class SplashScreen extends Component{
   }
 }
 
+//Styling
 const Styles = StyleSheet.create({
   container : {
     flex: 1,
