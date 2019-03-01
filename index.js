@@ -1,5 +1,4 @@
 import {AppRegistry} from 'react-native'
-import AppStackNavigator from './src/components/AppStackNavigator/AppStackNavigator'
 
 AppRegistry.registerComponent('Cygnature', () => AppStackNavigator)
 
