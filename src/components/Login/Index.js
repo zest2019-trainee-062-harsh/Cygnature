@@ -10,7 +10,8 @@ import {StyleSheet,
     KeyboardAvoidingView,
     Dimensions,
     ScrollView,
-    ActivityIndicator
+    ActivityIndicator,
+    BackHandler 
 } from 'react-native'
 
 import { CheckBox } from 'react-native-elements'
@@ -20,6 +21,10 @@ var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 
 class Login extends Component {
+    constructor(props) {
+        super(props)
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+    }
     static navigationOptions = {
         header: null
     }
@@ -32,12 +37,26 @@ class Login extends Component {
         anim: false,
     }
 
+
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+    
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+    
+    handleBackButtonClick() {
+        this.props.navigation.goBack(BackHandler.exitApp());
+        return true;
+    }
+
     onChangeCheck() {
         this.setState({ checked: !this.state.checked})
     }
 
-    openReg() {
-        console.warn("reg")
+    onBackPressed() {
+
     }
 
     validate = (text) => {
