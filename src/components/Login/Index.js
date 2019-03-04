@@ -26,8 +26,8 @@ class Login extends Component {
 
     state = {
         checked: false,
-        email: ' ',
-        password: ' ',
+        email: null,
+        password: null,
         val: false,
         anim: false,
     }
@@ -56,39 +56,47 @@ class Login extends Component {
 
     checkCred(){
         const { email, password, val } = this.state
-        console.warn(email,password)
+//        console.warn(password)
 
         if(email == null || email == " ") {
             Alert.alert(
                 'Error!',
                 'Please Enter E-Mail',
                 [
-                  {text: 'OK', onPress: () => console.warn('OK Pressed')},
+                  {text: 'OK', onPress: () => this.setState({anim:false})},
                 ],
                 {cancelable: false},
               );
         }
-        else if(password == null || password == " ") {
+        else {
+            this.setState({val: true})
+        }
+        if(password == null || password == " ") {
             Alert.alert(
                 'Error!',
                 'Please Enter Password',
                 [
-                  {text: 'OK', onPress: () => console.warn('OK Pressed')},
+                    {text: 'OK', onPress: () => this.setState({anim:false})},
                 ],
                 {cancelable: false},
             );
         }
+        else {
+            this.setState({val: true})
+        }
+        
     }
 
     call(text) {
-        
-        this.setState({anim:true})
         switch(text){
             case "Reg_First":
             this.props.navigation.navigate('Reg_First')
             return
 
             case "Dashboard":
+            this.checkCred()
+            this.setState({anim:true})
+            if(this.state.val) {
             return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/login',{
             method: 'POST',
             headers: {
@@ -124,18 +132,13 @@ class Login extends Component {
             return
         }
     }
+    }
 
     render(){
         
         return(
             <KeyboardAvoidingView behavior="padding" style={styles.maincontainer}>
-            <View style={styles.logoContainer}>
-            {this.state.anim ? <ProgressDialog
-    visible={true}
-    title="Progress Dialog"
-    message="Please, wait..."
-/> : null}
-            
+            <View style={styles.logoContainer}>            
                 <Image
                     source={require('../../../img/logo-white.png')}
                 />
@@ -176,9 +179,7 @@ class Login extends Component {
                         onChangeText={text => this.setState({password: text})}
                         secureTextEntry
                         style= { styles.boxTI }>
-                    </TextInput>
-
-                 
+                    </TextInput>               
                        
                         <CheckBox
                             title='Remember Me'
@@ -194,6 +195,7 @@ class Login extends Component {
                     <TouchableOpacity onPress={()=> this.call("Dashboard")} style = { styles.buttonContainer }>
                         <Text style = { styles.buttonText }>Login</Text>
                     </TouchableOpacity>
+                    {this.state.anim ? <ActivityIndicator color="white" size="large" /> : null}
                     <TouchableOpacity onPress={()=> this.call("Reg_First")} style = { styles.buttonContainer }>
                         <Text style = { styles.buttonText }>Create an account</Text>
                     </TouchableOpacity>
