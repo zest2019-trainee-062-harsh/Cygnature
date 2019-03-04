@@ -6,6 +6,8 @@ import Screen2 from './src/components/Register/Screen2.js'
 import Dashboard from './src/components/Dashboard/Index.js'
 import SplashScreen from './src/components/SplashScreen/Index.js'
 
+import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
+
 const AppNavigator = createStackNavigator({
   SplashScreen: {screen: SplashScreen},
   Login: {screen: Loginscreen},

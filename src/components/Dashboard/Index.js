@@ -1,7 +1,10 @@
 import React, {Component} from 'react'
 import {View, StyleSheet,Text, TouchableOpacity} from 'react-native'
 const util = require('util');
- 
+import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
+import  Register from '../Register/Screen1'
+import Icon from 'react-native-vector-icons/Ionicons'
+
 import { Dimensions } from "react-native";
 
 var width = Dimensions.get('window').width; //full width
@@ -61,16 +64,56 @@ class Dashboard extends Component {
          }
      }
 
-export default Dashboard
+
+export default createMaterialBottomTabNavigator({
+    dashboard: { screen: Dashboard,
+        navigationOptions: {
+            tabBarLabel: 'Dashboard',
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="md-home" color={tintColor} size={24} />
+            )
+        }
+    },
+    profile: { screen: Register,
+        navigationOptions: {
+            tabBarLabel: 'Profile',
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="md-contact" color={tintColor} size={24} />
+            )
+        }
+    }, 
+    contacts: { screen: Register,
+        navigationOptions: {
+            tabBarLabel: 'Contacts',
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="md-contacts" color={tintColor} size={24} />
+            )
+        }
+    },
+    Setting: { screen: Register,
+        navigationOptions: {
+            tabBarLabel: 'Setting',
+            tabBarIcon: ({ tintColor}) => (
+                <Icon name="md-settings" color={tintColor} size={24} />
+            )
+        }
+    },
+},
+{
+    barStyle: { backgroundColor: '#6eab52' },
+    activeTintColor: 'white',
+    navigationOptions: () => ({ header: null })
+
+})
+
 
 const styles = StyleSheet.create({
    mainContainer: {
-       width: width,
-       height: height,
+    width: width,
+    height: height,
    },
    box1: {
-       margin:10,
-       marginTop:70,
+    margin:10,
     flexDirection: 'row',
     flex:0.35, 
    },
@@ -103,6 +146,7 @@ const styles = StyleSheet.create({
    },
    box3 :{
     marginTop: 20,
+    marginBottom: 70,
     margin: 10,
     flex:0.30, 
     borderColor: 'black',
@@ -128,6 +172,7 @@ const styles = StyleSheet.create({
        borderRadius: 30,
        bottom: 35,
        right: 5,
+       marginBottom: 50,
        alignItems: 'center',
        justifyContent: 'center',
    },
