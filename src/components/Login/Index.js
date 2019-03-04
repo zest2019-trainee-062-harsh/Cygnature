@@ -9,10 +9,12 @@ import {StyleSheet,
     Image, 
     KeyboardAvoidingView,
     Dimensions,
-    ScrollView
+    ScrollView,
+    ActivityIndicator
 } from 'react-native'
 
 import { CheckBox } from 'react-native-elements'
+import { ProgressDialog } from 'react-native-simple-dialogs';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
@@ -27,6 +29,7 @@ class Login extends Component {
         email: ' ',
         password: ' ',
         val: false,
+        anim: false,
     }
 
     onChangeCheck() {
@@ -78,6 +81,8 @@ class Login extends Component {
     }
 
     call(text) {
+        
+        this.setState({anim:true})
         switch(text){
             case "Reg_First":
             this.props.navigation.navigate('Reg_First')
@@ -95,6 +100,8 @@ class Login extends Component {
             }),
             }).then((response) => response.json())
             .then((responseJson) => {
+                
+                this.setState({anim:false})
                 //console.warn(responseJson.data)
                 if(responseJson.data == null) {
                     Alert.alert(
@@ -123,6 +130,12 @@ class Login extends Component {
         return(
             <KeyboardAvoidingView behavior="padding" style={styles.maincontainer}>
             <View style={styles.logoContainer}>
+            {this.state.anim ? <ProgressDialog
+    visible={true}
+    title="Progress Dialog"
+    message="Please, wait..."
+/> : null}
+            
                 <Image
                     source={require('../../../img/logo-white.png')}
                 />
