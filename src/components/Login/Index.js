@@ -108,7 +108,7 @@ class Login extends Component {
     call(text) {
         switch(text){
             case "Reg_First":
-            this.props.navigation.navigate('Reg_First')
+            this.props.navigation.navigate('Register')
             return
 
             case "Dashboard":

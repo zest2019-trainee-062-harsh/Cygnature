@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {View, Text, StyleSheet, Image, TextInput, TouchableOpacity, StatusBar} from 'react-native'
  
 import { Dimensions } from "react-native";
+import { ScrollView } from 'react-native-gesture-handler';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
@@ -59,7 +60,7 @@ class OTP extends Component {
                     source={require('../../../img/logo-white.png')}
                     />
                      <View style={{marginLeft: 20}}>
-                    <Text style={{ color:"white", marginTop: this.state.titleMarginTop}}>
+                    <Text style={{ color:"white"}}>
                         <Text>• Authenticate &nbsp; &nbsp;</Text>
                         <Text style={{fontStyle: "italic"}}>• Sign&nbsp; &nbsp;</Text>
                         <Text>• Protect</Text>
@@ -147,12 +148,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#414345"
     },
     logoContainer: {
-        marginTop: 100,
+        marginTop: 80,
         alignItems: 'center',
         justifyContent: 'center'
     },
     box: {
-        marginTop: 80,
+        marginTop: 40,
         margin: 20,
         borderColor: 'white',
         borderWidth:1,

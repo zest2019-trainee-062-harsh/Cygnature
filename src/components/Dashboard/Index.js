@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {View, StyleSheet,Text, TouchableOpacity} from 'react-native'
 const util = require('util');
 import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
-import  Register from '../Register/Screen1'
+import  Register from '../Register/Index.js'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import { Dimensions } from "react-native";
