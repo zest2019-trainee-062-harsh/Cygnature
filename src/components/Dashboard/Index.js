@@ -8,7 +8,7 @@ import { Dimensions } from "react-native";
 import  Register from '../Register/Index.js'
 import  Documents from '../Documents/Index.js'
 import  Contacts from '../Contacts/Index.js'
-import  Settings from '../Settings/Index.js'
+import  Settings from '../Settings/General.js'
 import { ScrollView } from 'react-native-gesture-handler';
 
 var width = Dimensions.get('window').width; //full width
@@ -17,8 +17,8 @@ var height = Dimensions.get('window').height; //full width
 class Dashboard extends Component {
     constructor(props) {
         super(props)
-        this.state.data  = this.props.navigation.getParam('data');
-        this.state.name = this.state.data["firstName"]
+        //this.state.data  = this.props.navigation.getParam('data');
+        //this.state.name = this.state.data["firstName"]
         console.warn(this.state.name)
     }
     static navigationOptions = {

@@ -4,8 +4,8 @@ import OTP from './src/components/Login/OTP.js'
 import Register from './src/components/Register/Index'
 import Dashboard from './src/components/Dashboard/Index.js'
 import SplashScreen from './src/components/SplashScreen/Index.js'
+import  Settings  from './src/components/Settings/General.js';
 
-import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 
 const AppNavigator = createStackNavigator({
   SplashScreen: {screen: SplashScreen},
@@ -13,6 +13,7 @@ const AppNavigator = createStackNavigator({
   OTP: {screen: OTP},
   Register: {screen: Register},
   Dashboard: {screen: Dashboard},
+  Settings: {screen: Settings},
 });
 
 const AppContainer = createAppContainer(AppNavigator);
