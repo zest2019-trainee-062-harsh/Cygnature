@@ -7,14 +7,21 @@ import { ScrollView } from 'react-native-gesture-handler';
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 class OTP extends Component {
+    constructor(props) {
+        super(props)
+        this.state.data  = this.props.navigation.getParam('data');
+        this.state.mobileNumber = this.state.data["phoneNumber"]
+        //console.warn(data)
+    }
     static navigationOptions = {
     header: null
 }
 
     state = {
-        mobileNumber: 977,
+        mobileNumber: null,
         defaultotp: 12345,
-        otp: ""
+        otp: "",
+        data: { },
     }
 
     handleNext(text,value) {
@@ -37,7 +44,7 @@ class OTP extends Component {
     }
     checkOTP() {
         if(this.state.otp == this.state.defaultotp) {
-            this.props.navigation.navigate("Dashboard")
+            this.props.navigation.navigate("Dashboard",{"data":this.state.data})
         }
         else {
             console.warn("OTP not Match")

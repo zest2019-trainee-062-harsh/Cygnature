@@ -24,8 +24,8 @@ class Login extends Component {
     constructor(props) {
         super(props)
         this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
-        this.checkConn()
-    
+        //this.checkConn()
+        //console.warn(this.state.data)
     }
     static navigationOptions = {
         header: null
@@ -37,6 +37,8 @@ class Login extends Component {
         password: null,
         val: false,
         anim: false,
+        resData: {  },
+        data: {  },
     }
 
     checkConn() {
@@ -158,7 +160,10 @@ class Login extends Component {
                     );
                 }
                 else {
-                    this.props.navigation.navigate('OTP')
+                    this.state.resData=responseJson.data
+                    this.state.data=this.state.resData[0]
+                    //console.warn(this.state.data)
+                    this.props.navigation.navigate('OTP',{"data":this.state.data})
                 }
                 
             })
