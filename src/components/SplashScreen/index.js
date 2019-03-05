@@ -32,7 +32,7 @@ export default class SplashScreen extends Component{
       })
     ]).start(() => {
       //End of animations
-      this.props.navigation.navigate('Login')
+      this.props.navigation.navigate('Register')
     })
   }
 

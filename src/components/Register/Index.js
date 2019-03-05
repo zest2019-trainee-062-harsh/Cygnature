@@ -13,10 +13,16 @@ import {
     Alert
 } from 'react-native'
 
+import RNLocation from 'react-native-location';
+
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 
 class Register extends Component {
+    constructor(props) {
+        super(props)
+        this.getLoc()
+    }
 
     static navigationOptions = {
         header: null
@@ -26,6 +32,40 @@ class Register extends Component {
         register: null,
         message: '',
         enable: true
+    }
+
+    getLoc() {
+        RNLocation.configure({
+            distanceFilter: 100, // Meters
+            desiredAccuracy: {
+              ios: "best",
+              android: "balancedPowerAccuracy"
+            },
+            // Android only
+            androidProvider: "auto",
+            maxWaitTime: 5000, // Milliseconds
+            // iOS Only
+            activityType: "other",
+            allowsBackgroundLocationUpdates: false,
+            headingFilter: 1, // Degrees
+            headingOrientation: "portrait",
+            pausesLocationUpdatesAutomatically: false,
+            showsBackgroundLocationIndicator: false,
+        })
+
+        RNLocation.requestPermission({
+            ios: "whenInUse",
+            android: {
+              detail: "coarse"
+            }
+          }).then(granted => {
+              if (granted) {
+                this.locationSubscription = RNLocation.subscribeToLocationUpdates(locations => {
+                    console.warn(locations[0]["longitude"])
+                    console.warn(locations[0]["latitude"])
+                })
+              }
+            })
     }
 
     checkuser(text) {
