@@ -11,7 +11,8 @@ import {StyleSheet,
     Dimensions,
     ScrollView,
     ActivityIndicator,
-    BackHandler 
+    BackHandler,
+    NetInfo,
 } from 'react-native'
 
 import { CheckBox } from 'react-native-elements'
@@ -23,6 +24,8 @@ class Login extends Component {
     constructor(props) {
         super(props)
         this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+        this.checkConn()
+    
     }
     static navigationOptions = {
         header: null
@@ -36,7 +39,22 @@ class Login extends Component {
         anim: false,
     }
 
-
+    checkConn() {
+        NetInfo.isConnected.fetch().then(isConnected => {
+            if(!isConnected)
+            {
+                Alert.alert(
+                    'Internet Not Connected!',
+                    'Please check your connection',
+                    [
+                        {text: 'OK', onPress: ()=> this.checkConn()},
+                    ],
+                    {cancelable: true},
+                );
+            }
+        
+ })
+    }
     componentWillMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
@@ -83,7 +101,7 @@ class Login extends Component {
                 [
                   {text: 'OK', onPress: () => this.setState({anim:false})},
                 ],
-                {cancelable: false},
+                {cancelable: true},
               );
         }
         else {
@@ -96,7 +114,7 @@ class Login extends Component {
                 [
                     {text: 'OK', onPress: () => this.setState({anim:false})},
                 ],
-                {cancelable: false},
+                {cancelable: true},
             );
         }
         else {
@@ -136,7 +154,7 @@ class Login extends Component {
                         [
                         {text: 'OK'},
                         ],
-                        {cancelable: false},
+                        {cancelable: true},
                     );
                 }
                 else {

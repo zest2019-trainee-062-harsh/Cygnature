@@ -2,10 +2,13 @@ import React, {Component} from 'react'
 import {View, StyleSheet,Text, TouchableOpacity} from 'react-native'
 const util = require('util');
 import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
-import  Register from '../Register/Index.js'
 import Icon from 'react-native-vector-icons/Ionicons'
-
 import { Dimensions } from "react-native";
+
+import  Register from '../Register/Index.js'
+import  Documents from '../Documents/Index.js'
+import  Contacts from '../Contacts/Index.js'
+import  Settings from '../Settings/Index.js'
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
@@ -74,15 +77,15 @@ export default createMaterialBottomTabNavigator({
             )
         }
     },
-    profile: { screen: Register,
+    documents: { screen: Documents,
         navigationOptions: {
-            tabBarLabel: 'Profile',
+            tabBarLabel: 'Documents',
             tabBarIcon: ({tintColor}) => (
-                <Icon name="md-contact" color={tintColor} size={24} />
+                <Icon name="md-document" color={tintColor} size={24} />
             )
         }
     }, 
-    contacts: { screen: Register,
+    contacts: { screen: Contacts,
         navigationOptions: {
             tabBarLabel: 'Contacts',
             tabBarIcon: ({tintColor}) => (
@@ -90,9 +93,9 @@ export default createMaterialBottomTabNavigator({
             )
         }
     },
-    Setting: { screen: Register,
+    settings: { screen: Settings,
         navigationOptions: {
-            tabBarLabel: 'Setting',
+            tabBarLabel: 'Settings',
             tabBarIcon: ({ tintColor}) => (
                 <Icon name="md-settings" color={tintColor} size={24} />
             )
