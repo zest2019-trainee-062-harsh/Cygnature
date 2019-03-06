@@ -24,7 +24,7 @@ class Login extends Component {
     constructor(props) {
         super(props)
         this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
-        this.checkConn()
+        //this.checkConn()
         //console.warn(this.state.data)
     }
     static navigationOptions = {

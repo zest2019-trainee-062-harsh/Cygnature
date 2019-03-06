@@ -31,7 +31,10 @@ class Register extends Component {
     state = {
         register: null,
         message: '',
-        enable: true
+        enable: true,
+        errorEmail: "Email already exists",
+        errorFName: " ",
+        errorLName: " ",        
     }
 
     getLoc() {
@@ -61,13 +64,44 @@ class Register extends Component {
           }).then(granted => {
               if (granted) {
                 this.locationSubscription = RNLocation.subscribeToLocationUpdates(locations => {
-                    console.warn(locations[0]["longitude"])
-                    console.warn(locations[0]["latitude"])
+                    // console.warn(locations[0]["longitude"])
+                    // console.warn(locations[0]["latitude"])
                 })
               }
             })
     }
 
+    fname(text) {
+        name= text
+
+        let reg = /^[^!-\\/:-@\\[-`{-~]+$/ ;
+        
+        if(reg.test(name) === false)
+        {
+            // console.warn("error")
+            this.setState({errorFName: "Only Alpahbet allows"})
+        }
+        else {
+            this.setState({errorFName: " "})
+        }
+
+    }
+    f
+    lname(text) {
+        name= text
+
+        let reg = /^[^!-\\/:-@\\[-`{-~]+$/ ;
+        
+        if(reg.test(name) === false)
+        {
+            // console.warn("error")
+            this.setState({errorLName: "Only Alpahbet allows"})
+        }
+        else {
+            this.setState({errorLName: " "})
+        }
+
+    }
     checkuser(text) {
         ema= text
 
@@ -92,7 +126,7 @@ class Register extends Component {
                 bva=responseJson["data"]
                 message=responseJson["message"]
                 this.setState({register: bva[0], message: message})
-                console.warn(this.state.register)
+                //console.warn(this.state.register)
                 if(this.state.register === true){
                     this.setState({enable: true})
                 }
@@ -105,9 +139,8 @@ class Register extends Component {
 
     next(){
         const { register } = this.state
-        console.warn("REDIRECT - UI 2")
         if (register == null) {
-            Alert("Enter the details correctly.")
+            //this.state.error["email"] = "Email already exists"
         } else {
             console.warn(register)
         }
@@ -139,28 +172,39 @@ class Register extends Component {
                         barStyle="#414345" />
                         <TextInput
                             placeholderTextColor='grey'
-                            placeholder = "First Name"
+                            placeholder = "First Name *"
                             returnKeyType="next"
                             autoCapitalize="none"
                             autoCorrect={false}
                             onSubmitEditing={() => this.REGInput1.focus()}
+                            onChangeText={text => this.fname(text)}
                             style= { styles.boxTI }>
                         </TextInput>
 
+                        {this.state.errorFName==" " ?
+                         null:
+                         <Text style = { styles.errorText }>{this.state.errorFName}</Text>
+                        }
+
                         <TextInput
                             placeholderTextColor='grey'
-                            placeholder = "Last Name"
+                            placeholder = "Last Name *"
                             returnKeyType="next"
                             autoCapitalize="none"
                             autoCorrect={false}
                             ref={(input) => this.REGInput1 = input}
                             onSubmitEditing={() => this.REGInput2.focus()}
+                            onChangeText={text => this.lname(text)}
                             style= { styles.boxTI }>
                         </TextInput>
+                        {this.state.errorLName==" " ?
+                         null:
+                         <Text style = { styles.errorText }>{this.state.errorLName}</Text>
+                        }
 
                         <TextInput
                             placeholderTextColor='grey'
-                            placeholder = "Email"
+                            placeholder = "Email *"
                             returnKeyType="next"
                             keyboardType="email-address"
                             autoCapitalize="none"
@@ -170,10 +214,15 @@ class Register extends Component {
                             onChangeText={text => this.checkuser(text)}
                             style= { styles.boxTI }>
                         </TextInput>
+                        
+                        {this.state.register ?
+                        <Text style = { styles.errorText }>{this.state.errorEmail}</Text> :
+                        null
+                        }
 
                         <TextInput
                             placeholderTextColor='grey'
-                            placeholder = "Password"
+                            placeholder = "Password *"
                             returnKeyType="go"
                             ref={(input) => this.REGInput3 = input}
                             onSubmitEditing={() => this.REGInput4.focus()}
@@ -184,7 +233,7 @@ class Register extends Component {
 
                         <TextInput
                             placeholderTextColor='grey'
-                            placeholder = "Confirm Password"
+                            placeholder = "Confirm Password *"
                             returnKeyType="go"
                             ref={(input) => this.REGInput4 = input}
                             onSubmitEditing={() => this.REGInput5.focus()}
@@ -192,7 +241,7 @@ class Register extends Component {
                             secureTextEntry
                             style= { styles.boxTI }>
                         </TextInput>
-
+                        {/*
                         <TextInput
                             placeholderTextColor='grey'
                             placeholder = "Job Title"
@@ -214,21 +263,31 @@ class Register extends Component {
                             onSubmitEditing={() => this.REGInput7.focus()}
                             style= { styles.boxTI }>
                         </TextInput>
-
+                        */}
                         <TextInput
                             placeholderTextColor='grey'
                             keyboardType="numeric"
-                            placeholder = "Phone Input"
+                            placeholder = "Phone Input *"
                             returnKeyType="go"
                             autoCapitalize="none"
                             autoCorrect={false}
-                            ref={(input) => this.REGInput7 = input}
+                            //ref={(input) => this.REGInput7 = input
+                            ref={(input) => this.REGInput5 = input
+                            }
                             style= { styles.boxTI }>
                         </TextInput>
 
-                        <TouchableOpacity disabled={this.state.enable} onPress={_=> this.next()} style = { [styles.buttonContainer, {opacity: 0.5} ]}>
+                        {this.state.enable ? 
+                        <TouchableOpacity disabled={this.state.enable} onPress={()=> this.next()} 
+                        style = { [styles.buttonContainer, {opacity:0.5} ]}>
+                            <Text style = { styles.buttonText }>Next</Text>
+                        </TouchableOpacity> :
+                        <TouchableOpacity disabled={this.state.enable} onPress={()=> this.next()} 
+                        style = { [styles.buttonContainer, {opacity:1} ]}>
                             <Text style = { styles.buttonText }>Next</Text>
                         </TouchableOpacity>
+                        }
+                    
                     </View>
                     </ScrollView>
                 </View>
@@ -269,6 +328,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#ffffff',
         fontWeight: 'bold'
+    },
+    errorText: {
+        color: '#ff0000',
+        marginLeft:15,
+        marginBottom:15,
+        fontSize: 12,
     },
     bkImg: {
         width: width,
