@@ -11,7 +11,10 @@ class OTP extends Component {
         super(props)
         this.state.data  = this.props.navigation.getParam('data');
         this.state.mobileNumber = this.state.data["phoneNumber"]
+        this.state.token = this.state.data["token"]
+        this.state.auth = "Bearer "+this.state.token
         //console.warn(data)
+        this.getCount()
     }
     static navigationOptions = {
     header: null
@@ -22,6 +25,37 @@ class OTP extends Component {
         defaultotp: 12345,
         otp: "",
         data: { },
+        token: null,
+        auth: null,
+        count: {
+            awaitingMySign: null,
+            awaitingOthers: null,
+            completed: null,
+            expireSoon: null,
+         },
+    }
+
+    getCount() {
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/dashboard/document-counts/', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': this.state.auth,
+            },
+            }).then((response) => response.json())
+            .then((responseJson) => {
+            
+                //this.state.count = responseJson["data"]
+                //console.warn(responseJson["data"][0]["awaitingMySign"])
+                this.state.count["awaitingMySign"] = responseJson["data"][0]["awaitingMySign"]
+                this.state.count["awaitingOthers"] = responseJson["data"][0]["awaitingOthers"]
+                this.state.count["completed"] = responseJson["data"][0]["completed"]
+                this.state.count["expireSoon"] = responseJson["data"][0]["expireSoon"]
+                //console.warn(this.state.count)
+            })
+            .catch((error) => {
+                console.warn(error);
+            });
     }
 
     handleNext(text,value) {
@@ -44,7 +78,7 @@ class OTP extends Component {
     }
     checkOTP() {
         if(this.state.otp == this.state.defaultotp) {
-            this.props.navigation.navigate("Dashboard",{"data":this.state.data})
+            this.props.navigation.navigate("Dashboard",{"data":this.state.data, "count": this.state.count})
         }
         else {
             console.warn("OTP not Match")

@@ -18,8 +18,9 @@ class Dashboard extends Component {
     constructor(props) {
         super(props)
         this.state.data  = this.props.navigation.getParam('data');
-        this.state.name = this.state.data["firstName"]
-        console.warn(this.state.name)
+        this.state.count  = this.props.navigation.getParam('count');
+        //console.warn(this.state.token)
+        //console.warn(this.state.auth)
     }
     static navigationOptions = {
         header: null
@@ -27,8 +28,16 @@ class Dashboard extends Component {
     
     state = {
         data: { },
-        name: null,
+        count: {
+            awaitingMySign: null,
+            awaitingOthers: null,
+            completed: null,
+            expireSoon: null,
+         },
     }
+
+    
+
     floatClicked=() => {
         alert("clicked")
     }
@@ -41,12 +50,12 @@ class Dashboard extends Component {
                     <View style={styles.box1}>
                         <View style={styles.boxHalf}>
                             <Text style={styles.box1Text}>
-                                0 {"\n"}{"\n"} Need to Sign
+                                {this.state.count["awaitingMySign"]} {"\n"}{"\n"} Need to Sign
                             </Text>
                         </View>
                         <View style={styles.boxHalf}>
                         <Text style={styles.box1Text}>
-                                0 {"\n"}{"\n"} Waiting for Others
+                        {this.state.count["awaitingOthers"]} {"\n"}{"\n"} Waiting for Others
                             </Text>
                         </View>
                     </View>
