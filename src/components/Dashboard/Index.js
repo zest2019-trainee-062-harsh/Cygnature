@@ -17,8 +17,8 @@ var height = Dimensions.get('window').height; //full width
 class Dashboard extends Component {
     constructor(props) {
         super(props)
-        //this.state.data  = this.props.navigation.getParam('data');
-        //this.state.name = this.state.data["firstName"]
+        this.state.data  = this.props.navigation.getParam('data');
+        this.state.name = this.state.data["firstName"]
         console.warn(this.state.name)
     }
     static navigationOptions = {
@@ -114,6 +114,7 @@ export default createMaterialBottomTabNavigator({
     },
 },
 {
+    //initialRouteName: 'settings',
     barStyle: { backgroundColor: '#6eab52' },
     activeTintColor: 'white',
     navigationOptions: () => ({ header: null })

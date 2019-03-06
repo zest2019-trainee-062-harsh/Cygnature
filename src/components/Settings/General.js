@@ -16,34 +16,39 @@ class General extends Component {
          }
      }
      export default createMaterialTopTabNavigator({
-        dashboard: { screen: General,
+        general: { screen: General,
             navigationOptions: {
                 tabBarLabel: 'General',
                 tabBarIcon: ({tintColor}) => (
-                    <Icon name="md-home" color={tintColor} size={24} />
+                    <Icon name="md-home" color={tintColor} size={18} />
                 )
             }
         },
-        documents: { screen: Profile,
+        profile: { screen: Profile,
             navigationOptions: {
                 tabBarLabel: 'Profile',
                 tabBarIcon: ({tintColor}) => (
-                    <Icon name="md-document" color={tintColor} size={24} />
+                    <Icon name="md-document" color={tintColor} size={18} />
                 )
             }
         }, 
     },
     {
         tabBarOptions: {
-            activeTintColor: 'orange',
-            inactiveTintColor: 'grey',
+            activeTintColor: 'white',
             style: {
-                backgroundColor: 'green'
+                backgroundColor: '#6eab52'
             },
             indicatorStyle: {
                 height: 0
             },
-            showIcon: true
+            labelStyle: {
+                fontSize: 12,
+                fontWeight: 'bold'
+            },
+            showIcon: true,
+            //lazy:  true,
+            
         },
         navigationOptions: () => ({ header: null })
     
