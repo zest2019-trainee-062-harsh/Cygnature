@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, StyleSheet,Text, TouchableOpacity} from 'react-native'
+import {View, StyleSheet,Text, TouchableOpacity, ScrollView, StatusBar} from 'react-native'
 const util = require('util');
 import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -9,7 +9,6 @@ import  Register from '../Register/Index.js'
 import  Documents from '../Documents/Index.js'
 import  Contacts from '../Contacts/Index.js'
 import  Settings from '../Settings/General.js'
-import { ScrollView } from 'react-native-gesture-handler';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
@@ -45,6 +44,7 @@ class Dashboard extends Component {
         var {navigate} = this.props.navigation;
          return (
              <View style={{flex:1}}>
+               <StatusBar backgroundColor="#003d58" barStyle="light-content" />
                 <View style={styles.mainContainer}>
                     
                     <View style={styles.box1}>
@@ -62,7 +62,86 @@ class Dashboard extends Component {
 
                     <View style={styles.box2}>
                         <Text style={styles.box2Text1}>Recent Documents</Text>
-                        <Text>Scroll view here</Text>
+                        <ScrollView>
+                            <View style={styles.DocumentsList}>
+                                <Text style={styles.DocumentsListFont}>
+                                    Document 1
+                                </Text>
+                                <View style={{flexDirection: "row"}}>
+                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                        Completed by
+                                    </Text>
+                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                        Date xxx
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.DocumentsList}>
+                                <Text style={styles.DocumentsListFont}>
+                                    Document 2
+                                </Text>
+                                <View style={{flexDirection: "row"}}>
+                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                        Completed by
+                                    </Text>
+                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                        Date xxx
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.DocumentsList}>
+                                <Text style={styles.DocumentsListFont}>
+                                    Document 3
+                                </Text>
+                                <View style={{flexDirection: "row"}}>
+                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                        Completed by
+                                    </Text>
+                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                        Date xxx
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.DocumentsList}>
+                                <Text style={styles.DocumentsListFont}>
+                                    Document 4
+                                </Text>
+                                <View style={{flexDirection: "row"}}>
+                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                        Completed by
+                                    </Text>
+                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                        Date xxx
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.DocumentsList}>
+                                <Text style={styles.DocumentsListFont}>
+                                    Document 5
+                                </Text>
+                                <View style={{flexDirection: "row"}}>
+                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                        Completed by
+                                    </Text>
+                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                        Date xxx
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.DocumentsList}>
+                                <Text style={styles.DocumentsListFont}>
+                                    Document 6
+                                </Text>
+                                <View style={{flexDirection: "row"}}>
+                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                        Completed by
+                                    </Text>
+                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                        Date xxx
+                                    </Text>
+                                </View>
+                            </View>
+                        </ScrollView>
                     </View>
                 
                     <View style={styles.box3}>
@@ -124,7 +203,7 @@ export default createMaterialBottomTabNavigator({
 },
 {
     //initialRouteName: 'settings',
-    barStyle: { backgroundColor: '#6eab52' },
+    barStyle: { backgroundColor: '#003d5a' },
     activeTintColor: 'white',
     navigationOptions: () => ({ header: null })
 
@@ -204,5 +283,15 @@ const styles = StyleSheet.create({
        color: 'white',
        fontSize: 25
    },
-
+   DocumentsList:{
+    flex: 1,
+    backgroundColor: '#003d5a',
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 5,
+},
+DocumentsListFont:{
+    flex: 0.5,
+    color: "white"
+},
 })

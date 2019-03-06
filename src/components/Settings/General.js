@@ -37,7 +37,7 @@ class General extends Component {
         tabBarOptions: {
             activeTintColor: 'white',
             style: {
-                backgroundColor: '#6eab52'
+                backgroundColor: '#003d5a'
             },
             indicatorStyle: {
                 height: 0
