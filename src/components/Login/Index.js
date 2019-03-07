@@ -37,6 +37,7 @@ class Login extends Component {
         password: null,
         val: false,
         anim: false,
+        enable: true,
         resData: {  },
         data: {  },
     }
@@ -78,18 +79,41 @@ class Login extends Component {
 
     }
 
-    validate = (text) => {
-        //console.warn(text);
-        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
-        if(reg.test(text) === false){
-        //console.warn("Email is Not Correct");
-        //this.setState({email:text})
-            return false;
+    validate = (text, value) => {
+        switch(value) {
+            case "email": {
+                //console.warn(text);
+                let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
+                if(reg.test(text) === false){
+                //console.warn("Email is Not Correct");
+                //this.setState({email:text})
+                  this.setState({enable: true})
+                    return false;
+                }else {
+                    if(this.state.password==null || this.state.password.trim()=="" || this.state.password.length==0) {
+                        //console.warn("no")
+                        this.setState({enable: true})
+                    }
+                    else{
+                        this.setState({email:text, enable: false})
+                    }
+                  //console.warn("Email is Correct");
+                }
+                return
+            }
+            case "password": { 
+                this.setState({password: text})
+                if(this.state.password==" ") {
+                    //console.warn("no")
+                    this.setState({enable: true})
+                }
+                else {
+                    this.setState({password:text, enable: false})
+                }
+                return
+            }
         }
-        else{
-          this.setState({email:text})
-          //console.warn("Email is Correct");
-        }
+       
     }
 
     checkCred(){
@@ -208,7 +232,7 @@ class Login extends Component {
                         autoCapitalize="none"
                         autoCorrect={false}
                         onSubmitEditing={() => this.passwordInput.focus()}
-                        onChangeText={text => this.validate(text)}
+                        onChangeText={text => this.validate(text, "email")}
                         style= { styles.boxTI }>
                     </TextInput>
                     {/* <Text style = { styles.boxLabel }>Password</Text> */}
@@ -217,7 +241,7 @@ class Login extends Component {
                         placeholder = "Password"
                         returnKeyType="done"
                         ref={(input) => this.passwordInput = input}
-                        onChangeText={text => this.setState({password: text})}
+                        onChangeText={text => this.validate(text, "password")}
                         secureTextEntry
                         style= { styles.boxTI }>
                     </TextInput>               
@@ -231,11 +255,23 @@ class Login extends Component {
                             containerStyle={{backgroundColor:'rgba(255,255,255,0.7)'}}
                             onPress={() => this.onChangeCheck()}
                         />
-                    
 
-                    <TouchableOpacity onPress={()=> this.call("Dashboard")} style = { styles.buttonContainer }>
-                        <Text style = { styles.buttonText }>Login</Text>
-                    </TouchableOpacity>
+                    {this.state.enable ? 
+                         <TouchableOpacity
+                         disabled={this.state.enable}
+                         onPress={()=> this.call("Dashboard")}
+                         style = { [styles.buttonContainer, {opacity:0.5} ]}>
+                             <Text style = { styles.buttonText }>Login</Text>
+                         </TouchableOpacity> :
+                         <TouchableOpacity
+                         disabled={this.state.enable}
+                         onPress={()=> this.call("Dashboard")}
+                         style = { [styles.buttonContainer, {opacity:1} ]}>
+                             <Text style = { styles.buttonText }>Login</Text>
+                         </TouchableOpacity>
+                        }
+
+                   
                     {this.state.anim ? <ActivityIndicator color="white" size="large" /> : null}
                     <TouchableOpacity onPress={()=> this.call("Reg_First")} style = { styles.buttonContainer }>
                         <Text style = { styles.buttonText }>Create an account</Text>
