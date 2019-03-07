@@ -94,9 +94,9 @@ class Login extends Component {
                         //console.warn("no")
                         this.setState({enable: true})
                     }
-                    else{
-                        this.setState({email:text, enable: false})
-                    }
+                    
+                        this.setState({email:text})
+    
                   //console.warn("Email is Correct");
                 }
                 return
@@ -109,6 +109,7 @@ class Login extends Component {
                 }
                 else {
                     this.setState({password:text, enable: false})
+                    //console.warn(this.state.password)
                 }
                 return
             }
