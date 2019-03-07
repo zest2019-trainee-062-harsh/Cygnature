@@ -36,8 +36,12 @@ class Register extends Component {
         errorFName: " ",
         errorLName: " ",   
         errorPass: " ",   
-        errorCPass: " ", 
+        errorCPass: " ",
+        rFname: " ",
+        rLname: " ",
+        rEmail: " ", 
         rPassword: " ",
+        rPhone: " ",
             
     }
 
@@ -75,110 +79,126 @@ class Register extends Component {
             })
     }
 
-    cpassword(text) {
-        cpassword= text
+    validations(text, value)
+    {
+        switch(value) {
 
-        console.warn(this.state.rPassword)
-        if((cpassword) === this.state.rPassword)
-        {
-            //console.warn("match")
-            this.setState({errorCPass: " "})
-        }
-        else {
-            this.setState({errorCPass: "Confirm password not matched"})
-        }
-
-    }
-    
-    password(text) {
-        password= text
-
-        let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/	 ;
-        
-        if(reg.test(password) === false)
-        {
-            // console.warn("error")
-            this.setState({errorPass: "Password must be :- \nAtleast 8 character or longer\n1 UpperCase\n1 LowerCase\n1 Numeric\n1 Special character"})
-        }
-        else {
-            this.setState({errorPass: " "})
-            this.setState({rPassword: password})
-        }
-
-    }
-
-    fname(text) {
-        name= text
-
-        let reg = /^[^!-\\/:-@\\[-`{-~]+$/ ;
-        
-        if(reg.test(name) === false)
-        {
-            // console.warn("error")
-            this.setState({errorFName: "Only alphabets allows"})
-        }
-        else {
-            this.setState({errorFName: " "})
-        }
-
-    }
-    
-    lname(text) {
-        name= text
-
-        let reg = /^[^!-\\/:-@\\[-`{-~]+$/ ;
-        
-        if(reg.test(name) === false)
-        {
-            // console.warn("error")
-            this.setState({errorLName: "Only alphabets allows"})
-        }
-        else {
-            this.setState({errorLName: " "})
-        }
-
-    }
-    checkuser(text) {
-        ema= text
-
-        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
-        
-        if(reg.test(ema) === false)
-        {
-            this.setState({enable: false})
-            return false;
-
-        }
-        else {
-            this.setState({email:ema})
-            return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/check-user-exists/'+(ema), {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            }).then((response) => response.json())
-            .then((responseJson) => {
+            case "fname": {
+                name= text
+                let reg = /^([a-zA-z\s]{0,32})$/ ;
             
-                bva=responseJson["data"]
-                message=responseJson["message"]
-                this.setState({register: bva[0], message: message})
-                //console.warn(this.state.register)
-                if(this.state.register === true){
-                    this.setState({enable: true})
+                if(reg.test(name) === false)
+                {
+                    // console.warn("error")
+                    this.setState({errorFName: "Only alphabets allows"})
                 }
-            })
-            .catch((error) => {
-                console.warn(error);
-            });
+                else {
+                    this.setState({errorFName: " "})
+                    this.setState({rFname: name})
+                }
+                break
+            }
+                
+
+            case "lname": {
+                name= text
+                let reg = /^([a-zA-z\s]{0,32})$/ ;
+            
+                if(reg.test(name) === false)
+                {
+                    // console.warn("error")
+                    this.setState({errorLName: "Only alphabets allows"})
+                }
+                else {
+                    this.setState({errorLName: " "})
+                    this.setState({rLname: name})
+                }
+            break
+            }
+            
+            case "email":{
+                email= text
+                let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
+        
+                if(reg.test(email) === false)
+                {
+                    //console.warn("error")
+                    return false;
+                } else {
+                    this.setState({email:email})
+                    return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/check-user-exists/'+(email), {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    }).then((response) => response.json())
+                    .then((responseJson) => {
+                            bva=responseJson["data"]
+                            message=responseJson["message"]
+                            this.setState({register: bva[0], message: message})
+                            //console.warn(this.state.register)
+                            if(this.state.register === true) {
+                                this.setState({enable: true})
+                            } else {                                
+                                this.setState({enable: false})
+                                this.setState({rEmail: email})
+                            }
+                    })
+                    .catch((error) => {
+                        console.warn(error);
+                    });
+        }
+                return
+            }
+
+            case "password":{
+                password= text
+                let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/	 ;
+                
+                if(reg.test(password) === false)
+                    {
+                        // console.warn("error")
+                        this.setState({errorPass: "Password must be :- \nAtleast 8 character or longer\n1 UpperCase\n1 LowerCase\n1 Numeric\n1 Special character"})
+                    }
+                else {
+                    this.setState({errorPass: " "})
+                    this.setState({rPassword: password})
+                }
+            return
+            }
+            
+            
+            case "cpassword":{
+                cpassword= text
+
+                if((cpassword) === this.state.rPassword)
+                {
+                    //console.warn("match")
+                    this.setState({errorCPass: " "})
+                }
+                else {
+                    this.setState({errorCPass: "Confirm password not matched"})
+                }
+            return
+            }
         }
     }
-
-    next(){
+    
+    register(){
         const { register } = this.state
         if (register == null) {
-            //this.state.error["email"] = "Email already exists"
+
         } else {
-            console.warn(register)
+            // console.warn(this.state.rFname)
+            // console.warn(this.state.rLname)
+            // console.warn(this.state.rEmail)
+            // console.warn(this.state.rPassword)
+            // console.warn(register)
+
+            if(this.state.errorFName==" ")
+            {
+                console.warn("yes")
+            }
         }
     }
 
@@ -213,7 +233,7 @@ class Register extends Component {
                             autoCapitalize="none"
                             autoCorrect={false}
                             onSubmitEditing={() => this.REGInput1.focus()}
-                            onChangeText={text => this.fname(text)}
+                            onChangeText={text => this.validations(text, "fname")}
                             style= { styles.boxTI }>
                         </TextInput>
 
@@ -230,7 +250,7 @@ class Register extends Component {
                             autoCorrect={false}
                             ref={(input) => this.REGInput1 = input}
                             onSubmitEditing={() => this.REGInput2.focus()}
-                            onChangeText={text => this.lname(text)}
+                            onChangeText={text => this.validations(text, "lname")}
                             style= { styles.boxTI }>
                         </TextInput>
                         {this.state.errorLName==" " ?
@@ -247,7 +267,7 @@ class Register extends Component {
                             autoCorrect={false}
                             ref={(input) => this.REGInput2 = input}
                             onSubmitEditing={() => this.REGInput3.focus()}
-                            onChangeText={text => this.checkuser(text)}
+                            onChangeText={text => this.validations(text, "email")}
                             style= { styles.boxTI }>
                         </TextInput>
                         
@@ -263,7 +283,7 @@ class Register extends Component {
                             ref={(input) => this.REGInput3 = input}
                             onSubmitEditing={() => this.REGInput4.focus()}
                             onChangeText={text => this.setState({password: text})}
-                            onChangeText={text => this.password(text)}
+                            onChangeText={text => this.validations(text, "password")}
                             secureTextEntry
                             style= { styles.boxTI }>
                         </TextInput>
@@ -279,7 +299,7 @@ class Register extends Component {
                             ref={(input) => this.REGInput4 = input}
                             onSubmitEditing={() => this.REGInput5.focus()}
                             onChangeText={text => this.setState({password: text})}
-                            onChangeText={text => this.cpassword(text)}
+                            onChangeText={text => this.validations(text, "cpassword")}
                             secureTextEntry
                             style= { styles.boxTI }>
                         </TextInput>
@@ -318,18 +338,20 @@ class Register extends Component {
                             returnKeyType="go"
                             autoCapitalize="none"
                             autoCorrect={false}
+                            maxLength={10}
                             //ref={(input) => this.REGInput7 = input
                             ref={(input) => this.REGInput5 = input
+                            
                             }
                             style= { styles.boxTI }>
                         </TextInput>
 
                         {this.state.enable ? 
-                        <TouchableOpacity disabled={this.state.enable} onPress={()=> this.next()} 
+                        <TouchableOpacity disabled={this.state.enable} onPress={()=> this.register()} 
                         style = { [styles.buttonContainer, {opacity:0.5} ]}>
                             <Text style = { styles.buttonText }>Register</Text>
                         </TouchableOpacity> :
-                        <TouchableOpacity disabled={this.state.enable} onPress={()=> this.next()} 
+                        <TouchableOpacity disabled={this.state.enable} onPress={()=> this.register()} 
                         style = { [styles.buttonContainer, {opacity:1} ]}>
                             <Text style = { styles.buttonText }>Register</Text>
                         </TouchableOpacity>
