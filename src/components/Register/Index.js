@@ -34,7 +34,11 @@ class Register extends Component {
         enable: true,
         errorEmail: "Email already exists",
         errorFName: " ",
-        errorLName: " ",        
+        errorLName: " ",   
+        errorPass: " ",   
+        errorCPass: " ", 
+        rPassword: " ",
+            
     }
 
     getLoc() {
@@ -71,6 +75,38 @@ class Register extends Component {
             })
     }
 
+    cpassword(text) {
+        cpassword= text
+
+        console.warn(this.state.rPassword)
+        if((cpassword) === this.state.rPassword)
+        {
+            //console.warn("match")
+            this.setState({errorCPass: " "})
+        }
+        else {
+            this.setState({errorCPass: "Confirm password not matched"})
+        }
+
+    }
+    
+    password(text) {
+        password= text
+
+        let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/	 ;
+        
+        if(reg.test(password) === false)
+        {
+            // console.warn("error")
+            this.setState({errorPass: "Password must be :- \nAtleast 8 character or longer\n1 UpperCase\n1 LowerCase\n1 Numeric\n1 Special character"})
+        }
+        else {
+            this.setState({errorPass: " "})
+            this.setState({rPassword: password})
+        }
+
+    }
+
     fname(text) {
         name= text
 
@@ -79,14 +115,14 @@ class Register extends Component {
         if(reg.test(name) === false)
         {
             // console.warn("error")
-            this.setState({errorFName: "Only Alpahbet allows"})
+            this.setState({errorFName: "Only alphabets allows"})
         }
         else {
             this.setState({errorFName: " "})
         }
 
     }
-    f
+    
     lname(text) {
         name= text
 
@@ -95,7 +131,7 @@ class Register extends Component {
         if(reg.test(name) === false)
         {
             // console.warn("error")
-            this.setState({errorLName: "Only Alpahbet allows"})
+            this.setState({errorLName: "Only alphabets allows"})
         }
         else {
             this.setState({errorLName: " "})
@@ -227,9 +263,14 @@ class Register extends Component {
                             ref={(input) => this.REGInput3 = input}
                             onSubmitEditing={() => this.REGInput4.focus()}
                             onChangeText={text => this.setState({password: text})}
+                            onChangeText={text => this.password(text)}
                             secureTextEntry
                             style= { styles.boxTI }>
                         </TextInput>
+                        {this.state.errorPass==" " ?
+                         null:
+                         <Text style = { styles.errorText }>{this.state.errorPass}</Text>
+                        }
 
                         <TextInput
                             placeholderTextColor='grey'
@@ -238,9 +279,15 @@ class Register extends Component {
                             ref={(input) => this.REGInput4 = input}
                             onSubmitEditing={() => this.REGInput5.focus()}
                             onChangeText={text => this.setState({password: text})}
+                            onChangeText={text => this.cpassword(text)}
                             secureTextEntry
                             style= { styles.boxTI }>
                         </TextInput>
+                        {this.state.errorCPass==" " ?
+                         null:
+                         <Text style = { styles.errorText }>{this.state.errorCPass}</Text>
+                        }
+
                         {/*
                         <TextInput
                             placeholderTextColor='grey'
@@ -280,11 +327,11 @@ class Register extends Component {
                         {this.state.enable ? 
                         <TouchableOpacity disabled={this.state.enable} onPress={()=> this.next()} 
                         style = { [styles.buttonContainer, {opacity:0.5} ]}>
-                            <Text style = { styles.buttonText }>Next</Text>
+                            <Text style = { styles.buttonText }>Register</Text>
                         </TouchableOpacity> :
                         <TouchableOpacity disabled={this.state.enable} onPress={()=> this.next()} 
                         style = { [styles.buttonContainer, {opacity:1} ]}>
-                            <Text style = { styles.buttonText }>Next</Text>
+                            <Text style = { styles.buttonText }>Register</Text>
                         </TouchableOpacity>
                         }
                     
@@ -333,7 +380,7 @@ const styles = StyleSheet.create({
         color: '#ff0000',
         marginLeft:15,
         marginBottom:15,
-        fontSize: 12,
+        fontSize: 11,
     },
     bkImg: {
         width: width,
