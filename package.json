@@ -14,6 +14,7 @@
     "react-native-location": "^2.2.0",
     "react-native-paper": "^2.12.0",
     "react-native-router-flux": "^4.0.6",
+    "react-native-simple-dialogs": "^1.1.0",
     "react-native-vector-icons": "^6.3.0",
     "react-navigation": "^3.3.0",
     "react-navigation-material-bottom-tabs": "^1.0.0",

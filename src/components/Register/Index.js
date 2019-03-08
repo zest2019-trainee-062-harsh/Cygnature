@@ -13,6 +13,8 @@ import {
     Alert
 } from 'react-native'
 
+import { ProgressDialog } from 'react-native-simple-dialogs';
+
 import RNLocation from 'react-native-location';
 
 var width = Dimensions.get('window').width; //full width
@@ -22,6 +24,7 @@ class Register extends Component {
     constructor(props) {
         super(props)
         this.getLoc()
+        
     }
 
     static navigationOptions = {
@@ -29,6 +32,8 @@ class Register extends Component {
     }
 
     state = {
+        rMes: " ",
+        pdVisible: false,
         register: null,
         message: '',
         enable: true,
@@ -42,6 +47,8 @@ class Register extends Component {
         rEmail: " ", 
         rPassword: " ",
         rPhone: " ",
+        rLat: " ",
+        rLon: " ",
             
     }
 
@@ -72,8 +79,7 @@ class Register extends Component {
           }).then(granted => {
               if (granted) {
                 this.locationSubscription = RNLocation.subscribeToLocationUpdates(locations => {
-                    // console.warn(locations[0]["longitude"])
-                    // console.warn(locations[0]["latitude"])
+                        this.setState({rLon: locations[0]["longitude"], rLat: locations[0]["latitude"] })
                 })
               }
             })
@@ -174,12 +180,25 @@ class Register extends Component {
                 if((cpassword) === this.state.rPassword)
                 {
                     //console.warn("match")
+                    
                     this.setState({errorCPass: " "})
                 }
                 else {
                     this.setState({errorCPass: "Confirm password not matched"})
                 }
             return
+            }
+
+            case "phone" : {
+                this.setState({rPhone: text})
+                //console.warn(this.state.rPhone)
+                if(this.state.rPhone==" " || this.state.rPhone==null)
+                {
+                    //this.setState({rPhone: " "})
+                } else {
+                    this.setState({rPhone: text})
+                }
+                return
             }
         }
     }
@@ -195,16 +214,55 @@ class Register extends Component {
             // console.warn(this.state.rPassword)
             // console.warn(register)
 
-            if(this.state.errorFName==" ")
-            {
-                console.warn("yes")
+                //API
+                this.setState({pdVisible: true})
+               
+                return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    firstname: this.state.rFname,
+                    lastname: this.state.rLname,
+                    email: this.state.rEmail,
+                    password: this.state.rPassword,
+                    confirmPassword: this.state.rPassword,
+                    countryId: "91",
+                    phoneNumber: this.state.rPhone,
+                    userLatitude: this.state.rLat,
+                    userLongitude: this.state.rLon,
+                
+                }),
+                }).then((response) => response.json())
+                .then((responseJson) => {
+                    this.setState({pdVisible: false})
+                    if(responseJson["message"] == null) {
+                        Alert.alert(
+                            'Registration Failed!',
+                            'Try Again',
+                            [
+                            {text: 'OK'},
+                            ],
+                            {cancelable: true},
+                        );
+                    }
+                    else {
+                        this.state.rMes=responseJson["message"]
+                        //console.warn(this.state.data)
+                        this.props.navigation.navigate('Login',{"message":this.state.rMes})
+                    }
+
+                    console.warn(responseJson["message"])
+                })
+                .catch((error) => {
+                    console.warn(error);
+                });
             }
         }
-    }
+    
 
     render(){
-        var {navigate} = this.props.navigation
-        const {state} = this.props.navigation;
         return(
             <KeyboardAvoidingView behavior="padding" style={styles.maincontainer}>
             <View style={styles.logoContainer}>
@@ -221,6 +279,14 @@ class Register extends Component {
             </View>
 
             <View style={ styles.formContainer }>
+            <ProgressDialog
+                visible={this.state.pdVisible}
+                title="Registering !"
+                message="Please wait..."
+                activityIndicatorColor="blue"
+                activityIndicatorSize="large"
+                animationType="slide"
+            />
 
             <ScrollView>
                 <View style = { styles.container }>
@@ -237,7 +303,7 @@ class Register extends Component {
                             style= { styles.boxTI }>
                         </TextInput>
 
-                        {this.state.errorFName==" " ?
+                        {this.state.errorFName==null || this.state.errorFName==" " ?
                          null:
                          <Text style = { styles.errorText }>{this.state.errorFName}</Text>
                         }
@@ -253,7 +319,7 @@ class Register extends Component {
                             onChangeText={text => this.validations(text, "lname")}
                             style= { styles.boxTI }>
                         </TextInput>
-                        {this.state.errorLName==" " ?
+                        {this.state.errorLName==null || this.state.errorLName==" " ?
                          null:
                          <Text style = { styles.errorText }>{this.state.errorLName}</Text>
                         }
@@ -287,7 +353,7 @@ class Register extends Component {
                             secureTextEntry
                             style= { styles.boxTI }>
                         </TextInput>
-                        {this.state.errorPass==" " ?
+                        {this.state.errorPass==null || this.state.errorPass==" " ?
                          null:
                          <Text style = { styles.errorText }>{this.state.errorPass}</Text>
                         }
@@ -303,7 +369,7 @@ class Register extends Component {
                             secureTextEntry
                             style= { styles.boxTI }>
                         </TextInput>
-                        {this.state.errorCPass==" " ?
+                        {this.state.errorCPass==null || this.state.errorCPass==" " ?
                          null:
                          <Text style = { styles.errorText }>{this.state.errorCPass}</Text>
                         }
@@ -339,9 +405,9 @@ class Register extends Component {
                             autoCapitalize="none"
                             autoCorrect={false}
                             maxLength={10}
+                            onChangeText={text => this.validations(text, "phone")}
                             //ref={(input) => this.REGInput7 = input
                             ref={(input) => this.REGInput5 = input
-                            
                             }
                             style= { styles.boxTI }>
                         </TextInput>
