@@ -12,6 +12,7 @@
     "react-native-elements": "^1.0.0",
     "react-native-gesture-handler": "^1.0.16",
     "react-native-location": "^2.2.0",
+    "react-native-material-dropdown": "^0.11.1",
     "react-native-paper": "^2.12.0",
     "react-native-router-flux": "^4.0.6",
     "react-native-simple-dialogs": "^1.1.0",
