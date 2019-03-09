@@ -10,7 +10,8 @@ import {
     KeyboardAvoidingView,
     Dimensions,
     ScrollView,
-    Alert
+    Alert,
+    Linking,
 } from 'react-native'
 
 import { ProgressDialog } from 'react-native-simple-dialogs';
@@ -412,6 +413,14 @@ class Register extends Component {
                             style= { styles.boxTI }>
                         </TextInput>
 
+                        <Text style={ styles.boxDisc }>
+                        By Clicking on 'Register' Button , You agree to the 
+                        <Text style={{textDecorationLine: 'underline'}}
+                        onPress={() => Linking.openURL('https://account.cygnature.io/Terms-Condition')}> Terms & Conditions </Text> 
+                         and  
+                        <Text style={{textDecorationLine: 'underline'}}
+                        onPress={() => Linking.openURL('https://account.cygnature.io/Privacy-Policy')}> Privacy Policy </Text> .
+                        </Text>
                         {this.state.enable ? 
                         <TouchableOpacity disabled={this.state.enable} onPress={()=> this.register()} 
                         style = { [styles.buttonContainer, {opacity:0.5} ]}>
@@ -455,7 +464,7 @@ const styles = StyleSheet.create({
     buttonContainer: {
         backgroundColor: '#6eab52',
         paddingVertical: 10,
-        marginLeft: "55%",
+        marginLeft: "50%",
         margin: 5,
         borderRadius: 5,
     },
@@ -489,5 +498,11 @@ const styles = StyleSheet.create({
         margin: 10,
         fontSize: 22,
         color: '#003d5a'
-    }
+    },
+    boxDisc: {
+        color: 'white',
+        fontSize: 12,
+        margin: 5,
+        marginLeft: 15,
+    },
 })
