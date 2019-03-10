@@ -8,10 +8,10 @@ var height = Dimensions.get('window').height; //full height
 class OTP extends Component {
     constructor(props) {
         super(props)
-        // this.state.data  = this.props.navigation.getParam('data');
-        // this.state.mobileNumber = this.state.data["phoneNumber"]
-        // this.state.token = this.state.data["token"]
-        // this.state.auth = "Bearer "+this.state.token
+        this.state.data  = this.props.navigation.getParam('data');
+        this.state.mobileNumber = this.state.data["phoneNumber"]
+        this.state.token = this.state.data["token"]
+        this.state.auth = "Bearer "+this.state.token
         //console.warn(data)
         this.getCount()
     }
@@ -58,7 +58,7 @@ class OTP extends Component {
     }
 
     handleNext(text,value) {
-        // this.state.otp = this.state.otp + text
+        this.state.otp = this.state.otp + text
         
         switch(value) {
             case 1:
@@ -77,17 +77,15 @@ class OTP extends Component {
     }
     checkOTP() {
         if(this.state.otp == this.state.defaultotp) {
-            this.props.navigation.navigate("Dashboard"
-            // ,{"data":this.state.data, "count": this.state.count}
-            )
+            this.props.navigation.navigate("Dashboard" ,{"data":this.state.data, "count": this.state.count})
         }
         else {
-            console.warn("OTP not Match")
+            console.warn("OTP does not Match")
         }
     }
 
     resendOTP() {
-        console.warn("OTP SENDED")
+        console.warn("OTP Sent")
     }
 
      render() {
