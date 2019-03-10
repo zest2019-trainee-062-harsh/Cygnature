@@ -1,19 +1,21 @@
 
-import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
-import Login from './src/components/Login/Index';
-import Register from './src/components/Register/Index';
+import React from 'react';
+import {Text,View} from 'react-native';
+import { createAppContainer,createStackNavigator } from 'react-navigation'
+import Loginscreen from './src/components/Login/Loginscreen.js'
+import OTP from './src/components/Login/OTP'
+import Screen1 from './src/components/Register/Screen1.js'
+import Screen2 from './src/components/Register/Screen2.js'
+import Dash from './src/components/Dashboard/Dash.js'
 
-export default class App extends Component {
-  render() {
-    return (
-      <View>
-        <Register />
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  
+const AppNavigator = createStackNavigator({
+  Login: {screen: Loginscreen},
+  Otp: {screen: OTP},
+  Reg_First: {screen: Screen1},
+  Reg_Second: {screen: Screen2},
+  Dashboard: {screen: Dash},  
 });
+
+const AppContainer = createAppContainer(AppNavigator);
+
+export default AppContainer;
