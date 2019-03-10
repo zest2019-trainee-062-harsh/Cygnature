@@ -1,18 +1,17 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, Image, TextInput, TouchableOpacity, StatusBar} from 'react-native'
+import {View, Text, StyleSheet, Image, TextInput, TouchableOpacity, StatusBar, ScrollView, KeyboardAvoidingView} from 'react-native'
  
 import { Dimensions } from "react-native";
-import { ScrollView } from 'react-native-gesture-handler';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 class OTP extends Component {
     constructor(props) {
         super(props)
-        this.state.data  = this.props.navigation.getParam('data');
-        this.state.mobileNumber = this.state.data["phoneNumber"]
-        this.state.token = this.state.data["token"]
-        this.state.auth = "Bearer "+this.state.token
+        // this.state.data  = this.props.navigation.getParam('data');
+        // this.state.mobileNumber = this.state.data["phoneNumber"]
+        // this.state.token = this.state.data["token"]
+        // this.state.auth = "Bearer "+this.state.token
         //console.warn(data)
         this.getCount()
     }
@@ -59,7 +58,7 @@ class OTP extends Component {
     }
 
     handleNext(text,value) {
-        this.state.otp = this.state.otp + text
+        // this.state.otp = this.state.otp + text
         
         switch(value) {
             case 1:
@@ -78,7 +77,9 @@ class OTP extends Component {
     }
     checkOTP() {
         if(this.state.otp == this.state.defaultotp) {
-            this.props.navigation.navigate("Dashboard",{"data":this.state.data, "count": this.state.count})
+            this.props.navigation.navigate("Dashboard"
+            // ,{"data":this.state.data, "count": this.state.count}
+            )
         }
         else {
             console.warn("OTP not Match")
@@ -92,10 +93,12 @@ class OTP extends Component {
      render() {
         var {navigate} = this.props.navigation;
          return (
+            <KeyboardAvoidingView behavior="padding">
              <View style={styles.container}>
-              <StatusBar
-                backgroundColor="#6eab52"
-                    barStyle="light-content" />
+                <StatusBar
+                    backgroundColor="#6eab52"
+                    barStyle="light-content" 
+                />
                 <View  style={styles.logoContainer}>
                     <Image
                     source={require('../../../img/logo-white.png')}
@@ -109,72 +112,82 @@ class OTP extends Component {
                 </View>
                 </View>
                 <View style={styles.box}>
-                    <Text style={styles.boxTitle}>Verify OTP</Text>
-                    <Text style={styles.boxSubTitle}>OTP has been sent to :</Text>
-                    <Text style={styles.boxNumber}>Mobile Number: {this.state.mobileNumber}</Text>
-                    <Text style={styles.boxHeader}>Please enter OTP in the field below</Text>
-                    <View style={styles.OTPContainer}>
-                        <TextInput  
-                        maxLength={1}
-                        keyboardType="numeric"
-                        returnKeyType="next"
-                        onChangeText={text => this.handleNext(text,1)}
-                        underlineColorAndroid='white'
-                        placeholderTextColor='white'
-                        style={styles.OTPTI} 
-                        placeholder="-" 
-                        /> 
-                        <TextInput    
-                        maxLength={1}
-                        keyboardType="numeric"
-                        returnKeyType="next"
-                        onChangeText={text => this.handleNext(text,2)}
-                        ref={(input) => this.OTPInput1 = input}
-                        underlineColorAndroid='white'
-                        placeholderTextColor='white'
-                        style={styles.OTPTI} 
-                        placeholder="-" /> 
-                        <TextInput
-                        maxLength={1}
-                        keyboardType="numeric"
-                        returnKeyType="next"
-                        onChangeText={text => this.handleNext(text,3)}  
-                        ref={(input) => this.OTPInput2 = input}  
-                        underlineColorAndroid='white'
-                        placeholderTextColor='white'
-                        style={styles.OTPTI} 
-                        placeholder="-" /> 
-                        <TextInput
-                        maxLength={1}
-                        keyboardType="numeric"
-                        returnKeyType="next"
-                        onChangeText={text => this.handleNext(text,4)}  
-                        ref={(input) => this.OTPInput3 = input}  
-                        underlineColorAndroid='white'
-                        placeholderTextColor='white'
-                        style={styles.OTPTI} 
-                        placeholder="-" /> 
-                        <TextInput
-                        maxLength={1}
-                        keyboardType="numeric"
-                        returnKeyType="done"
-                        onChangeText={text => this.handleNext(text,5)}  
-                        ref={(input) => this.OTPInput4 = input}  
-                        underlineColorAndroid='white'
-                        placeholderTextColor='white'
-                        style={styles.OTPTI} 
-                        placeholder="-" /> 
-                    </View>
-                    <View style={styles.footerContainer}>
-                        <TouchableOpacity onPress={_ =>this.checkOTP()} style = { styles.buttonContainer }>
-                            <Text style = { styles.buttonText }>Submit</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={_ =>this.resendOTP()} style = { styles.buttonContainer }>
-                            <Text style = { styles.buttonText }>Resend OTP</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <ScrollView>
+                        <Text style={styles.boxTitle}>Verify OTP</Text>
+                        <Text style={styles.boxSubTitle}>OTP has been sent to :{this.state.mobileNumber}</Text>
+                        <Text style={styles.boxHeader}>Please enter OTP in the field below</Text>
+                        <View style={styles.OTPContainer}>
+                            <TextInput  
+                                maxLength={1}
+                                keyboardType="numeric"
+                                returnKeyType="next"
+                                onChangeText={text => this.handleNext(text,1)}
+                                underlineColorAndroid='white'
+                                placeholderTextColor='white'
+                                style={styles.OTPTI} 
+                                placeholder="-" 
+                            /> 
+                            <TextInput    
+                                maxLength={1}
+                                keyboardType="numeric"
+                                returnKeyType="next"
+                                onChangeText={text => this.handleNext(text,2)}
+                                ref={(input) => this.OTPInput1 = input}
+                                underlineColorAndroid='white'
+                                placeholderTextColor='white'
+                                style={styles.OTPTI} 
+                                placeholder="-"
+                            /> 
+                            <TextInput
+                                maxLength={1}
+                                keyboardType="numeric"
+                                returnKeyType="next"
+                                onChangeText={text => this.handleNext(text,3)}  
+                                ref={(input) => this.OTPInput2 = input}  
+                                underlineColorAndroid='white'
+                                placeholderTextColor='white'
+                                style={styles.OTPTI} 
+                                placeholder="-"
+                            /> 
+                            <TextInput
+                                maxLength={1}
+                                keyboardType="numeric"
+                                returnKeyType="next"
+                                onChangeText={text => this.handleNext(text,4)}  
+                                ref={(input) => this.OTPInput3 = input}  
+                                underlineColorAndroid='white'
+                                placeholderTextColor='white'
+                                style={styles.OTPTI} 
+                                placeholder="-"
+                            />
+                            <TextInput
+                                maxLength={1}
+                                keyboardType="numeric"
+                                returnKeyType="done"
+                                onChangeText={text => this.handleNext(text,5)}  
+                                ref={(input) => this.OTPInput4 = input}  
+                                underlineColorAndroid='white'
+                                placeholderTextColor='white'
+                                style={styles.OTPTI} 
+                                placeholder="-"
+                            />
+                        </View>
+                        <View style={styles.footerContainer}>
+                            <View style={{flex: 0.5, alignItems: "center"}}>
+                                <TouchableOpacity onPress={_ =>this.checkOTP()} style = { styles.buttonContainer }>
+                                    <Text style = { styles.buttonText }>Submit</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{flex: 0.5, alignItems: "center"}}>
+                                <TouchableOpacity onPress={_ =>this.resendOTP()} style = { styles.buttonContainer }>
+                                    <Text style = { styles.buttonText }>Resend OTP</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </ScrollView>
                 </View>
              </View>
+             </KeyboardAvoidingView>
                 )
          }
      }
@@ -186,15 +199,16 @@ const styles = StyleSheet.create({
     container: {
         width: width,
         height: height,
-        backgroundColor: "#414345"
+        backgroundColor: "#414345",
+        fontFamily: "Helvetica"
     },
     logoContainer: {
-        marginTop: 80,
+        marginTop: 10,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        height: height*0.2
     },
     box: {
-        marginTop: 40,
         margin: 20,
         borderColor: 'white',
         borderWidth:1,
@@ -237,16 +251,19 @@ const styles = StyleSheet.create({
         color:'white', 
     },
     footerContainer: {
-        flexDirection: 'row',
         marginTop: 40,
         marginBottom: 60,
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row"
     },
     buttonContainer: {
         backgroundColor: '#6eab52',
         borderRadius: 5,
         paddingVertical: 10,
-        marginLeft: 20,
-        width: 150
+        padding: 10,
+        width: 100,
+        marginBottom: 10,
     },
     buttonText: {
         textAlign: 'center',
