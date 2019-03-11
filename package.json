@@ -1,5 +1,5 @@
 {
-  "name": "Cygnature",
+  "name": "cygnature",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,9 +10,16 @@
     "react": "16.6.3",
     "react-native": "0.58.4",
     "react-native-elements": "^1.0.0",
-    "react-native-gesture-handler": "^1.0.15",
+    "react-native-gesture-handler": "^1.0.16",
+    "react-native-location": "^2.2.0",
+    "react-native-material-dropdown": "^0.11.1",
+    "react-native-paper": "^2.12.0",
+    "react-native-router-flux": "^4.0.6",
+    "react-native-simple-dialogs": "^1.1.0",
     "react-native-vector-icons": "^6.3.0",
-    "react-navigation": "^3.3.0"
+    "react-navigation": "^3.3.0",
+    "react-navigation-material-bottom-tabs": "^1.0.0",
+    "util": "^0.11.1"
   },
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",

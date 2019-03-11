@@ -1,16 +1,66 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, Image, TextInput, TouchableOpacity} from 'react-native'
+import {View, Text, StyleSheet, Image, TextInput, TouchableOpacity, StatusBar, ScrollView, KeyboardAvoidingView} from 'react-native'
  
 import { Dimensions } from "react-native";
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 class OTP extends Component {
+    constructor(props) {
+        super(props)
+        this.state.data  = this.props.navigation.getParam('data');
+        this.state.mobileNumber = this.state.data["phoneNumber"]
+        this.state.token = this.state.data["token"]
+        this.state.auth = "Bearer "+this.state.token
+        //console.warn(data)
+        this.getCount()
+    }
+    static navigationOptions = {
+    header: null
+}
 
     state = {
+<<<<<<< HEAD
         mobileNumber: 977,
         defaultotp: 12345,
         otp: ""
+=======
+        mobileNumber: null,
+        defaultotp: 12345,
+        otp: "",
+        data: { },
+        token: null,
+        auth: null,
+        count: {
+            awaitingMySign: null,
+            awaitingOthers: null,
+            completed: null,
+            expireSoon: null,
+         },
+    }
+
+    getCount() {
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/dashboard/document-counts/', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': this.state.auth,
+            },
+            }).then((response) => response.json())
+            .then((responseJson) => {
+            
+                //this.state.count = responseJson["data"]
+                //console.warn(responseJson["data"][0]["awaitingMySign"])
+                this.state.count["awaitingMySign"] = responseJson["data"][0]["awaitingMySign"]
+                this.state.count["awaitingOthers"] = responseJson["data"][0]["awaitingOthers"]
+                this.state.count["completed"] = responseJson["data"][0]["completed"]
+                this.state.count["expireSoon"] = responseJson["data"][0]["expireSoon"]
+                //console.warn(this.state.count)
+            })
+            .catch((error) => {
+                console.warn(error);
+            });
+>>>>>>> 945c2b972489f1ab271be38bf525633ace59e8fb
     }
 
     handleNext(text,value) {
@@ -28,33 +78,56 @@ class OTP extends Component {
                 break;
             case 4:
                 this.OTPInput4.focus()
-                break;
-
-                
+                break;                
         }
     }
     checkOTP() {
         if(this.state.otp == this.state.defaultotp) {
+<<<<<<< HEAD
             console.warn("REDIRECT")
         }
         else {
             console.warn("OTP not Match")
+=======
+            this.props.navigation.navigate("Dashboard" ,{"data":this.state.data, "count": this.state.count})
+        }
+        else {
+            console.warn("OTP does not Match")
+>>>>>>> 945c2b972489f1ab271be38bf525633ace59e8fb
         }
     }
 
     resendOTP() {
+<<<<<<< HEAD
         console.warn("OTP SEND")
+=======
+        console.warn("OTP Sent")
+>>>>>>> 945c2b972489f1ab271be38bf525633ace59e8fb
     }
 
      render() {
+        var {navigate} = this.props.navigation;
          return (
+            <KeyboardAvoidingView behavior="padding">
              <View style={styles.container}>
+                <StatusBar
+                    backgroundColor="#6eab52"
+                    barStyle="light-content" 
+                />
                 <View  style={styles.logoContainer}>
                     <Image
-                    source={require('../../../img/logo.png')}
+                    source={require('../../../img/logo-white.png')}
                     />
+                     <View style={{marginLeft: 20}}>
+                    <Text style={{ color:"white"}}>
+                        <Text>• Authenticate &nbsp; &nbsp;</Text>
+                        <Text style={{fontStyle: "italic"}}>• Sign&nbsp; &nbsp;</Text>
+                        <Text>• Protect</Text>
+                    </Text>
+                </View>
                 </View>
                 <View style={styles.box}>
+<<<<<<< HEAD
                     <Text style={styles.boxTitle}>Verify OTP</Text>
                     <Text style={styles.boxSubTitle}>OTP has been sent to :</Text>
                     <Text style={styles.boxNumber}>Mobile Number: {this.state.mobileNumber}</Text>
@@ -119,8 +192,84 @@ class OTP extends Component {
                             <Text style = { styles.buttonText }>Resend OTP</Text>
                         </TouchableOpacity>
                     </View>
+=======
+                    <ScrollView>
+                        <Text style={styles.boxTitle}>Verify OTP</Text>
+                        <Text style={styles.boxSubTitle}>OTP has been sent to :{this.state.mobileNumber}</Text>
+                        <Text style={styles.boxHeader}>Please enter OTP in the field below</Text>
+                        <View style={styles.OTPContainer}>
+                            <TextInput  
+                                maxLength={1}
+                                keyboardType="numeric"
+                                returnKeyType="next"
+                                onChangeText={text => this.handleNext(text,1)}
+                                underlineColorAndroid='white'
+                                placeholderTextColor='white'
+                                style={styles.OTPTI} 
+                                placeholder="-" 
+                            /> 
+                            <TextInput    
+                                maxLength={1}
+                                keyboardType="numeric"
+                                returnKeyType="next"
+                                onChangeText={text => this.handleNext(text,2)}
+                                ref={(input) => this.OTPInput1 = input}
+                                underlineColorAndroid='white'
+                                placeholderTextColor='white'
+                                style={styles.OTPTI} 
+                                placeholder="-"
+                            /> 
+                            <TextInput
+                                maxLength={1}
+                                keyboardType="numeric"
+                                returnKeyType="next"
+                                onChangeText={text => this.handleNext(text,3)}  
+                                ref={(input) => this.OTPInput2 = input}  
+                                underlineColorAndroid='white'
+                                placeholderTextColor='white'
+                                style={styles.OTPTI} 
+                                placeholder="-"
+                            /> 
+                            <TextInput
+                                maxLength={1}
+                                keyboardType="numeric"
+                                returnKeyType="next"
+                                onChangeText={text => this.handleNext(text,4)}  
+                                ref={(input) => this.OTPInput3 = input}  
+                                underlineColorAndroid='white'
+                                placeholderTextColor='white'
+                                style={styles.OTPTI} 
+                                placeholder="-"
+                            />
+                            <TextInput
+                                maxLength={1}
+                                keyboardType="numeric"
+                                returnKeyType="done"
+                                onChangeText={text => this.handleNext(text,5)}  
+                                ref={(input) => this.OTPInput4 = input}  
+                                underlineColorAndroid='white'
+                                placeholderTextColor='white'
+                                style={styles.OTPTI} 
+                                placeholder="-"
+                            />
+                        </View>
+                        <View style={styles.footerContainer}>
+                            <View style={{flex: 0.5, alignItems: "center"}}>
+                                <TouchableOpacity onPress={_ =>this.checkOTP()} style = { styles.buttonContainer }>
+                                    <Text style = { styles.buttonText }>Submit</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{flex: 0.5, alignItems: "center"}}>
+                                <TouchableOpacity onPress={_ =>this.resendOTP()} style = { styles.buttonContainer }>
+                                    <Text style = { styles.buttonText }>Resend OTP</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </ScrollView>
+>>>>>>> 945c2b972489f1ab271be38bf525633ace59e8fb
                 </View>
              </View>
+             </KeyboardAvoidingView>
                 )
          }
      }
@@ -130,24 +279,26 @@ export default OTP
 
 const styles = StyleSheet.create({
     container: {
-        marginTop:100,
         width: width,
-        height: height
+        height: height,
+        backgroundColor: "#414345",
+        fontFamily: "Helvetica"
     },
     logoContainer: {
+        marginTop: 10,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        height: height*0.2
     },
     box: {
-        marginTop: 80,
         margin: 20,
-        borderColor: 'black',
+        borderColor: 'white',
         borderWidth:1,
     },
     boxTitle: {
         margin: 15,
         fontSize: 22,
-        color: '#003d5a',
+        color: 'white',
         fontWeight: 'bold'
     },
     boxSubTitle: {
@@ -161,12 +312,12 @@ const styles = StyleSheet.create({
         marginLeft:20,
         margin: 10,
         fontSize: 16,
-        color: 'grey',
+        color: 'white',
     },
     boxHeader: {
         marginTop: 20,
         fontSize: 16,
-        color: 'grey',
+        color: 'white',
         textAlign: 'center',
         fontWeight: 'bold',
     },
@@ -178,18 +329,23 @@ const styles = StyleSheet.create({
     OTPTI: {
         textAlign: 'center',
         width: 50,
-        margin: 8,  
+        margin: 8, 
+        color:'white', 
     },
     footerContainer: {
-        flexDirection: 'row',
         marginTop: 40,
         marginBottom: 60,
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row"
     },
     buttonContainer: {
-        backgroundColor: '#003d5a',
+        backgroundColor: '#6eab52',
+        borderRadius: 5,
         paddingVertical: 10,
-        marginLeft: 20,
-        width: 150
+        padding: 10,
+        width: 100,
+        marginBottom: 10,
     },
     buttonText: {
         textAlign: 'center',

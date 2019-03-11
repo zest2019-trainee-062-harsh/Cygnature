@@ -1,0 +1,32 @@
+Work done till 08/03/2019
+--> Splashscreen using Animated library.
+--> Login and Register with API, Validations and Button Enable/Disable
+--> OTP (Left Tasks: Responsiveness)
+--> Dashboard: API for document count.
+--> Navigation: Bottom Navbar after login.
+	Modules:
+	i. Dashboard : Need to sign, Waiting for Others, Recent Documents and Quick Actions
+	ii. Document-List
+	iii. Contacts
+	iv. Settings
+--> Dashboard: Dashboard API count along with UI and recent documents.
+--> Document-List: UI with API. (Left Tasks: Filtering on the basis of their status.)
+--> Document-Details: API done. Still working on UI.
+
+Key Learnings:
+1. Splashscreen animation with timings .
+2. Data-passing with Navigation using props.
+3. Using flex for responsiveness.
+4. Using BackHandler to handle the backpresses of the hardware back button.
+5. Changing the color of the Status bar using StatusBar library.
+6. Dropdown library to create Dropdown menu with options.
+7. ActivityIndicator library to show the loading process.
+8. NetInfo library: Won't allow the user to use the application without the internet connection.
+9. Identifying the lattitude and longitude of the location where the device is currently located. It asks for
+   permission when the application starts.
+10. Using KeyboardAvoidingView to get a responsive UI whenever there's a change due to keyboard. It shifts the view
+   of the screen upwards according to the heigth of the keyboard. 
+
+Date: 11/03/2019
+1. Fixed icons for the different sizes of devices.
+2. OTP Screen fixing.
