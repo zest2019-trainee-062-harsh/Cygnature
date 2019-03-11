@@ -147,7 +147,8 @@ class Dashboard extends Component {
                     <View style={styles.box3}>
                     <ScrollView>
                             <Text style={styles.box3Text1}>Quick Actions</Text>
-                            <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
+                            <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}} 
+                                    onPress= {() => navigate("Canvas")}>
                                 <Text style={styles.box3Text2}>Add/Edit Signature</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
