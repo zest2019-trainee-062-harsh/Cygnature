@@ -13,6 +13,7 @@ import {StyleSheet,
     ActivityIndicator,
     BackHandler,
     NetInfo,
+    AsyncStorage
 } from 'react-native'
 
 import { CheckBox } from 'react-native-elements'
@@ -23,7 +24,6 @@ var height = Dimensions.get('window').height; //full height
 class Login extends Component {
     constructor(props) {
         super(props)
-        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
         this.checkConn()
         //console.warn(this.state.data)
     }
@@ -40,6 +40,7 @@ class Login extends Component {
         enable: true,
         resData: {  },
         data: {  },
+        auth: [],
     }
 
     checkConn() {
@@ -55,28 +56,31 @@ class Login extends Component {
                     {cancelable: true},
                 );
             }
-        
- })
+        })
     }
-    componentWillMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+
+    componentWillMount = async() => {
+        BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
     }
-    
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+
+    componentWillUnmount(){
+        BackHandler.removeEventListener('hardwareBackPress', this.onBackPressed);
     }
-    
-    handleBackButtonClick() {
-        this.props.navigation.goBack(BackHandler.exitApp());
+
+    onBackPressed() {
+        Alert.alert(
+        'Exit App',
+        'Do you want to exit?',
+        [
+            {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            {text: 'Yes', onPress: () => BackHandler.exitApp()},
+        ],
+        { cancelable: false });
         return true;
     }
 
     onChangeCheck() {
         this.setState({ checked: !this.state.checked})
-    }
-
-    onBackPressed() {
-
     }
 
     validate = (text, value) => {
@@ -114,7 +118,6 @@ class Login extends Component {
                 return
             }
         }
-       
     }
 
     checkCred(){
@@ -188,9 +191,14 @@ class Login extends Component {
                     this.state.resData=responseJson.data
                     this.state.data=this.state.resData[0]
                     //console.warn(this.state.data)
-                    this.props.navigation.navigate('OTP',{"data":this.state.data})
+                    this.props.navigation.navigate('OTP',{"data":this.state.data});
+                    this.state.auth = "Bearer "+this.state.data["token"];
+                    AsyncStorage.setItem('auth',this.state.auth);
+                    if(this.state.checked == true){
+                        AsyncStorage.setItem('email',this.state.email)
+                        AsyncStorage.setItem('stored_password',this.state.password)
+                    }
                 }
-                
             })
             .catch((error) => {
                 console.warn(error);
@@ -200,8 +208,12 @@ class Login extends Component {
     }
     }
 
+    showData = async()=> {
+        let auth = await AsyncStorage.getItem('stored_password');
+        alert(auth)
+    }
+
     render(){
-        
         return(
             <KeyboardAvoidingView behavior="padding" style={styles.maincontainer}>
             <View style={styles.logoContainer}>            
@@ -221,10 +233,9 @@ class Login extends Component {
 
             <ScrollView>
             <View style = { styles.container }>
-                <StatusBar
-                backgroundColor="#6eab52"
-                    barStyle="light-content" />
+                <StatusBar backgroundColor="#6eab52" barStyle="light-content" />
                     {/* <Text style = { styles.boxLabel }>E-Mail</Text> */}
+
                     <TextInput
                         placeholderTextColor='grey'
                         placeholder = "Email"
@@ -258,19 +269,21 @@ class Login extends Component {
                         />
 
                     {this.state.enable ? 
-                         <TouchableOpacity
-                         disabled={this.state.enable}
-                         onPress={()=> this.call("Dashboard")}
-                         style = { [styles.buttonContainer, {opacity:0.5} ]}>
-                             <Text style = { styles.buttonText }>Login</Text>
-                         </TouchableOpacity> :
-                         <TouchableOpacity
-                         disabled={this.state.enable}
-                         onPress={()=> this.call("Dashboard")}
-                         style = { [styles.buttonContainer, {opacity:1} ]}>
-                             <Text style = { styles.buttonText }>Login</Text>
-                         </TouchableOpacity>
-                        }
+                        <TouchableOpacity
+                        disabled={this.state.enable}
+                        onPress={()=> this.call("Dashboard")}
+                    // onPress = {() => this.showData()}
+                        style = { [styles.buttonContainer, {opacity:0.5} ]}>
+                            <Text style = { styles.buttonText }>Login</Text>
+                        </TouchableOpacity> :
+                        <TouchableOpacity
+                        disabled={this.state.enable}
+                        onPress={()=> this.call("Dashboard")}
+                    // onPress = {() => this.showData()}
+                        style = { [styles.buttonContainer, {opacity:1} ]}>
+                            <Text style = { styles.buttonText }>Login</Text>
+                        </TouchableOpacity>
+                    }
 
                    
                     {this.state.anim ? <ActivityIndicator color="white" size="large" /> : null}

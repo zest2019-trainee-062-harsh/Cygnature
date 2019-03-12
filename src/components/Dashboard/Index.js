@@ -1,11 +1,10 @@
 import React, {Component} from 'react'
-import {View, StyleSheet,Text, TouchableOpacity, ScrollView, StatusBar} from 'react-native'
+import {View, StyleSheet,Text, TouchableOpacity, ScrollView, StatusBar, BackHandler, Alert} from 'react-native'
 const util = require('util');
 import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Dimensions } from "react-native";
 
-import  Register from '../Register/Index.js'
 import  Documents from '../Documents/Index.js'
 import  Contacts from '../Contacts/Index.js'
 import  Settings from '../Settings/General.js'
@@ -21,6 +20,7 @@ class Dashboard extends Component {
         //console.warn(this.state.token)
         //console.warn(this.state.auth)
     }
+
     static navigationOptions = {
         header: null
     }
@@ -35,141 +35,164 @@ class Dashboard extends Component {
          },
     }
 
+    componentDidMount(){
+        BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
+    }
     
+    componentWillUnmount(){
+        BackHandler.removeEventListener('hardwareBackPress', this.onBackPressed);
+    }
+
+    onBackPressed() {
+        Alert.alert(
+        'Exit App',
+        'Do you want to exit?',
+        [
+            {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            {text: 'Yes', onPress: () => BackHandler.exitApp()},
+        ],
+        { cancelable: false });
+        return true;
+    }
 
     floatClicked=() => {
         alert("clicked")
     }
-     render() {
-        var {navigate} = this.props.navigation;
-         return (
-             <View style={{flex:1}}>
-               <StatusBar backgroundColor="#003d58" barStyle="light-content" />
-                <View style={styles.mainContainer}>
-                    
-                    <View style={styles.box1}>
-                        <View style={styles.boxHalf}>
-                            <Text style={styles.box1Text}>
-                                {this.state.count["awaitingMySign"]} {"\n"}{"\n"} Need to Sign
-                            </Text>
-                        </View>
-                        <View style={styles.boxHalf}>
+
+    render() {
+    var {navigate} = this.props.navigation;
+        return (
+            <View style={{flex:1}}>
+            <StatusBar backgroundColor="#003d58" barStyle="light-content" />
+            <View style={styles.mainContainer}>
+                
+                <View style={styles.box1}>
+                    <View style={styles.boxHalf}>
                         <Text style={styles.box1Text}>
-                        {this.state.count["awaitingOthers"]} {"\n"}{"\n"} Waiting for Others
-                            </Text>
-                        </View>
+                            {this.state.count["awaitingMySign"]}
+                            {"\n"}{"\n"} Need to Sign
+                        </Text>
                     </View>
-
-                    <View style={styles.box2}>
-                        <Text style={styles.box2Text1}>Recent Documents</Text>
-                        <ScrollView>
-                            <View style={styles.DocumentsList}>
-                                <Text style={styles.DocumentsListFont}>
-                                    Document 1
-                                </Text>
-                                <View style={{flexDirection: "row"}}>
-                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                        Completed by
-                                    </Text>
-                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                        Date xxx
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.DocumentsList}>
-                                <Text style={styles.DocumentsListFont}>
-                                    Document 2
-                                </Text>
-                                <View style={{flexDirection: "row"}}>
-                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                        Completed by
-                                    </Text>
-                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                        Date xxx
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.DocumentsList}>
-                                <Text style={styles.DocumentsListFont}>
-                                    Document 3
-                                </Text>
-                                <View style={{flexDirection: "row"}}>
-                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                        Completed by
-                                    </Text>
-                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                        Date xxx
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.DocumentsList}>
-                                <Text style={styles.DocumentsListFont}>
-                                    Document 4
-                                </Text>
-                                <View style={{flexDirection: "row"}}>
-                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                        Completed by
-                                    </Text>
-                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                        Date xxx
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.DocumentsList}>
-                                <Text style={styles.DocumentsListFont}>
-                                    Document 5
-                                </Text>
-                                <View style={{flexDirection: "row"}}>
-                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                        Completed by
-                                    </Text>
-                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                        Date xxx
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.DocumentsList}>
-                                <Text style={styles.DocumentsListFont}>
-                                    Document 6
-                                </Text>
-                                <View style={{flexDirection: "row"}}>
-                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                        Completed by
-                                    </Text>
-                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                        Date xxx
-                                    </Text>
-                                </View>
-                            </View>
-                        </ScrollView>
+                    <View style={styles.boxHalf}>
+                        <Text style={styles.box1Text}>
+                            {this.state.count["awaitingOthers"]}
+                            {"\n"}{"\n"} Waiting for Others
+                        </Text>
                     </View>
-                
-                    <View style={styles.box3}>
-                    <ScrollView>
-                            <Text style={styles.box3Text1}>Quick Actions</Text>
-                            <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
-                                <Text style={styles.box3Text2}>Add/Edit Signature</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
-                                <Text style={styles.box3Text2}>Add Profile Picture</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
-                                <Text style={styles.box3Text2}>View Contacts</Text>
-                            </TouchableOpacity>
-                        </ScrollView>
-                    </View>
-                
-                    <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
-                            <Text style={styles.floatButtonText}>+</Text>
-                    </TouchableOpacity>
                 </View>
-             </View>
-                )
-         }
-     }
+
+                <View style={styles.box2}>
+                    <Text style={styles.box2Text1}>Recent Documents</Text>
+                    <ScrollView>
+                        <View style={styles.DocumentsList}>
+                            <Text style={styles.DocumentsListFont}>
+                                Document 1
+                            </Text>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    Completed by
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    Date xxx
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={styles.DocumentsList}>
+                            <Text style={styles.DocumentsListFont}>
+                                Document 2
+                            </Text>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    Completed by
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    Date xxx
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={styles.DocumentsList}>
+                            <Text style={styles.DocumentsListFont}>
+                                Document 3
+                            </Text>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    Completed by
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    Date xxx
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={styles.DocumentsList}>
+                            <Text style={styles.DocumentsListFont}>
+                                Document 4
+                            </Text>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    Completed by
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    Date xxx
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={styles.DocumentsList}>
+                            <Text style={styles.DocumentsListFont}>
+                                Document 5
+                            </Text>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    Completed by
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    Date xxx
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={styles.DocumentsList}>
+                            <Text style={styles.DocumentsListFont}>
+                                Document 6
+                            </Text>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    Completed by
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    Date xxx
+                                </Text>
+                            </View>
+                        </View>
+                    </ScrollView>
+                </View>
+            
+                <View style={styles.box3}>
+                <ScrollView>
+                        <Text style={styles.box3Text1}>Quick Actions</Text>
+                        <TouchableOpacity 
+                            onPress={() => this.props.navigation.navigate("Canvas")}
+                            style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
+                            <Text style={styles.box3Text2}>Add/Edit Signature</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
+                            <Text style={styles.box3Text2}>Add Profile Picture</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
+                            <Text style={styles.box3Text2}>View Contacts</Text>
+                        </TouchableOpacity>
+                    </ScrollView>
+                </View>
+            
+                <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
+                        <Text style={styles.floatButtonText}>+</Text>
+                </TouchableOpacity>
+            </View>
+            </View>
+            )
+        }
+    }
 
 
-export default createMaterialBottomTabNavigator({
+export default createMaterialBottomTabNavigator({ 
     dashboard: { screen: Dashboard,
         navigationOptions: {
             tabBarLabel: 'Dashboard',
@@ -183,9 +206,9 @@ export default createMaterialBottomTabNavigator({
             tabBarLabel: 'Documents',
             tabBarIcon: ({tintColor}) => (
                 <Icon name="md-document" color={tintColor} size={24} />
-            )
+            ),
         }
-    }, 
+    },
     contacts: { screen: Contacts,
         navigationOptions: {
             tabBarLabel: 'Contacts',
