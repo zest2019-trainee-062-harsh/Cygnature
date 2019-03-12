@@ -12,7 +12,6 @@ class OTP extends Component {
         super(props)
         this.state.data  = this.props.navigation.getParam('data');
         this.state.mobileNumber = this.state.data["phoneNumber"]
-        this.state.auth = []
         //console.warn(data)
     }
 
