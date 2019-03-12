@@ -60,6 +60,12 @@ class Login extends Component {
     }
 
     componentWillMount = async() => {
+        let stored_email = await AsyncStorage.getItem('email');
+        let stored_password = await AsyncStorage.getItem('stored_password');
+        if(stored_email != null && stored_password !=null){
+            this.state.email = stored_email;
+            this.state.password = stored_password;
+        }
         BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
     }
 
@@ -197,6 +203,9 @@ class Login extends Component {
                     if(this.state.checked == true){
                         AsyncStorage.setItem('email',this.state.email)
                         AsyncStorage.setItem('stored_password',this.state.password)
+                    }else{
+                        AsyncStorage.setItem('email',null)
+                        AsyncStorage.setItem('stored_password',null)
                     }
                 }
             })
@@ -237,6 +246,7 @@ class Login extends Component {
                     {/* <Text style = { styles.boxLabel }>E-Mail</Text> */}
 
                     <TextInput
+                        value={this.state.email}
                         placeholderTextColor='grey'
                         placeholder = "Email"
                         returnKeyType="next"
@@ -249,6 +259,7 @@ class Login extends Component {
                     </TextInput>
                     {/* <Text style = { styles.boxLabel }>Password</Text> */}
                     <TextInput
+                        value={this.state.password}
                         placeholderTextColor='grey'
                         placeholder = "Password"
                         returnKeyType="done"
