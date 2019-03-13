@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch} from 'react-native'
+import {
+    View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, AsyncStorage
+} from 'react-native'
 import { Dropdown } from 'react-native-material-dropdown'
 
 import  { createMaterialTopTabNavigator } from 'react-navigation'
@@ -18,6 +20,12 @@ class General extends Component {
     //         document_activity = false
     //     }
     // }
+
+    logout = async() => {
+        AsyncStorage.setItem('auth', 'not_present');
+        this.props.navigation.navigate("Login")
+    }
+
     render() {
         const navigate = this.props.navigation;
         let data = [
@@ -37,6 +45,10 @@ class General extends Component {
         return(
             <View style={styles.mainContainer}>
                 <ScrollView>
+                    <TouchableOpacity style = { [styles.buttonContainer]} onPress={() => this.logout()}>
+                        <Text style = { styles.buttonText }>Logout</Text>
+                    </TouchableOpacity>
+                    <View style={{margin: 10, width: width}}></View>
                     <Text style={{fontWeight: "bold", fontSize: 22, color: "black"}}> General </Text>
                     <View style={styles.DocumentsList}>
                         <View style={styles.DocumentsList}>
@@ -175,5 +187,16 @@ const styles = StyleSheet.create({
         flex: 0.5,
         color: "black",
         fontSize: 12
+    },
+    buttonContainer: {
+        backgroundColor: '#003d5a',
+        paddingVertical: 10,
+        margin: 5,
+        borderRadius: 5
+    },
+    buttonText: {
+        textAlign: 'center',
+        color: '#ffffff',
+        fontWeight: 'bold'
     },
 })
