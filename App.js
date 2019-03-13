@@ -5,7 +5,8 @@ import Register from './src/components/Register/Index'
 import Dashboard from './src/components/Dashboard/Index.js'
 import SplashScreen from './src/components/SplashScreen/Index'
 import  Settings  from './src/components/Settings/General.js';
-import Index from './src/components/Canvas/Index.js'
+import Canvas from './src/components/Canvas/Index.js'
+import DocumentDetails from './src/components/Documents/DocumentDetails.js'
 
 
 const AppNavigator = createStackNavigator({
@@ -15,7 +16,9 @@ const AppNavigator = createStackNavigator({
   Register: {screen: Register},
   Dashboard: {screen: Dashboard},
   Settings: {screen: Settings},
-  Canvas: {screen: Index}
+  Canvas: {screen: Canvas},
+  DocumentDetails: {screen: DocumentDetails},
+  
 });
 
 const AppContainer = createAppContainer(AppNavigator);

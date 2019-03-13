@@ -284,7 +284,7 @@ class Register extends Component {
                 visible={this.state.pdVisible}
                 title="Registering !"
                 message="Please wait..."
-                activityIndicatorColor="blue"
+                activityIndicatorColor="#6eab52"
                 activityIndicatorSize="large"
                 animationType="slide"
             />

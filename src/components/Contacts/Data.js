@@ -10,7 +10,7 @@ class Data extends Component {
     componentWillMount = async() =>{
         let auth = await AsyncStorage.getItem('auth');
         this.state.auth = auth;
-        //console.warn(this.state.auth)
+        console.warn(this.state.auth)
     }
     state = {
         name: '',
