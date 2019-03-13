@@ -1,11 +1,10 @@
 import React, {Component} from 'react'
 import {View, StyleSheet,Text, TouchableOpacity, ScrollView, StatusBar} from 'react-native'
-const util = require('util');
 import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Dimensions } from "react-native";
 
-import  Register from '../Register/Index.js'
+//import  Register from '../Register/Index.js'
 import  Documents from '../Documents/Index.js'
 import  Contacts from '../Contacts/Index.js'
 import  Settings from '../Settings/General.js'
