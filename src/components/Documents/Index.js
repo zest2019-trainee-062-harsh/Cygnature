@@ -1,22 +1,35 @@
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, ActivityIndicator} from 'react-native'
+import {View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions,
+     AsyncStorage, } from 'react-native'
 import { Dropdown } from 'react-native-material-dropdown'
+import { ProgressDialog } from 'react-native-simple-dialogs';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
  
 class Documents extends Component {
+ 
+
     state = {
-        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.N9w0jV/v+9PKjqTQVRpre5/Ha2KWFihjEaW03y0EGTvRIgfchfLIHPulTAOxGN2Na6c9WioV+CsEiqjebqZecbEwqHRSEoUU8TAXe2BgP0e0hOU2ytun+HGCVesWIT7fk2UnGUw1TSaca8E8myNmELqHJeIxTGg/MJ3mOIK9odO+lledsDEs6siP13RxEubPt8qBl0JCPR91fkwhw/GeIkrDe4NtNiSCRBgL8rzKHPhYU79kuB2ezwhfa2N8R7FtHsUngvCYSXhwBDI46JnfrOCOvGeWwEc88WWXnmdaBQH+YSbaCAfeNSSDovbZ2GExNlLZ1jru0kQYBMF/GqvhvobpR3M2nzDQfMvbxjdJFNnB4k01FfsFbbextkn5jC677qidQExX0AmA4VMmWKoh1pZP5W81KYrKUaHjawwboUQyHqLsORub5aMq4FtJZ69KwGine8wR/XqdWRS9l8OBigDNROIRjz5E5W7sR6lpwq5SmX/EGmbJs16SFWs9hSfL9z+AtFWLrBLCna311jeLVzqdHvjK8j9qf+BLADWCEOyGf+sDfXQ6DooEWsQaN2GmW67kqgAMAl6yTgTuiBaPneWO3B0fVkiqo2p4affLRLuA+zLp/aAJDy+WH/O2YxH7gzuDUQK7RSkhhuT2kbCG4uDRx6xk401z7JmxSCebuY/h+UsnI7eDvK1+BaBQrAhqx9/eZ+h3QI7wbV/z0HXFNKLAXjpb5r+l56gCR21yz1glRYWPQNe9IdUbp6CNvukc9jDL9d/2U2GJ5XaN1+9qoCcrNnCLsrUgjDKVZWptE4QDRP/KV6EeI2rIbUPQ8+4UpFtz3Ejtx1pB7zgjrvcljFRa3uvTlo7oG/5cb8L5yClFN/4A0HLwUxJb/Hf9Uo1UNd8moz4OAj6wlJj1m0Pw8A==.TCVZUS8GENc_fQYfkT7YlhR0DJIkn-qj-JaCkw6Nk8I",
+        auth: null,
+        token: null,
         documents: [],
-        value: null
+        pdVisible: true,
     }
 
-    componentWillMount(){
+    componentWillMount = async() =>{
+        let auth = await AsyncStorage.getItem('auth');
+        let token = await AsyncStorage.getItem('token');
+        this.state.auth = auth;
+        this.state.token = token;
+        //alert(token)
+        //alert(auth)
+
+
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/documents',{
         method: 'POST',
         headers: {
-            'Authorization':'Bearer '+this.state.token,
+            'Authorization':this.state.auth,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -35,7 +48,7 @@ class Documents extends Component {
         .then((responseJson) => {
             // console.warn(responseJson["data"][0]["documents"])
             this.setState({documents: responseJson["data"][0]["documents"]})
-            this.setState({value: 1})
+            this.setState({value: 1, pdVisible: false})
             // console.warn(this.state.documents)
         })
         .catch((error) => {
@@ -64,6 +77,14 @@ class Documents extends Component {
         ]
         return (
             <View style={styles.mainContainer}>
+             <ProgressDialog
+                visible={this.state.pdVisible}
+                title="Fetching Documents !!!!"
+                message="Please wait..."
+                activityIndicatorColor="#003d5a"
+                activityIndicatorSize="large"
+                animationType="slide"
+            />
                 <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Documents-List </Text>
                 <ScrollView>
                     {
@@ -72,10 +93,7 @@ class Documents extends Component {
                             <TouchableOpacity key={docs.Id}
                                 onPress={()=>this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})}
                             >
-                                {
-                                    this.state.value == null ? <ActivityIndicator color="blue" size="large" /> :
-                                    <View style={styles.DocumentsList}
-                                    >
+                                <View style={styles.DocumentsList}>
                                         <Text style={[styles.DocumentsListFont, {fontSize: 17, fontWeight: "bold"}]}>
                                             {docs.name}{docs.extension}
                                         </Text>
@@ -88,7 +106,7 @@ class Documents extends Component {
                                             </Text>
                                         </View>
                                     </View>
-                                }
+                                
                             </TouchableOpacity>
                         );
                     })}

@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, Image, TextInput, TouchableOpacity, StatusBar, ScrollView, KeyboardAvoidingView} from 'react-native'
- 
+import {
+    View, Text, StyleSheet, Image, TextInput, TouchableOpacity, StatusBar, ScrollView, KeyboardAvoidingView,
+    AsyncStorage
+} from 'react-native'
 import { Dimensions } from "react-native";
 
 var width = Dimensions.get('window').width; //full width
@@ -10,14 +12,18 @@ class OTP extends Component {
         super(props)
         this.state.data  = this.props.navigation.getParam('data');
         this.state.mobileNumber = this.state.data["phoneNumber"]
-        this.state.token = this.state.data["token"]
-        this.state.auth = "Bearer "+this.state.token
         //console.warn(data)
+    }
+
+    componentWillMount = async() =>{
+        let auth = await AsyncStorage.getItem('auth');
+        this.state.auth = auth;
         this.getCount()
     }
+
     static navigationOptions = {
-    header: null
-}
+        header: null
+    }
 
     state = {
         mobileNumber: null,
@@ -77,7 +83,7 @@ class OTP extends Component {
     }
     checkOTP() {
         if(this.state.otp == this.state.defaultotp) {
-            this.props.navigation.navigate("Dashboard" ,{"data":this.state.data, "count": this.state.count})
+            this.props.navigation.navigate("Dashboard" ,{"data":this.state.data, "count": this.state.count, "auth": this.state.auth})
         }
         else {
             console.warn("OTP does not Match")
