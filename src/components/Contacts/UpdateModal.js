@@ -1,16 +1,18 @@
 import React, {Component} from 'react'
-import {TouchableOpacity, View, Text, Dimensions, TextInput, StyleSheet, AsyncStorage} from 'react-native'
+import {TouchableOpacity, View, Text, Dimensions, TextInput,
+     StyleSheet, AsyncStorage, } from 'react-native'
  
 import Modal from 'react-native-modalbox'
+import { ProgressDialog } from 'react-native-simple-dialogs';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
 
-class Data extends Component {
+class UpdateModal extends Component {
     componentWillMount = async() =>{
         let auth = await AsyncStorage.getItem('auth');
         this.state.auth = auth;
-        console.warn(this.state.auth)
+        //console.warn(this.state.auth)
     }
     state = {
         name: '',
@@ -20,7 +22,7 @@ class Data extends Component {
         jobD: '',
         auth: null,
         rMes: null,
-
+        pdVisible: false,
     }
 
     show = () => {
@@ -51,32 +53,35 @@ class Data extends Component {
             }),
             }).then((response) => response.json())
             .then((responseJson) => {
-                this.setState({pdVisible: false})
-                if(responseJson["message"] == null) {
-                    Alert.alert(
-                        'Contact Adding Failed!',
-                        'Try Again',
-                        [
-                        {text: 'OK'},
-                        ],
-                        {cancelable: true},
-                    );
+                if(responseJson == null) {
+                    console.warn("Failed")
+                    // Alert.alert(
+                    //     'Contact Adding Failed!',
+                    //     'Try Again',
+                    //     [
+                    //     {text: 'OK'},
+                    //     ],
+                    //     {cancelable: true},
+                    // );
                 }
                 else {
-                    this.state.rMes=responseJson["message"]
+                    //console.warn("yes")
+                    this.setState({pdVisible:true})
+                    //this.state.rMes=responseJson["message"]
+                                        
+                    // Alert(
+                    //     'Contact Added !',
+                    //     [
+                    //     {text: 'OK'},
+                    //     ],
+                    //     {cancelable: true},
+                    // );
                     this.refs.myModal.close()
-                    Alert.alert(
-                        'Contact Added !',
-                        [
-                        {text: 'OK'},
-                        ],
-                        {cancelable: true},
-                    );
                     //console.warn(this.state.data)
                     //this.props.navigation.navigate('Login',{"message":this.state.rMes})
                 }
 
-                console.warn(responseJson["message"])
+                //console.warn(responseJson["message"])
             })
             .catch((error) => {
                 console.warn(error);
@@ -110,6 +115,7 @@ class Data extends Component {
     }
      render() {
          return (
+            
             <Modal 
             ref={"myModal"}
             style={ styles.modal }
@@ -119,38 +125,82 @@ class Data extends Component {
                 //console.warn("modal closed")
             }}
             >
-            <TextInput
+            <ProgressDialog
+            visible={this.state.pdVisible}
+            title="Adding Contact!"
+            message="Please wait..."
+            activityIndicatorColor="#003d5a"
+            activityIndicatorSize="large"
+            animationType="slide"
+            /> 
+            <Text style={{marginLeft:14, fontSize: 16,  color: 'black', fontWeight:'bold'}}>Update Contact</Text>
+         <TextInput
                 style={ styles.textIn }
                 placeholder="Enter Name *"
+                placeholderTextColor='grey'
+                returnKeyType="next"
+                keyboardType="name-phone-pad"
+                autoCapitalize="none"
+                autoCorrect={false}
+                onSubmitEditing={() => this.ref1.focus()}
                 onChangeText={text => this.update("name",text)}
                 value={this.state.name}
                 />
             <TextInput
                 style={ styles.textIn }
                 placeholder="Enter Email *"
+                placeholderTextColor='grey'
+                returnKeyType="next"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+                onSubmitEditing={() => this.ref2.focus()}
+                ref={(input) => this.ref1 = input}
                 onChangeText={text => this.update("email",text)}
                 value={this.state.email}
                 />
             <TextInput
                 style={ styles.textIn }
                 placeholder="Enter Mobile Number *"
+                underlineColor= "green"
+                maxLength={10}
+                placeholderTextColor='grey'
+                returnKeyType="next"
+                keyboardType="number-pad"
+                autoCapitalize="none"
+                autoCorrect={false}
+                onSubmitEditing={() => this.ref3.focus()}
+                ref={(input) => this.ref2 = input}
                 onChangeText={text => this.update("mobNu",text)}
                 value={this.state.mobNu}
                 />
             <TextInput
                 style={ styles.textIn }
                 placeholder="Enter Job Title"
+                placeholderTextColor='grey'
+                returnKeyType="next"
+                keyboardType="name-phone-pad"
+                autoCapitalize="none"
+                autoCorrect={false}
+                onSubmitEditing={() => this.ref4.focus()}
+                ref={(input) => this.ref3 = input}
                 onChangeText={text => this.update("jobT",text)}
                 value={this.state.jobT}
                 />
             <TextInput
                 style={ styles.textIn }
                 placeholder="Enter Job Desc"
+                placeholderTextColor='grey'
+                returnKeyType="done"
+                keyboardType="name-phone-pad"
+                autoCapitalize="none"
+                autoCorrect={false}
+                ref={(input) => this.ref4 = input}
                 onChangeText={text => this.update("jobD",text)}
                 value={this.state.jobD}
                 />
            <TouchableOpacity style={ styles.btnSave } onPress={this.add}>
-                    <Text style={styles.textSave}>Add Contact</Text>
+                    <Text style={styles.textSave}>Update Contact</Text>
             </TouchableOpacity>
 
             </Modal>
@@ -158,7 +208,7 @@ class Data extends Component {
          }
      }
 
-export default Data
+export default UpdateModal
 
 const styles = StyleSheet.create({
     modal:{
@@ -169,7 +219,7 @@ const styles = StyleSheet.create({
     },
     textIn: {
         height: 40,
-        borderBottomColor: 'gray',
+        borderBottomColor: '#003d5a',
         marginLeft: 30,
         marginRight: 30,
         marginTop: 20,
