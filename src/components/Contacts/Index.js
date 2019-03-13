@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, TouchableOpacity,TouchableHighlight, SwipeableFlatList} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity,TouchableHighlight, SwipeableFlatList, AsyncStorage} from 'react-native'
 
 import Icon from 'react-native-vector-icons/Ionicons'
 import AddModal from './AddModal'
@@ -10,20 +10,25 @@ export default class Contacts extends Component {
     super(props)
     this.floatClicked = this.floatClicked.bind(this)
     }
+    state = {
+        auth: null,
+    }
 
 
-    componentWillMount() {
-        //console.warn("yes") 
+    componentWillMount = async() =>{
+        let auth = await AsyncStorage.getItem('auth');
+        this.state.auth = auth;
+
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/contact/get/',{
         method: 'GET',
         headers: {
-            'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.N9w0jV/v+9PKjqTQVRpre2jTzBser7/a/Thzwn6/3UCGTehr+Gk9tZrbfUo0jndFhKFx2ywj3gA0kjDn9uf/mrfnjcwIru3WHKGL1lhTCxH/Uf7NYBtBbAd5M1f77b2aqFJHSXiQ0miSqKUB2cipfOf88VU+XiCO57FQtQzRFX0BtR5LZHaZQqSMMj8y47n6M86I6CKl/SntvdAyzVMh7uXFWsaYHY/nKmyIunJgewZM3q2ImLEx7ndLwRT1Kpus2er5pnvq19gX43RfAEkl80kK7axwGX2rPYYpoedDBXS35npshScOXwmZhiv36CmefEFHYLgFb83BWVafahApZ5huYSa1DHVNA6rCFJmrEdIZSVy/3U3prOcyiOsRM11DwsXwuJoOVYlwJgvluzUgDz32moOaTde6a1vkrdMaedYDyNNolAGSQ1Pu3+CKxRmp2tRpNY7GaajQVLaie574mFc2BGCwJdrueGAA8DuCPCgN2fpVlMYrufbYI7om3MnSjypSyoFuWg4O+4PG72+Qm5HvUfADtSbX4REh6XWBwyt89NRYf9f/qp/S3aLWZ8XsY5akfYKBECZQ6H6Z3rVRxAW7OgnqlPlAMBSw+DqAi3+28ActC0gqb3KOiDJFb3jIT4OoAMBRAA3hdAmblTr6EwpPmbxXqoCZ2CFL/PQqA/OTuKiBadJ1ZxkxCuFcb2Cl2J1fHnRKKWqv3CY4UMyBVkIFH2zGCh3g5IgaG3hH6IYaM2xrtMNJ2AZRByaG0ki5r99ydraBgmbN6OhEaKYlnOrlzSW3E9wqPmMJOk6iDHlzHKgJWz66r3TnF5nVaK03AXa+QX66LskJo9NSx6yQXORSgtB9Wb8abfwJBnUXVUX94u8l7fJWBCOXKXxRnjSR.R0Nv9ckczXd4B1UWyxoVOAfJjC91z4duwB7NOU4S3Gw'
+            'Authorization':this.state.auth
         }}).then((response) => response.json())
         .then((responseJson) => {
             //this.setState({details: responseJson["data"][0]})
             //console.warn(responseJson["data"])
             this.setState({data: responseJson["data"], contactsCount: 1})
-            console.warn(this.state.data)
+            //console.warn(this.state.data)
             this.state.data.map((y) => {
                 this.state.name.push(y.name)
                 })
