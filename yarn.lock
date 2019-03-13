@@ -4921,7 +4921,6 @@ react-native-elements@^1.0.0:
     react-native-ratings "^6.3.0"
     react-native-status-bar-height "^2.2.0"
 
-<<<<<<< HEAD
 react-native-fetch-blob@^0.10.8:
   version "0.10.8"
   resolved "https://registry.yarnpkg.com/react-native-fetch-blob/-/react-native-fetch-blob-0.10.8.tgz#4fc256abae0cb5f10e7c41f28c11b3ff330d72a9"
@@ -4938,16 +4937,10 @@ react-native-fs@^2.13.3:
     base-64 "^0.1.0"
     utf8 "^2.1.1"
 
-react-native-gesture-handler@^1.0.16:
-  version "1.0.16"
-  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.0.16.tgz#bee54981575e581857c2298e133ce2ffac240a3e"
-  integrity sha512-KhUjDaiGKESfVa/lywuYfdZ2pomPC4q/dRQo18qlSZuRxEiOCxzSo9Q1TV7JK3PpyyMEXpsU04kYSSVypWiSxg==
-=======
 react-native-gesture-handler@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.1.0.tgz#2a7d545ad2e0ca23adce22b2af441ad360ecccee"
   integrity sha512-E9IKHpmL+sz/iCYkUriTUjBaQBORWV+oheYPQleADkxjo2sYsQfnlyTz4EQYFONkUwJ6WmfTNkYt2/yc5U4Ziw==
->>>>>>> bc22094719de182e76bcc1a0cb8920ab5c261c87
   dependencies:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.2"
@@ -4961,14 +4954,6 @@ react-native-gesture-handler@~1.0.14:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.2"
     prop-types "^15.5.10"
-
-react-native-hide-show-password-input@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/react-native-hide-show-password-input/-/react-native-hide-show-password-input-1.0.7.tgz#9b2b28b9d611acaca9023a3369df51437ed9372f"
-  integrity sha512-ijvkg535q23Xo/Z6c3AMXHUNTVqSJbt7EJSHIlkjVPqYSZQ0++6EUk8G8EMZ6G9k+cbEmaJcjdj0W7bDI1KfpA==
-  dependencies:
-    react-native-material-textfield "^0.8.4"
-    react-native-vector-icons "^4.3.0"
 
 react-native-location@^2.2.0:
   version "2.2.0"
@@ -5014,14 +4999,6 @@ react-native-material-textfield@^0.12.0:
   dependencies:
     prop-types "^15.5.9"
 
-<<<<<<< HEAD
-react-native-material-textfield@^0.8.4:
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/react-native-material-textfield/-/react-native-material-textfield-0.8.4.tgz#267f3a46e9257a25a6b719ebaf34131019f901a0"
-  integrity sha1-Jn86RukleiWmtxnrrzQTEBn5AaA=
-  dependencies:
-    prop-types "^15.5.9"
-=======
 react-native-modalbox@^1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/react-native-modalbox/-/react-native-modalbox-1.7.1.tgz#cdb623ecd1cbe8699a450217c25b2d6666dc63e6"
@@ -5029,7 +5006,6 @@ react-native-modalbox@^1.7.1:
   dependencies:
     create-react-class "^15.6.0"
     prop-types "^15.5.10"
->>>>>>> bc22094719de182e76bcc1a0cb8920ab5c261c87
 
 react-native-paper@^2.12.0:
   version "2.12.0"
@@ -5093,7 +5069,6 @@ react-native-signature-canvas@^1.3.0:
   resolved "https://registry.yarnpkg.com/react-native-signature-canvas/-/react-native-signature-canvas-1.3.0.tgz#8cbbdfd8058773e7844cae664f9aa33c6c39b6a8"
   integrity sha512-Yvip9DzRHg31vr/RgiiA2wnqwJlb4Zzngvp+itcQYxCT2nsJQNsNN0u+J0m4HQBNiCR8FGkKuX4ddemeJq+0vQ==
 
-<<<<<<< HEAD
 react-native-signature-capture@^0.4.9:
   version "0.4.9"
   resolved "https://registry.yarnpkg.com/react-native-signature-capture/-/react-native-signature-capture-0.4.9.tgz#c581cedef6cea42beea40d0f7d210173196b9d4a"
@@ -5101,8 +5076,6 @@ react-native-signature-capture@^0.4.9:
   dependencies:
     prop-types "^15.5.10"
 
-=======
->>>>>>> bc22094719de182e76bcc1a0cb8920ab5c261c87
 react-native-simple-dialogs@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-simple-dialogs/-/react-native-simple-dialogs-1.1.0.tgz#8b07bbcd0c7552990b47dc33cd58e4ff34ac96f8"
@@ -5126,15 +5099,6 @@ react-native-tab-view@^1.0.0, react-native-tab-view@^1.2.0:
   integrity sha512-2U+HxDQdjzExoC6gZ+wUhC8v8JjntppsFVU4v4pRvC/1dkN7DJv1k8UEy9+p7ucEaNrcAzu/j5N09Jf4qG36vw==
   dependencies:
     prop-types "^15.6.1"
-
-react-native-vector-icons@^4.3.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-4.6.0.tgz#e4014311ffa6de397d914ffc31b7097a874cc8d5"
-  integrity sha512-rpfhfPiXCK2PX1nrNhdxSMrEGB/Gw/SvKoPM0G2wAkSoqynnes19K0VYI+Up7DqR1rFIpE4hP2erpT1tNx2tfg==
-  dependencies:
-    lodash "^4.0.0"
-    prop-types "^15.5.10"
-    yargs "^8.0.2"
 
 react-native-vector-icons@^6.3.0:
   version "6.3.0"

@@ -60,6 +60,7 @@
 		22F747FA719449A9B112DFD2 /* libRNLocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA8B9D81130D451BAA8BE300 /* libRNLocation.a */; };
 		7D6E868B8C1949579FDA770F /* libRSSignatureCapture.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD52B93D0A7D464597EBA531 /* libRSSignatureCapture.a */; };
 		6AE486487F754551838733F1 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F23EBDF65F4159A5F149BB /* libRNFetchBlob.a */; };
+		240930367DFE4FD6BBEB6B7C /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6564C7CA49E7491281740DB2 /* libRNFS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -393,6 +394,8 @@
 		AD52B93D0A7D464597EBA531 /* libRSSignatureCapture.a */ = {isa = PBXFileReference; name = "libRSSignatureCapture.a"; path = "libRSSignatureCapture.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		623BE368BA9546E2A720A878 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; name = "RNFetchBlob.xcodeproj"; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		23F23EBDF65F4159A5F149BB /* libRNFetchBlob.a */ = {isa = PBXFileReference; name = "libRNFetchBlob.a"; path = "libRNFetchBlob.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		1F88CF61427A491BA01CF59B /* RNFS.xcodeproj */ = {isa = PBXFileReference; name = "RNFS.xcodeproj"; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		6564C7CA49E7491281740DB2 /* libRNFS.a */ = {isa = PBXFileReference; name = "libRNFS.a"; path = "libRNFS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -426,6 +429,7 @@
 				22F747FA719449A9B112DFD2 /* libRNLocation.a in Frameworks */,
 				7D6E868B8C1949579FDA770F /* libRSSignatureCapture.a in Frameworks */,
 				6AE486487F754551838733F1 /* libRNFetchBlob.a in Frameworks */,
+				240930367DFE4FD6BBEB6B7C /* libRNFS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -621,6 +625,7 @@
 				DCAEA9727FCE4CA58671D80B /* RNLocation.xcodeproj */,
 				7C63453A52A04CFCAEA58603 /* RSSignatureCapture.xcodeproj */,
 				623BE368BA9546E2A720A878 /* RNFetchBlob.xcodeproj */,
+				1F88CF61427A491BA01CF59B /* RNFS.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1293,6 +1298,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1301,6 +1307,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-location\ios",
 					"$(SRCROOT)\..\node_modules\react-native-signature-capture\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-fs/**",
 				);
 			};
 			name = Debug;
@@ -1328,6 +1335,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1336,6 +1344,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-location\ios",
 					"$(SRCROOT)\..\node_modules\react-native-signature-capture\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-fs/**",
 				);
 			};
 			name = Release;
@@ -1363,6 +1372,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-location\ios",
 					"$(SRCROOT)\..\node_modules\react-native-signature-capture\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-fs/**",
 				);
 			};
 			name = Debug;
@@ -1389,6 +1399,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-location\ios",
 					"$(SRCROOT)\..\node_modules\react-native-signature-capture\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-fs/**",
 				);
 			};
 			name = Release;
@@ -1424,6 +1435,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1432,6 +1444,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-location\ios",
 					"$(SRCROOT)\..\node_modules\react-native-signature-capture\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-fs/**",
 				);
 			};
 			name = Debug;
@@ -1467,6 +1480,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1475,6 +1489,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-location\ios",
 					"$(SRCROOT)\..\node_modules\react-native-signature-capture\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-fs/**",
 				);
 			};
 			name = Release;
@@ -1509,6 +1524,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1517,6 +1533,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-location\ios",
 					"$(SRCROOT)\..\node_modules\react-native-signature-capture\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-fs/**",
 				);
 			};
 			name = Debug;
@@ -1551,6 +1568,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1559,6 +1577,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-location\ios",
 					"$(SRCROOT)\..\node_modules\react-native-signature-capture\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-fs/**",
 				);
 			};
 			name = Release;

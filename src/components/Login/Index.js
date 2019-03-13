@@ -201,6 +201,7 @@ class Login extends Component {
                     this.state.auth = "Bearer "+this.state.data["token"];
                     
                     AsyncStorage.setItem('auth',this.state.auth);
+                    AsyncStorage.setItem('token',this.state.data["token"]);
                     if(this.state.checked == true){
                         AsyncStorage.setItem('email',this.state.email)
                         AsyncStorage.setItem('stored_password',this.state.password)
