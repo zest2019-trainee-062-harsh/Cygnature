@@ -25,8 +25,8 @@ class Login extends Component {
     constructor(props) {
         super(props)
         this.checkConn()
-        //console.warn(this.state.data)
     }
+    
     static navigationOptions = {
         header: null
     }
@@ -51,7 +51,9 @@ class Login extends Component {
                     'Internet Not Connected!',
                     'Please check your connection',
                     [
-                        {text: 'OK', onPress: ()=> this.checkConn()},
+                        {
+                            text: 'OK', onPress: ()=> this.checkConn()
+                        },
                     ],
                     {cancelable: true},
                 );
@@ -59,13 +61,7 @@ class Login extends Component {
         })
     }
 
-    componentWillMount = async() => {
-        let stored_email = await AsyncStorage.getItem('email');
-        let stored_password = await AsyncStorage.getItem('stored_password');
-        if(stored_email != null && stored_password !=null){
-            this.state.email = stored_email;
-            this.state.password = stored_password;
-        }
+    componentWillMount() {
         BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
     }
 
@@ -197,18 +193,17 @@ class Login extends Component {
                     this.state.resData=responseJson.data
                     this.state.data=this.state.resData[0]
                     //console.warn(this.state.data)
-                    this.props.navigation.navigate('OTP',{"data":this.state.data});
                     this.state.auth = "Bearer "+this.state.data["token"];
-                    
                     AsyncStorage.setItem('auth',this.state.auth);
                     AsyncStorage.setItem('token',this.state.data["token"]);
-                    if(this.state.checked == true){
-                        AsyncStorage.setItem('email',this.state.email)
-                        AsyncStorage.setItem('stored_password',this.state.password)
-                    }else{
-                        AsyncStorage.setItem('email',null)
-                        AsyncStorage.setItem('stored_password',null)
-                    }
+                    this.props.navigation.navigate('OTP',{"data":this.state.data});
+                    // if(this.state.checked == true){
+                    //     AsyncStorage.setItem('email',this.state.email)
+                    //     AsyncStorage.setItem('stored_password',this.state.password)
+                    // }else{
+                    //     AsyncStorage.setItem('email',null)
+                    //     AsyncStorage.setItem('stored_password',null)
+                    // }
                 }
             })
             .catch((error) => {
@@ -271,15 +266,15 @@ class Login extends Component {
                         style= { styles.boxTI }>
                     </TextInput>               
                        
-                        <CheckBox
-                            title='Remember Me'
-                            uncheckedColor="#414345"
-                            checkedColor="#6eab52"
-                            size={20}
-                            checked={this.state.checked}
-                            containerStyle={{backgroundColor:'rgba(255,255,255,0.7)'}}
-                            onPress={() => this.onChangeCheck()}
-                        />
+                    <CheckBox
+                        title='Remember Me'
+                        uncheckedColor="#414345"
+                        checkedColor="#6eab52"
+                        size={20}
+                        checked={this.state.checked}
+                        containerStyle={{backgroundColor:'rgba(255,255,255,0.7)'}}
+                        onPress={() => this.onChangeCheck()}
+                    />
 
                     {this.state.enable ? 
                         <TouchableOpacity

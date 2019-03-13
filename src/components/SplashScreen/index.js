@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-  AppRegistry, Text, View, StyleSheet, StatusBar, Animated, Dimensions
+  AppRegistry, Text, View, StyleSheet, StatusBar, Animated, Dimensions, AsyncStorage
 } from 'react-native';
 
 //Getting device heigth and width
@@ -32,16 +32,26 @@ export default class SplashScreen extends Component{
       })
     ]).start(() => {
       //End of animations
+      //this.authCheck()
       this.props.navigation.navigate('Login')
     })
   }
 
+  authCheck = async() =>{
+    let auth = await AsyncStorage.getItem('auth');
+      if(auth == 'not_present'){
+        this.props.navigation.navigate('Login')
+      }else{
+        this.props.navigation.navigate('Dashboard')
+      }
+  }
+
+  
+
   render(){
     return(
       <View style={Styles.container}>
-      <StatusBar
-                backgroundColor="#414345"
-                    barStyle="light-content" />
+      <StatusBar backgroundColor="#414345" barStyle="light-content" />
         <View style={Styles.container}>
           <Animated.Image
                 source={require('../../../img/logo-white.png')}

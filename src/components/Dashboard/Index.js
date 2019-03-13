@@ -18,7 +18,7 @@ class Dashboard extends Component {
         this.state.data  = this.props.navigation.getParam('data');
         this.state.count  = this.props.navigation.getParam('count');
         //console.warn(this.state.token)
-        //console.warn(this.state.auth)
+        //console.warn(this.props.navigation.getParam('data'))
     }
 
     static navigationOptions = {
@@ -227,7 +227,7 @@ export default createMaterialBottomTabNavigator({
     },
 },
 {
-    initialRouteName: 'contacts',
+    initialRouteName: 'dashboard',
     barStyle: { backgroundColor: '#003d5a' },
     activeTintColor: 'white',
     navigationOptions: () => ({ header: null })
