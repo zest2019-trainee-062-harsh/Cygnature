@@ -14,7 +14,14 @@ export default class SplashScreen extends Component{
   //Initial Animation Values
   state = {
     logoOpacity: new Animated.Value(0),
-    titleMarginTop: new Animated.Value(height/2)
+    titleMarginTop: new Animated.Value(height/2),
+    count: {
+        awaitingMySign: null,
+        awaitingOthers: null,
+        completed: null,
+        expireSoon: null,
+    },
+    auth: null,
   }
 
   async componentDidMount(){
@@ -32,21 +39,48 @@ export default class SplashScreen extends Component{
       })
     ]).start(() => {
       //End of animations
-      //this.authCheck()
-      this.props.navigation.navigate('Login')
+      this.authCheck()
     })
   }
 
   authCheck = async() =>{
     let auth = await AsyncStorage.getItem('auth');
-      if(auth == 'not_present'){
-        this.props.navigation.navigate('Login')
+    let otp = await AsyncStorage.getItem('otp');
+      if(otp == 'not_present'){
+          this.props.navigation.navigate('Login')
       }else{
-        this.props.navigation.navigate('Dashboard')
+        if(auth == 'not_present'){
+          this.props.navigation.navigate('Login')
+        }else{
+          this.state.auth = auth;
+          this.getCount();
+          this.props.navigation.navigate("Dashboard" ,{"count": this.state.count})
+        }
       }
   }
 
-  
+  getCount() {
+    return fetch('http://cygnatureapipoc.stagingapplications.com/api/dashboard/document-counts/', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': this.state.auth,
+        },
+        }).then((response) => response.json())
+        .then((responseJson) => {
+        
+            //this.state.count = responseJson["data"]
+            //console.warn(responseJson["data"][0]["awaitingMySign"])
+            this.state.count["awaitingMySign"] = responseJson["data"][0]["awaitingMySign"]
+            this.state.count["awaitingOthers"] = responseJson["data"][0]["awaitingOthers"]
+            this.state.count["completed"] = responseJson["data"][0]["completed"]
+            this.state.count["expireSoon"] = responseJson["data"][0]["expireSoon"]
+            //console.warn(this.state.count)
+        })
+        .catch((error) => {
+            console.warn(error);
+        });
+}
 
   render(){
     return(

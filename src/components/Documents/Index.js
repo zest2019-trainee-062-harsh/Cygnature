@@ -79,7 +79,7 @@ class Documents extends Component {
             <View style={styles.mainContainer}>
              <ProgressDialog
                 visible={this.state.pdVisible}
-                title="Fetching Documents !!!!"
+                title="Fetching Documents!"
                 message="Please wait..."
                 activityIndicatorColor="#003d5a"
                 activityIndicatorSize="large"
