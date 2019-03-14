@@ -16,7 +16,6 @@ class Dashboard extends Component {
     constructor(props) {
         super(props)
         this.state.data  = this.props.navigation.getParam('data');
-        this.state.count  = this.props.navigation.getParam('count');
         //console.warn(this.state.token)
         //console.warn(this.props.navigation.getParam('data'))
     }
@@ -35,7 +34,8 @@ class Dashboard extends Component {
          },
     }
 
-    componentDidMount(){
+    componentWillMount(){
+        this.state.count  = this.props.navigation.getParam('count');
         BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
     }
     

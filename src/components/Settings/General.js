@@ -23,6 +23,7 @@ class General extends Component {
 
     logout = async() => {
         AsyncStorage.setItem('auth', 'not_present');
+        AsyncStorage.setItem('otp_check', 'not_present');
         this.props.navigation.navigate("Login")
     }
 
@@ -88,7 +89,7 @@ class General extends Component {
                             </Text>
                         </View>
                     </View>
-                    <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20, width: width}}></View>
+                    <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20}}></View>
                     <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Security </Text>
                     <View style={styles.DocumentsList}>
                         <View style={styles.DocumentsList}>
@@ -104,7 +105,7 @@ class General extends Component {
                             </View>
                         </View>
                     </View>
-                    <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20, width: width}}></View>
+                    <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20}}></View>
                     <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Notifications </Text>
                     <View style={styles.DocumentsList}>
                         <View style={styles.DocumentsList}>
