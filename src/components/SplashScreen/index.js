@@ -3,7 +3,6 @@ import {
   AppRegistry, Text, View, StyleSheet, StatusBar, Animated, Dimensions, AsyncStorage
 } from 'react-native';
 
-//Getting device heigth and width
 var {height} = Dimensions.get('window')
 
 export default class SplashScreen extends Component{
@@ -46,16 +45,16 @@ export default class SplashScreen extends Component{
   authCheck = async() =>{
     let auth = await AsyncStorage.getItem('auth');
     let otp = await AsyncStorage.getItem('otp_check');
-      if(otp == 'not_present'){
-          this.props.navigation.navigate('Login')
+    if(otp == 'not_present' || otp == null){
+        this.props.navigation.navigate('Login')
+    }else{
+      if(auth == 'not_present' || auth == null){
+        this.props.navigation.navigate('Login')
       }else{
-        if(auth == 'not_present'){
-          this.props.navigation.navigate('Login')
-        }else{
-          this.state.auth = auth;
-          this.getCount();
-        }
+        this.state.auth = auth;
+        this.getCount();
       }
+    }
   }
 
   getCount() {

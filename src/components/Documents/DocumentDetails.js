@@ -1,14 +1,21 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, ScrollView, Dimensions, AsyncStorage, ActivityIndicator, TouchableOpacity} from 'react-native'
+import { ProgressDialog } from 'react-native-simple-dialogs';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
  
 class DocumentDetails extends Component {
+
+    static navigationOptions = {
+        title: "Document details"
+    }
+
     state = {
         auth: null,
         id: this.props.navigation.state.params.Id,
-        details: null
+        details: null,
+        pdVisible: true,
     }
 
     documentDetails = async() => {
@@ -19,8 +26,7 @@ class DocumentDetails extends Component {
         }}).then((response) => response.json())
         .then((responseJson) => {
             this.setState({details: responseJson["data"][0]})
-            console.warn(this.state.details)
-            console.warn(this.state.details["documentDetail"]["name"])
+            this.setState({pdVisible: false})
         })
         .catch((error) => {
             console.warn(error);
@@ -36,59 +42,155 @@ class DocumentDetails extends Component {
     render() {
         return (
             <View style={styles.mainContainer}>
-                <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Documents-Details
-                    </Text>
+                <ProgressDialog
+                    visible={this.state.pdVisible}
+                    title="Getting the info"
+                    message="Please wait..."
+                    activityIndicatorColor="#003d5a"
+                    activityIndicatorSize="small"
+                    animationType="fade"
+                />
                 {this.state.details != null ? 
                     <ScrollView>
+                        <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Documents-Details </Text>
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Name
+                                    File Name
                                 </Text>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                {this.state.details["documentDetail"]["name"]}
+                                    {this.state.details["documentDetail"]["fileName"]}
                                 </Text>
                             </View>
                         </View>
-                        {/* <Text style={{fontWeight: "bold", fontSize: 22, color: "black"}}> General </Text>
                         <View style={styles.DocumentsList}>
-                            <View style={styles.DocumentsList}>
-                                <TouchableOpacity style={{marginTop: -height*0.03}}>
-                                    <Dropdown
-                                        label="Change the date format from here"
-                                        data={data}
-                                        selectedItemColor="#003d5a"
-                                        rippleCentered={true}
-                                        itemTextStyle={"helvetica"}
-                                    >
-                                    </Dropdown>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.DocumentsList}>
-                                <Text
-                                    style={[styles.DocumentsListFont, {fontSize: 17, color: "#003d5a", textDecorationLine: "underline"}]}
-                                    onPress={() => Linking.openURL('https://account.cygnature.io/Terms-Condition')}
-                                >
-                                    Terms & Conditions
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    Activation Status
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    {
+                                        this.state.details["documentDetail"]["isActive"] ? <Text>Yes</Text>
+                                        : <Text>NO</Text>
+                                    }
                                 </Text>
                             </View>
-                            <View style={styles.DocumentsList}>
-                                <Text
-                                    style={[styles.DocumentsListFont, {fontSize: 17, color: "#003d5a", textDecorationLine: "underline"}]}
-                                    onPress={() => Linking.openURL('https://account.cygnature.io/Privacy-Policy')}
-                                >
-                                    Privacy Policy
+                        </View>
+                        <View style={styles.DocumentsList}>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    Uploaded By
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    {this.state.details["documentDetail"]["uploadedBy"]}
                                 </Text>
                             </View>
-                            <View style={styles.DocumentsList}>
-                                <Text
-                                    style={[styles.DocumentsListFont, {fontSize: 17, color: "#003d5a", textDecorationLine: "underline"}]}
-                                    onPress={() => Linking.openURL('https://www.cygnature.io')}
-                                >
-                                    About us
+                        </View>
+                        <View style={styles.DocumentsList}>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    Hash
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    {this.state.details["documentDetail"]["documentFileHash"]}
                                 </Text>
                             </View>
-                        </View> */}
+                        </View>
+                        <View style={styles.DocumentsList}>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    Status
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    {this.state.details["documentDetail"]["documentStatus"]}
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={styles.DocumentsList}>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    Created at
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    {this.state.details["documentDetail"]["creationTime"]}
+                                </Text>
+                            </View>
+                        </View>
+                        <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Document-History </Text>
+                        <View style={styles.DocumentsList}>
+                            <View style={{flexDirection: "row"}}>
+                                <Text>
+                                    {this.state.details["documentHistory"][0]["fullName"]}: 
+                                    {this.state.details["documentHistory"][0]["historyText"]}
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={styles.DocumentsList}>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    Signed by current user?
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    {this.state.details["signedByCurrentUser"]}
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={styles.DocumentsList}>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    Signed by all users?
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    {
+                                        this.state.details["signedByCurrentUser"] ? <Text>Yes</Text>
+                                        : <Text>NO</Text>
+                                    }
+                                </Text>
+                            </View>
+                        </View>
+                        <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Signers </Text>
+                        <View style={styles.DocumentsList}>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    User Email
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    {this.state.details["signers"][0]["email"]}
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={styles.DocumentsList}>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    User Name
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    {this.state.details["signers"][0]["fullName"]}
+                                </Text>
+                            </View>
+                        </View>
+                        <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Observers </Text>
+                        <View style={styles.DocumentsList}>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    Observers
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    {this.state.details["observers"]}
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={styles.DocumentsList}>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    Rejected?
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    {this.state.details["rejectedByCurrentUser"] ? <Text>Yes</Text>
+                                    : <Text>No</Text>}
+                                </Text>
+                            </View>
+                        </View>
                     </ScrollView>
                     : <ActivityIndicator color="white" size="large" />
                 }
@@ -120,6 +222,6 @@ const styles = StyleSheet.create({
     DocumentsListFont:{
         flex: 0.5,
         color: "black",
-        fontSize: 12
+        fontSize: 17
     },
 })

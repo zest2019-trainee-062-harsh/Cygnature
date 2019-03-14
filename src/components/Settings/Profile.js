@@ -138,13 +138,13 @@ export default Profile
 
 const styles = StyleSheet.create({
     mainContainer:{
-        height: height*0.75,
-        margin: 7,
-        borderWidth: 2,
+        borderWidth:1,
+        flex:1,
+        backgroundColor: 'white',
+        margin: 7, borderWidth: 2,
         borderRadius:5,
         borderColor: "#003d5a",
-        padding: 10,
-        backgroundColor: "white"
+        padding: 10
     },
     DocumentsList:{
         flex: 1,

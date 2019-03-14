@@ -18,7 +18,6 @@ const AppNavigator = createStackNavigator({
   Settings: {screen: Settings},
   Canvas: {screen: Canvas},
   DocumentDetails: {screen: DocumentDetails},
-  
 });
 
 const AppContainer = createAppContainer(AppNavigator);
