@@ -37,7 +37,7 @@ class OTP extends Component {
             awaitingOthers: null,
             completed: null,
             expireSoon: null,
-         },
+        },
     }
 
     getCount() {
@@ -83,9 +83,11 @@ class OTP extends Component {
     }
     checkOTP() {
         if(this.state.otp == this.state.defaultotp) {
+            AsyncStorage.setItem('opt_check','done');
             this.props.navigation.navigate("Dashboard" ,{"data":this.state.data, "count": this.state.count, "auth": this.state.auth})
         }
         else {
+            AsyncStorage.setItem('opt_check','not_present');
             console.warn("OTP does not Match")
         }
     }
