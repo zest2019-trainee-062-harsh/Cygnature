@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import Signature from 'react-native-signature-canvas';
-import SignatureCapture from 'react-native-signature-capture';
+
  
 export default class Index extends Component {
   constructor(props) {
@@ -13,23 +13,6 @@ export default class Index extends Component {
     this.setState({ signature });
   };
 
-  saveSign() {
-    this.refs["sign"].saveImage();
-};
-
-resetSign() {
-    this.refs["sign"].resetImage();
-}
-
-_onSaveEvent(result) {
-    //result.encoded - for the base64 encoded png
-    //result.pathName - for the file path name
-    console.log(result);
-}
-_onDragEvent() {
-     // This callback will be called when the user enters signature
-    console.log("dragged");
-}
 
  
   render() {

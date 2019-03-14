@@ -43,6 +43,10 @@ class OTP extends Component {
     getCount() {
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/dashboard/document-counts/', {
             method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': this.state.auth,
+            },
             }).then((response) => response.json())
             .then((responseJson) => {
             
