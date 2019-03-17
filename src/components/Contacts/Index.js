@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, TouchableOpacity,TouchableHighlight, SwipeableFlatList, AsyncStorage} from 'react-native'
+import {View, Text, StyleSheet, Alert, 
+    TouchableOpacity,TouchableHighlight, SwipeableFlatList, AsyncStorage} from 'react-native'
 
 import Icon from 'react-native-vector-icons/Ionicons'
 import AddModal from './AddModal'
@@ -16,20 +17,31 @@ export default class Contacts extends Component {
         res:[],
         data:[],
         contactId: null,
+        refreshing:false
     }
 
 
     componentWillMount() {
           this.view()
+          this.onRefresh()
 
     }
 
      
     floatClicked=() => {
-        //alert("clicked")+
-        this.refs.AddModal.show();
+        //alert("clicked")
+        this.refs.AddModal.show()
+    
         
     }
+
+    onRefresh = () => {
+        this.setState({refreshing: true});
+        this.view().then(() => {
+          this.setState({refreshing: false});
+        });
+      }
+    
 
     view = async() => {
         let auth = await AsyncStorage.getItem('auth');
@@ -42,10 +54,8 @@ export default class Contacts extends Component {
             'Authorization':this.state.auth
             // 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.N9w0jV/v+9PKjqTQVRpre2jTzBser7/a/Thzwn6/3UCGTehr+Gk9tZrbfUo0jndFhKFx2ywj3gA0kjDn9uf/mrfnjcwIru3WHKGL1lhTCxH/Uf7NYBtBbAd5M1f77b2aqFJHSXiQ0miSqKUB2cipfOf88VU+XiCO57FQtQzRFX0BtR5LZHaZQqSMMj8y47n6M86I6CKl/SntvdAyzVMh7uXFWsaYHY/nKmyIunJgewZM3q2ImLEx7ndLwRT1Kpus2er5pnvq19gX43RfAEkl80kK7axwGX2rPYYpoedDBXS35npshScOXwmZhiv36CmefEFHYLgFb83BWVafahApZ5huYSa1DHVNA6rCFJmrEdIZSVy/3U3prOcyiOsRM11DwsXwuJoOVYlwJgvluzUgDz32moOaTde6a1vkrdMaedYDyNNolAGSQ1Pu3+CKxRmp2tRpNY7GaajQVLaie574mFc2BGCwJdrueGAA8DuCPCgN2fpVlMYrufbYI7om3MnSjypSyoFuWg4O+4PG72+Qm5HvUfADtSbX4REh6XWBwyt89NRYf9f/qp/S3aLWZ8XsY5akfYKBECZQ6H6Z3rVRxAW7OgnqlPlAMBSw+DqAi3+28ActC0gqb3KOiDJFb3jIT4OoAMBRAA3hdAmblTr6EwpPmbxXqoCZ2CFL/PQqA/OTuKiBadJ1ZxkxCuFcb2Cl2J1fHnRKKWqv3CY4UMyBVkIFH2zGCh3g5IgaG3hH6IYaM2xrtMNJ2AZRByaG0ki5r99ydraBgmbN6OhEaKYlnG5RqR3tuIpNieQDbe6hFZEpvqk8iOk4pD2/nm2gBbymmt9bQcX1giYgYVUgsOUBytjTawP4g1BeJ0Rt0w0ev/jotRYNpxQaWs5aMGMYfdPW.ooqT_toFub_53Hn22ZdRhSAkcNnJrnwlDag93pWBvlA',
         }}).then((response) => response.json())
-        .then((responseJson) => {
-            //this.setState({details: responseJson["data"][0]})
-            //console.warn(responseJson["data"])
-            
+        .then((responseJson) => { 
+           
            this.state.res.map((y) => {
                 this.state.data.pop(y)
                 })
@@ -54,6 +64,11 @@ export default class Contacts extends Component {
             this.state.res.map((y) => {
                 this.state.data.push(y)
                 })
+                
+
+                if(this.state.data.length < 1) {
+                    this.setState({ contactsCount: 0})
+                }
                 //console.warn(this.state.data)
         })
         .catch((error) => {
@@ -76,15 +91,7 @@ export default class Contacts extends Component {
         }}).then((response) => response.json())
         .then((responseJson) => {
             ///console.warn('yes')
-            this.view()
-            //this.setState({details: responseJson["data"][0]})
-            //console.warn(responseJson["data"])
-            // this.setState({res: responseJson["data"], contactsCount: 1})
-            // //console.warn(this.state.data)
-            // this.state.res.map((y) => {
-            //     this.state.data.push(y)
-            //     })
-                //console.warn(this.state.data)
+            this.onRefresh()
         })
         .catch((error) => {
             console.warn(error);
@@ -95,8 +102,12 @@ export default class Contacts extends Component {
     if( this.state.contactsCount == 0) {
         return (
         <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
-        <Text style={{margin:10, fontWeight: 'bold'}}> NO Contacts </Text>
         <Icon name="md-alert" color='black' size={100} />
+        <Text style={{ fontSize:25, fontWeight: 'bold'}}> NO Contacts </Text>
+        <Text style={{marginLeft:"20%", marginRight:"20%", fontSize:25, fontStyle: 'italic' }}>
+         You can add contacts by clicking "+" button at bottom right.
+         </Text>
+        
 
 
         <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
@@ -110,19 +121,20 @@ export default class Contacts extends Component {
         else {
         return (
             <View style={{
-                borderWidth:1,
-                borderColor:'black',
+                borderColor:'#003d5a',
+                borderWidth: 2,
+                borderRadius:5,
                 flex:1,
                 backgroundColor: 'white',
-                margin: 7, borderWidth: 2,
-                borderRadius:5,
-                borderColor: "#003d5a",
+                margin: 7,
                 padding: 10}
             }>
-            <Text style={{marginLeft:10, fontSize:24, fontWeight: 'bold', color: 'black'}}>
+            <Text style={{margin:10, fontSize:24, fontWeight: 'bold', color: 'black'}}>
                 Contact(s)
             </Text>
             <SwipeableFlatList
+            refreshing={this.state.refreshing}
+            onRefresh={this.onRefresh}
             data={this.state.data}
             keyExtractor={(item, index) => item.Id}
             bounceFirstRowOnMount
@@ -146,7 +158,10 @@ export default class Contacts extends Component {
         return (
             <View style={styles.row}>
                 <View style={styles.rowData}>
-                    <Text style={styles.rowDataText}>Name: {item.name}</Text>
+                <TouchableOpacity disabled style={styles.rowDataBg}>
+                        <Text style={styles.rowDataText1}>{item.shortName}</Text>
+                </TouchableOpacity>
+                    <Text style={styles.rowDataText2}>{item.name}</Text>
                 </View>
             </View>
         )
@@ -162,8 +177,24 @@ export default class Contacts extends Component {
 
                 <TouchableHighlight
                     style={[styles.actionButton, styles.actionButtonDest]}
-                onPress={() =>  this.delete(item.Id) }>
-                    <Text>Delete</Text>
+                onPress={() =>  
+                    Alert.alert(
+                        'Are you sure? ',
+                        'By clicking OK will delete this contact ',
+                        [
+                            {
+                                text: 'Yes', onPress: ()=> this.delete(item.Id)
+                            },
+                            {
+                                text: 'NO'
+                            },
+                        ],
+                        {cancelable: true},
+                    )
+                //this.delete(item.Id) 
+
+                }>
+                    <Text style={styles.actionButtonText}>Delete</Text>
                 </TouchableHighlight>
             </View>
         )
@@ -195,11 +226,28 @@ row: {
     backgroundColor: 'white',
 },
 rowData: {
-    flex: 1
+    flex: 1,
+    flexDirection: 'row',
+    margin:7,
 },
-rowDataText: {
+rowDataBg: {
+    position: 'absolute',
+    width:30,
+    height: 30,
+    backgroundColor: '#003d5a',
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+},
+rowDataText1: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: 'white',
+    borderRadius: 5,
+},
+rowDataText2: {
     fontSize: 20,
-    marginLeft: 30,
+    marginLeft: 50,
     fontWeight: '400',
     color: 'black'
 },
@@ -212,13 +260,14 @@ actionContainer: {
 actionButton: {
     padding: 10,
     width:80,
-    backgroundColor: '#999999'
+    backgroundColor: '#003d5a',
 },
 actionButtonDest:{
-    backgroundColor: '#FF0000'
+    backgroundColor: '#FF0000',
 
 },
 actionButtonText: {
-    textAlign: 'center'
+    textAlign: 'center',
+    color: 'white',
 },
 })

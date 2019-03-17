@@ -228,7 +228,7 @@ export default createMaterialBottomTabNavigator({
     },
 },
 {
-    // initialRouteName: 'contacts',
+    initialRouteName: 'contacts',
     barStyle: { backgroundColor: '#003d5a' },
     activeTintColor: 'white',
     navigationOptions: () => ({ header: null })
@@ -240,7 +240,8 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex:1,
         backgroundColor: 'white',
-        margin: 7, borderWidth: 2,
+        margin: 7, 
+        borderWidth: 2,
         borderRadius:5,
         borderColor: "#003d5a",
     },
@@ -267,7 +268,7 @@ const styles = StyleSheet.create({
     box2 :{
         marginTop: 20,
         margin: 10,
-        flex:0.30, 
+        flex:0.40, 
         borderRadius:5,
         borderColor: "#003d5a",
         borderWidth: 2,
@@ -281,7 +282,6 @@ const styles = StyleSheet.create({
     },
     box3 :{
         marginTop: 20,
-        marginBottom: 70,
         margin: 10,
         flex:0.30, 
         borderRadius:5,
@@ -306,9 +306,8 @@ const styles = StyleSheet.create({
         height: 50,
         backgroundColor: '#003d5a',
         borderRadius: 30,
-        bottom: 35,
-        right: 5,
-        marginBottom: 50,
+        bottom: 5,
+        right: -1,
         alignItems: 'center',
         justifyContent: 'center',
     },
