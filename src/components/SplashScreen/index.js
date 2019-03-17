@@ -1,8 +1,24 @@
 import React, {Component} from 'react';
 import {
+<<<<<<< HEAD
   AppRegistry, Text, View, StyleSheet, StatusBar, Animated, Dimensions, AsyncStorage, Alert
 } from 'react-native';
 
+=======
+<<<<<<< HEAD
+  AppRegistry, Text, View, StyleSheet, StatusBar, Animated, Dimensions,
+} from 'react-native';
+import { italic } from 'ansi-colors';
+
+var {height, width} = Dimensions.get('window')
+export default class SplashScreen extends Component{
+
+=======
+  AppRegistry, Text, View, StyleSheet, StatusBar, Animated, Dimensions
+} from 'react-native';
+
+//Getting device heigth and width
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
 var {height} = Dimensions.get('window')
 
 export default class SplashScreen extends Component{
@@ -11,6 +27,7 @@ export default class SplashScreen extends Component{
   }
 
   //Initial Animation Values
+<<<<<<< HEAD
   state = {
     logoOpacity: new Animated.Value(0),
     titleMarginTop: new Animated.Value(height/2),
@@ -21,6 +38,12 @@ export default class SplashScreen extends Component{
         expireSoon: null,
     },
     auth: null,
+=======
+>>>>>>> KrishalS
+  state = {
+    logoOpacity: new Animated.Value(0),
+    titleMarginTop: new Animated.Value(height/2)
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
   }
 
   async componentDidMount(){
@@ -29,11 +52,20 @@ export default class SplashScreen extends Component{
       //animations by sequence
       Animated.timing(this.state.logoOpacity, {
         toValue: 1,
+<<<<<<< HEAD
         duration: 500
+=======
+<<<<<<< HEAD
+        duration: 300
+=======
+        duration: 500
+>>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
       }),
       //Animate Text
       Animated.timing(this.state.titleMarginTop, {
         toValue: 10,
+<<<<<<< HEAD
         duration: 1000
       })
     ]).start(() => {
@@ -91,6 +123,35 @@ export default class SplashScreen extends Component{
     return(
       <View style={Styles.container}>
       <StatusBar backgroundColor="#414345" barStyle="light-content" />
+=======
+<<<<<<< HEAD
+        duration: 800
+      })
+    ]).start(() => {
+      //End of animations
+    })
+  }
+  render(){
+    return(
+      <View style={Styles.container}>
+        <StatusBar backgroundColor="#4f6d7a"  barStyle= "light-content"/>
+=======
+        duration: 1000
+      })
+    ]).start(() => {
+      //End of animations
+      this.props.navigation.navigate('Login')
+    })
+  }
+
+  render(){
+    return(
+      <View style={Styles.container}>
+      <StatusBar
+                backgroundColor="#414345"
+                    barStyle="light-content" />
+>>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
         <View style={Styles.container}>
           <Animated.Image
                 source={require('../../../img/logo-white.png')}
@@ -109,7 +170,14 @@ export default class SplashScreen extends Component{
   }
 }
 
+<<<<<<< HEAD
 //Styling
+=======
+<<<<<<< HEAD
+=======
+//Styling
+>>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
 const Styles = StyleSheet.create({
   container : {
     flex: 1,
@@ -119,4 +187,12 @@ const Styles = StyleSheet.create({
   },
 });
 
+<<<<<<< HEAD
 AppRegistry.registerComponent('SplashScreen', () => SplashScreen);
+=======
+<<<<<<< HEAD
+AppRegistry.registerComponent('SplashScreen', () => SplashScreen);
+=======
+AppRegistry.registerComponent('SplashScreen', () => SplashScreen);
+>>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda

@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+<<<<<<< HEAD
 import {View, Text, StyleSheet, Alert, 
     TouchableOpacity,TouchableHighlight, SwipeableFlatList, AsyncStorage} from 'react-native'
 
@@ -271,3 +272,18 @@ actionButtonText: {
     color: 'white',
 },
 })
+=======
+import {View, Text} from 'react-native'
+ 
+class Contacts extends Component {
+     render() {
+         return (
+             <View>
+                <Text> Contacts </Text>
+             </View>
+                )
+         }
+     }
+
+export default Contacts
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda

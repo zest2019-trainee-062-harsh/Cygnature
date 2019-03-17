@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+<<<<<<< HEAD
 import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, TextInput, Image} from 'react-native'
 
 var width = Dimensions.get('window').width; //full width
@@ -171,3 +172,18 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
 })
+=======
+import {View, Text} from 'react-native'
+ 
+class Profile extends Component {
+     render() {
+         return (
+             <View>
+                <Text> Profile </Text>
+             </View>
+                )
+         }
+     }
+
+export default Profile
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda

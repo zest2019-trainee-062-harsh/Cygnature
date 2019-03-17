@@ -13,6 +13,7 @@ Work done till 08/03/2019
 --> Document-List: UI with API. (Left Tasks: Filtering on the basis of their status.)
 --> Document-Details: API done. Still working on UI.
 
+<<<<<<< HEAD
 
 Date: 11/03/2019
 1. Fixed icons for the different sizes of devices.
@@ -28,6 +29,10 @@ Date: 12/03/2019
 
 Key Learnings:
 1. Splashscreen animation with timings.
+=======
+Key Learnings:
+1. Splashscreen animation with timings .
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
 2. Data-passing with Navigation using props.
 3. Using flex for responsiveness.
 4. Using BackHandler to handle the backpresses of the hardware back button.
@@ -37,7 +42,16 @@ Key Learnings:
 8. NetInfo library: Won't allow the user to use the application without the internet connection.
 9. Identifying the lattitude and longitude of the location where the device is currently located. It asks for
    permission when the application starts.
+<<<<<<< HEAD
 10. Using KeyboardAvoidingView to get a responsive UI whenever there's a change due to keyboard.
     It shifts the view of the screen upwards according to the heigth of the keyboard. 
 11. AsyncStorage: Used AsyncStorage for storing the private and commonly used data in the local storage.
 12. Used react-native-signature-canvas to add the signature using the canvas.
+=======
+10. Using KeyboardAvoidingView to get a responsive UI whenever there's a change due to keyboard. It shifts the view
+   of the screen upwards according to the heigth of the keyboard. 
+
+Date: 11/03/2019
+1. Fixed icons for the different sizes of devices.
+2. OTP Screen fixing.
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda

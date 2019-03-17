@@ -1,4 +1,12 @@
+import { createAppContainer,createStackNavigator } from 'react-navigation'
+import Loginscreen from './src/components/Login/Index.js'
+import OTP from './src/components/Login/OTP.js'
+import Register from './src/components/Register/Index'
+import Dashboard from './src/components/Dashboard/Index.js'
+import SplashScreen from './src/components/SplashScreen/Index'
+import  Settings  from './src/components/Settings/General.js';
 
+<<<<<<< HEAD
 import React from 'react';
 import {Text,View} from 'react-native';
 import { createAppContainer,createStackNavigator } from 'react-navigation'
@@ -14,8 +22,22 @@ const AppNavigator = createStackNavigator({
   Reg_First: {screen: Screen1},
   Reg_Second: {screen: Screen2},
   Dashboard: {screen: Dash},  
+=======
+
+const AppNavigator = createStackNavigator({
+  SplashScreen: {screen: SplashScreen},
+  Login: {screen: Loginscreen},
+  OTP: {screen: OTP},
+  Register: {screen: Register},
+  Dashboard: {screen: Dashboard},
+  Settings: {screen: Settings},
+>>>>>>> KrishalS
 });
 
 const AppContainer = createAppContainer(AppNavigator);
 
+<<<<<<< HEAD
 export default AppContainer;
+=======
+export default AppContainer;
+>>>>>>> KrishalS

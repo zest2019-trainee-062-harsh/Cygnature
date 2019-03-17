@@ -1,11 +1,16 @@
 import React, {Component} from 'react'
+<<<<<<< HEAD
 import {View, Text, StyleSheet, ScrollView, Dimensions, AsyncStorage, ActivityIndicator, TouchableOpacity} from 'react-native'
 import { ProgressDialog } from 'react-native-simple-dialogs';
+=======
+import {View, Text, StyleSheet, ScrollView, Dimensions} from 'react-native'
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
  
 class DocumentDetails extends Component {
+<<<<<<< HEAD
 
     static navigationOptions = {
         title: "Document details"
@@ -27,12 +32,30 @@ class DocumentDetails extends Component {
         .then((responseJson) => {
             this.setState({details: responseJson["data"][0]})
             this.setState({pdVisible: false})
+=======
+    state = {
+        token: this.props.navigation.state.params.token,
+        id: this.props.navigation.state.params.Id,
+        details: []
+    }
+
+    componentWillMount(){
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/document-detail/'+this.state.id,{
+        method: 'GET',
+        headers: {
+            'Authorization':'Bearer '+this.state.token,
+        }}).then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({details: responseJson["data"][0]})
+            console.warn(this.state.details["documentDetail"]["name"])
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
         })
         .catch((error) => {
             console.warn(error);
         });
     }
 
+<<<<<<< HEAD
     componentWillMount = async() =>{
         let auth = await AsyncStorage.getItem('auth');
         this.state.auth = auth;
@@ -188,11 +211,31 @@ class DocumentDetails extends Component {
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
                                     {this.state.details["rejectedByCurrentUser"] ? <Text>Yes</Text>
                                     : <Text>No</Text>}
+=======
+    render() {
+        return (
+            <View style={styles.mainContainer}>
+                <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Documents-Details {this.state.id}}
+                    </Text>
+                {this.state.details == null ? 
+                    <ScrollView>
+                        <View style={styles.DocumentsList}>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                    Name
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
                                 </Text>
                             </View>
                         </View>
                     </ScrollView>
+<<<<<<< HEAD
                     : <ActivityIndicator color="white" size="large" />
+=======
+                    : <Text>Not Available</Text>
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
                 }
             </View>
             );
@@ -222,6 +265,10 @@ const styles = StyleSheet.create({
     DocumentsListFont:{
         flex: 0.5,
         color: "black",
+<<<<<<< HEAD
         fontSize: 17
+=======
+        fontSize: 12
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
     },
 })

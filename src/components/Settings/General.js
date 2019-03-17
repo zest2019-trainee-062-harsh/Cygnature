@@ -1,13 +1,18 @@
 import React, {Component} from 'react'
+<<<<<<< HEAD
 import {
     View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, AsyncStorage
 } from 'react-native'
 import { Dropdown } from 'react-native-material-dropdown'
+=======
+import {View, Text} from 'react-native'
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
 
 import  { createMaterialTopTabNavigator } from 'react-navigation'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import  Profile from '../Settings/Profile.js'
+<<<<<<< HEAD
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
@@ -202,3 +207,55 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
 })
+=======
+ 
+class General extends Component {
+     render() {
+         return (
+             <View>
+                <Text> Settings </Text>
+             </View>
+                )
+         }
+     }
+     export default createMaterialTopTabNavigator({
+        general: { screen: General,
+            navigationOptions: {
+                tabBarLabel: 'General',
+                tabBarIcon: ({tintColor}) => (
+                    <Icon name="md-home" color={tintColor} size={18} />
+                )
+            }
+        },
+        profile: { screen: Profile,
+            navigationOptions: {
+                tabBarLabel: 'Profile',
+                tabBarIcon: ({tintColor}) => (
+                    <Icon name="md-document" color={tintColor} size={18} />
+                )
+            }
+        }, 
+    },
+    {
+        tabBarOptions: {
+            activeTintColor: 'white',
+            style: {
+                backgroundColor: '#003d5a'
+            },
+            indicatorStyle: {
+                height: 0
+            },
+            labelStyle: {
+                fontSize: 12,
+                fontWeight: 'bold'
+            },
+            showIcon: true,
+            //lazy:  true,
+            
+        },
+        navigationOptions: () => ({ header: null })
+    
+    })
+    
+    
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
