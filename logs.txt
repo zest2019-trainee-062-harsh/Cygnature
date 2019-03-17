@@ -1,0 +1,43 @@
+Work done till 08/03/2019
+--> Splashscreen using Animated library.
+--> Login and Register with API, Validations and Button Enable/Disable
+--> OTP (Left Tasks: Responsiveness)
+--> Dashboard: API for document count.
+--> Navigation: Bottom Navbar after login.
+	Modules:
+	i. Dashboard : Need to sign, Waiting for Others, Recent Documents and Quick Actions
+	ii. Document-List
+	iii. Contacts
+	iv. Settings
+--> Dashboard: Dashboard API count along with UI and recent documents.
+--> Document-List: UI with API. (Left Tasks: Filtering on the basis of their status.)
+--> Document-Details: API done. Still working on UI.
+
+
+Date: 11/03/2019
+1. Fixed icons for the different sizes of devices.
+2. OTP Screen fixing.
+3. R&D about the canvas.
+
+Date: 12/03/2019
+1. Made Canvas UI for adding signature on the button click at the dashboard screen.
+	Warning is still there.
+2. Contact UI. (AddContact modal UI with API)
+3. Settings: General and Profile only UI. Left Tasks: API
+4. AsyncStorage: Stored the auth token, email and password in the local storage.
+
+Key Learnings:
+1. Splashscreen animation with timings.
+2. Data-passing with Navigation using props.
+3. Using flex for responsiveness.
+4. Using BackHandler to handle the backpresses of the hardware back button.
+5. Changing the color of the Status bar using StatusBar library.
+6. Dropdown library to create Dropdown menu with options.
+7. ActivityIndicator library to show the loading process.
+8. NetInfo library: Won't allow the user to use the application without the internet connection.
+9. Identifying the lattitude and longitude of the location where the device is currently located. It asks for
+   permission when the application starts.
+10. Using KeyboardAvoidingView to get a responsive UI whenever there's a change due to keyboard.
+    It shifts the view of the screen upwards according to the heigth of the keyboard. 
+11. AsyncStorage: Used AsyncStorage for storing the private and commonly used data in the local storage.
+12. Used react-native-signature-canvas to add the signature using the canvas.
