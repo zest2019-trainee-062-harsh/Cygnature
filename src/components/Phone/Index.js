@@ -45,18 +45,25 @@ export default class Index extends Component {
             });
 
     }
+    onChangeHandler = (value) => {
+        console.warn("Selected value = ", value);
+      }
 
 
   render() {
+        
     return (
       <View style={styles.container}>
-        <TouchableOpacity  style= {styles.boxtop}>
+      
+      <View style={styles.boxtop}>
         <Dropdown
-                label='hi'
-                data = {this.state.countryCode}
+                value="+91"
+                data = {this.state.data}
+                valueExtractor = {({countryCode}) => countryCode}
+                onChangeText = {value => this.onChangeHandler(value)}
                 selectedItemColor = "red"
             />
-        </TouchableOpacity>
+        </View>
          <View style={styles.box3}>
         <TextInput
                 placeholderTextColor='grey'
@@ -81,17 +88,19 @@ const styles = StyleSheet.create({
     container: {
         padding:30,
         marginBottom: 70,
-        width:200,
+        //width:200,
+        flex:1,
         flexDirection:"row",
     },
     boxtop: {
-       // flex:0.5,
-        width: 50,
+        flex:0.2,
+        //width: 70,
         // flexDirection:"row"
     },
     box3: {
-        // flex:0.5,
-        width:100,
+        flex:0.8,
+        //width:150,
+        paddingTop: 20,
 
 
     },
@@ -100,7 +109,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         marginBottom: 15,
         fontSize: 12,
-        borderRadius: 30,
+        borderRadius: 50,
         fontFamily: 'Helvetica'
     },
 })

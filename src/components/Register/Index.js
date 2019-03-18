@@ -14,6 +14,7 @@ import {
     Linking,
 } from 'react-native'
 
+import { Dropdown } from 'react-native-material-dropdown';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 
 import RNLocation from 'react-native-location';
@@ -50,6 +51,8 @@ class Register extends Component {
         rPhone: " ",
         rLat: " ",
         rLon: " ",
+        data:[],
+        countryCode: null,
             
     }
 
@@ -261,6 +264,31 @@ class Register extends Component {
                 });
             }
         }
+        componentWillMount(){
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api/setting/get/', {
+                method: 'GET',
+                }).then((response) => response.json())
+                .then((responseJson) => {
+            
+                    this.setState({data : responseJson["data"][0]["countries"]})
+                    //console.warn(this.state.data)
+                    
+                    //console.warn(this.state.countryCode)
+                })
+                .catch((error) => {
+                    console.warn(error);
+                });
+    
+        }
+        onChangeHandler = (value) => {
+            // console.warn(this.state.countryCode);
+            // console.warn("Selected value = ", value);
+            this.setState({countryCode: value.replace(/[^0-9]/g, '')})
+            
+            console.warn(this.state.countryCode);
+          }
+    
+    
     
 
     render(){
@@ -397,7 +425,28 @@ class Register extends Component {
                             onSubmitEditing={() => this.REGInput7.focus()}
                             style= { styles.boxTI }>
                         </TextInput>
-                        */}
+                        */} 
+                        
+                    <View style={styles.mainBox}>
+                       <View style={styles.box1}>
+                        <Dropdown
+                        containerStyle={{
+                            marginBottom: -20,
+                            paddingTop:10
+                        }}
+                        pickerStyle={{
+                            marginBottom: -40,
+                            paddingTop:10
+                        }}
+                        
+                        value="+91"
+                        data = {this.state.data}
+                        valueExtractor = {({countryCode}) => countryCode}
+                        onChangeText = {value => this.onChangeHandler(value)}
+                        selectedItemColor = "red"
+                        />
+                        </View>
+                        <View style={styles.box2}>
                         <TextInput
                             placeholderTextColor='grey'
                             keyboardType="numeric"
@@ -406,12 +455,16 @@ class Register extends Component {
                             autoCapitalize="none"
                             autoCorrect={false}
                             maxLength={10}
+                            style={ styles.boxTI }
                             onChangeText={text => this.validations(text, "phone")}
                             //ref={(input) => this.REGInput7 = input
                             ref={(input) => this.REGInput5 = input
                             }
-                            style= { styles.boxTI }>
+                            >
                         </TextInput>
+                        </View>
+                       </View> 
+                        
 
                         <Text style={ styles.boxDisc }>
                         By Clicking on 'Register' Button , You agree to the 
@@ -452,6 +505,24 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
         color: 'white',
         textAlign: 'center'
+    },
+    mainBox : {
+        //padding:30,
+        //marginBottom: 40,
+        flex:1,
+        flexDirection:"row",
+    },
+    box1:{
+        flex:0.3,
+        backgroundColor: 'rgba(255,255,255,0.7)',
+        paddingHorizontal: 20,
+        marginBottom: 15,
+        fontSize: 12,
+        borderRadius: 30,
+        fontFamily: 'Helvetica'
+    },
+    box2: {
+        flex:0.7,
     },
     boxTI: {
         backgroundColor: 'rgba(255,255,255,0.7)',
