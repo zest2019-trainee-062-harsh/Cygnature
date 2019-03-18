@@ -48,7 +48,6 @@ export default class Index extends Component {
 
 
   render() {
-    // const data = this.createData();
     return (
       <View style={styles.container}>
         <TouchableOpacity  style= {styles.boxtop}>
@@ -56,7 +55,6 @@ export default class Index extends Component {
                 label='hi'
                 data = {this.state.countryCode}
                 selectedItemColor = "red"
-                //onValueChange = {(countryCode) => this.setState(country)}
             />
         </TouchableOpacity>
          <View style={styles.box3}>

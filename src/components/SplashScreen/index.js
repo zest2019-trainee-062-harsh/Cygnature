@@ -3,7 +3,6 @@ import {
   AppRegistry, Text, View, StyleSheet, StatusBar, Animated, Dimensions, AsyncStorage
 } from 'react-native';
 
-//Getting device heigth and width
 var {height} = Dimensions.get('window')
 
 export default class SplashScreen extends Component{
@@ -45,18 +44,17 @@ export default class SplashScreen extends Component{
 
   authCheck = async() =>{
     let auth = await AsyncStorage.getItem('auth');
-    let otp = await AsyncStorage.getItem('otp');
-      if(otp == 'not_present'){
-          this.props.navigation.navigate('Login')
+    let otp = await AsyncStorage.getItem('otp_check');
+    if(otp == 'not_present' || otp == null){
+        this.props.navigation.navigate('Login')
+    }else{
+      if(auth == 'not_present' || auth == null){
+        this.props.navigation.navigate('Login')
       }else{
-        if(auth == 'not_present'){
-          this.props.navigation.navigate('Login')
-        }else{
-          this.state.auth = auth;
-          this.getCount();
-          this.props.navigation.navigate("Dashboard" ,{"count": this.state.count})
-        }
+        this.state.auth = auth;
+        this.getCount();
       }
+    }
   }
 
   getCount() {
@@ -68,14 +66,11 @@ export default class SplashScreen extends Component{
         },
         }).then((response) => response.json())
         .then((responseJson) => {
-        
-            //this.state.count = responseJson["data"]
-            //console.warn(responseJson["data"][0]["awaitingMySign"])
             this.state.count["awaitingMySign"] = responseJson["data"][0]["awaitingMySign"]
             this.state.count["awaitingOthers"] = responseJson["data"][0]["awaitingOthers"]
             this.state.count["completed"] = responseJson["data"][0]["completed"]
             this.state.count["expireSoon"] = responseJson["data"][0]["expireSoon"]
-            //console.warn(this.state.count)
+            this.props.navigation.navigate("Dashboard" ,{"count": this.state.count})
         })
         .catch((error) => {
             console.warn(error);

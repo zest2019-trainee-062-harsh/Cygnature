@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, StyleSheet,Text, TouchableOpacity, ScrollView, StatusBar, BackHandler, Alert} from 'react-native'
+import {View, StyleSheet,Text, TouchableOpacity, ScrollView, StatusBar, BackHandler, Alert, AsyncStorage} from 'react-native'
 const util = require('util');
 import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -16,7 +16,6 @@ class Dashboard extends Component {
     constructor(props) {
         super(props)
         this.state.data  = this.props.navigation.getParam('data');
-        this.state.count  = this.props.navigation.getParam('count');
         //console.warn(this.state.token)
         //console.warn(this.props.navigation.getParam('data'))
     }
@@ -35,7 +34,8 @@ class Dashboard extends Component {
          },
     }
 
-    componentDidMount(){
+    componentWillMount = async() =>{
+        this.state.count  = this.props.navigation.getParam('count');
         BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
     }
     
@@ -55,7 +55,8 @@ class Dashboard extends Component {
         return true;
     }
 
-    floatClicked=() => {
+    floatClicked= async() => {
+        alert(AsyncStorage.getItem('otp_check'))
         alert("clicked")
     }
 
@@ -227,7 +228,7 @@ export default createMaterialBottomTabNavigator({
     },
 },
 {
-    // initialRouteName: 'settings',
+    // initialRouteName: 'contacts',
     barStyle: { backgroundColor: '#003d5a' },
     activeTintColor: 'white',
     navigationOptions: () => ({ header: null })
@@ -237,78 +238,85 @@ export default createMaterialBottomTabNavigator({
 
 const styles = StyleSheet.create({
     mainContainer: {
-        width: width,
-        height: height,
-       },
-       box1: {
+        flex:1,
+        backgroundColor: 'white',
+        margin: 7, borderWidth: 2,
+        borderRadius:5,
+        borderColor: "#003d5a",
+    },
+    box1: {
         margin:10,
         flexDirection: 'row',
         flex:0.35, 
-       },
-       boxHalf: {
+    },
+    boxHalf: {
         width: '50%', 
         backgroundColor: '#003d5a', 
         borderRightColor: 'white', 
         borderRightWidth: 2,
-        justifyContent: 'center'
-       },
-       box1Text: {
+        justifyContent: 'center',
+        borderRadius: 5
+    },
+    box1Text: {
         color: 'white',
         textAlign: 'center',
         fontSize: 25,
         fontFamily: 'monospace',
         fontWeight: 'bold',
-       },
-       box2 :{
+    },
+    box2 :{
         marginTop: 20,
         margin: 10,
         flex:0.30, 
-        borderColor: 'black',
+        borderRadius:5,
+        borderColor: "#003d5a",
         borderWidth: 2,
-       },
-       box2Text1: {
-           marginLeft:10,
-           fontSize:18,
-           color: 'black',
-           fontWeight: 'bold'
-       },
-       box3 :{
+        borderWidth: 2,
+    },
+    box2Text1: {
+        marginLeft:10,
+        fontSize:18,
+        color: 'black',
+        fontWeight: 'bold'
+    },
+    box3 :{
         marginTop: 20,
         marginBottom: 70,
         margin: 10,
         flex:0.30, 
-        borderColor: 'black',
+        borderRadius:5,
+        borderColor: "#003d5a",
         borderWidth: 2,
-       },
-       box3Text1: {
-           marginLeft:10,
-           fontSize:18,
-           color: 'black',
-           fontWeight: 'bold'
-       },
-       box3Text2: {
-           marginLeft:15,
-           margin:10,
-           fontSize:16,
-           color: '#0000EE',
-       },
-       floatButton: {
-           position: 'absolute',
-           width:50,
-           height: 50,
-           backgroundColor: '#003d5a',
-           borderRadius: 30,
-           bottom: 35,
-           right: 5,
-           marginBottom: 50,
-           alignItems: 'center',
-           justifyContent: 'center',
-       },
-       floatButtonText: {
-           color: 'white',
-           fontSize: 25
-       },
-       DocumentsList:{
+    },
+    box3Text1: {
+        marginLeft:10,
+        fontSize:18,
+        color: 'black',
+        fontWeight: 'bold'
+    },
+    box3Text2: {
+        marginLeft:15,
+        margin:10,
+        fontSize:16,
+        color: '#0000EE',
+    },
+    floatButton: {
+        position: 'absolute',
+        width:50,
+        height: 50,
+        backgroundColor: '#003d5a',
+        borderRadius: 30,
+        bottom: 35,
+        right: 5,
+        marginBottom: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    floatButtonText: {
+        color: 'white',
+        fontSize: 25
+    },
+    DocumentsList:{
         flex: 1,
         backgroundColor: '#003d5a',
         marginLeft: 10,

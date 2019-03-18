@@ -81,13 +81,13 @@ class OTP extends Component {
                 break;                
         }
     }
-    checkOTP() {
+    checkOTP = async() => {
         if(this.state.otp == this.state.defaultotp) {
-            AsyncStorage.setItem('opt_check','done');
-            this.props.navigation.navigate("Dashboard" ,{"data":this.state.data, "count": this.state.count, "auth": this.state.auth})
+            AsyncStorage.setItem('otp_check','done');
+            this.props.navigation.navigate("Dashboard" ,{"data":this.state.data, "count": this.state.count})
         }
         else {
-            AsyncStorage.setItem('opt_check','not_present');
+            AsyncStorage.setItem('otp_check','not_present');
             console.warn("OTP does not Match")
         }
     }
@@ -276,5 +276,4 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         fontWeight: 'bold'
     },
-
 })

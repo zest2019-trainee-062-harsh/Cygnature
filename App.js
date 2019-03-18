@@ -11,17 +11,14 @@ import Phone from './src/components/Phone/Index.js'
 
 
 const AppNavigator = createStackNavigator({
-  // SplashScreen: {screen: SplashScreen},
-  // Login: {screen: Loginscreen},
-  // OTP: {screen: OTP},
-  // Register: {screen: Register},
-  // Dashboard: {screen: Dashboard},
-  // Settings: {screen: Settings},
- // Canvas: {screen: Canvas},
-  // DocumentDetails: {screen: DocumentDetails},
-  Phone : {screen : Phone},
-
-  
+  SplashScreen: {screen: SplashScreen},
+  Login: {screen: Loginscreen},
+  OTP: {screen: OTP},
+  Register: {screen: Register},
+  Dashboard: {screen: Dashboard},
+  Settings: {screen: Settings},
+  Canvas: {screen: Canvas},
+  DocumentDetails: {screen: DocumentDetails},
 });
 
 const AppContainer = createAppContainer(AppNavigator);

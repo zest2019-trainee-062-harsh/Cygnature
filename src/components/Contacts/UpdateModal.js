@@ -22,11 +22,37 @@ class UpdateModal extends Component {
         jobD: '',
         auth: null,
         rMes: null,
-        pdVisible: false,
+        pdVisible: true,
+        res:[],
+        res1: null,
+        status: false,
+        contactId: null,
+        
     }
 
-    show = () => {
-        this.refs.myModal.open()
+    show = (text) => {
+        
+
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/contact/get-contact-by-id/'+(text),{
+        method: 'GET',
+        headers: {
+            'Authorization':this.state.auth
+            // 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.N9w0jV/v+9PKjqTQVRpre2jTzBser7/a/Thzwn6/3UCGTehr+Gk9tZrbfUo0jndFhKFx2ywj3gA0kjDn9uf/mrfnjcwIru3WHKGL1lhTCxH/Uf7NYBtBbAd5M1f77b2aqFJHSXiQ0miSqKUB2cipfOf88VU+XiCO57FQtQzRFX0BtR5LZHaZQqSMMj8y47n6M86I6CKl/SntvdAyzVMh7uXFWsaYHY/nKmyIunJgewZM3q2ImLEx7ndLwRT1Kpus2er5pnvq19gX43RfAEkl80kK7axwGX2rPYYpoedDBXS35npshScOXwmZhiv36CmefEFHYLgFb83BWVafahApZ5huYSa1DHVNA6rCFJmrEdIZSVy/3U3prOcyiOsRM11DwsXwuJoOVYlwJgvluzUgDz32moOaTde6a1vkrdMaedYDyNNolAGSQ1Pu3+CKxRmp2tRpNY7GaajQVLaie574mFc2BGCwJdrueGAA8DuCPCgN2fpVlMYrufbYI7om3MnSjypSyoFuWg4O+4PG72+Qm5HvUfADtSbX4REh6XWBwyt89NRYf9f/qp/S3aLWZ8XsY5akfYKBECZQ6H6Z3rVRxAW7OgnqlPlAMBSw+DqAi3+28ActC0gqb3KOiDJFb3jIT4OoAMBRAA3hdAmblTr6EwpPmbxXqoCZ2CFL/PQqA/OTuKiBadJ1ZxkxCuFcb2Cl2J1fHnRKKWqv3CY4UMyBVkIFH2zGCh3g5IgaG3hH6IYaM2xrtMNJ2AZRByaG0ki5r99ydraBgmbN6OhEaKYlnG5RqR3tuIpNieQDbe6hFZEpvqk8iOk4pD2/nm2gBbymmt9bQcX1giYgYVUgsOUBytjTawP4g1BeJ0Rt0w0ev/jotRYNpxQaWs5aMGMYfdPW.ooqT_toFub_53Hn22ZdRhSAkcNnJrnwlDag93pWBvlA',
+        }}).then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({res: responseJson["data"], res1: responseJson["data"][0]["name"],status:true})
+            //console.warn(this.state.res)
+            this.refs.myModal.open()
+            this.setState({contactId: text})
+            //console.warn(this.state.contactId)
+        
+        })
+        .catch((error) => {
+            console.warn(error);
+        });      
+        //console.warn(text)
+
+        
     }
     add = () => {
         //console.warn("add contact api")
@@ -37,51 +63,25 @@ class UpdateModal extends Component {
         // console.warn(this.state.jobT)
         // console.warn(this.state.jobD)
 
-        return fetch('http://cygnatureapipoc.stagingapplications.com/api/contact/add', {
-            method: 'POST',
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/contact/update/'+(this.state.contactId), {
+            method: 'PUT',
             headers: {
-                'Authorization': this.state.auth,
+                //'Authorization': this.state.auth,
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.N9w0jV/v+9PKjqTQVRpre2jTzBser7/a/Thzwn6/3UCGTehr+Gk9tZrbfUo0jndFhKFx2ywj3gA0kjDn9uf/mrfnjcwIru3WHKGL1lhTCxH/Uf7NYBtBbAd5M1f77b2aqFJHSXiQ0miSqKUB2cipfOf88VU+XiCO57FQtQzRFX0BtR5LZHaZQqSMMj8y47n6M86I6CKl/SntvdAyzVMh7uXFWsaYHY/nKmyIunJgewZM3q2ImLEx7ndLwRT1Kpus2er5pnvq19gX43RfAEkl80kK7axwGX2rPYYpoedDBXS35npshScOXwmZhiv36CmefEFHYLgFb83BWVafahApZ5huYSa1DHVNA6rCFJmrEdIZSVy/3U3prOcyiOsRM11DwsXwuJoOVYlwJgvluzUgDz32moOaTde6a1vkrdMaedYDyNNolAGSQ1Pu3+CKxRmp2tRpNY7GaajQVLaie574mFc2BGCwJdrueGAA8DuCPCgN2fpVlMYrufbYI7om3MnSjypSyoFuWg4O+4PG72+Qm5HvUfADtSbX4REh6XWBwyt89NRYf9f/qp/S3aLWZ8XsY5akfYKBECZQ6H6Z3rVRxAW7OgnqlPlAMBSw+DqAi3+28ActC0gqb3KOiDJFb3jIT4OoAMBRAA3hdAmblTr6EwpPmbxXqoCZ2CFL/PQqA/OTuKiBadJ1ZxkxCuFcb2Cl2J1fHnRKKWqv3CY4UMyBVkIFH2zGCh3g5IgaG3hH6IYaM2xrtMNJ2AZRByaG0ki5r99ydraBgmbN6OhEaKYlnG5RqR3tuIpNieQDbe6hFZEpvqk8iOk4pD2/nm2gBbymmt9bQcX1giYgYVUgsOUBytjTawP4g1BeJ0Rt0w0ev/jotRYNpxQaWs5aMGMYfdPW.ooqT_toFub_53Hn22ZdRhSAkcNnJrnwlDag93pWBvlA',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-             
-                name: this.state.name,
-                email: this.state.email,
+                id: this.state.contactId,
+                name: this.state.res1,
+                email: this.state.res[0]["email"],
                 countryId: "91",
-                mobileNumber: this.state.mobNu
+                mobileNumber: this.state.res[0]["mobileNumber"]
             
             }),
             }).then((response) => response.json())
             .then((responseJson) => {
-                if(responseJson == null) {
-                    console.warn("Failed")
-                    // Alert.alert(
-                    //     'Contact Adding Failed!',
-                    //     'Try Again',
-                    //     [
-                    //     {text: 'OK'},
-                    //     ],
-                    //     {cancelable: true},
-                    // );
-                }
-                else {
-                    //console.warn("yes")
-                    this.setState({pdVisible:true})
-                    //this.state.rMes=responseJson["message"]
-                                        
-                    // Alert(
-                    //     'Contact Added !',
-                    //     [
-                    //     {text: 'OK'},
-                    //     ],
-                    //     {cancelable: true},
-                    // );
-                    this.refs.myModal.close()
-                    //console.warn(this.state.data)
-                    //this.props.navigation.navigate('Login',{"message":this.state.rMes})
-                }
-
-                //console.warn(responseJson["message"])
+                
+                console.warn(responseJson["message"])
             })
             .catch((error) => {
                 console.warn(error);
@@ -89,29 +89,31 @@ class UpdateModal extends Component {
         
         
     }
-    update=(value, text)=> {
-        switch(value) {
-            case "name": {
-                this.setState({name: text})
-                return
-            }
-            case "email": {
-                this.setState({email: text})
-                return
-            }
-            case "mobNu": {
-                this.setState({mobNu: text})
-                return
-            }
-            case "jobT": {
-                this.setState({jobT: text})
-                return
-            }
-            case "jobD": {
-                this.setState({jobD: text})
-                return
-            }
-        }
+    update=(text)=> {
+        this.setState({res1: text})
+        
+        // switch(value) {
+        //     case "name": {
+        //         this.setState({res[0]: text})
+        //         return
+        //     }
+        //     case "email": {
+        //         this.setState({email: text})
+        //         return
+        //     }
+        //     case "mobNu": {
+        //         this.setState({mobNu: text})
+        //         return
+        //     }
+        //     case "jobT": {
+        //         this.setState({jobT: text})
+        //         return
+        //     }
+        //     case "jobD": {
+        //         this.setState({jobD: text})
+        //         return
+        //     }
+        // }
     }
      render() {
          return (
@@ -125,15 +127,11 @@ class UpdateModal extends Component {
                 //console.warn("modal closed")
             }}
             >
-            <ProgressDialog
-            visible={this.state.pdVisible}
-            title="Adding Contact!"
-            message="Please wait..."
-            activityIndicatorColor="#003d5a"
-            activityIndicatorSize="large"
-            animationType="slide"
-            /> 
+          
             <Text style={{marginLeft:14, fontSize: 16,  color: 'black', fontWeight:'bold'}}>Update Contact</Text>
+         
+            {this.state.status ?
+         
          <TextInput
                 style={ styles.textIn }
                 placeholder="Enter Name *"
@@ -142,10 +140,12 @@ class UpdateModal extends Component {
                 keyboardType="name-phone-pad"
                 autoCapitalize="none"
                 autoCorrect={false}
+                onChangeText={text => this.update(text)}
                 onSubmitEditing={() => this.ref1.focus()}
-                onChangeText={text => this.update("name",text)}
-                value={this.state.name}
-                />
+                value={this.state.res1}
+                />: null}
+
+             {this.state.status ?
             <TextInput
                 style={ styles.textIn }
                 placeholder="Enter Email *"
@@ -156,9 +156,10 @@ class UpdateModal extends Component {
                 autoCorrect={false}
                 onSubmitEditing={() => this.ref2.focus()}
                 ref={(input) => this.ref1 = input}
-                onChangeText={text => this.update("email",text)}
-                value={this.state.email}
-                />
+                value={this.state.res[0]["email"]}
+                />: null}
+
+            {this.state.status ?
             <TextInput
                 style={ styles.textIn }
                 placeholder="Enter Mobile Number *"
@@ -171,9 +172,12 @@ class UpdateModal extends Component {
                 autoCorrect={false}
                 onSubmitEditing={() => this.ref3.focus()}
                 ref={(input) => this.ref2 = input}
-                onChangeText={text => this.update("mobNu",text)}
-                value={this.state.mobNu}
+                value={this.state.res[0]["mobileNumber"]}
                 />
+                : null}
+
+                
+            {this.state.status ?
             <TextInput
                 style={ styles.textIn }
                 placeholder="Enter Job Title"
@@ -184,9 +188,10 @@ class UpdateModal extends Component {
                 autoCorrect={false}
                 onSubmitEditing={() => this.ref4.focus()}
                 ref={(input) => this.ref3 = input}
-                onChangeText={text => this.update("jobT",text)}
-                value={this.state.jobT}
-                />
+                value={this.state.res[0]["jobTitle"]}
+                /> : null}
+
+            {this.state.status ?
             <TextInput
                 style={ styles.textIn }
                 placeholder="Enter Job Desc"
@@ -196,13 +201,14 @@ class UpdateModal extends Component {
                 autoCapitalize="none"
                 autoCorrect={false}
                 ref={(input) => this.ref4 = input}
-                onChangeText={text => this.update("jobD",text)}
-                value={this.state.jobD}
-                />
+                value={this.state.res[0]["jobDescription"]}
+                /> : null}
+
+
            <TouchableOpacity style={ styles.btnSave } onPress={this.add}>
                     <Text style={styles.textSave}>Update Contact</Text>
             </TouchableOpacity>
-
+            
             </Modal>
                 )
          }
