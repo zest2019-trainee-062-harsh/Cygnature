@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-  AppRegistry, Text, View, StyleSheet, StatusBar, Animated, Dimensions, AsyncStorage
+  AppRegistry, Text, View, StyleSheet, StatusBar, Animated, Dimensions, AsyncStorage, Alert
 } from 'react-native';
 
 var {height} = Dimensions.get('window')
@@ -73,7 +73,17 @@ export default class SplashScreen extends Component{
             this.props.navigation.navigate("Dashboard" ,{"count": this.state.count})
         })
         .catch((error) => {
-            console.warn(error);
+          Alert.alert(
+            'Session Expired !',
+            'Please Re-Login',
+            [
+                {
+                    text: 'Re-Login', onPress: ()=>  this.props.navigation.navigate('Login')
+                },
+            ],
+            {cancelable: true},
+        );
+         
         });
 }
 
