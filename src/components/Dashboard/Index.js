@@ -141,81 +141,77 @@ class Dashboard extends Component {
     var {navigate} = this.props.navigation;
         return (
             <View style={{flex:1}}>
-            <StatusBar backgroundColor="#003d58" barStyle="light-content" />
-            <View style={styles.mainContainer}>
-                
-                <View style={styles.box1}>
-                    <View style={styles.boxHalf}>
-                        <Text style={styles.box1Text}>
-                            {this.state.count["awaitingMySign"]}
-                            {"\n"}{"\n"} Need to Sign
-                        </Text>
+                <StatusBar backgroundColor="#003d58" barStyle="light-content" />
+                <View style={styles.mainContainer}>
+                    
+                    <View style={styles.box1}>
+                        <View style={styles.boxHalf}>
+                            <Text style={styles.box1Text}>
+                                {this.state.count["awaitingMySign"]}
+                                {"\n"}{"\n"} Need to Sign
+                            </Text>
+                        </View>
+                        <View style={styles.boxHalf}>
+                            <Text style={styles.box1Text}>
+                                {this.state.count["awaitingOthers"]}
+                                {"\n"}{"\n"} Waiting for Others
+                            </Text>
+                        </View>
                     </View>
-                    <View style={styles.boxHalf}>
-                        <Text style={styles.box1Text}>
-                            {this.state.count["awaitingOthers"]}
-                            {"\n"}{"\n"} Waiting for Others
-                        </Text>
-                    </View>
-                </View>
 
-                <View style={styles.box2}>
-                    <Text style={styles.box2Text1}>Recent Documents</Text>
-                    {this.state.loading ? 
-                    <View style={{flex: 1,padding:"10%",justifyContent: 'center', alignContent:'center'}}> 
-                        <ActivityIndicator color="#003d5a" size="large" /> 
-                    </View> 
-                    : null}
-                    <ScrollView>
-                    {
-                        this.state.documents.map((docs)=>{
-                            return(
-                                <TouchableOpacity
-                                    key={docs.Id}
-                                    onPress={()=>this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})}
-                                >
-                                    <View style={styles.DocumentsList}>
-                                        <Text style={styles.DocumentsListFont}>
-                                            {docs.name}{docs.extension}
-                                        </Text>
-                                        <View style={{flexDirection: "row"}}>
-                                            <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                                Completed by {docs.uploadedBy}
+                    <View style={styles.box1}>
+                        <View style={styles.boxHalf}>
+                            <Text style={styles.box1Text}>
+                                {this.state.count["completed"]}
+                                {"\n"}{"\n"} Completed
+                            </Text>
+                        </View>
+                        <View style={styles.boxHalf}>
+                            <Text style={styles.box1Text}>
+                                {this.state.count["expireSoon"]}
+                                {"\n"}{"\n"} Expire Soon
+                            </Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.box2}>
+                        <Text style={styles.box2Text1}>Recent Documents</Text>
+                        {this.state.loading ? 
+                        <View style={{flex: 1,padding:"10%",justifyContent: 'center', alignContent:'center'}}> 
+                            <ActivityIndicator color="#003d5a" size="large" /> 
+                        </View> 
+                        : null}
+                        <ScrollView>
+                        {
+                            this.state.documents.map((docs)=>{
+                                return(
+                                    <TouchableOpacity
+                                        key={docs.Id}
+                                        onPress={()=>this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})}
+                                    >
+                                        <View style={styles.DocumentsList}>
+                                            <Text style={styles.DocumentsListFont}>
+                                                {docs.name}{docs.extension}
                                             </Text>
-                                            <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                                Date: {docs.creationTime}
-                                            </Text>
+                                            <View style={{flexDirection: "row"}}>
+                                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                                    Completed by {docs.uploadedBy}
+                                                </Text>
+                                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                                    Date: {docs.creationTime}
+                                                </Text>
+                                            </View>
                                         </View>
-                                    </View>
-                                </TouchableOpacity>
-                            )
-                        })
-                    }
-                    </ScrollView>
-                </View>
-                <View style={styles.box3}>
-                <ScrollView>
-                        <Text style={styles.box3Text1}>Quick Actions</Text>
-                        <TouchableOpacity 
-                            onPress={() => this.props.navigation.navigate("Canvas")}
-                            style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
-                            <Text style={styles.box3Text2}>Add/Edit Signature</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
-                            <Text style={styles.box3Text2}>Add Profile Picture</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-                            onPress={() => this.props.navigation.navigate("Contacts")}
-                            style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
-                            <Text style={styles.box3Text2}>View Contacts</Text>
-                        </TouchableOpacity>
-                    </ScrollView>
-                </View>
-            
-                <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
+                                    </TouchableOpacity>
+                                )
+                            })
+                        }
+                        </ScrollView>
+                    </View>
+                    <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
                         <Text style={styles.floatButtonText}>+</Text>
-                </TouchableOpacity>
-            </View>
+                    </TouchableOpacity>
+                </View>
             </View>
             )
         }
@@ -277,7 +273,7 @@ const styles = StyleSheet.create({
     box1: {
         margin:10,
         flexDirection: 'row',
-        flex:0.35, 
+        flex:0.25,
     },
     boxHalf: {
         width: '50%', 
@@ -285,7 +281,8 @@ const styles = StyleSheet.create({
         borderRightColor: 'white', 
         borderRightWidth: 2,
         justifyContent: 'center',
-        borderRadius: 5
+        borderRadius: 5,
+        marginBottom: -17
     },
     box1Text: {
         color: 'white',
@@ -295,9 +292,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     box2 :{
-        marginTop: 20,
+        marginTop: 25,
         margin: 10,
-        flex:0.40, 
+        flex:0.50,
         borderRadius:5,
         borderColor: "#003d5a",
         borderWidth: 2,
@@ -308,26 +305,6 @@ const styles = StyleSheet.create({
         fontSize:18,
         color: 'black',
         fontWeight: 'bold'
-    },
-    box3 :{
-        marginTop: 20,
-        margin: 10,
-        flex:0.30, 
-        borderRadius:5,
-        borderColor: "#003d5a",
-        borderWidth: 2,
-    },
-    box3Text1: {
-        marginLeft:10,
-        fontSize:18,
-        color: 'black',
-        fontWeight: 'bold'
-    },
-    box3Text2: {
-        marginLeft:15,
-        margin:10,
-        fontSize:16,
-        color: '#0000EE',
     },
     floatButton: {
         position: 'absolute',
