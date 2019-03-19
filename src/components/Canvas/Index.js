@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import Signature from 'react-native-signature-canvas';
-
  
 export default class Index extends Component {
   constructor(props) {
@@ -12,8 +11,6 @@ export default class Index extends Component {
   handleSignature = signature => {
     this.setState({ signature });
   };
-
-
  
   render() {
     const style = `.m-signature-pad--footer
@@ -22,44 +19,47 @@ export default class Index extends Component {
       color: #FFF;
     }`;
     return (
-      <View style={{ flex: 1, flexDirection: "column" }}>
-                <Text style={{alignItems:"center",justifyContent:"center"}}>Signature Capture Extended </Text>
-                <SignatureCapture
-                    style={[{flex:1},styles.signature]}
-                    ref="sign"
-                    onSaveEvent={this._onSaveEvent}
-                    onDragEvent={this._onDragEvent}
-                    saveImageFileInExtStorage={false}
-                    showNativeButtons={false}
-                    showTitleLabel={false}
-                    viewMode={"portrait"}/>
- 
-                <View style={{ flex: 1, flexDirection: "row" }}>
-                    <TouchableHighlight style={styles.buttonStyle}
-                        onPress={() => { this.saveSign() } } >
-                        <Text>Save</Text>
-                    </TouchableHighlight>
- 
-                    <TouchableHighlight style={styles.buttonStyle}
-                        onPress={() => { this.resetSign() } } >
-                        <Text>Reset</Text>
-                    </TouchableHighlight>
- 
-                </View>
- 
-            </View>
-        );
-    }
+      <View style={{ flex: 1 }}>
+        <View style={styles.preview}>
+          {this.state.signature ? (
+            <Image
+              resizeMode={"contain"}
+              style={{ width: 335, height: 114 }}
+              source={{ uri: this.state.signature }}
+            />
+          ) : null}
+        </View>
+        <Signature
+          onOK={this.handleSignature}
+          descriptionText="Sign"
+          clearText="Clear"
+          confirmText="Save"
+          webStyle={style}
+        />
+      </View>
+    );
   }
-    const styles = StyleSheet.create({
-      signature: {
-          flex: 1,
-          borderColor: '#000033',
-          borderWidth: 1,
-      },
-      buttonStyle: {
-          flex: 1, justifyContent: "center", alignItems: "center", height: 50,
-          backgroundColor: "#eeeeee",
-          margin: 10
-      }
-  });
+}
+ 
+const styles = StyleSheet.create({
+  preview: {
+    width: 335,
+    height: 114,
+    backgroundColor: "#F8F8F8",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 15
+  },
+  previewText: {
+    color: "#FFF",
+    fontSize: 14,
+    height: 40,
+    lineHeight: 40,
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor: "#69B2FF",
+    width: 120,
+    textAlign: "center",
+    marginTop: 10
+  }
+});
