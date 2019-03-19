@@ -59,7 +59,8 @@ class Documents extends Component {
         }),
         }).then((response) => response.json())
         .then((responseJson) => {
-            this.setState({documents: responseJson["data"][0]["documents"],
+            this.setState({
+                documents: responseJson["data"][0]["documents"],
                 totalPages: responseJson["data"][0]["totalPages"],
                 currentPage: responseJson["data"][0]["currentPage"]
             })

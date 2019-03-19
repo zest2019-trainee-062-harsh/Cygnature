@@ -47,6 +47,11 @@ Date: 18/03/2019
 2. R&D on image-picker and document-upload.
 3. Session-time out added after the token expires after 4 hours.
 
+Date: 19/03/2019
+1. Image-picker done.
+2. Document-list navigation done.
+3. 
+
 Key Learnings:
 1. Splashscreen animation with timings.
 2. Data-passing with Navigation using props.
@@ -66,3 +71,5 @@ Key Learnings:
     from the device camera after the photo is clicked.
 14. Used FlatList with Draggable to generate the options for the contacts that have been added
     by the user.
+15. Used moment() library in react-native to get the current time and date along with AM and PM
+    with the help of UTCOffset.

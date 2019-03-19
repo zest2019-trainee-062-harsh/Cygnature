@@ -4,6 +4,7 @@ const util = require('util');
 import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Dimensions } from "react-native";
+import moment from 'moment';
 
 import  Documents from '../Documents/Index.js'
 import  Contacts from '../Contacts/Index.js'
@@ -16,14 +17,12 @@ class Dashboard extends Component {
     constructor(props) {
         super(props)
         this.state.data  = this.props.navigation.getParam('data');
-        //console.warn(this.state.token)
-        //console.warn(this.props.navigation.getParam('data'))
     }
 
     static navigationOptions = {
         header: null
     }
-    
+
     state = {
         data: { },
         count: {
@@ -31,11 +30,46 @@ class Dashboard extends Component {
             awaitingOthers: null,
             completed: null,
             expireSoon: null,
-         },
+        },
+        auth: null,
+        documents: []
     }
 
+    getRecentDocuments = async() => {
+        let auth = await AsyncStorage.getItem("auth")
+        this.setState({auth: auth})
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/documents',{
+        method: 'POST',
+        headers: {
+            'Authorization':this.state.auth,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "documentStatusId": null,
+            "currentPage": 0,
+            "isNext": true,
+            "searchText": "",
+            "startDate": "",
+            "endDate": moment().utcOffset("+5:30").format("MM/DD/YYYY"),
+            "signatureType": 0,
+            "uploadedBy": "",
+            "signerName": "",
+            "dateDuration": ""
+        }),
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({documents: responseJson["data"][0]["documents"]
+            })
+            // console.warn(this.state.documents)
+        })
+        .catch((error) => {
+            console.warn(error);
+        });
+      }
+
     componentWillMount = async() =>{
-        this.state.count  = this.props.navigation.getParam('count');
+        this.getRecentDocuments();
+        this.state.count  = this.props.navigation.getParam('count')
         BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
     }
     
@@ -85,84 +119,30 @@ class Dashboard extends Component {
                 <View style={styles.box2}>
                     <Text style={styles.box2Text1}>Recent Documents</Text>
                     <ScrollView>
-                        <View style={styles.DocumentsList}>
-                            <Text style={styles.DocumentsListFont}>
-                                Document 1
-                            </Text>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Completed by
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    Date xxx
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <Text style={styles.DocumentsListFont}>
-                                Document 2
-                            </Text>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Completed by
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    Date xxx
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <Text style={styles.DocumentsListFont}>
-                                Document 3
-                            </Text>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Completed by
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    Date xxx
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <Text style={styles.DocumentsListFont}>
-                                Document 4
-                            </Text>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Completed by
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    Date xxx
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <Text style={styles.DocumentsListFont}>
-                                Document 5
-                            </Text>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Completed by
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    Date xxx
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <Text style={styles.DocumentsListFont}>
-                                Document 6
-                            </Text>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Completed by
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    Date xxx
-                                </Text>
-                            </View>
-                        </View>
+                    {
+                        this.state.documents.map((docs)=>{
+                            return(
+                                <TouchableOpacity
+                                    key={docs.Id}
+                                    onPress={()=>this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})}
+                                >
+                                    <View style={styles.DocumentsList}>
+                                        <Text style={styles.DocumentsListFont}>
+                                            {docs.name}{docs.extension}
+                                        </Text>
+                                        <View style={{flexDirection: "row"}}>
+                                            <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                                Completed by {docs.uploadedBy}
+                                            </Text>
+                                            <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                                Date: {docs.creationTime}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
                     </ScrollView>
                 </View>
             
@@ -228,7 +208,7 @@ export default createMaterialBottomTabNavigator({
     },
 },
 {
-    initialRouteName: 'documents',
+    // initialRouteName: 'documents',
     barStyle: { backgroundColor: '#003d5a' },
     activeTintColor: 'white',
     navigationOptions: () => ({ header: null })
@@ -317,14 +297,13 @@ const styles = StyleSheet.create({
     },
     DocumentsList:{
         flex: 1,
-        backgroundColor: '#003d5a',
-        marginLeft: 10,
-        marginRight: 10,
-        marginTop: 5,
-        marginBottom: 5
+        borderWidth: 1,
+        borderColor: "#003d5a",
+        borderRadius: 5,
+        margin: 5,
     },
     DocumentsListFont:{
         flex: 0.5,
-        color: "white"
+        color: "black"
     },
 })
