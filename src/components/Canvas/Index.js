@@ -21,7 +21,6 @@ export default class Index extends Component {
       background-color: red;
       color: #FFF;
     }`;
-  
     return (
       <View style={{ flex: 1, flexDirection: "column" }}>
                 <Text style={{alignItems:"center",justifyContent:"center"}}>Signature Capture Extended </Text>
