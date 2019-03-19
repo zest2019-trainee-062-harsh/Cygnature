@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions,
      AsyncStorage, } from 'react-native'
-import {Button } from 'react-native-elements'
 import { Dropdown } from 'react-native-material-dropdown'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -20,7 +19,8 @@ class Documents extends Component {
         previousPage: true,
         nextPage: false,
         pagination: null,
-
+        nextButtonOpacity : 1,
+        previousButtonOpacity : 0.5
     }
 
     componentWillMount = async() =>{
@@ -39,7 +39,6 @@ class Documents extends Component {
     }
 
     fetchData = async() =>{
-        this.setState({pdVisible: true})
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/documents',{
         method: 'POST',
         headers: {
@@ -60,36 +59,83 @@ class Documents extends Component {
         }),
         }).then((response) => response.json())
         .then((responseJson) => {
-            // console.warn(responseJson["data"][0]["documents"])
             this.setState({documents: responseJson["data"][0]["documents"],
                 totalPages: responseJson["data"][0]["totalPages"],
                 currentPage: responseJson["data"][0]["currentPage"]
             })
             this.setState({value: 1, pdVisible: false})
-            console.warn(responseJson)
-            console.warn(this.state.totalPages)
-            console.warn(this.state.currentPage)
+            // console.warn(this.state.currentPage)
+            if(this.state.currentPage == this.state.totalPages){
+                this.setState({
+                    nextPage: true,
+                    nextButtonOpacity: 0.5
+                })
+            }
+            if(this.state.currentPage != 1){
+                this.setState({
+                    previousPage: false,
+                    previousButtonOpacity: 1
+                })
+            }
         })
         .catch((error) => {
             console.warn(error);
         });
     }
 
-    nextPage() {
-        console.warn("Next Page")
+    nextPage(){
+        this.setState({pdVisible: true})
         if(this.state.currentPage < this.state.totalPages){
-            let currentPageNo = this.state.currentPage
-            currentPageNo = currentPageNo + 1
-            // this.state.e
             this.fetchData()
         }
     }
 
     previousPage() {
-        console.warn("Previous Page")
-        if(this.state.currentPage < this.state.totalPages){
-            this.setState({currentPage: this.state.currentPage - 1})
-            this.fetchData()
+        this.setState({pdVisible: true})
+        if(this.state.currentPage <= this.state.totalPages){
+            let currentPageNo = this.state.currentPage;
+            this.setState({currentPage: currentPageNo - 1})
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/documents',{
+            method: 'POST',
+            headers: {
+                'Authorization':this.state.auth,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "documentStatusId": null,
+                "currentPage": this.state.currentPage - 2,
+                "isNext": true,
+                "searchText": "",
+                "startDate": "",
+                "endDate": "",
+                "signatureType": 0,
+                "uploadedBy": "",
+                "signerName": "",
+                "dateDuration": ""
+            }),
+            }).then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({documents: responseJson["data"][0]["documents"],
+                    totalPages: responseJson["data"][0]["totalPages"]
+                })
+                this.setState({value: 1, pdVisible: false})
+                // console.warn(this.state.currentPage)
+                if(this.state.currentPage == 1){
+                    this.setState({
+                        previousPage: true,
+                        previousButtonOpacity: 0.5
+                    })
+                }        
+                if(this.state.currentPage < this.state.totalPages){
+                    this.setState({
+                        nextPage: false,
+                        nextButtonOpacity: 1
+                    })
+                }
+            })
+            .catch((error) => {
+                console.warn(error);
+            });
         }
     }
 
@@ -112,17 +158,20 @@ class Documents extends Component {
                 value: 7+" - Declined"
             }
         ]
-        return (
+        return(
             <View style={styles.mainContainer}>
-             <ProgressDialog
-                visible={this.state.pdVisible}
-                title="Fetching Documents!"
-                message="Please wait..."
-                activityIndicatorColor="#003d5a"
-                activityIndicatorSize="large"
-                animationType="slide"
-            />
+                <ProgressDialog
+                    visible={this.state.pdVisible}
+                    title="Fetching Documents!"
+                    message="Please wait..."
+                    activityIndicatorColor="#003d5a"
+                    activityIndicatorSize="large"
+                    animationType="slide"
+                />
                 <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Documents-List </Text>
+                <Text style={{fontWeight: "bold", fontSize: 10, color: "black"}}>
+                    {this.state.currentPage}/{this.state.totalPages}
+                </Text>
                 <ScrollView>
                     {
                         this.state.documents.map((docs)=>{
@@ -133,19 +182,18 @@ class Documents extends Component {
                                 onPress={()=>this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})}
                             >
                                 <View style={styles.DocumentsList}>
-                                        <Text style={[styles.DocumentsListFont, {fontSize: 17, fontWeight: "bold"}]}>
-                                            {docs.name}{docs.extension}
+                                    <Text style={[styles.DocumentsListFont, {fontSize: 17, fontWeight: "bold"}]}>
+                                        {docs.name}{docs.extension}
+                                    </Text>
+                                    <View style={{flexDirection: "row"}}>
+                                        <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                            Completed by {docs.uploadedBy}
                                         </Text>
-                                        <View style={{flexDirection: "row"}}>
-                                            <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                                Completed by {docs.uploadedBy}
-                                            </Text>
-                                            <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                                Date: {docs.creationTime}
-                                            </Text>
-                                        </View>
+                                        <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                            Date: {docs.creationTime}
+                                        </Text>
                                     </View>
-                                
+                                </View>
                             </TouchableOpacity>
                         );
                     })}
@@ -162,12 +210,11 @@ class Documents extends Component {
                     >
                     </Dropdown>
                 </TouchableOpacity>
-
                 {this.state.pagination ? 
                     <View style={styles.footerContainer}>
                         <View style={{flex: 0.5, alignItems: "center"}}>
-                            <TouchableOpacity style = { styles.buttonContainer }
-                                // disabled = {this.state.previousPage}
+                            <TouchableOpacity style = { [styles.buttonContainer, { opacity: this.state.previousButtonOpacity}] }
+                                disabled = {this.state.previousPage}
                                 onPress = {() => this.previousPage()}
                             >
                                 <Icon
@@ -178,7 +225,7 @@ class Documents extends Component {
                             </TouchableOpacity>
                         </View>
                         <View style={{flex: 0.5, alignItems: "center"}}>
-                            <TouchableOpacity style = { styles.buttonContainer }
+                            <TouchableOpacity style = { [styles.buttonContainer, { opacity: this.state.nextButtonOpacity}] }
                                 disabled = {this.state.nextPage}
                                 onPress = {() => this.nextPage()}
                             >
@@ -189,7 +236,7 @@ class Documents extends Component {
                                 />
                             </TouchableOpacity>
                         </View>
-                    </View> : null 
+                    </View> : null
                 }
                 </View>
             )
