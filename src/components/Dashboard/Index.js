@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import {View, StyleSheet,Text, TouchableOpacity, ScrollView, StatusBar, BackHandler, Alert, AsyncStorage} from 'react-native'
+import {View, StyleSheet,Text, TouchableOpacity, ScrollView, StatusBar, BackHandler, Alert, AsyncStorage,
+ActivityIndicator } from 'react-native'
 const util = require('util');
 import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -32,7 +33,8 @@ class Dashboard extends Component {
             expireSoon: null,
         },
         auth: null,
-        documents: []
+        documents: [],
+        loading: true
     }
 
     getRecentDocuments = async() => {
@@ -58,7 +60,9 @@ class Dashboard extends Component {
         }),
         }).then((response) => response.json())
         .then((responseJson) => {
-            this.setState({documents: responseJson["data"][0]["documents"]
+            this.setState({
+                documents: responseJson["data"][0]["documents"],
+                loading: false
             })
             // console.warn(this.state.documents)
         })
@@ -145,7 +149,6 @@ class Dashboard extends Component {
                     }
                     </ScrollView>
                 </View>
-            
                 <View style={styles.box3}>
                 <ScrollView>
                         <Text style={styles.box3Text1}>Quick Actions</Text>
