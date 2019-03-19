@@ -4,9 +4,10 @@ import OTP from './src/components/Login/OTP.js'
 import Register from './src/components/Register/Index'
 import Dashboard from './src/components/Dashboard/Index.js'
 import SplashScreen from './src/components/SplashScreen/index.js'
-import  Settings  from './src/components/Settings/General.js';
+import Settings  from './src/components/Settings/General.js';
 import Canvas from './src/components/Canvas/Index.js'
 import DocumentDetails from './src/components/Documents/DocumentDetails.js'
+import Contacts from './src/components/Contacts/Index.js'
 
 
 const AppNavigator = createStackNavigator({
@@ -18,6 +19,7 @@ const AppNavigator = createStackNavigator({
   Settings: {screen: Settings},
   Canvas: {screen: Canvas},
   DocumentDetails: {screen: DocumentDetails},
+  Contacts: {screen:Contacts}
 });
 
 const AppContainer = createAppContainer(AppNavigator);

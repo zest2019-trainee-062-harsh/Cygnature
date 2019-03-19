@@ -37,7 +37,8 @@ class Dashboard extends Component {
         },
         auth: null,
         documents: [],
-        loading: true
+        loading: true,
+        
     }
 
     getRecentDocuments = async() => {
@@ -160,6 +161,11 @@ class Dashboard extends Component {
 
                 <View style={styles.box2}>
                     <Text style={styles.box2Text1}>Recent Documents</Text>
+                    {this.state.loading ? 
+                    <View style={{flex: 1,padding:"10%",justifyContent: 'center', alignContent:'center'}}> 
+                        <ActivityIndicator color="#003d5a" size="large" /> 
+                    </View> 
+                    : null}
                     <ScrollView>
                     {
                         this.state.documents.map((docs)=>{
@@ -198,7 +204,9 @@ class Dashboard extends Component {
                         <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
                             <Text style={styles.box3Text2}>Add Profile Picture</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
+                        <TouchableOpacity 
+                            onPress={() => this.props.navigation.navigate("Contacts")}
+                            style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
                             <Text style={styles.box3Text2}>View Contacts</Text>
                         </TouchableOpacity>
                     </ScrollView>

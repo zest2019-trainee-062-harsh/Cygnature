@@ -21,6 +21,10 @@ export default class Contacts extends Component {
     }
 
 
+    static navigationOptions = {
+        title: "Contacts"
+    }
+
     componentWillMount() {
           this.view()
           this.onRefresh()
