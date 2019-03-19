@@ -97,17 +97,11 @@ class Dashboard extends Component {
     }
 
     floatClicked= async() => {
-        //alert(AsyncStorage.getItem('otp_check'))
-        //alert("clicked")
 
         DocumentPicker.show({
             filetype: [DocumentPickerUtil.allFiles()],
-          },(error,res) => {
-
-             
-       var file = {
-       }
-
+            },(error,res) => {
+                
        const formData = new FormData()
        formData.append('file',{
            
@@ -119,7 +113,7 @@ class Dashboard extends Component {
        //console.warn(formData)
        
             
- return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/upload',{
+    return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/upload',{
     method: 'POST',
     headers: {
         'Authorization':this.state.auth,
@@ -140,11 +134,6 @@ class Dashboard extends Component {
         console.warn(error.message);
     });      
           });
-
-
-          
-
-
     }
 
     render() {

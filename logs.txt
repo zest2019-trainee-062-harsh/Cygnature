@@ -50,7 +50,7 @@ Date: 18/03/2019
 Date: 19/03/2019
 1. Image-picker done.
 2. Document-list navigation done.
-3. 
+3. Document upload done.
 
 Key Learnings:
 1. Splashscreen animation with timings.
@@ -73,3 +73,4 @@ Key Learnings:
     by the user.
 15. Used moment() library in react-native to get the current time and date along with AM and PM
     with the help of UTCOffset.
+16. Used document-picker for selecting and uploading file and documents.
