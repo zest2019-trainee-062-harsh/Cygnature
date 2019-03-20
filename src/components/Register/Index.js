@@ -203,6 +203,70 @@ class Register extends Component {
             }
         }
     }
+    OTP() {
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/send-register-otp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: this.state.rEmail,
+                otpSentCount: "1",
+                countryId: "91",
+                phoneNumber: this.state.rPhone,
+            
+            }),
+            }).then((responseJson) => {
+                this.setState({pdVisible: false})
+               if(responseJson.status == 200){
+                this.verifyUser()
+            }
+            })
+            .catch((error) => {
+                console.warn(error.message);
+            });
+    }
+
+
+    verifyUser() {
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/verify-register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: this.state.rEmail,
+                countryId: "91",
+                phoneNumber: this.state.rPhone,
+                otp: "123456"
+            
+            }),
+            }).then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({pdVisible: false})
+                if(responseJson["message"] == null) {
+                    Alert.alert(
+                        'Registration Failed!',
+                        'Try Again',
+                        [
+                        {text: 'OK'},
+                        ],
+                        {cancelable: true},
+                    );
+                }
+                else {
+                    this.state.rMes=responseJson["message"]
+                    //console.warn(this.state.data)
+                    this.props.navigation.navigate('Login',{"message":this.state.rMes})
+                }
+
+                console.warn(responseJson)
+            })
+            .catch((error) => {
+                console.warn(error.message);
+            });
+
+    }
     
     register(){
         const { register } = this.state
@@ -235,26 +299,15 @@ class Register extends Component {
                     userLongitude: this.state.rLon,
                 
                 }),
-                }).then((response) => response.json())
-                .then((responseJson) => {
-                    this.setState({pdVisible: false})
-                    if(responseJson["message"] == null) {
-                        Alert.alert(
-                            'Registration Failed!',
-                            'Try Again',
-                            [
-                            {text: 'OK'},
-                            ],
-                            {cancelable: true},
-                        );
-                    }
-                    else {
-                        this.state.rMes=responseJson["message"]
+                }).then((responseJson) => {
+                    if(responseJson.status == 200) {
+                        //this.state.rMes=responseJson["message"]
+                        this.OTP()
                         //console.warn(this.state.data)
-                        this.props.navigation.navigate('Login',{"message":this.state.rMes})
+                        //this.props.navigation.navigate('Login',{"message":this.state.rMes})
                     }
 
-                    console.warn(responseJson["message"])
+                    //console.warn(responseJson["message"])
                 })
                 .catch((error) => {
                     console.warn(error);
@@ -402,7 +455,7 @@ class Register extends Component {
                             placeholderTextColor='grey'
                             keyboardType="numeric"
                             placeholder = "Phone Input *"
-                            returnKeyType="go"
+                            returnKeyType="done"
                             autoCapitalize="none"
                             autoCorrect={false}
                             maxLength={10}
