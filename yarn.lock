@@ -1571,7 +1571,7 @@ cosmiconfig@^5.0.5:
     lodash.get "^4.4.2"
     parse-json "^4.0.0"
 
-create-react-class@^15.6.3:
+create-react-class@^15.6.0, create-react-class@^15.6.3:
   version "15.6.3"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
   integrity sha512-M+/3Q6E6DLO6Yx3OwrWjwHBnvfXXYA7W+dFjt/ZDBemHO1DDZhsalX/NUtnTYclN6GfnBDRh4qRHjcDHmlJBJg==
@@ -1688,7 +1688,11 @@ deepmerge@^2.1.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-2.2.1.tgz#5d3ff22a01c00f645405a2fbc17d0778a1801170"
   integrity sha512-R9hc1Xa/NOBi9WRVUWg19rl1UB7Tt4kuPd+thNJgFZoxXsTz7ncaPaeIm+40oSGuP33DfMb4sZt1QIGiJzC4EA==
+<<<<<<< HEAD
+>>>>>>> cf690bfb6acb69e5cc9e5e2d2d25f19989b6a4dc
+=======
 >>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
 
 default-require-extensions@^2.0.0:
   version "2.0.0"
@@ -2515,7 +2519,11 @@ hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.3.1, hoist-non-react-
   integrity sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==
 
 hoist-non-react-statics@^3.0.1, hoist-non-react-statics@^3.1.0:
+<<<<<<< HEAD
+>>>>>>> cf690bfb6acb69e5cc9e5e2d2d25f19989b6a4dc
+=======
 >>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.0.tgz#b09178f0122184fb95acf525daaecb4d8f45958b"
   integrity sha512-0XsbTXxgiaCDYDIWFcwkmerZPSwywfUqYmwT4jzewKTQSWoE6FCMoUVOeBJWK3E/CrWbxRG3m5GzY4lnIwGRBA==
@@ -3634,7 +3642,11 @@ lodash.merge@^4.6.1:
   version "4.6.1"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.1.tgz#adc25d9cb99b9391c59624f379fbba60d7111d54"
   integrity sha512-AOYza4+Hf5z1/0Hztxpm2/xiPZgi/cjMqdnKTUWTBSKchJlxXXuUSxCCl8rJlf4g6yww/j6mA8nC8Hw/EZWxKQ==
+<<<<<<< HEAD
+>>>>>>> cf690bfb6acb69e5cc9e5e2d2d25f19989b6a4dc
+=======
 >>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
 
 lodash.pad@^4.1.0:
   version "4.5.1"
@@ -4805,7 +4817,11 @@ prompts@^2.0.1:
 prop-types@15.x.x, prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
 =======
 prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
+<<<<<<< HEAD
+>>>>>>> cf690bfb6acb69e5cc9e5e2d2d25f19989b6a4dc
+=======
 >>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -4914,7 +4930,11 @@ react-lifecycles-compat@2.0.0:
   integrity sha512-txfpPCQYiazVdcbMRhatqWKcAxJweUu2wDXvts5/7Wyp6+Y9cHojqXHsLPEckzutfHlxZhG8Oiundbmp8Fd6eQ==
 
 =======
+<<<<<<< HEAD
+>>>>>>> cf690bfb6acb69e5cc9e5e2d2d25f19989b6a4dc
+=======
 >>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
 react-lifecycles-compat@^3, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
@@ -4942,7 +4962,11 @@ react-native-drawer-layout@1.3.2:
     react-native-dismiss-keyboard "1.0.0"
 
 react-native-elements@^1.0.0:
+<<<<<<< HEAD
+>>>>>>> cf690bfb6acb69e5cc9e5e2d2d25f19989b6a4dc
+=======
 >>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
   integrity sha1-MohiQrPyMX4SHzrrmwpYXiuHm0k=
@@ -4974,10 +4998,17 @@ react-native-elements@^1.1.0:
     react-native-ratings "^6.3.0"
     react-native-status-bar-height "^2.2.0"
 
+<<<<<<< HEAD
+react-native-gesture-handler@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.1.0.tgz#2a7d545ad2e0ca23adce22b2af441ad360ecccee"
+  integrity sha512-E9IKHpmL+sz/iCYkUriTUjBaQBORWV+oheYPQleADkxjo2sYsQfnlyTz4EQYFONkUwJ6WmfTNkYt2/yc5U4Ziw==
+=======
 react-native-gesture-handler@^1.0.16:
   version "1.0.16"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.0.16.tgz#bee54981575e581857c2298e133ce2ffac240a3e"
   integrity sha512-KhUjDaiGKESfVa/lywuYfdZ2pomPC4q/dRQo18qlSZuRxEiOCxzSo9Q1TV7JK3PpyyMEXpsU04kYSSVypWiSxg==
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
   dependencies:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.2"
@@ -5058,6 +5089,17 @@ react-native-material-textfield@^0.12.0:
   dependencies:
     prop-types "^15.5.9"
 
+<<<<<<< HEAD
+react-native-modalbox@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/react-native-modalbox/-/react-native-modalbox-1.7.1.tgz#cdb623ecd1cbe8699a450217c25b2d6666dc63e6"
+  integrity sha512-Jqn12MKQaT5OSb1uMAEeDQF02xHS+WWdgKl55ecoIknrDy+FIoC3fXHMEoRZH6agADDg9eVBqx8w+P7+EwXTbQ==
+  dependencies:
+    create-react-class "^15.6.0"
+    prop-types "^15.5.10"
+
+=======
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
 react-native-paper@^2.12.0:
   version "2.12.0"
   resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-2.12.0.tgz#0688ff6530677bbc33442345f57b0278b12231bd"
@@ -5070,7 +5112,11 @@ react-native-paper@^2.12.0:
     react-lifecycles-compat "^3.0.4"
     react-native-safe-area-view "^0.12.0"
 
+<<<<<<< HEAD
+>>>>>>> cf690bfb6acb69e5cc9e5e2d2d25f19989b6a4dc
+=======
 >>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
 react-native-ratings@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/react-native-ratings/-/react-native-ratings-6.3.0.tgz#becda9379616776a81d9d90bfc95ea40b76286fb"
@@ -5107,7 +5153,11 @@ react-native-safe-area-view@^0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.12.0.tgz#5c312f087300ecf82e8541c3eac25d560e147f22"
   integrity sha512-UrAXmBC4KNR5K2eczIDZgqceWyKsgG9gmWFerHCvoyApfei8ceBB9u/c//PWCpS5Gt8MRLTmX5jPtzdXo2yNqg==
+<<<<<<< HEAD
+>>>>>>> cf690bfb6acb69e5cc9e5e2d2d25f19989b6a4dc
+=======
 >>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
   dependencies:
     hoist-non-react-statics "^2.3.1"
 
@@ -5116,6 +5166,14 @@ react-native-safe-area-view@^0.12.0:
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-1.0.0-alpha.22.tgz#7a120377b52aa9bbb94d0b8541a014026be9289b"
   integrity sha512-kSyAt0AeVU6N7ZonfV6dP6iZF8B7Bce+tk3eujXhzBGsLg0VSLnU7uE9VqJF0xdQrHR91ZjGgVMieo/8df9KTA==
 
+<<<<<<< HEAD
+react-native-signature-canvas@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-signature-canvas/-/react-native-signature-canvas-1.3.0.tgz#8cbbdfd8058773e7844cae664f9aa33c6c39b6a8"
+  integrity sha512-Yvip9DzRHg31vr/RgiiA2wnqwJlb4Zzngvp+itcQYxCT2nsJQNsNN0u+J0m4HQBNiCR8FGkKuX4ddemeJq+0vQ==
+
+=======
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
 react-native-simple-dialogs@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-simple-dialogs/-/react-native-simple-dialogs-1.1.0.tgz#8b07bbcd0c7552990b47dc33cd58e4ff34ac96f8"
@@ -5240,7 +5298,11 @@ react-navigation-material-bottom-tabs@^1.0.0:
     prop-types "^15.6.0"
     react-navigation-tabs "1.0.0"
 
+<<<<<<< HEAD
+>>>>>>> cf690bfb6acb69e5cc9e5e2d2d25f19989b6a4dc
+=======
 >>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
 react-navigation-stack@0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-0.7.0.tgz#0b2f139ee1cba953037ef51353df992ec6c74fa2"
@@ -5273,7 +5335,11 @@ react-navigation-tabs@1.0.0:
     react-lifecycles-compat "^3.0.4"
     react-native-tab-view "^1.0.0"
 
+<<<<<<< HEAD
+>>>>>>> cf690bfb6acb69e5cc9e5e2d2d25f19989b6a4dc
+=======
 >>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
 react-navigation-tabs@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-navigation-tabs/-/react-navigation-tabs-1.0.2.tgz#cc6c61db0c61054388ef6f726a8ffc183d6095b5"
@@ -5313,7 +5379,11 @@ react-navigation@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-3.3.0.tgz#12d1c6da77a03e6a37bbd5d26f13867612725dc5"
   integrity sha512-lNnhERiltH8DVgCQbZRwLDeX820fm1ItPKc9kfRheLrHOib1E3IXgbWSBW55JdV2j+O3Ss6eglGxQRGaL5V/nA==
+<<<<<<< HEAD
+>>>>>>> cf690bfb6acb69e5cc9e5e2d2d25f19989b6a4dc
+=======
 >>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
   dependencies:
     "@react-navigation/core" "3.1.1"
     "@react-navigation/native" "3.1.5"
@@ -6114,7 +6184,11 @@ symbol-observable@1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.4.tgz#29bf615d4aa7121bdd898b22d4b3f9bc4e2aa03d"
   integrity sha1-Kb9hXUqnEhvdiYsi1LP5vE4qoD0=
+<<<<<<< HEAD
+>>>>>>> cf690bfb6acb69e5cc9e5e2d2d25f19989b6a4dc
+=======
 >>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
 
 symbol-tree@^3.2.2:
   version "3.2.2"
@@ -6395,7 +6469,11 @@ util.promisify@^1.0.0:
 util@*:
 =======
 util@^0.11.1:
+<<<<<<< HEAD
+>>>>>>> cf690bfb6acb69e5cc9e5e2d2d25f19989b6a4dc
+=======
 >>>>>>> KrishalS
+>>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/util/-/util-0.11.1.tgz#3236733720ec64bb27f6e26f421aaa2e1b588d61"
   integrity sha512-HShAsny+zS2TZfaXxD9tYj4HQGlBezXZMZuM/S5PKLLoZkShZiGk9o5CzukI1LVHZvjdvZ2Sj1aW/Ndn2NB/HQ==
