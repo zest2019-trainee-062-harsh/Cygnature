@@ -295,9 +295,13 @@ class Login extends Component {
 
                    
                     {this.state.anim ? <ActivityIndicator color="white" size="large" /> : null}
-                    <TouchableOpacity onPress={()=> this.call("Reg_First")} style = { styles.buttonContainer }>
+                    <View style={{flex:1 , flexDirection: 'row'}}>
+                    <TouchableOpacity 
+                        onPress={()=> this.call("Reg_First")} 
+                        style = { [styles.buttonContainer, {flex: 1}] }>
                         <Text style = { styles.buttonText }>Create an account</Text>
                     </TouchableOpacity>
+                    </View>
                 </View>
                 </ScrollView>
             </View>
