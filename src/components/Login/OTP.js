@@ -110,72 +110,6 @@ class OTP extends Component {
                 </View>
                 </View>
                 <View style={styles.box}>
-<<<<<<< HEAD
-                    <Text style={styles.boxTitle}>Verify OTP</Text>
-                    <Text style={styles.boxSubTitle}>OTP has been sent to :</Text>
-                    <Text style={styles.boxNumber}>Mobile Number: {this.state.mobileNumber}</Text>
-                    <Text style={styles.boxHeader}>Please enter OTP in the field below</Text>
-                    <View style={styles.OTPContainer}>
-                        <TextInput  
-                        maxLength={1}
-                        keyboardType="numeric"
-                        returnKeyType="next"
-                        onChangeText={text => this.handleNext(text,1)}
-                        underlineColorAndroid='black'
-                        placeholderTextColor='black'
-                        style={styles.OTPTI} 
-                        placeholder="-" 
-                        /> 
-                        <TextInput    
-                        maxLength={1}
-                        keyboardType="numeric"
-                        returnKeyType="next"
-                        onChangeText={text => this.handleNext(text,2)}
-                        ref={(input) => this.OTPInput1 = input}
-                        underlineColorAndroid='black'
-                        placeholderTextColor='black'
-                        style={styles.OTPTI} 
-                        placeholder="-" /> 
-                        <TextInput
-                        maxLength={1}
-                        keyboardType="numeric"
-                        returnKeyType="next"
-                        onChangeText={text => this.handleNext(text,3)}  
-                        ref={(input) => this.OTPInput2 = input}  
-                        underlineColorAndroid='black'
-                        placeholderTextColor='black'
-                        style={styles.OTPTI} 
-                        placeholder="-" /> 
-                        <TextInput
-                        maxLength={1}
-                        keyboardType="numeric"
-                        returnKeyType="next"
-                        onChangeText={text => this.handleNext(text,4)}  
-                        ref={(input) => this.OTPInput3 = input}  
-                        underlineColorAndroid='black'
-                        placeholderTextColor='black'
-                        style={styles.OTPTI} 
-                        placeholder="-" /> 
-                        <TextInput
-                        maxLength={1}
-                        keyboardType="numeric"
-                        returnKeyType="done"
-                        onChangeText={text => this.handleNext(text,5)}  
-                        ref={(input) => this.OTPInput4 = input}  
-                        underlineColorAndroid='black'
-                        placeholderTextColor='black'
-                        style={styles.OTPTI} 
-                        placeholder="-" /> 
-                    </View>
-                    <View style={styles.footerContainer}>
-                        <TouchableOpacity onPress={_ =>this.checkOTP()} style = { styles.buttonContainer }>
-                            <Text style = { styles.buttonText }>Submit</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={_ =>this.resendOTP()} style = { styles.buttonContainer }>
-                            <Text style = { styles.buttonText }>Resend OTP</Text>
-                        </TouchableOpacity>
-                    </View>
-=======
                     <ScrollView>
                         <Text style={styles.boxTitle}>Verify OTP</Text>
                         <Text style={styles.boxSubTitle}>OTP has been sent to :{this.state.mobileNumber}</Text>
@@ -249,7 +183,6 @@ class OTP extends Component {
                             </View>
                         </View>
                     </ScrollView>
->>>>>>> KrishalS
                 </View>
              </View>
              </KeyboardAvoidingView>
