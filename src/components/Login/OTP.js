@@ -6,16 +6,6 @@ import { Dimensions } from "react-native";
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 class OTP extends Component {
-<<<<<<< HEAD
-    static navigationOptions = {
-        header: null
-    }
-
-    state = {
-        mobileNumber: 977,
-        defaultotp: 12345,
-        otp: ""
-=======
     constructor(props) {
         super(props)
         this.state.data  = this.props.navigation.getParam('data');
@@ -65,7 +55,6 @@ class OTP extends Component {
             .catch((error) => {
                 console.warn(error);
             });
->>>>>>> KrishalS
     }
 
     handleNext(text,value) {
@@ -86,26 +75,6 @@ class OTP extends Component {
                 break;                
         }
     }
-<<<<<<< HEAD
-   
-    resendOTP() {
-        console.warn("OTP SENDED")
-    }
-
-     render() {
-         
-    var {navigate} = this.props.navigation;
-        function checkOTP() {
-            if(this.state.otp == this.state.defaultotp) {
-                //console.warn("REDIRECT")
-                navigate("Reg_First")
-            }
-            else {
-                console.warn("OTP not Match")
-            }
-        }
-    
-=======
     checkOTP() {
         if(this.state.otp == this.state.defaultotp) {
             this.props.navigation.navigate("Dashboard" ,{"data":this.state.data, "count": this.state.count})
@@ -121,7 +90,6 @@ class OTP extends Component {
 
      render() {
         var {navigate} = this.props.navigation;
->>>>>>> KrishalS
          return (
             <KeyboardAvoidingView behavior="padding">
              <View style={styles.container}>
