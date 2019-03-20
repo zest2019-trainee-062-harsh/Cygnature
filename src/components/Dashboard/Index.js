@@ -1,18 +1,11 @@
 import React, {Component} from 'react'
-<<<<<<< HEAD
-import {View, StyleSheet,Text, TouchableOpacity, ScrollView, StatusBar, BackHandler, Alert, AsyncStorage} from 'react-native'
-=======
 import {View, StyleSheet,Text, TouchableOpacity, ScrollView, StatusBar} from 'react-native'
->>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
 const util = require('util');
 import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Dimensions } from "react-native";
 
-<<<<<<< HEAD
-=======
 import  Register from '../Register/Index.js'
->>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
 import  Documents from '../Documents/Index.js'
 import  Contacts from '../Contacts/Index.js'
 import  Settings from '../Settings/General.js'
@@ -24,17 +17,10 @@ class Dashboard extends Component {
     constructor(props) {
         super(props)
         this.state.data  = this.props.navigation.getParam('data');
-<<<<<<< HEAD
-        //console.warn(this.state.token)
-        //console.warn(this.props.navigation.getParam('data'))
-    }
-
-=======
         this.state.count  = this.props.navigation.getParam('count');
         //console.warn(this.state.token)
         //console.warn(this.state.auth)
     }
->>>>>>> 0bf098e3e702bdf53e34658a3135294bd4c75bda
     static navigationOptions = {
         header: null
     }
