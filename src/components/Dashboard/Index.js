@@ -13,6 +13,7 @@ import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker
 import  Documents from '../Documents/Index.js'
 import  Contacts from '../Contacts/Index.js'
 import  Settings from '../Settings/General.js'
+import { bold } from 'ansi-colors';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
@@ -186,19 +187,20 @@ class Dashboard extends Component {
                             this.state.documents.map((docs)=>{
                                 return(
                                     <TouchableOpacity
+                                        style={styles.DocumentsList}
                                         key={docs.Id}
                                         onPress={()=>this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})}
                                     >
-                                        <View style={styles.DocumentsList}>
-                                            <Text style={styles.DocumentsListFont}>
+                                        <View style={{margin: 2}}>
+                                            <Text style={[styles.DocumentsListFont, {fontWeight: 'bold'}]}>
                                                 {docs.name}{docs.extension}
                                             </Text>
                                             <View style={{flexDirection: "row"}}>
                                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                                    Completed by {docs.uploadedBy}
+                                                    {docs.uploadedBy}
                                                 </Text>
                                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                                    Date: {docs.creationTime}
+                                                    {docs.creationTime}
                                                 </Text>
                                             </View>
                                         </View>
@@ -253,7 +255,7 @@ export default createMaterialBottomTabNavigator({
     },
 },
 {
-    // initialRouteName: 'documents',
+    initialRouteName: 'documents',
     barStyle: { backgroundColor: '#003d5a' },
     activeTintColor: 'white',
     navigationOptions: () => ({ header: null })
@@ -323,10 +325,11 @@ const styles = StyleSheet.create({
     },
     DocumentsList:{
         flex: 1,
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderColor: "#003d5a",
         borderRadius: 5,
         margin: 5,
+        backgroundColor: '#DCDCDC'
     },
     DocumentsListFont:{
         flex: 0.5,
