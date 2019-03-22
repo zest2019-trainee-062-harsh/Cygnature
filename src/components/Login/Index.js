@@ -157,11 +157,15 @@ class Login extends Component {
 
     call(text) {
         switch(text){
-            case "Reg_First":
+            case "Register":
             this.props.navigation.navigate('Register')
             return
 
-            case "Dashboard":
+            case "Forgot_Pass": 
+            this.props.navigation.navigate('Forgot_Pass')
+            return
+
+            case "Login":
             this.checkCred()
             this.setState({anim:true})
             if(this.state.val) {
@@ -265,28 +269,36 @@ class Login extends Component {
                         secureTextEntry
                         style= { styles.boxTI }>
                     </TextInput>               
-                       
+                    
+                    <View style={{flex:1, flexDirection: 'row'}}>
                     <CheckBox
                         title='Remember Me'
-                        uncheckedColor="#414345"
+                        textStyle={{color: 'white'}}
+                        uncheckedColor="white"
                         checkedColor="#6eab52"
                         size={20}
                         checked={this.state.checked}
-                        containerStyle={{backgroundColor:'rgba(255,255,255,0.7)'}}
+                        containerStyle={{flex:1 , borderColor:'#414345' , backgroundColor:'rgba(255,255,255,0)'}}
                         onPress={() => this.onChangeCheck()}
                     />
+                    <TouchableOpacity 
+                        onPress={()=> this.call("Forgot_Pass")} 
+                        style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                            <Text style = { styles.buttonText }>Forgot Password?</Text>
+                    </TouchableOpacity>
+                    </View>
 
                     {this.state.enable ? 
                         <TouchableOpacity
                         disabled={this.state.enable}
-                        onPress={()=> this.call("Dashboard")}
+                        onPress={()=> this.call("Login")}
                     // onPress = {() => this.showData()}
                         style = { [styles.buttonContainer, {opacity:0.5} ]}>
                             <Text style = { styles.buttonText }>Login</Text>
                         </TouchableOpacity> :
                         <TouchableOpacity
                         disabled={this.state.enable}
-                        onPress={()=> this.call("Dashboard")}
+                        onPress={()=> this.call("Login")}
                     // onPress = {() => this.showData()}
                         style = { [styles.buttonContainer, {opacity:1} ]}>
                             <Text style = { styles.buttonText }>Login</Text>
@@ -295,13 +307,9 @@ class Login extends Component {
 
                    
                     {this.state.anim ? <ActivityIndicator color="white" size="large" /> : null}
-                    <View style={{flex:1 , flexDirection: 'row'}}>
-                    <TouchableOpacity 
-                        onPress={()=> this.call("Reg_First")} 
-                        style = { [styles.buttonContainer, {flex: 1}] }>
+                    <TouchableOpacity onPress={()=> this.call("Register")} style = { styles.buttonContainer }>
                         <Text style = { styles.buttonText }>Create an account</Text>
                     </TouchableOpacity>
-                    </View>
                 </View>
                 </ScrollView>
             </View>
@@ -350,7 +358,8 @@ const styles = StyleSheet.create({
     maincontainer: {
         backgroundColor: '#414345',
         width: width,
-        height: height
+        height: height,
+        flex:1 ,
     },
     logoContainer: {
         alignItems: 'center',
