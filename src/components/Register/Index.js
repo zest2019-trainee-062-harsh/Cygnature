@@ -318,7 +318,9 @@ class Register extends Component {
 
     render(){
         return(
-            <KeyboardAvoidingView behavior="padding" style={styles.maincontainer}>
+            <View behavior="padding" style={styles.maincontainer}>
+             <View style={{flex:0.90, justifyContent:'center'}}>
+            
             <View style={styles.logoContainer}>
                 <Image
                     source={require('../../../img/logo-white.png')}
@@ -488,7 +490,16 @@ class Register extends Component {
                     </View>
                     </ScrollView>
                 </View>
-        </KeyboardAvoidingView>
+                </View>
+                <View style={{flex:0.1, borderTopColor: 'white', borderTopWidth: 1}}>
+             
+                <TouchableOpacity 
+                    onPress={()=> this.props.navigation.navigate('Login')} 
+                    style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                            <Text style = {{ color: 'white' }}>Already have account? Login</Text>
+            </TouchableOpacity>
+                </View>
+        </View>
         )
     }
 }
@@ -540,9 +551,11 @@ const styles = StyleSheet.create({
     maincontainer: {
         backgroundColor: '#414345',
         width: width,
-        height: height
+        height: height,
+        flex:1,
     },
     logoContainer: {
+        marginTop:20,
         alignItems: 'center',
         flexGrow: 1,
         justifyContent: 'center'
