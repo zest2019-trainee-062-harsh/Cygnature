@@ -58,14 +58,7 @@
 		3F33EF18E2E1492DA85B9329 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9934BDCA95454734ABF832F1 /* Zocial.ttf */; };
 		35B840DF08B54E699E0897FD /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F1E366702249489EC2A3B8 /* libRNGestureHandler.a */; };
 		22F747FA719449A9B112DFD2 /* libRNLocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA8B9D81130D451BAA8BE300 /* libRNLocation.a */; };
-<<<<<<< HEAD
-		7D6E868B8C1949579FDA770F /* libRSSignatureCapture.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD52B93D0A7D464597EBA531 /* libRSSignatureCapture.a */; };
-		6AE486487F754551838733F1 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F23EBDF65F4159A5F149BB /* libRNFetchBlob.a */; };
-		240930367DFE4FD6BBEB6B7C /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6564C7CA49E7491281740DB2 /* libRNFS.a */; };
-		E3322F13509D489F8B8759E4 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8FDF6C53FD5491099DA3D05 /* libRNImagePicker.a */; };
-=======
 		5615F09B96144B92AD5B8B86 /* libRNDocumentPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE36D2E9FDE74EB4B920656E /* libRNDocumentPicker.a */; };
->>>>>>> 39ed49510eb59874b6be64cd025f3cdbea5aa93f
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */

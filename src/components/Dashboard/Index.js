@@ -211,7 +211,6 @@ class Dashboard extends Component {
                         </ScrollView>
                     </View>
                     <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
->>>>>>> 39ed49510eb59874b6be64cd025f3cdbea5aa93f
                         <Text style={styles.floatButtonText}>+</Text>
                     </TouchableOpacity>
                 </View>
