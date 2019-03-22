@@ -41,6 +41,7 @@ class Login extends Component {
         resData: {  },
         data: {  },
         auth: [],
+        opacity: 0.5
     }
 
     checkConn() {
@@ -61,25 +62,25 @@ class Login extends Component {
         })
     }
 
-    componentWillMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
-    }
+    // componentWillMount() {
+    //     BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
+    // }
 
-    componentWillUnmount(){
-        BackHandler.removeEventListener('hardwareBackPress', this.onBackPressed);
-    }
+    // componentWillUnmount(){
+    //     BackHandler.removeEventListener('hardwareBackPress', this.onBackPressed);
+    // }
 
-    onBackPressed() {
-        Alert.alert(
-        'Exit App',
-        'Do you want to exit?',
-        [
-            {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-            {text: 'Yes', onPress: () => BackHandler.exitApp()},
-        ],
-        { cancelable: false });
-        return true;
-    }
+    // onBackPressed() {
+    //     Alert.alert(
+    //     'Exit App',
+    //     'Do you want to exit?',
+    //     [
+    //         {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+    //         {text: 'Yes', onPress: () => BackHandler.exitApp()},
+    //     ],
+    //     { cancelable: false });
+    //     return true;
+    // }
 
     onChangeCheck() {
         this.setState({ checked: !this.state.checked})
@@ -114,7 +115,7 @@ class Login extends Component {
                     this.setState({enable: true})
                 }
                 else {
-                    this.setState({password:text, enable: false})
+                    this.setState({password:text, enable: false, opacity: 1})
                     //console.warn(this.state.password)
                 }
                 return
@@ -169,6 +170,7 @@ class Login extends Component {
             this.checkCred()
             this.setState({anim:true})
             if(this.state.val) {
+                //this.setState({opacity: 1})
             return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/login',{
             method: 'POST',
             headers: {
@@ -182,7 +184,7 @@ class Login extends Component {
             .then((responseJson) => {
                 
                 this.setState({anim:false})
-                //console.warn(responseJson.data)
+                console.warn(responseJson.data)
                 if(responseJson.data == null) {
                     Alert.alert(
                         'Login Failed!',
@@ -225,7 +227,9 @@ class Login extends Component {
 
     render(){
         return(
-            <KeyboardAvoidingView behavior="padding" style={styles.maincontainer}>
+            <View behavior="padding" style={styles.maincontainer}>
+            <View style={{flex:0.90, justifyContent:'center'}}>
+            
             <View style={styles.logoContainer}>            
                 <Image
                     source={require('../../../img/logo-white.png')}
@@ -247,7 +251,6 @@ class Login extends Component {
                     {/* <Text style = { styles.boxLabel }>E-Mail</Text> */}
 
                     <TextInput
-                        value={this.state.email}
                         placeholderTextColor='grey'
                         placeholder = "Email"
                         returnKeyType="next"
@@ -260,7 +263,6 @@ class Login extends Component {
                     </TextInput>
                     {/* <Text style = { styles.boxLabel }>Password</Text> */}
                     <TextInput
-                        value={this.state.password}
                         placeholderTextColor='grey'
                         placeholder = "Password"
                         returnKeyType="done"
@@ -288,32 +290,32 @@ class Login extends Component {
                     </TouchableOpacity>
                     </View>
 
-                    {this.state.enable ? 
+                    {this.state.anim ? <ActivityIndicator color="white" size="large" /> : 
                         <TouchableOpacity
                         disabled={this.state.enable}
                         onPress={()=> this.call("Login")}
                     // onPress = {() => this.showData()}
-                        style = { [styles.buttonContainer, {opacity:0.5} ]}>
+                        style = { [styles.buttonContainer, {opacity:this.state.opacity} ]}>
                             <Text style = { styles.buttonText }>Login</Text>
-                        </TouchableOpacity> :
-                        <TouchableOpacity
-                        disabled={this.state.enable}
-                        onPress={()=> this.call("Login")}
-                    // onPress = {() => this.showData()}
-                        style = { [styles.buttonContainer, {opacity:1} ]}>
-                            <Text style = { styles.buttonText }>Login</Text>
-                        </TouchableOpacity>
-                    }
+                        </TouchableOpacity>}
 
                    
-                    {this.state.anim ? <ActivityIndicator color="white" size="large" /> : null}
-                    <TouchableOpacity onPress={()=> this.call("Register")} style = { styles.buttonContainer }>
-                        <Text style = { styles.buttonText }>Create an account</Text>
-                    </TouchableOpacity>
-                </View>
-                </ScrollView>
-            </View>
-        </KeyboardAvoidingView>
+                    
+                    </View>
+                    </ScrollView>
+                    </View>
+                    </View>
+                    
+     
+                    <View style={{flex:0.1, borderTopColor: 'white', borderTopWidth: 1}}>
+             
+                   <TouchableOpacity 
+                    onPress={()=> this.call("Register")}
+                    style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                            <Text style = {{ color: 'white' }}>Create an account</Text>
+            </TouchableOpacity>
+                </View></View>
+                
         )
     }
 }
