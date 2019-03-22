@@ -7,9 +7,6 @@ import SplashScreen from './src/components/SplashScreen/index.js'
 import  Settings  from './src/components/Settings/General.js';
 import Canvas from './src/components/Canvas/Index.js'
 import DocumentDetails from './src/components/Documents/DocumentDetails.js'
-import Phone from './src/components/Phone/Index.js'
-import signature from './src/components/signature/Index.js'
-
 
 const AppNavigator = createStackNavigator({
   SplashScreen: {screen: SplashScreen},
@@ -19,7 +16,6 @@ const AppNavigator = createStackNavigator({
   Dashboard: {screen: Dashboard},
   Settings: {screen: Settings},
   Canvas: {screen: Canvas},
-   //Phone: {screen: Phone}
    DocumentDetails: {screen: DocumentDetails},
  // signature : {screen: signature},
 });
