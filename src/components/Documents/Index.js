@@ -18,9 +18,11 @@ class Documents extends Component {
         currentPage: 0,
         previousPage: true,
         nextPage: false,
-        pagination: null,
         nextButtonOpacity : 1,
-        previousButtonOpacity : 0.5
+        previousButtonOpacity : 0.5,
+        documentStatusId: null,
+        totalRows: null,
+        documentColor: null
     }
 
     componentWillMount = async() =>{
@@ -29,12 +31,6 @@ class Documents extends Component {
         this.state.auth = auth;
         this.state.token = token;
         this.state.totalPages = null;
-        if(this.state.totalPages == 1){
-            this.state.pagination = false
-        }
-        else{
-            this.state.pagination = true
-        }
         this.fetchData()
     }
 
@@ -46,7 +42,7 @@ class Documents extends Component {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            "documentStatusId": null,
+            "documentStatusId": this.state.documentStatusId,
             "currentPage": this.state.currentPage,
             "isNext": true,
             "searchText": "",
@@ -59,12 +55,16 @@ class Documents extends Component {
         }),
         }).then((response) => response.json())
         .then((responseJson) => {
-            this.setState({documents: responseJson["data"][0]["documents"],
+            this.setState({
+                documents: responseJson["data"][0]["documents"],
                 totalPages: responseJson["data"][0]["totalPages"],
-                currentPage: responseJson["data"][0]["currentPage"]
+                currentPage: responseJson["data"][0]["currentPage"],
+                totalRows: responseJson["data"][0]["totalRows"]
             })
-            this.setState({value: 1, pdVisible: false})
-            // console.warn(this.state.currentPage)
+            this.setState({
+                value: 1,
+                pdVisible: false,
+            })
             if(this.state.currentPage == this.state.totalPages){
                 this.setState({
                     nextPage: true,
@@ -102,7 +102,7 @@ class Documents extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                "documentStatusId": null,
+                "documentStatusId": this.state.documentStatusId,
                 "currentPage": this.state.currentPage - 2,
                 "isNext": true,
                 "searchText": "",
@@ -116,10 +116,10 @@ class Documents extends Component {
             }).then((response) => response.json())
             .then((responseJson) => {
                 this.setState({documents: responseJson["data"][0]["documents"],
-                    totalPages: responseJson["data"][0]["totalPages"]
+                    totalPages: responseJson["data"][0]["totalPages"],
+                    totalRows: responseJson["data"][0]["totalRows"]
                 })
                 this.setState({value: 1, pdVisible: false})
-                // console.warn(this.state.currentPage)
                 if(this.state.currentPage == 1){
                     this.setState({
                         previousPage: true,
@@ -139,23 +139,79 @@ class Documents extends Component {
         }
     }
 
+    onChangeHandler = (value) => {
+        this.setState({pdVisible: true})
+        this.setState({documentStatusId: value})
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/documents',{
+        method: 'POST',
+        headers: {
+            'Authorization':this.state.auth,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "documentStatusId": this.state.documentStatusId,
+            "currentPage": this.state.currentPage,
+            "isNext": true,
+            "searchText": "",
+            "startDate": "",
+            "endDate": "",
+            "signatureType": 0,
+            "uploadedBy": "",
+            "signerName": "",
+            "dateDuration": ""
+        }),
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({documents: responseJson["data"][0]["documents"],
+                totalPages: responseJson["data"][0]["totalPages"],
+                totalRows: responseJson["data"][0]["totalRows"]
+            })
+            this.setState({value: 1, pdVisible: false})
+            if(this.state.currentPage == 1){
+                this.setState({
+                    previousPage: true,
+                    previousButtonOpacity: 0.5
+                })
+            }        
+            if(this.state.currentPage < this.state.totalPages){
+                this.setState({
+                    nextPage: false,
+                    nextButtonOpacity: 1
+                })
+            
+            }
+        })
+        .catch((error) => {
+            console.warn(error);
+        });
+      }
+
     render() {
         const navigate = this.props.navigation;
         let data = [
             {
-                value: 0+" - Awaiting my sign"
+                label: "All Document",
+                value: null
             },
             {
-                value: 2+" - Completed"
+                label: "Awaiting my sign",
+                value: 0
             },
             {
-                value: 3+" - Awaiting others"
+                label: "Awaiting others",
+                value: 3
             },
             {
-                value: 6+" - Due soon"
+                label: "Completed",
+                value: 2
             },
             {
-                value: 7+" - Declined"
+                label: "Due soon",
+                value: 6
+            },
+            {
+                label: "Declined",
+                value: 7
             }
         ]
         return(
@@ -172,32 +228,65 @@ class Documents extends Component {
                 <Text style={{fontWeight: "bold", fontSize: 10, color: "black"}}>
                     {this.state.currentPage}/{this.state.totalPages}
                 </Text>
-                <ScrollView>
-                    {
-                        this.state.documents.map((docs)=>{
-                        return(
-                            <TouchableOpacity 
-                                style={{borderWidth: 1, borderColor: "#003d5a", borderRadius: 5, marginBottom: 5, marginTop: 5}}
-                                key={docs.Id}
-                                onPress={()=>this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})}
-                            >
-                                <View style={styles.DocumentsList}>
-                                    <Text style={[styles.DocumentsListFont, {fontSize: 17, fontWeight: "bold"}]}>
-                                        {docs.name}{docs.extension}
-                                    </Text>
-                                    <View style={{flexDirection: "row"}}>
-                                        <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                            Completed by {docs.uploadedBy}
-                                        </Text>
-                                        <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                            Date: {docs.creationTime}
-                                        </Text>
-                                    </View>
+                {
+                    this.state.totalRows != 0 ?
+                    <ScrollView>
+                        {
+                            this.state.documents.map((docs)=>{
+                                if(docs.documentStatusForUser == 0){
+                                    this.state.documentColor = '#111E6C'
+                                }
+                                if(docs.documentStatusForUser == 3){
+                                    this.state.documentColor = '#FADA5E'
+                                }
+                                if(docs.documentStatusForUser == 2){
+                                    this.state.documentColor = '#98FB98'
+                                }
+                                if(docs.documentStatusForUser == 6){
+                                    this.state.documentColor = '#6593F5'
+                                }
+                                if(docs.documentStatusForUser == 7){
+                                    this.state.documentColor = '#Df2800'
+                                }
+                            return(
+                                <View key={docs.Id}>
+                                    <TouchableOpacity
+                                        style={{
+                                            borderWidth: 0.5,
+                                            borderColor: "#003d5a",
+                                            borderRadius: 5,
+                                            marginBottom: 5,
+                                            marginTop: 5,
+                                            backgroundColor: this.state.documentColor,
+                                        }}
+                                        onPress={()=>this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})}
+                                    >
+                                        <View style={styles.DocumentsList}>
+                                            <Text style={[styles.DocumentsListFont, {fontSize: 17, fontWeight: "bold"}]}>
+                                                {docs.name}
+                                            </Text>
+                                            <View style={{flexDirection: "row"}}>
+                                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                                    Uploaded By:{"\n"}
+                                                    Created Time:
+                                                </Text>
+                                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                                    {docs.uploadedBy}{"\n"}
+                                                    {docs.creationTime}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </TouchableOpacity>
                                 </View>
-                            </TouchableOpacity>
-                        );
-                    })}
-                </ScrollView>
+                            );
+                        })}
+                    </ScrollView> :
+                    <View style={styles.DocumentsList}>
+                        <Text style={{fontSize: 25, fontWeight: "bold"}}>
+                            No filtered documents present.
+                        </Text>
+                    </View>
+                }    
                 <TouchableOpacity
                     style={{borderColor: "#003d5a", borderWidth: 0.5, marginBottom: 5, marginTop: 5, padding: 10}}
                 >
@@ -207,10 +296,11 @@ class Documents extends Component {
                         selectedItemColor="#003d5a"
                         rippleCentered={true}
                         itemTextStyle={"helvetica"}
+                        onChangeText = {value => this.onChangeHandler(value)}
                     >
                     </Dropdown>
                 </TouchableOpacity>
-                {this.state.pagination ? 
+                {this.state.totalPages > 1 ? 
                     <View style={styles.footerContainer}>
                         <View style={{flex: 0.5, alignItems: "center"}}>
                             <TouchableOpacity style = { [styles.buttonContainer, { opacity: this.state.previousButtonOpacity}] }
@@ -225,7 +315,7 @@ class Documents extends Component {
                             </TouchableOpacity>
                         </View>
                         <View style={{flex: 0.5, alignItems: "center"}}>
-                            <TouchableOpacity style = { [styles.buttonContainer, { opacity: this.state.nextButtonOpacity}] }
+                            <TouchableOpacity style = { [styles.buttonContainer, { opacity: this.state.nextButtonOpacity, alignItems: 'flex-end'}] }
                                 disabled = {this.state.nextPage}
                                 onPress = {() => this.nextPage()}
                             >
@@ -258,11 +348,11 @@ const styles = StyleSheet.create({
     },
     DocumentsList:{
         flex: 1,
-        backgroundColor: 'white',
-        marginLeft: 10,
-        marginRight: 10,
-        marginTop: 5,
-        marginBottom: 5
+        marginLeft: 6,
+        borderColor: "#003d5a",
+        backgroundColor: '#DCDCDC',
+        paddingLeft: 4,
+        borderRadius:5,
     },
     DocumentsListFont:{
         flex: 0.5,

@@ -1,13 +1,19 @@
 import React, {Component} from 'react'
-import {View, StyleSheet,Text, TouchableOpacity, ScrollView, StatusBar, BackHandler, Alert, AsyncStorage} from 'react-native'
+import {View, StyleSheet,Text, TouchableOpacity, ScrollView, StatusBar, BackHandler, Alert, AsyncStorage,
+ActivityIndicator } from 'react-native'
 const util = require('util');
 import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Dimensions } from "react-native";
+import moment from 'moment';
+
+import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+
 
 import  Documents from '../Documents/Index.js'
 import  Contacts from '../Contacts/Index.js'
 import  Settings from '../Settings/General.js'
+import { bold } from 'ansi-colors';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
@@ -16,14 +22,12 @@ class Dashboard extends Component {
     constructor(props) {
         super(props)
         this.state.data  = this.props.navigation.getParam('data');
-        //console.warn(this.state.token)
-        //console.warn(this.props.navigation.getParam('data'))
     }
 
     static navigationOptions = {
         header: null
     }
-    
+
     state = {
         data: { },
         count: {
@@ -31,11 +35,50 @@ class Dashboard extends Component {
             awaitingOthers: null,
             completed: null,
             expireSoon: null,
-         },
+        },
+        auth: null,
+        documents: [],
+        loading: true,
+        
     }
 
+    getRecentDocuments = async() => {
+        let auth = await AsyncStorage.getItem("auth")
+        this.setState({auth: auth})
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/documents',{
+        method: 'POST',
+        headers: {
+            'Authorization':this.state.auth,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "documentStatusId": null,
+            "currentPage": 0,
+            "isNext": true,
+            "searchText": "",
+            "startDate": "",
+            "endDate": moment().utcOffset("+5:30").format("MM/DD/YYYY"),
+            "signatureType": 0,
+            "uploadedBy": "",
+            "signerName": "",
+            "dateDuration": ""
+        }),
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({
+                documents: responseJson["data"][0]["documents"],
+                loading: false
+            })
+            // console.warn(this.state.documents)
+        })
+        .catch((error) => {
+            console.warn(error);
+        });
+      }
+
     componentWillMount = async() =>{
-        this.state.count  = this.props.navigation.getParam('count');
+        this.getRecentDocuments();
+        this.state.count  = this.props.navigation.getParam('count')
         BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
     }
     
@@ -56,121 +99,122 @@ class Dashboard extends Component {
     }
 
     floatClicked= async() => {
-        alert(AsyncStorage.getItem('otp_check'))
-        alert("clicked")
+
+        DocumentPicker.show({
+            filetype: [DocumentPickerUtil.allFiles()],
+            },(error,res) => {
+                
+       const formData = new FormData()
+       formData.append('file',{
+           
+        uri: res.uri,
+        type: res.type,
+        name: res.fileName,
+       })
+       //console.warn(res.uri+res.type+res.fileName)
+       //console.warn(formData)
+       
+            
+    return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/upload',{
+    method: 'POST',
+    headers: {
+        'Authorization':this.state.auth,
+        //'Content-Type':'multipart/form-data'
+        // 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.N9w0jV/v+9PKjqTQVRpre2jTzBser7/a/Thzwn6/3UCGTehr+Gk9tZrbfUo0jndFhKFx2ywj3gA0kjDn9uf/mrfnjcwIru3WHKGL1lhTCxH/Uf7NYBtBbAd5M1f77b2aqFJHSXiQ0miSqKUB2cipfOf88VU+XiCO57FQtQzRFX0BtR5LZHaZQqSMMj8y47n6M86I6CKl/SntvdAyzVMh7uXFWsaYHY/nKmyIunJgewZM3q2ImLEx7ndLwRT1Kpus2er5pnvq19gX43RfAEkl80kK7axwGX2rPYYpoedDBXS35npshScOXwmZhiv36CmefEFHYLgFb83BWVafahApZ5huYSa1DHVNA6rCFJmrEdIZSVy/3U3prOcyiOsRM11DwsXwuJoOVYlwJgvluzUgDz32moOaTde6a1vkrdMaedYDyNNolAGSQ1Pu3+CKxRmp2tRpNY7GaajQVLaie574mFc2BGCwJdrueGAA8DuCPCgN2fpVlMYrufbYI7om3MnSjypSyoFuWg4O+4PG72+Qm5HvUfADtSbX4REh6XWBwyt89NRYf9f/qp/S3aLWZ8XsY5akfYKBECZQ6H6Z3rVRxAW7OgnqlPlAMBSw+DqAi3+28ActC0gqb3KOiDJFb3jIT4OoAMBRAA3hdAmblTr6EwpPmbxXqoCZ2CFL/PQqA/OTuKiBadJ1ZxkxCuFcb2Cl2J1fHnRKKWqv3CY4UMyBVkIFH2zGCh3g5IgaG3hH6IYaM2xrtMNJ2AZRByaG0ki5r99ydraBgmbN6OhEaKYlnG5RqR3tuIpNieQDbe6hFZEpvqk8iOk4pD2/nm2gBbymmt9bQcX1giYgYVUgsOUBytjTawP4g1BeJ0Rt0w0ev/jotRYNpxQaWs5aMGMYfdPW.ooqT_toFub_53Hn22ZdRhSAkcNnJrnwlDag93pWBvlA',
+    },
+    body: formData
+    }
+    ).then((response) => response.json())
+    .then((responseJson) => {
+        
+          
+            console.warn(responseJson["data"])
+        
+    
+    })
+    .catch((error) => {
+        console.warn(error.message);
+    });      
+          });
     }
 
     render() {
     var {navigate} = this.props.navigation;
         return (
             <View style={{flex:1}}>
-            <StatusBar backgroundColor="#003d58" barStyle="light-content" />
-            <View style={styles.mainContainer}>
-                
-                <View style={styles.box1}>
-                    <View style={styles.boxHalf}>
-                        <Text style={styles.box1Text}>
-                            {this.state.count["awaitingMySign"]}
-                            {"\n"}{"\n"} Need to Sign
-                        </Text>
+                <StatusBar backgroundColor="#003d58" barStyle="light-content" />
+                <View style={styles.mainContainer}>
+                    
+                    <View style={styles.box1}>
+                        <View style={styles.boxHalf}>
+                            <Text style={styles.box1Text}>
+                                {this.state.count["awaitingMySign"]}
+                                {"\n"}{"\n"} Need to Sign
+                            </Text>
+                        </View>
+                        <View style={styles.boxHalf}>
+                            <Text style={styles.box1Text}>
+                                {this.state.count["awaitingOthers"]}
+                                {"\n"}{"\n"} Waiting for Others
+                            </Text>
+                        </View>
                     </View>
-                    <View style={styles.boxHalf}>
-                        <Text style={styles.box1Text}>
-                            {this.state.count["awaitingOthers"]}
-                            {"\n"}{"\n"} Waiting for Others
-                        </Text>
+
+                    <View style={styles.box1}>
+                        <View style={styles.boxHalf}>
+                            <Text style={styles.box1Text}>
+                                {this.state.count["completed"]}
+                                {"\n"}{"\n"} Completed
+                            </Text>
+                        </View>
+                        <View style={styles.boxHalf}>
+                            <Text style={styles.box1Text}>
+                                {this.state.count["expireSoon"]}
+                                {"\n"}{"\n"} Expire Soon
+                            </Text>
+                        </View>
                     </View>
-                </View>
 
-                <View style={styles.box2}>
-                    <Text style={styles.box2Text1}>Recent Documents</Text>
-                    <ScrollView>
-                        <View style={styles.DocumentsList}>
-                            <Text style={styles.DocumentsListFont}>
-                                Document 1
-                            </Text>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Completed by
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    Date xxx
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <Text style={styles.DocumentsListFont}>
-                                Document 2
-                            </Text>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Completed by
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    Date xxx
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <Text style={styles.DocumentsListFont}>
-                                Document 3
-                            </Text>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Completed by
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    Date xxx
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <Text style={styles.DocumentsListFont}>
-                                Document 4
-                            </Text>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Completed by
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    Date xxx
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <Text style={styles.DocumentsListFont}>
-                                Document 5
-                            </Text>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Completed by
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    Date xxx
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <Text style={styles.DocumentsListFont}>
-                                Document 6
-                            </Text>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Completed by
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    Date xxx
-                                </Text>
-                            </View>
-                        </View>
-                    </ScrollView>
-                </View>
-
-            
-                <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
+                    <View style={styles.box2}>
+                        <Text style={styles.box2Text1}>Recent Documents</Text>
+                        {this.state.loading ? 
+                        <View style={{flex: 1,padding:"10%",justifyContent: 'center', alignContent:'center'}}> 
+                            <ActivityIndicator color="#003d5a" size="large" /> 
+                        </View> 
+                        : null}
+                        <ScrollView>
+                        {
+                            this.state.documents.map((docs)=>{
+                                return(
+                                    <TouchableOpacity
+                                        style={styles.DocumentsList}
+                                        key={docs.Id}
+                                        onPress={()=>this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})}
+                                    >
+                                        <View style={{margin: 2}}>
+                                            <Text style={[styles.DocumentsListFont, {fontWeight: 'bold'}]}>
+                                                {docs.name}{docs.extension}
+                                            </Text>
+                                            <View style={{flexDirection: "row"}}>
+                                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                                    {docs.uploadedBy}
+                                                </Text>
+                                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                                    {docs.creationTime}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </TouchableOpacity>
+                                )
+                            })
+                        }
+                        </ScrollView>
+                    </View>
+                    <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
+>>>>>>> 39ed49510eb59874b6be64cd025f3cdbea5aa93f
                         <Text style={styles.floatButtonText}>+</Text>
-                </TouchableOpacity>
-            </View>
+                    </TouchableOpacity>
+                </View>
             </View>
             )
         }
@@ -232,7 +276,7 @@ const styles = StyleSheet.create({
     box1: {
         margin:10,
         flexDirection: 'row',
-        flex:0.35, 
+        flex:0.25,
     },
     boxHalf: {
         width: '50%', 
@@ -240,7 +284,8 @@ const styles = StyleSheet.create({
         borderRightColor: 'white', 
         borderRightWidth: 2,
         justifyContent: 'center',
-        borderRadius: 5
+        borderRadius: 5,
+        marginBottom: -17
     },
     box1Text: {
         color: 'white',
@@ -250,9 +295,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     box2 :{
-        marginTop: 20,
+        marginTop: 25,
         margin: 10,
-        flex:0.40, 
+        flex:0.50,
         borderRadius:5,
         borderColor: "#003d5a",
         borderWidth: 2,
@@ -281,14 +326,14 @@ const styles = StyleSheet.create({
     },
     DocumentsList:{
         flex: 1,
-        backgroundColor: '#003d5a',
-        marginLeft: 10,
-        marginRight: 10,
-        marginTop: 5,
-        marginBottom: 5
+        borderWidth: 0.5,
+        borderColor: "#003d5a",
+        borderRadius: 5,
+        margin: 5,
+        backgroundColor: '#DCDCDC'
     },
     DocumentsListFont:{
         flex: 0.5,
-        color: "white"
+        color: "black"
     },
 })
