@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {StyleSheet, Text, View,TouchableOpacity,Image,PixelRatio} from 'react-native'
+import {StyleSheet, Text, View,TouchableOpacity,Image,PixelRatio,Dimensions} from 'react-native'
 import ImagePicker from 'react-native-image-picker';
 
 // const options = {
@@ -12,6 +12,7 @@ import ImagePicker from 'react-native-image-picker';
 //         skipBackup: true, // No need to backup to iClould
 //     },
 //     };
+
 
 export default class Index extends Component {
    
@@ -40,9 +41,9 @@ selectPhotoTapped() {
     else if (response.error) {
       console.log('ImagePicker Error: ', response.error);
     }
-    else if (response.customButton) {
-      console.log('User tapped custom button: ', response.customButton);
-    }
+     else if (response.customButton) {
+       console.log('User tapped custom button: ', response.customButton);
+     }
     else {
       let source = { uri: response.uri };
 

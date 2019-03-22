@@ -46,9 +46,6 @@ class General extends Component {
         return(
             <View style={styles.mainContainer}>
                 <ScrollView>
-                    <TouchableOpacity style = { [styles.buttonContainer]} onPress={() => this.logout()}>
-                        <Text style = { styles.buttonText }>Logout</Text>
-                    </TouchableOpacity>
                     <View style={{margin: 10, width: width}}></View>
                     <Text style={{fontWeight: "bold", fontSize: 22, color: "black"}}> General </Text>
                     <View style={styles.DocumentsList}>
@@ -121,6 +118,9 @@ class General extends Component {
                             </View>
                         </View>
                     </View>
+                    <TouchableOpacity style = { [styles.buttonContainer]} onPress={() => this.logout()}>
+                        <Text style = { styles.buttonText }>Logout</Text>
+                    </TouchableOpacity>
                 </ScrollView>
             </View>
         )
@@ -159,7 +159,6 @@ export default createMaterialTopTabNavigator({
             fontWeight: 'bold'
         },
         showIcon: true,
-        //lazy:  true,
         
     },
     navigationOptions: () => ({ header: null })

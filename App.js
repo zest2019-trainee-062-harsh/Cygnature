@@ -15,10 +15,10 @@ const AppNavigator = createStackNavigator({
   Register: {screen: Register},
   Dashboard: {screen: Dashboard},
   Settings: {screen: Settings},
-  Canvas: {screen: Canvas},
-   DocumentDetails: {screen: DocumentDetails},
- // signature : {screen: signature},
+  DocumentDetails: {screen: DocumentDetails},
+  Canvas: {screen: Canvas}
 });
+
 
 const AppContainer = createAppContainer(AppNavigator);
 

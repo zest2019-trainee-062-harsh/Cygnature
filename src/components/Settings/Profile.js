@@ -1,10 +1,21 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, TextInput, Image} from 'react-native'
 
+import AddModal from './AddModal'
+import Icon from 'react-native-vector-icons/Ionicons'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 
 class Profile extends Component {
+    constructor(props) {
+        super(props)
+        this.floatClicked = this.floatClicked.bind(this)
+    }
+    
+    floatClicked=() => {
+      // alert("clicked")
+        this.refs.AddModal.show()    
+    }
     render() {
         let data = [
             {
@@ -26,7 +37,7 @@ class Profile extends Component {
                     <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Profile Picture </Text>
                     <View style={styles.DocumentsList}>
                         <View style={styles.DocumentsList}>
-                            <View style={{height: 212, width: 212, flexGrow:1, justifyContent: "center", alignItems: "center"}}>
+                            <View style={{height: 180, width: 180, flexGrow:1,marginLeft:35,marginBottom:20}}>
                                 <Image
                                     source={require('../../../img/profile.png')}
                                 />
@@ -112,23 +123,15 @@ class Profile extends Component {
                             </View>
                         </View>
                     </View>
-                    <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20, width: width}}></View>
-                    <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Notifications </Text>
-                    <View style={styles.DocumentsList}>
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
-                                    Document Activity
-                                </Text>
-                                <Switch
-                                    style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }
-                                    thumbColor = "#003d5a"
-                                    trackColor = "#003d5a"
-                                />
-                            </View>
-                        </View>
-                    </View>
+                    <TouchableOpacity 
+                            onPress={this.floatClicked}
+                            style={styles.boxadd}>
+                            {/* <Icon name="" color='black' size={100} /> */}
+                            <Text style={styles.box3Text2}>Add/Edit E-Signature</Text>
+                    </TouchableOpacity>
+                    
                 </ScrollView>
+                <AddModal ref={'AddModal'} /> 
             </View>
         )
     }
@@ -163,9 +166,35 @@ const styles = StyleSheet.create({
         backgroundColor: '#003d5a',
         paddingVertical: 10,
         margin: 5,
-        borderRadius: 5
+        borderRadius: 5,
+        marginTop:20,
     },
     buttonText: {
+        textAlign: 'center',
+        color: '#ffffff',
+        fontWeight: 'bold'
+    },
+    boxadd:{
+        backgroundColor: '#003d5a',
+        paddingVertical: 10,
+        margin: 5,
+        borderRadius: 5,
+    },
+    box3 :{
+        marginTop: 20,
+        margin: 10,
+        flex:0.30, 
+        borderRadius:5,
+        borderColor: "#003d5a",
+        borderWidth: 2,
+    },
+    box3Text1: {
+        marginLeft:10,
+        fontSize:18,
+        color: 'black',
+        fontWeight: 'bold'
+    },
+    box3Text2: {
         textAlign: 'center',
         color: '#ffffff',
         fontWeight: 'bold'

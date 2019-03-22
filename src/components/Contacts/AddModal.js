@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {TouchableOpacity, View, Text, Dimensions, TextInput,
      StyleSheet, AsyncStorage, } from 'react-native'
- 
+
+import Button from 'react-native-button';
 import Modal from 'react-native-modalbox'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 
@@ -127,7 +128,7 @@ class AddModal extends Component {
             animationType="slide"
             /> 
             <Text style={{marginLeft:14, fontSize: 18,  color: 'black', fontWeight:'bold'}}>Add Contact</Text>
-         <TextInput
+            <TextInput
                 style={ styles.textIn }
                 placeholder="Enter Name *"
                 placeholderTextColor='grey'

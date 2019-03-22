@@ -165,23 +165,7 @@ class Dashboard extends Component {
                         </View>
                     </ScrollView>
                 </View>
-            
-                <View style={styles.box3}>
-                <ScrollView>
-                        <Text style={styles.box3Text1}>Quick Actions</Text>
-                        <TouchableOpacity 
-                            onPress={() => this.props.navigation.navigate("Canvas")}
-                            style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
-                            <Text style={styles.box3Text2}>Add/Edit Signature</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
-                            <Text style={styles.box3Text2}>Add Profile Picture</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)'}}>
-                            <Text style={styles.box3Text2}>View Contacts</Text>
-                        </TouchableOpacity>
-                    </ScrollView>
-                </View>
+
             
                 <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
                         <Text style={styles.floatButtonText}>+</Text>
@@ -279,26 +263,6 @@ const styles = StyleSheet.create({
         fontSize:18,
         color: 'black',
         fontWeight: 'bold'
-    },
-    box3 :{
-        marginTop: 20,
-        margin: 10,
-        flex:0.30, 
-        borderRadius:5,
-        borderColor: "#003d5a",
-        borderWidth: 2,
-    },
-    box3Text1: {
-        marginLeft:10,
-        fontSize:18,
-        color: 'black',
-        fontWeight: 'bold'
-    },
-    box3Text2: {
-        marginLeft:15,
-        margin:10,
-        fontSize:16,
-        color: '#0000EE',
     },
     floatButton: {
         position: 'absolute',
