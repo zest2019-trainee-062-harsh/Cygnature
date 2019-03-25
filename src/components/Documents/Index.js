@@ -42,7 +42,7 @@ class Documents extends Component {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            "documentStatusId": this.state.documentStatusId,
+            "documentStatusId": null,
             "currentPage": this.state.currentPage,
             "isNext": true,
             "searchText": "",
@@ -150,7 +150,7 @@ class Documents extends Component {
         },
         body: JSON.stringify({
             "documentStatusId": this.state.documentStatusId,
-            "currentPage": this.state.currentPage,
+            "currentPage": this.state.currentPage - 1,
             "isNext": true,
             "searchText": "",
             "startDate": "",
@@ -190,7 +190,7 @@ class Documents extends Component {
         const navigate = this.props.navigation;
         let data = [
             {
-                label: "All Document",
+                label: "All Documents",
                 value: null
             },
             {

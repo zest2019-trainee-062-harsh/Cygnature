@@ -65,8 +65,10 @@ Date: 22/03/2019:
 2. Login screen rewamped.
 3. Register screen rewamped.
 
+Date: 23/03/2019 - 24/04/2019 : SATURDAY-SUNDAY
+
 Date: 25/03/2019
-1. 
+1. Documents-list : Bug fixed.
 
 Key Learnings:
 1. Splashscreen animation with timings.
