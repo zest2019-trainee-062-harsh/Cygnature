@@ -286,7 +286,7 @@ class Documents extends Component {
                                                 <View style={{flexDirection: "row"}}>
                                                     <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
                                                         Uploaded By:{"\n"}
-                                                        Created Time:
+                                                        Time of Creation:
                                                     </Text>
                                                     <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
                                                         {docs.uploadedBy}{"\n"}

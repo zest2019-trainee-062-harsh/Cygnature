@@ -4,8 +4,10 @@ ActivityIndicator } from 'react-native'
 const util = require('util');
 import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
+import Icon1 from 'react-native-vector-icons/FontAwesome5'
 import { Dimensions } from "react-native";
 import moment from 'moment';
+import ActionButton from 'react-native-action-button';
 
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 
@@ -98,7 +100,7 @@ class Dashboard extends Component {
         return true;
     }
 
-    floatClicked= async() => {
+    uploadDocument= async() => {
 
         DocumentPicker.show({
             filetype: [DocumentPickerUtil.allFiles()],
@@ -210,9 +212,17 @@ class Dashboard extends Component {
                         }
                         </ScrollView>
                     </View>
-                    <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
+                    <ActionButton buttonColor="#003d5a" bgColor="transparent">
+                        <ActionButton.Item buttonColor='#9b59b6' title="Upload File" onPress={() => this.uploadDocument()}>
+                            <Icon name="md-document" style={styles.actionButtonIcon} />
+                        </ActionButton.Item>
+                        <ActionButton.Item buttonColor='#3498db' title="Add Signature" onPress={() => {}}>
+                            <Icon1 name="signature" style={styles.actionButtonIcon} />
+                        </ActionButton.Item>
+                    </ActionButton>
+                    {/* <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
                         <Text style={styles.floatButtonText}>+</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </View>
             )
@@ -335,4 +345,9 @@ const styles = StyleSheet.create({
         flex: 0.5,
         color: "black"
     },
+    actionButtonIcon: {
+        fontSize: 20,
+        height: 22,
+        color: 'white',
+    }
 })
