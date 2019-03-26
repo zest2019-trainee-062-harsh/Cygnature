@@ -104,6 +104,16 @@ class Dashboard extends Component {
     uploadDocument= async() => {
         this.refs.UploadModal.show()
     }
+    showData = (data) => {
+        if(data == null)
+        {
+            console.warn("no data")
+        }else {
+            console.warn("return data"+data["Id"])
+            console.warn("return data"+data["name"])
+            this.props.navigation.navigate('Document_Upload',{'data':data})
+        }
+    }
 
     render() {
     var {navigate} = this.props.navigation;
@@ -189,7 +199,7 @@ class Dashboard extends Component {
                         <Text style={styles.floatButtonText}>+</Text>
                     </TouchableOpacity> */}
                 </View>
-                <UploadModal ref={'UploadModal'}/>
+                <UploadModal ref={'UploadModal'}  parentFlatList={this}/>
             </View>
             )
         }

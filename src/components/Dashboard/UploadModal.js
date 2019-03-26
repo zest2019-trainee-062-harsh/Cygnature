@@ -2,10 +2,10 @@ import React, {Component} from 'react'
 import {View, StyleSheet, Dimensions, Text, TouchableOpacity, AsyncStorage, ActivityIndicator} from 'react-native'
 import Modal from 'react-native-modalbox'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
- 
-var width = Dimensions.get('window').width; //full width
-var height = Dimensions.get('window').height; //full width
+import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker'
+
+var width = Dimensions.get('window').width
+var height = Dimensions.get('window').height
 
 class UploadModal extends Component {
     constructor(props) {
@@ -18,7 +18,6 @@ class UploadModal extends Component {
     show = () => {
         
         this.refs.myModal.open()
-        console.warn(this.props.state.loading)
     }
     upload = async() => {
         
@@ -53,9 +52,9 @@ class UploadModal extends Component {
     .then((responseJson) => {
         
         this.setState({pdVisible: false})
-        console.warn(responseJson["data"][0])
-        this.props.navigation.navigate('Document_Upload',{data:responseJson["data"][0]})
-  
+        //console.warn(responseJson["data"][0])
+        this.refs.myModal.close()
+        this.props.parentFlatList.showData(responseJson["data"][0])
     
     })
     .catch((error) => {
@@ -64,6 +63,7 @@ class UploadModal extends Component {
           });
     }
 
+   
      render() {
          return (
             <Modal

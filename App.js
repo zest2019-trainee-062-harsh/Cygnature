@@ -9,6 +9,7 @@ import Canvas from './src/components/Canvas/Index.js'
 import DocumentDetails from './src/components/Documents/DocumentDetails.js'
 import Contacts from './src/components/Contacts/Index.js'
 import Forgot_Pass from './src/components/Login/Forgot_Pass.js'
+import Document_Upload from './src/components/Documents/DocumentUpload.js'
 
 const AppNavigator = createStackNavigator({
   SplashScreen: {screen: SplashScreen},
@@ -21,6 +22,7 @@ const AppNavigator = createStackNavigator({
   DocumentDetails: {screen: DocumentDetails},
   Contacts: {screen:Contacts},
   Forgot_Pass: {screen:Forgot_Pass},
+  Document_Upload: {screen:Document_Upload},
 });
 
 const AppContainer = createAppContainer(AppNavigator);
