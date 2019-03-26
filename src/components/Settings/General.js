@@ -22,8 +22,7 @@ class General extends Component {
     // }
 
     logout = async() => {
-        AsyncStorage.setItem('auth', 'not_present');
-        AsyncStorage.setItem('otp_check', 'not_present');
+        AsyncStorage.clear();
         this.props.navigation.navigate("Login")
     }
 
