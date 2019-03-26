@@ -188,10 +188,10 @@ class Dashboard extends Component {
                         </ScrollView>
                     </View>
                     <ActionButton buttonColor="#003d5a" bgColor="rgba(255,255,255,0.8)">
-                        <ActionButton.Item buttonColor='#6eab52' title="Upload File" onPress={() => this.uploadDocument()}>
+                        <ActionButton.Item buttonColor="#003d5a" title="Upload File" onPress={() => this.uploadDocument()}>
                             <Icon name="md-document" style={styles.actionButtonIcon} />
                         </ActionButton.Item>
-                        <ActionButton.Item buttonColor='#6eab52' title="Add Signature" onPress={() => {}}>
+                        <ActionButton.Item buttonColor="#003d5a" title="Add Signature" onPress={() => {}}>
                             <Icon1 name="signature" style={styles.actionButtonIcon} />
                         </ActionButton.Item>
                     </ActionButton>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image,TouchableOpacity, StyleSheet} from 'react-native'
+import {View, Text, Image,TouchableOpacity, StyleSheet, ScrollView} from 'react-native'
 import { Dimensions } from "react-native"
 import Icon from 'react-native-vector-icons/FontAwesome';
  
@@ -12,13 +12,15 @@ class DocumentUpload extends Component {
         this.state.data  = this.props.navigation.getParam('data')
         this.state.totalPage = this.state.data["pageCount"]
     }
+
     state = {
         data: [],
         count: 0,
+        maxPages: 6,
         totalPage: 0,
         nextButtonOpacity : 1,
-        previousButtonOpacity : 1,
-        prevButton: false,
+        previousButtonOpacity : 0.5,
+        prevButton: true,
         nextButton: false,
     }
 
@@ -26,68 +28,46 @@ class DocumentUpload extends Component {
         title: "Document Upload"
     }
 
-    nextPage() {
-        this.setState({count:this.state.count+1})
-        console.warn("C"+this.state.count)
-        console.warn(this.state.totalPage)
-
-        if(this.state.count == this.state.totalPage) {
-            console.warn("Reached EOF")
-            this.setState({nextButtonOpacity: 0.5, nextButton : false}) 
-        }
-    }
-    prevPage() {
-        this.setState({count:this.state.count-1})
-        if(this.state.count == this.state.totalPage-1) {
-            this.setState({previousButtonOpacity: 0.5 ,prevButton: true}) 
-        }
-    }
-
-     render() {
-        const base64Icon = this.state.data["pages"][this.state.count]
-         return (
-             <View style={styles.mainContainer}>
-                <Text>Id {this.state.data["Id"]}</Text>
-                <Text>name {this.state.data["name"]}</Text>
-                <Text>pageCount {this.state.data["pageCount"]}</Text>
+    render() {
+        return(
+            <View style={styles.mainContainer}>
+                <Text>{this.state.data["name"]}</Text>
+                <Text>No. of pages: {this.state.data["pageCount"]}</Text>
                 <Text>pageFrom {this.state.data["pageFrom"]}</Text>
                 <Text>pageTo {this.state.data["pageTo"]}</Text>
-                
-                            <View style={{margin:20, justifyContent:'center', alignItems: 'center'}}>
-                <Image style={styles.imageContainer} source={{uri: `data:image/png;base64,${base64Icon}`}}/> 
-                </View>
-                {this.state.data["pageCount"] > 1 ? 
-                    <View style={styles.footerContainer}>
-                        <View style={{flex: 0.5, alignItems: "center"}}>
-                            <TouchableOpacity style = { [styles.buttonContainer, { opacity: this.state.previousButtonOpacity}] }
-                                disabled = {this.state.prevButton}
-                                onPress = {() => this.prevPage()}
-                            >
-                                <Icon
-                                    name="arrow-left"
-                                    size={15}
-                                    color="white"
-                                />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{flex: 0.5, alignItems: "center"}}>
-                            <TouchableOpacity style = { [styles.buttonContainer, { opacity: this.state.nextButtonOpacity, alignItems: 'flex-end'}] }
-                                disabled = {this.state.nextButton}
-                                onPress = {() => this.nextPage()}
-                            >
-                                <Icon
-                                    name="arrow-right"
-                                    size={15}
-                                    color="white"
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    </View> : null
-                }
-             </View>
-                )
-         }
-     }
+
+                <Text>
+                    *Note: Only 6 pages can be viewed after uploading the document.
+                    The whole document can be viewed after you create the document.
+                </Text>
+
+                <ScrollView>
+                    <View style={{margin:20, justifyContent:'center', alignItems: 'center'}}>
+                        <Image style={styles.imageContainer} source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}/>
+                        <Text>Page: {this.state.count+1}/{this.state.totalPage}</Text>
+                    </View>
+                    {
+                        this.state.data.pages.map(() => {
+                            this.state.count = this.state.count+1
+                            const image = this.state.data["pages"][this.state.count]
+                            if(this.state.count < this.state.maxPages){
+                                return(
+                                    <View style={{margin:20, justifyContent:'center', alignItems: 'center'}} key={this.state.count}>
+                                        <Image style={styles.imageContainer} source={{uri: `data:image/png;base64,${image}`}}/>
+                                        <Text>Page: {this.state.count+1}/{this.state.totalPage}</Text>
+                                    </View>
+                                );
+                            }
+                            else{
+                                null
+                            }
+                        })
+                    }
+                </ScrollView>
+            </View>
+        )
+    }
+}
 
 export default DocumentUpload
 
