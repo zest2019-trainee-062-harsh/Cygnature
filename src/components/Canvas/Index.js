@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import Signature from 'react-native-signature-canvas';
+
  
 export default class Index extends Component {
   constructor(props) {
@@ -10,7 +11,11 @@ export default class Index extends Component {
  
   handleSignature = signature => {
     this.setState({ signature });
+    var sign = signature();
+    console.warn(sign)
+    
   };
+  
   static navigationOptions = {
     title: "Canvas"
 }
@@ -29,6 +34,7 @@ export default class Index extends Component {
               resizeMode={"contain"}
               style={{ width: 335, height: 114 }}
               source={{ uri: this.state.signature }}
+             
             />
           ) : null}
         </View>

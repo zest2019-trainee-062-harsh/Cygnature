@@ -13,11 +13,7 @@ var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width`
 
 class AddModal extends Component {
-
-    static navigationOptions = {
-        header: null
-    }
-    
+      
     state={
         ImageSource: null 
     }
@@ -25,21 +21,22 @@ class AddModal extends Component {
     show = () => {
         this.refs.myModal.open()
     }
-    sendtoCanvas = () => {
-      this.props.navigation.navigate('Canvas');
-    }
+   
 
-    selectPhotoTapped() {
+    selectPhotoTapped(response) {
+  
         const options = {
           quality: 1.0,
           maxWidth: 500,
           maxHeight: 500,
-          storageOptions: 'OK',
+          storageOptions: {
+            skipBackup: true,
+          },
         };
       
       
         ImagePicker.showImagePicker(options, (response) => {
-          console.log('Response = ', response);
+          console.log('Response = ', response.fileName);
       
           if (response.didCancel) {
             console.log('User cancelled photo picker');
@@ -48,10 +45,11 @@ class AddModal extends Component {
             console.log('ImagePicker Error: ', response.error);
           }
            else if (response.customButton) {
-             console.log('User tapped custom button: ', response.customButton);
-           }
+            console.log('User tapped custom button: ', response.customButton);
+          }
+  
           else {
-            let source = { uri: response.uri };
+            let source = { uri: response.uri  };
       
             // You can also display the image using data:
             // let source = { uri: 'data:image/jpeg;base64,' + response.data };
@@ -60,6 +58,7 @@ class AddModal extends Component {
               ImageSource: source
       
             });
+            console.log(this.state.ImageSource)
           }
         });
       }
@@ -79,7 +78,7 @@ class AddModal extends Component {
 
             <Text style={styles.basic}>Set Signature</Text>
 
-            <TouchableOpacity style={styles.selectoption} onPress={this.sendtoCanvas}>
+            <TouchableOpacity style={styles.selectoption} onPress={() => this.props.parentFlatList.sendtoCanvas()}>
                 <Text>Draw</Text>
             </TouchableOpacity>
 
@@ -88,7 +87,8 @@ class AddModal extends Component {
               <View>
 
               { this.state.ImageSource === null ? <Text>Upload image</Text> :
-                <Image style={styles.ImageContainer} source={this.state.ImageSource} />
+                <Image style={styles.ImageContainer} source={this.state.ImageSource}>
+                {this.state.file}</Image>
               }
 
               </View>

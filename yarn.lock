@@ -4894,6 +4894,13 @@ react-lifecycles-compat@^3, react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-native-button@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-button/-/react-native-button-2.3.0.tgz#7d0a90095d415b0edf98a904556a7c4439646568"
+  integrity sha512-NZet4juC9+yNN/ql4WYfrjRp/cyuN9zwYwMb/0yllwGCzxfAVqMU59oNCaMQvkMkgV/S52RcwER1QWZH7k1AQg==
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
@@ -4938,6 +4945,11 @@ react-native-fetch-blob@^0.10.8:
   dependencies:
     base-64 "0.1.0"
     glob "7.0.6"
+
+react-native-fontawesome@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-fontawesome/-/react-native-fontawesome-6.0.1.tgz#6a4f06b3d2523ef2567cdde84c601a1b50733110"
+  integrity sha512-j/nuOQCX+FeSsHDbqrownPsOuxMtiKQy7aj1pK5CV3ri8SoWlglNXU26IN8KTAs5XPJpoYS+6kY99qwqHKJPtw==
 
 react-native-fs@^2.13.3:
   version "2.13.3"

@@ -184,7 +184,7 @@ class Login extends Component {
             .then((responseJson) => {
                 
                 this.setState({anim:false})
-                console.warn(responseJson.data)
+                //console.warn(responseJson.data)
                 if(responseJson.data == null) {
                     Alert.alert(
                         'Login Failed!',
@@ -289,15 +289,22 @@ class Login extends Component {
                             <Text style = { styles.buttonText }>Forgot Password?</Text>
                     </TouchableOpacity>
                     </View>
+                    {this.state.anim ? <ActivityIndicator color="white" size="large" /> : null}
 
-                    {this.state.anim ? <ActivityIndicator color="white" size="large" /> : 
+                    {this.state.enable ?
+                    <TouchableOpacity
+                        disabled={this.state.enable}
+                        onPress={()=> this.call("Login")}
+                        style = { [styles.buttonContainer, {opacity:this.state.opacity} ]}>
+                            <Text style = { styles.buttonText }>Login</Text>
+                        </TouchableOpacity> : 
                         <TouchableOpacity
                         disabled={this.state.enable}
                         onPress={()=> this.call("Login")}
-                    // onPress = {() => this.showData()}
                         style = { [styles.buttonContainer, {opacity:this.state.opacity} ]}>
                             <Text style = { styles.buttonText }>Login</Text>
-                        </TouchableOpacity>}
+                        </TouchableOpacity>
+                    }
 
                    
                     

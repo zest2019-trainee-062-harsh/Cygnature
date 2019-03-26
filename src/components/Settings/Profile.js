@@ -7,6 +7,9 @@ var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 
 class Profile extends Component {
+    static navigationOptions = {
+        header: null
+    }
     constructor(props) {
         super(props)
         this.floatClicked = this.floatClicked.bind(this)
@@ -16,6 +19,11 @@ class Profile extends Component {
       // alert("clicked")
         this.refs.AddModal.show()    
     }
+
+    sendtoCanvas = () => {
+        this.props.navigation.navigate('Canvas');
+     }
+     
     render() {
         let data = [
             {
@@ -131,7 +139,8 @@ class Profile extends Component {
                     </TouchableOpacity>
                     
                 </ScrollView>
-                <AddModal ref={'AddModal'} /> 
+                <AddModal ref={'AddModal'} parentFlatList={this}  />
+                
             </View>
         )
     }
