@@ -10,7 +10,7 @@ class DocumentPreview extends Component {
     constructor(props) {
     super(props)
         this.state.data  = this.props.navigation.getParam('data')
-        console.warn(this.state.data)
+        console.warn(this.state.data['name'])
     }
 
     static navigationOptions = {

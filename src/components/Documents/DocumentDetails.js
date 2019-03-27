@@ -44,10 +44,16 @@ class DocumentDetails extends Component {
             'Authorization':this.state.auth,
         }}).then((response) => response.json())
         .then((responseJson) => {
+            if(responseJson["data"] == null)
+            {
+                this.setState({pdVisible: false})
+                console.warn(responseJson)
+            } else {
             this.setState({data: responseJson["data"][0]["documentData"]})
             //console.warn(responseJson["data"][0]["documentData"])
             this.setState({pdVisible: false})
             this.props.navigation.navigate('Document_Preview',{'data': this.state.data})
+        }
         })
         .catch((error) => {
             console.warn(error.message);
@@ -83,7 +89,7 @@ class DocumentDetails extends Component {
                                 </Text>
                             </View>
                         </View>
-                        {/* <View style={styles.DocumentsList}>
+                        <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                                 <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
                                     Activation Status
@@ -95,7 +101,7 @@ class DocumentDetails extends Component {
                                     }
                                 </Text>
                             </View>
-                        </View> */}
+                        </View>
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                                 <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
