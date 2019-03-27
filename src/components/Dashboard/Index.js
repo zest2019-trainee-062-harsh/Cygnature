@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {View, StyleSheet,Text, TouchableOpacity, ScrollView, StatusBar, BackHandler, Alert, AsyncStorage,
 ActivityIndicator } from 'react-native'
-const util = require('util');
 import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Icon1 from 'react-native-vector-icons/FontAwesome5'
@@ -72,6 +71,7 @@ class Dashboard extends Component {
                 documents: responseJson["data"][0]["documents"],
                 loading: false
             })
+            this.refs.UploadModal.show()
             // console.warn(this.state.documents)
         })
         .catch((error) => {
