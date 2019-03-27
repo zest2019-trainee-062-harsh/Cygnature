@@ -41,7 +41,7 @@ class DocumentUpload extends Component {
                     The whole document can be viewed after you create the document.
                 </Text>
 
-                <ScrollView>
+                {/* <ScrollView>
                     <View style={{margin:20, justifyContent:'center', alignItems: 'center'}}>
                         <Image style={styles.imageContainer} source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}/>
                         <Text>Page: {this.state.count+1}/{this.state.totalPage}</Text>
@@ -63,7 +63,7 @@ class DocumentUpload extends Component {
                             }
                         })
                     }
-                </ScrollView>
+                </ScrollView> */}
             </View>
         )
     }

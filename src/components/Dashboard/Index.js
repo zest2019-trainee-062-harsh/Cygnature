@@ -109,8 +109,8 @@ class Dashboard extends Component {
         {
             console.warn("no data")
         }else {
-            console.warn("return data"+data["Id"])
-            console.warn("return data"+data["name"])
+            //console.warn("return data"+data["Id"])
+            //console.warn("return data"+data["name"])
             this.props.navigation.navigate('Document_Upload',{'data':data})
         }
     }

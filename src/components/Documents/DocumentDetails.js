@@ -9,7 +9,7 @@ var height = Dimensions.get('window').height; //full height
 class DocumentDetails extends Component {
 
     static navigationOptions = {
-        title: "Document detail"
+        title: "Document Detail"
     }
 
     state = {
