@@ -71,7 +71,7 @@ class Dashboard extends Component {
                 documents: responseJson["data"][0]["documents"],
                 loading: false
             })
-            this.refs.UploadModal.show()
+            //this.refs.UploadModal.show()
             // console.warn(this.state.documents)
         })
         .catch((error) => {

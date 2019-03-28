@@ -11,6 +11,7 @@ import Contacts from './src/components/Contacts/Index.js'
 import Forgot_Pass from './src/components/Login/Forgot_Pass.js'
 import Document_Upload from './src/components/Documents/DocumentUpload.js'
 import Document_Preview from './src/components/Documents/DocumentPreview.js'
+import fp from './src/components/fp.js'
 
 const AppNavigator = createStackNavigator({
   SplashScreen: {screen: SplashScreen},
@@ -25,6 +26,7 @@ const AppNavigator = createStackNavigator({
   Forgot_Pass: {screen:Forgot_Pass},
   Document_Upload: {screen:Document_Upload},
   Document_Preview: {screen:Document_Preview},
+  fp: {screen:fp},
 });
 
 const AppContainer = createAppContainer(AppNavigator);
