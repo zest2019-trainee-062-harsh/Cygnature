@@ -432,7 +432,6 @@ class Register extends Component {
                             returnKeyType="go"
                             ref={(input) => this.REGInput3 = input}
                             onSubmitEditing={() => this.REGInput4.focus()}
-                            onChangeText={text => this.setState({password: text})}
                             onChangeText={text => this.validations(text, "password")}
                             secureTextEntry
                             style= { styles.boxTI }>
@@ -448,7 +447,6 @@ class Register extends Component {
                             returnKeyType="go"
                             ref={(input) => this.REGInput4 = input}
                             onSubmitEditing={() => this.REGInput5.focus()}
-                            onChangeText={text => this.setState({password: text})}
                             onChangeText={text => this.validations(text, "cpassword")}
                             secureTextEntry
                             style= { styles.boxTI }>

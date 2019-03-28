@@ -1,14 +1,13 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, TextInput, Image} from 'react-native'
+import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity,
+    Linking, TextInput,  AsyncStorage,Image} from 'react-native'
 
 import AddModal from './AddModal'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 
 class Profile extends Component {
-    static navigationOptions = {
-        header: null
-    }
+   
     constructor(props) {
         super(props)
         this.floatClicked = this.floatClicked.bind(this)
@@ -20,10 +19,21 @@ class Profile extends Component {
     }
 
     sendtoCanvas = () => {
-        this.props.navigation.navigate('Canvas');
+        //this.props.navigation.navigate('Canvas');
+        console.warn("YES")
      }
+
+     logout = async() => {
+        AsyncStorage.clear();
+        this.props.navigation.navigate("Login")
+    }
+
+    changepwd=() => {
+        this.props.navigation.navigate("ChangePassword")
+    }
      
     render() {
+        const navigate = this.props.navigation;
         let data = [
             {
                 value: "DD/MM/YYYY"
@@ -41,20 +51,39 @@ class Profile extends Component {
         return(
             <View style={styles.mainContainer}>
                 <ScrollView>
-                    <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Profile Picture </Text>
-                    <View style={styles.DocumentsList}>
+                    <View style={{flex:1,flexDirection:'row'}}>
                         <View style={styles.DocumentsList}>
-                            <View style={{height: 180, width: 180, flexGrow:1,marginLeft:35,marginBottom:20}}>
+                            <View style={{height: 100, width: 100, flexGrow:1,}}>
                                 <Image
+                                style={{height:100,width:100}}
                                     source={require('../../../img/profile.png')}
                                 />
                             </View>
-                            <TouchableOpacity style = { [styles.buttonContainer]}>
-                                <Text style = { styles.buttonText }>Update Profile Picture</Text>
-                            </TouchableOpacity>
+                            
+                              <Text style={{color: 'blue',textDecorationLine:'underline',marginTop:5,marginLeft:3}} onPress={ ()=> Linking.openURL('https://google.com') } >Update Photo</Text>
+                           
                         </View>
+                        <View style={{flex:1,flexDirection:'column'}}>
+                        <View>
+                        <TouchableOpacity style = {styles.buttonContainer} onPress={() => this.logout()}>
+                            <Text style = { styles.buttonText }>Logout</Text>
+                        </TouchableOpacity>
+                        </View>
+                        <View>
+                        <TouchableOpacity 
+                            onPress={this.floatClicked}>
+                            <Text style={styles.Text4} >Add/Edit E-Signature</Text>
+                        </TouchableOpacity>
+                        </View>
+                        <View>
+                            <TouchableOpacity 
+                                onPress={this.changepwd}>
+                                <Text style={styles.Text4} >Change Password</Text>
+                            </TouchableOpacity> 
+                        </View>
+                        </View>    
                     </View>
-                    <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Profile </Text>
+
                     <View style={styles.DocumentsList}>
                         <View style={styles.DocumentsList}>
                             <View>
@@ -133,12 +162,11 @@ class Profile extends Component {
                     <TouchableOpacity 
                             onPress={this.floatClicked}
                             style={styles.boxadd}>
-                            {/* <Icon name="" color='black' size={100} /> */}
-                            <Text style={styles.box3Text2}>Add/Edit E-Signature</Text>
+                            <Text style={styles.box3Text2}>Update Profile</Text>
                     </TouchableOpacity>
                     
                 </ScrollView>
-                <AddModal ref={'AddModal'} parentFlatList={this}  />
+                <AddModal ref={'AddModal'} />
                 
             </View>
         )
@@ -173,14 +201,16 @@ const styles = StyleSheet.create({
     buttonContainer: {
         backgroundColor: '#003d5a',
         paddingVertical: 10,
-        margin: 5,
         borderRadius: 5,
-        marginTop:20,
+        marginTop:15,
+        width:130,
+        height:30,
+        justifyContent:'center',
     },
     buttonText: {
         textAlign: 'center',
         color: '#ffffff',
-        fontWeight: 'bold'
+        justifyContent:'center'  
     },
     boxadd:{
         backgroundColor: '#003d5a',
@@ -204,7 +234,13 @@ const styles = StyleSheet.create({
     },
     box3Text2: {
         textAlign: 'center',
-        color: '#ffffff',
-        fontWeight: 'bold'
+        color: '#ffffff',   
     },
+    Text4:{
+        fontWeight: 'bold',
+        color: 'blue',
+        textDecorationLine:'underline',
+        marginTop:15,
+        marginRight:10
+    }
 })

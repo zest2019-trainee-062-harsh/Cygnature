@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {TouchableOpacity, View, Text, Dimensions, TextInput,
      StyleSheet, AsyncStorage, } from 'react-native'
 
-import Button from 'react-native-button'
 import Modal from 'react-native-modalbox'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 

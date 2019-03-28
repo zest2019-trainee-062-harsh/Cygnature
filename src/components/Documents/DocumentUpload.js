@@ -94,7 +94,7 @@ export default DocumentUpload
 const styles = StyleSheet.create({
     mainContainer:{
         borderWidth:1,
-        borderColor:'black',
+        borderColor:'#003d5a',
         flex:1,
         backgroundColor: 'white',
         margin: 7, 
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         padding: 10
     },
     imageContainer: {
-        borderColor:'black',
+        borderColor:'#003d5a',
         borderWidth:1,
         width:width/1.4,
         height:height/2,

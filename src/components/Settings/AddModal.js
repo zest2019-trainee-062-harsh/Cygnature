@@ -1,9 +1,7 @@
 import React, {Component} from 'react'
 import {TouchableOpacity, View, Text, Dimensions, TextInput,PixelRatio,
     Image,StyleSheet } from 'react-native'
-import { StackNavigator } from 'react-navigation';
 
-import Button from 'react-native-button';
 import Modal from 'react-native-modalbox'
 import ImagePicker from 'react-native-image-picker';
 
@@ -13,6 +11,9 @@ var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width`
 
 class AddModal extends Component {
+   static navigationOptions = {
+        header: null
+    }
       
     state={
         ImageSource: null 
@@ -21,6 +22,7 @@ class AddModal extends Component {
     show = () => {
         this.refs.myModal.open()
     }
+    
    
 
     selectPhotoTapped(response) {
@@ -49,19 +51,40 @@ class AddModal extends Component {
           }
   
           else {
-            let source = { uri: response.uri  };
+            let source = { uri: response  };
       
             // You can also display the image using data:
             // let source = { uri: 'data:image/jpeg;base64,' + response.data };
       
-            this.setState({
-              ImageSource: source
-      
-            });
-            console.log(this.state.ImageSource)
+            this.uploadImage(response)
           }
         });
       }
+      uploadImage(source){
+
+        const data = new FormData();
+        data.append('name', 'testName'); // you can append anyone.
+        data.append('photo', {
+            uri: source.uri,
+            type: 'image/jpeg', // or photo.type
+            name: 'testPhotoName'
+        });
+
+        fetch('http://cygnatureapipoc.stagingapplications.com/api/user/enroll-signature', {
+            method: 'POST',
+            headers: {
+              'Authorization':auth,
+            },
+            body: data,
+        }).then((response) => response.json())
+            .then((responseJson) => {
+
+               console.log(responseJson);
+
+            }).catch((error) => {
+            //
+        });
+    }
     
      render() {
       console.log(this.props);
@@ -78,7 +101,7 @@ class AddModal extends Component {
 
             <Text style={styles.basic}>Set Signature</Text>
 
-            <TouchableOpacity style={styles.selectoption} onPress={() => this.props.parentFlatList.sendtoCanvas()}>
+            <TouchableOpacity style={styles.selectoption} onPress={() => this.sendtoCanvas()}>
                 <Text>Draw</Text>
             </TouchableOpacity>
 
@@ -95,7 +118,7 @@ class AddModal extends Component {
 
             </TouchableOpacity>  
 
-             <TouchableOpacity style={styles.selectoption} onPress={this.sendtoCanvas}>
+             <TouchableOpacity style={styles.selectoption} onPress={() => this.sendtoCanvas()}>
                 <Text>Type</Text>
             </TouchableOpacity> 
 

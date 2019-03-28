@@ -9,11 +9,8 @@ import Canvas from './src/components/Canvas/Index.js'
 import DocumentDetails from './src/components/Documents/DocumentDetails.js'
 import Contacts from './src/components/Contacts/Index.js'
 import Forgot_Pass from './src/components/Login/Forgot_Pass.js'
-<<<<<<< HEAD
-import Type from './src/components/Type/Fonts'
-=======
 import Document_Upload from './src/components/Documents/DocumentUpload.js'
->>>>>>> c4208ad81ea713ef4631a98e125096095609a0c1
+import ChangePassword from './src/components/Settings/ChangePassword'
 
 const AppNavigator = createStackNavigator({
   SplashScreen: {screen: SplashScreen},
@@ -24,13 +21,10 @@ const AppNavigator = createStackNavigator({
   Settings: {screen: Settings},
   DocumentDetails: {screen: DocumentDetails},
   Contacts: {screen:Contacts},
+  Canvas:{screen:Canvas},
   Forgot_Pass: {screen:Forgot_Pass},
-<<<<<<< HEAD
-  Canvas :{screen:Canvas},
-   // Type : {screen: Type}
-=======
   Document_Upload: {screen:Document_Upload},
->>>>>>> c4208ad81ea713ef4631a98e125096095609a0c1
+  ChangePassword:{screen: ChangePassword}
 });
 
 

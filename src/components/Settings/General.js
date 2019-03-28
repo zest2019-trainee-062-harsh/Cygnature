@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {
-    View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, AsyncStorage
+    View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch,
 } from 'react-native'
 import { Dropdown } from 'react-native-material-dropdown'
 
@@ -13,18 +13,6 @@ var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
  
 class General extends Component {
-    // constructor (props) {
-    //     super(props)
-    //     state = {
-    //         screenshots = false,
-    //         document_activity = false
-    //     }
-    // }
-
-    logout = async() => {
-        AsyncStorage.clear();
-        this.props.navigation.navigate("Login")
-    }
 
     render() {
         const navigate = this.props.navigation;
@@ -117,9 +105,6 @@ class General extends Component {
                             </View>
                         </View>
                     </View>
-                    <TouchableOpacity style = { [styles.buttonContainer]} onPress={() => this.logout()}>
-                        <Text style = { styles.buttonText }>Logout</Text>
-                    </TouchableOpacity>
                 </ScrollView>
             </View>
         )
