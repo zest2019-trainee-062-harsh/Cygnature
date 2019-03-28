@@ -58,6 +58,18 @@ Date: 20/03/2019
 3. Fixed minor bugs in UI.
 4. Login page: Forgot password added - UI.
 
+Date: 21/03/2019 - HOLI
+
+Date: 22/03/2019:
+1. Minor bug fixes.
+2. Login screen rewamped.
+3. Register screen rewamped.
+
+Date: 23/03/2019 - 24/04/2019 : SATURDAY-SUNDAY
+
+Date: 25/03/2019
+1. Documents-list : Bug fixed.
+
 Key Learnings:
 1. Splashscreen animation with timings.
 2. Data-passing with Navigation using props.

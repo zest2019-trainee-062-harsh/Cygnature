@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, TextInput, Image} from 'react-native'
 
 import AddModal from './AddModal'
-import Icon from 'react-native-vector-icons/Ionicons'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 

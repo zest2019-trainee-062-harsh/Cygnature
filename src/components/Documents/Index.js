@@ -22,7 +22,7 @@ class Documents extends Component {
         previousButtonOpacity : 0.5,
         documentStatusId: null,
         totalRows: null,
-        documentColor: null
+        documentColor: null,
     }
 
     componentWillMount = async() =>{
@@ -42,7 +42,7 @@ class Documents extends Component {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            "documentStatusId": this.state.documentStatusId,
+            "documentStatusId": null,
             "currentPage": this.state.currentPage,
             "isNext": true,
             "searchText": "",
@@ -115,7 +115,8 @@ class Documents extends Component {
             }),
             }).then((response) => response.json())
             .then((responseJson) => {
-                this.setState({documents: responseJson["data"][0]["documents"],
+                this.setState({
+                    documents: responseJson["data"][0]["documents"],
                     totalPages: responseJson["data"][0]["totalPages"],
                     totalRows: responseJson["data"][0]["totalRows"]
                 })
@@ -150,7 +151,7 @@ class Documents extends Component {
         },
         body: JSON.stringify({
             "documentStatusId": this.state.documentStatusId,
-            "currentPage": this.state.currentPage,
+            "currentPage": this.state.currentPage - 1,
             "isNext": true,
             "searchText": "",
             "startDate": "",
@@ -190,7 +191,7 @@ class Documents extends Component {
         const navigate = this.props.navigation;
         let data = [
             {
-                label: "All Document",
+                label: "All Documents",
                 value: null
             },
             {
@@ -261,19 +262,37 @@ class Documents extends Component {
                                         }}
                                         onPress={()=>this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})}
                                     >
-                                        <View style={styles.DocumentsList}>
-                                            <Text style={[styles.DocumentsListFont, {fontSize: 17, fontWeight: "bold"}]}>
-                                                {docs.name}
-                                            </Text>
-                                            <View style={{flexDirection: "row"}}>
-                                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                                    Uploaded By:{"\n"}
-                                                    Created Time:
+                                        <View style={[styles.DocumentsList, {flexDirection: "row"}]}>
+                                            <View style={{flex: 0.1, paddingRight: 5}}>
+                                                <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                                                    {docs.extension == ".pdf" ?
+                                                        <Icon
+                                                            name="file-pdf-o"
+                                                            size={30}
+                                                        /> : null
+                                                    }
+                                                    {docs.extension == ".docx" || docs.extension == ".doc" ?
+                                                        <Icon
+                                                            name="file-word-o"
+                                                            size={30}
+                                                        /> : null
+                                                    }
+                                                </View>
+                                            </View>
+                                            <View style={{flex: 0.9}}>
+                                                <Text style={[styles.DocumentsListFont, {fontSize: 17, fontWeight: "bold"}]}>
+                                                    {docs.name}
                                                 </Text>
-                                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                                    {docs.uploadedBy}{"\n"}
-                                                    {docs.creationTime}
-                                                </Text>
+                                                <View style={{flexDirection: "row"}}>
+                                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                                        Uploaded By:{"\n"}
+                                                        Time of Creation:
+                                                    </Text>
+                                                    <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                                        {docs.uploadedBy}{"\n"}
+                                                        {docs.creationTime}
+                                                    </Text>
+                                                </View>
                                             </View>
                                         </View>
                                     </TouchableOpacity>
