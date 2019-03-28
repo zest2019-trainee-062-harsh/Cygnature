@@ -1,7 +1,10 @@
 import React, {Component} from 'react'
 import {View, Text, TouchableOpacity, StyleSheet, TextInput} from 'react-native'
 import { Dimensions } from "react-native"
-import DocumentUpload_AddModal from './DocumentUpload_AddModal';
+import DocumentUpload_SignerModal from './DocumentUpload_SignerModal';
+import DocumentUpload_ObserverModal from './DocumentUpload_ObserverModal';
+
+import DatePicker from 'react-native-datepicker'
  
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
@@ -15,6 +18,7 @@ class DocumentUpload extends Component {
     state = {
         data: [],
         count: 0,
+        date :null
     }
 
     static navigationOptions = {
@@ -45,14 +49,42 @@ class DocumentUpload extends Component {
                     numberOfLines={3} />
 
                 <Text style={styles.textTitle}>Signers: * </Text>
-                <TouchableOpacity  onPress={() => { this.refs.DocumentUpload_AddModal.show() }}>
+                <TouchableOpacity  onPress={() => { this.refs.DocumentUpload_SignerModal.show() }}>
                     <Text style={styles.textData}>Select</Text>
                 </TouchableOpacity>
-                <View>
-
-                </View>
+                <Text style={styles.textTitle}>Observers: </Text>
+                <TouchableOpacity  onPress={() => { this.refs.DocumentUpload_ObserverModal.show() }}>
+                    <Text style={styles.textData}>Select</Text>
+                </TouchableOpacity>
+                <Text style={styles.textTitle}>Due Date: </Text>
+                <DatePicker
+        style={{width: 200}}
+        date={this.state.date}
+        mode="date"
+        placeholder="select date"
+        format="YYYY-MM-DD"
+        minDate="2016-05-01"
+        maxDate="2016-06-01"
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        customStyles={{
+          dateIcon: {
+            position: 'absolute',
+            left: 0,
+            top: 4,
+            marginLeft: 0
+          },
+          dateInput: {
+            marginLeft: 36
+          }
+          // ... You can check the source to find the other keys.
+        }}
+        onDateChange={(date) => {this.setState({date: date})}}
+      />
                 
-                <DocumentUpload_AddModal ref={'DocumentUpload_AddModal'}  parentFlatList={this}/>
+                
+                <DocumentUpload_SignerModal ref={'DocumentUpload_SignerModal'}  parentFlatList={this}/>
+                <DocumentUpload_ObserverModal ref={'DocumentUpload_ObserverModal'}  parentFlatList={this}/>
             </View>
         )
     }

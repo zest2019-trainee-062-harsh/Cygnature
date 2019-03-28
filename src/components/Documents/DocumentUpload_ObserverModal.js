@@ -8,7 +8,7 @@ import { CheckBox } from 'react-native-elements'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
  
-class DocumentUpload_AddModal extends Component {
+class DocumentUpload_ObserverModal extends Component {
     constructor(props) {
     super(props)
     this.view()
@@ -33,9 +33,11 @@ class DocumentUpload_AddModal extends Component {
         });
       }
     
-      onChangeCheck() {
+      onChangeCheck= () => {
         this.setState({ checked: !this.state.checked})
-    }
+        console.warn(this.state.checked)
+    } 
+
     view = async() => {
         let auth = await AsyncStorage.getItem('auth');
         this.state.auth = auth;
@@ -81,16 +83,12 @@ class DocumentUpload_AddModal extends Component {
             >
         <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
         <Icon name="md-alert" color='black' size={100} />
-        <Text style={{ fontSize:25, fontWeight: 'bold'}}> NO Contacts </Text>
-        <Text style={{marginLeft:"20%", marginRight:"20%", fontSize:25, fontStyle: 'italic' }}>
+        <Text style={{ fontSize:17, fontWeight: 'bold'}}> NO Contacts </Text>
+        <Text style={{marginLeft:"20%", marginRight:"20%", fontSize:17, fontStyle: 'italic' }}>
          You can add contacts by clicking "+" button at bottom right.
          </Text>
         
 
-
-        <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
-                    <Text style={styles.floatButtonText}>+</Text>
-        </TouchableOpacity>
 
         </View></Modal>
             )
@@ -106,16 +104,8 @@ class DocumentUpload_AddModal extends Component {
                 //console.warn("modal closed")
             }}
         >
-            <View style={{
-                borderColor:'#003d5a',
-                borderWidth: 2,
-                borderRadius:5,
-                flex:1,
-                backgroundColor: 'white',
-                margin: 7,
-                padding: 10}
-            }>
-            <Text style={{margin:10, fontSize:24, fontWeight: 'bold', color: 'black'}}>
+           
+            <Text style={{margin:10, fontSize:17, color: 'black'}}>
                 Contact(s)
             </Text>
             <SwipeableFlatList
@@ -130,7 +120,7 @@ class DocumentUpload_AddModal extends Component {
 
             
 
-            </View></Modal>
+           </Modal>
             
                 )
         }
@@ -138,25 +128,15 @@ class DocumentUpload_AddModal extends Component {
         _renderItem({ item }) {
         return (
             <View style={styles.row}>
-                <View style={styles.rowData}>
-                <CheckBox
-                        textStyle={{color: 'black'}}
-                        uncheckedColor="black"
-                        checkedColor="#6eab52"
-                        size={15}
-                        checked={this.state.checked}
-                        containerStyle={{flex:0.5}}
-                        onPress={() => this.onChangeCheck()}
-                    />
-               
-                    <Text style={styles.rowDataText2}>{item.name}</Text>
-                </View>
+                <Text style={styles.rowDataText1}>{item.name}</Text>
+                <Text style={styles.rowDataText2}>{item.email}</Text>
             </View>
+            
         )
     }
     }
 
-export default DocumentUpload_AddModal
+export default DocumentUpload_ObserverModal
 
 const styles = StyleSheet.create({
     modal:{
@@ -168,74 +148,21 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius:5,
     },
-    floatButton: {
-        position: 'absolute',
-        width:50,
-        height: 50,
-        backgroundColor: '#003d5a',
-        borderRadius: 30,
-        bottom: 5,
-        right: -1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    floatButtonText: {
-        color: 'white',
-        fontSize: 25    
-    },
     row: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 10,
-        backgroundColor: 'white',
-    },
-    rowData: {
-        flex: 1,
-        flexDirection: 'row',
-        margin:7,
-    },
-    rowDataBg: {
-        flex:0.5,
-        position: 'absolute',
-        width:30,
-        height: 30,
-        backgroundColor: '#003d5a',
-        borderRadius: 30,
-        alignItems: 'center',
-        justifyContent: 'center',
+        margin:5,  
+        borderColor:'#003d5a',
+        borderWidth: 1,
+        borderRadius:5,
     },
     rowDataText1: {
-        flex:0.3,
-        fontSize: 14,
+        marginLeft: 20,
+        fontSize: 15,
         fontWeight: 'bold',
-        color: 'white',
-        borderRadius: 5,
-    },
-    rowDataText2: {
-        flex:0.3,
-        fontSize: 20,
-        marginLeft: 50,
-        fontWeight: '400',
         color: 'black'
     },
-    actionContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'center'
+    rowDataText2: {
+        marginLeft:25,
+        fontSize: 15,
+        color: 'black'
     },
-    actionButton: {
-        padding: 10,
-        width:80,
-        backgroundColor: '#003d5a',
-    },
-    actionButtonDest:{
-        backgroundColor: '#FF0000',
-    
-    },
-    actionButtonText: {
-        textAlign: 'center',
-        color: 'white',
-    },
-    })
+})
