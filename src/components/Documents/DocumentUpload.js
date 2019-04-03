@@ -5,6 +5,8 @@ import DocumentUpload_SignerModal from './DocumentUpload_SignerModal';
 import DocumentUpload_ObserverModal from './DocumentUpload_ObserverModal';
 
 import DatePicker from 'react-native-datepicker'
+
+import moment from 'moment';
  
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
@@ -12,13 +14,22 @@ var height = Dimensions.get('window').height; //full width
 class DocumentUpload extends Component {
     constructor(props) {
         super(props)
-        this.state.data  = this.props.navigation.getParam('data')
+        //this.state.data  = this.props.navigation.getParam('data')
+    
+        var date = new Date().getDate(); //Current Date
+        var month = new Date().getMonth() + 1; //Current Month
+        var year = new Date().getFullYear(); //Current Year
+        var hours = new Date().getHours(); //Current Hours
+        var min = new Date().getMinutes(); //Current Minutes
+        var sec = new Date().getSeconds(); //Current Seconds
+        this.state.currentDate = '0'+ date + '-' + '0'+ month + '-' + year
     }
 
     state = {
         data: [],
         count: 0,
-        date :null
+        date :null,
+        currentDate: null,
     }
 
     static navigationOptions = {
@@ -30,10 +41,12 @@ class DocumentUpload extends Component {
     }
 
     render() {
+
         return(
             <View style={styles.mainContainer}>
                 <Text style={styles.textTitle}>File Name: </Text>
-                <Text style={styles.textData}>{this.state.data['name']} </Text>
+                {/* <Text style={styles.textData}>{this.state.data['name']} </Text> */}
+                <Text style={styles.textData}>{this.state.currentDate}</Text>
 
                 <Text style={styles.textTitle}>Description: </Text>
                 <TextInput 
@@ -61,10 +74,9 @@ class DocumentUpload extends Component {
         style={{width: 200}}
         date={this.state.date}
         mode="date"
-        placeholder="select date"
-        format="YYYY-MM-DD"
-        minDate="2016-05-01"
-        maxDate="2016-06-01"
+        placeholder="Select Date"
+        format="DD-MM-YYYY"
+        minDate={this.state.currentDate}
         confirmBtnText="Confirm"
         cancelBtnText="Cancel"
         customStyles={{
@@ -82,6 +94,9 @@ class DocumentUpload extends Component {
         onDateChange={(date) => {this.setState({date: date})}}
       />
                 
+                <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.props.navigation.navigate('Document_PlaceHolder')}>
+                        <Text style = { styles.buttonText }>Add PlaceHolder</Text>
+                </TouchableOpacity>
                 
                 <DocumentUpload_SignerModal ref={'DocumentUpload_SignerModal'}  parentFlatList={this}/>
                 <DocumentUpload_ObserverModal ref={'DocumentUpload_ObserverModal'}  parentFlatList={this}/>
@@ -121,5 +136,17 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: 'black',
         fontFamily: 'Helvetica'
+    },
+    buttonContainer: {
+        backgroundColor: '#003d5a',
+        paddingVertical: 10,
+        margin: 5,
+        marginLeft: "66%",
+        borderRadius: 5
+    },
+    buttonText: {
+        textAlign: 'center',
+        color: '#ffffff',
+        fontWeight: 'bold'
     },
 })

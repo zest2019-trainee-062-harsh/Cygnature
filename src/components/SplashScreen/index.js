@@ -38,6 +38,7 @@ export default class SplashScreen extends Component{
       })
     ]).start(() => {
       //End of animations
+      //this.props.navigation.navigate('Login')
       this.authCheck()
     })
   }
@@ -46,10 +47,10 @@ export default class SplashScreen extends Component{
     let auth = await AsyncStorage.getItem('auth');
     let otp = await AsyncStorage.getItem('otp_check');
     if(otp == 'not_present' || otp == null){
-        this.props.navigation.navigate('fp')
+        this.props.navigation.navigate('Login')
     }else{
       if(auth == 'not_present' || auth == null){
-        this.props.navigation.navigate('fp')
+        this.props.navigation.navigate('Login')
       }else{
         this.state.auth = auth;
         this.getCount();
@@ -70,7 +71,8 @@ export default class SplashScreen extends Component{
             this.state.count["awaitingOthers"] = responseJson["data"][0]["awaitingOthers"]
             this.state.count["completed"] = responseJson["data"][0]["completed"]
             this.state.count["expireSoon"] = responseJson["data"][0]["expireSoon"]
-            this.props.navigation.navigate("Dashboard" ,{"count": this.state.count})
+            //this.props.navigation.navigate("Dashboard" ,{"count": this.state.count})
+            this.props.navigation.navigate("Document_PlaceHolder")
         })
         .catch((error) => {
           Alert.alert(
@@ -78,7 +80,7 @@ export default class SplashScreen extends Component{
             'Please Re-Login',
             [
                 {
-                    text: 'Re-Login', onPress: ()=>  this.props.navigation.navigate('fp')
+                    text: 'Re-Login', onPress: ()=>  this.props.navigation.navigate('Login')
                 },
             ],
             {cancelable: true},
