@@ -26,6 +26,50 @@ Date: 12/03/2019
 3. Settings: General and Profile only UI. Left Tasks: API
 4. AsyncStorage: Stored the auth token, email and password in the local storage.
 
+Date: 13/03/2019
+1. Contacts fully done along with API and UI(Basic UI with all the functionalities).
+2. Fixed some bugs with the authentication.
+
+Date: 14/03/2019
+1. Dropdown for phone-input R&D
+2. Solved basic bugs and made contacts-modals responsive.
+3. Contacts image with their initials of first name and last name.
+
+Date: 15/03/2019
+PROGRAMMING COMPETITION
+-> Fixed some minor bugs and worked on the authentication system.
+
+Date: 16/03/2019-17/03/2019
+SATURDAY-SUNDAY
+
+Date: 18/03/2019
+1. Phone Input in registration.
+2. R&D on image-picker and document-upload.
+3. Session-time out added after the token expires after 4 hours.
+
+Date: 19/03/2019
+1. Image-picker done.
+2. Document-list navigation done.
+3. Document upload done.
+
+Date: 20/03/2019
+1. Recent Documents rewamped in the dashboard.
+2. Document-list rewamped along with the colours with respect to their status.
+3. Fixed minor bugs in UI.
+4. Login page: Forgot password added - UI.
+
+Date: 21/03/2019 - HOLI
+
+Date: 22/03/2019:
+1. Minor bug fixes.
+2. Login screen rewamped.
+3. Register screen rewamped.
+
+Date: 23/03/2019 - 24/04/2019 : SATURDAY-SUNDAY
+
+Date: 25/03/2019
+1. Documents-list : Bug fixed.
+
 Key Learnings:
 1. Splashscreen animation with timings.
 2. Data-passing with Navigation using props.
@@ -41,3 +85,11 @@ Key Learnings:
     It shifts the view of the screen upwards according to the heigth of the keyboard. 
 11. AsyncStorage: Used AsyncStorage for storing the private and commonly used data in the local storage.
 12. Used react-native-signature-canvas to add the signature using the canvas.
+13. Used react-native-image-picker to pick the image from the device and upload image directly
+    from the device camera after the photo is clicked.
+14. Used FlatList with Draggable to generate the options for the contacts that have been added
+    by the user.
+15. Used moment() library in react-native to get the current time and date along with AM and PM
+    with the help of UTCOffset.
+16. Used document-picker for selecting and uploading file and documents.
+17. Used image-picker to choose the image from the device as a signature.

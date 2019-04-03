@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, ScrollView, Dimensions, AsyncStorage, ActivityIndicator, TouchableOpacity} from 'react-native'
 import { ProgressDialog } from 'react-native-simple-dialogs';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
@@ -8,14 +9,16 @@ var height = Dimensions.get('window').height; //full height
 class DocumentDetails extends Component {
 
     static navigationOptions = {
-        title: "Document details"
+        title: "Document Detail"
     }
 
     state = {
         auth: null,
         id: this.props.navigation.state.params.Id,
         details: null,
+        data: [],
         pdVisible: true,
+        pdTitle: "Getting the info",
     }
 
     documentDetails = async() => {
@@ -26,10 +29,34 @@ class DocumentDetails extends Component {
         }}).then((response) => response.json())
         .then((responseJson) => {
             this.setState({details: responseJson["data"][0]})
+            //console.warn(responseJson["data"][0])
             this.setState({pdVisible: false})
         })
         .catch((error) => {
             console.warn(error);
+        });
+    }
+    preview = async() => {
+        this.setState({pdTitle:"Previewing", pdVisible: true})
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/preview/'+this.state.id,{
+        method: 'GET',
+        headers: {
+            'Authorization':this.state.auth,
+        }}).then((response) => response.json())
+        .then((responseJson) => {
+            if(responseJson["data"] == null)
+            {
+                this.setState({pdVisible: false})
+                console.warn(responseJson)
+            } else {
+            this.setState({data: responseJson["data"][0]["documentData"]})
+            //console.warn(responseJson["data"][0]["documentData"])
+            this.setState({pdVisible: false})
+            this.props.navigation.navigate('Document_Preview',{'data': this.state.data})
+        }
+        })
+        .catch((error) => {
+            console.warn(error.message);
         });
     }
 
@@ -44,7 +71,7 @@ class DocumentDetails extends Component {
             <View style={styles.mainContainer}>
                 <ProgressDialog
                     visible={this.state.pdVisible}
-                    title="Getting the info"
+                    title={this.state.pdTitle}
                     message="Please wait..."
                     activityIndicatorColor="#003d5a"
                     activityIndicatorSize="small"
@@ -52,10 +79,9 @@ class DocumentDetails extends Component {
                 />
                 {this.state.details != null ? 
                     <ScrollView>
-                        <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Documents-Details </Text>
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
                                     File Name
                                 </Text>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
@@ -65,7 +91,7 @@ class DocumentDetails extends Component {
                         </View>
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
                                     Activation Status
                                 </Text>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
@@ -78,7 +104,7 @@ class DocumentDetails extends Component {
                         </View>
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
                                     Uploaded By
                                 </Text>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
@@ -88,8 +114,8 @@ class DocumentDetails extends Component {
                         </View>
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Hash
+                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
+                                    Document Hash
                                 </Text>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
                                     {this.state.details["documentDetail"]["documentFileHash"]}
@@ -98,7 +124,7 @@ class DocumentDetails extends Component {
                         </View>
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
                                     Status
                                 </Text>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
@@ -108,7 +134,7 @@ class DocumentDetails extends Component {
                         </View>
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
+                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
                                     Created at
                                 </Text>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
@@ -116,7 +142,8 @@ class DocumentDetails extends Component {
                                 </Text>
                             </View>
                         </View>
-                        <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Document-History </Text>
+                        <View style={styles.box}>
+                        <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> History </Text>
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                                 <Text>
@@ -125,6 +152,8 @@ class DocumentDetails extends Component {
                                 </Text>
                             </View>
                         </View>
+                        </View>
+
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
@@ -147,8 +176,8 @@ class DocumentDetails extends Component {
                                     }
                                 </Text>
                             </View>
-                        </View>
-                        <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Signers </Text>
+                        </View> 
+                        <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Signers </Text>
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
@@ -169,7 +198,7 @@ class DocumentDetails extends Component {
                                 </Text>
                             </View>
                         </View>
-                        <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Observers </Text>
+                        <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Observers </Text>
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
@@ -191,7 +220,28 @@ class DocumentDetails extends Component {
                                 </Text>
                             </View>
                         </View>
+                        <View style={{flex:1, flexDirection:'row'}}>
+                         <TouchableOpacity  
+                        style = {styles.buttonContainer}>
+                            <Text style = { styles.buttonText }>Sign Now</Text>
+                        </TouchableOpacity> 
+                        <TouchableOpacity  onPress={()=> this.preview()}
+                        style = {styles.buttonContainer}>
+                            <Text style = { styles.buttonText }>Preview</Text>
+                        </TouchableOpacity> 
+                        <TouchableOpacity  
+                        style = {[styles.buttonContainer, {flex: 0.2, alignItems:'center'}]}>
+                            <Icon
+                                    name="close"
+                                    size={15}
+                                    color="white"
+                                />
+                        </TouchableOpacity> 
+                        </View>
+
                     </ScrollView>
+
+
                     : <ActivityIndicator color="white" size="large" />
                 }
             </View>
@@ -222,6 +272,27 @@ const styles = StyleSheet.create({
     DocumentsListFont:{
         flex: 0.5,
         color: "black",
-        fontSize: 17
+        fontSize: 15
+    },
+    box: { 
+        marginTop: 25,
+        margin: 10,
+        borderRadius:5,
+        borderColor: "#003d5a",
+        borderWidth: 2,
+        borderWidth: 2,
+    },
+    buttonContainer: {
+        flex: 0.5,
+        backgroundColor: '#003d5a',
+        margin: 20,
+        height:40,
+        justifyContent: 'center',
+    },
+    buttonText: {
+        justifyContent: 'center',
+        textAlign: 'center',
+        color: '#ffffff',
+        fontWeight: 'bold'
     },
 })

@@ -3,6 +3,8 @@ package com.cygnature;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.hieuvp.fingerprint.ReactNativeFingerprintScannerPackage;
+import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
 import com.github.reactnativecommunity.location.RNLocationPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -26,6 +28,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactNativeFingerprintScannerPackage(),
+            new ReactNativeDocumentPicker(),
             new RNLocationPackage(),
             new RNGestureHandlerPackage(),
             new VectorIconsPackage()

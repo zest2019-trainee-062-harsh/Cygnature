@@ -11,6 +11,9 @@ export default class Index extends Component {
   handleSignature = signature => {
     this.setState({ signature });
   };
+  static navigationOptions = {
+    title: "Canvas"
+}
  
   render() {
     const style = `.m-signature-pad--footer
