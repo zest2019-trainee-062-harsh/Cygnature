@@ -47,10 +47,10 @@ export default class SplashScreen extends Component{
     let auth = await AsyncStorage.getItem('auth');
     let otp = await AsyncStorage.getItem('otp_check');
     if(otp == 'not_present' || otp == null){
-        this.props.navigation.navigate('Login')
+        this.props.navigation.navigate('fp')
     }else{
       if(auth == 'not_present' || auth == null){
-        this.props.navigation.navigate('Login')
+        this.props.navigation.navigate('fp')
       }else{
         this.state.auth = auth;
         this.getCount();
@@ -80,7 +80,7 @@ export default class SplashScreen extends Component{
             'Please Re-Login',
             [
                 {
-                    text: 'Re-Login', onPress: ()=>  this.props.navigation.navigate('Login')
+                    text: 'Re-Login', onPress: ()=>  this.props.navigation.navigate('fp')
                 },
             ],
             {cancelable: true},
