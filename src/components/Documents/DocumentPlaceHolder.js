@@ -13,7 +13,7 @@ class DocumentPlaceHolder extends Component {
         
     }
     static navigationOptions = {
-        title: "Document PlaceHolder"
+        title: "Document Placeholder"
     }
 
     componentWillMount() {
