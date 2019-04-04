@@ -13,7 +13,8 @@ import {StyleSheet,
     ActivityIndicator,
     BackHandler,
     NetInfo,
-    AsyncStorage
+    AsyncStorage,
+    Keyboard
 } from 'react-native'
 
 import { CheckBox } from 'react-native-elements'
@@ -25,6 +26,9 @@ class Login extends Component {
     constructor(props) {
         super(props)
         this.checkConn()
+        this.keyboardWillShow = this.keyboardWillShow.bind(this)
+        this.keyboardWillHide = this.keyboardWillHide.bind(this)
+    
     }
     
     static navigationOptions = {
@@ -41,7 +45,8 @@ class Login extends Component {
         resData: {  },
         data: {  },
         auth: [],
-        opacity: 0.5
+        opacity: 0.5,
+        isVisible: true
     }
 
     checkConn() {
@@ -224,10 +229,34 @@ class Login extends Component {
         let auth = await AsyncStorage.getItem('stored_password');
         alert(auth)
     }
+  
+
+  componentWillMount() {
+    this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow)
+    this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide)
+  }
+
+  componentWillUnmount() {
+    this.keyboardWillShowSub.remove()
+    this.keyboardWillHideSub.remove()
+  }
+
+  keyboardWillShow = event => {
+    this.setState({
+      isVisible: false
+    })
+  }
+
+  keyboardWillHide = event => {
+    this.setState({
+      isVisible: true
+    })
+  }
 
     render(){
         return(
-            <View behavior="padding" style={styles.maincontainer}>
+            
+            <View style={styles.maincontainer}>
             <View style={{flex:0.90, justifyContent:'center'}}>
             
             <View style={styles.logoContainer}>            
@@ -313,15 +342,17 @@ class Login extends Component {
                     </View>
                     </View>
                     
-     
+                    {this.state.isVisible?
                     <View style={{flex:0.1, borderTopColor: 'white', borderTopWidth: 1}}>
-             
+                    
                    <TouchableOpacity 
                     onPress={()=> this.call("Register")}
                     style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                             <Text style = {{ color: 'white' }}>Create an account</Text>
-            </TouchableOpacity>
-                </View></View>
+                    </TouchableOpacity>
+                    </View>:null}
+                
+                </View>
                 
         )
     }
