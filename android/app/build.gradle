@@ -134,6 +134,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-webview')
     implementation project(':react-native-fingerprint-scanner')
     implementation project(':react-native-document-picker')
     implementation project(':react-native-location')

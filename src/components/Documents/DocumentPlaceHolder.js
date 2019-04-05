@@ -179,7 +179,6 @@ export default DocumentPlaceHolder
 const styles = StyleSheet.create({
     mainContainer: {
         borderWidth:1,
-        borderColor:'black',
         flex:1,
         backgroundColor: 'white',
         margin: 7, 

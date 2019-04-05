@@ -1,68 +1,158 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import Signature from 'react-native-signature-canvas';
- 
+import { StyleSheet, TouchableOpacity, View, Text, ActivityIndicator, AsyncStorage,  } from 'react-native';
+
+import SignaturePad from 'react-native-signature-pad';
+
+import { ProgressDialog } from 'react-native-simple-dialogs';
 export default class Index extends Component {
   constructor(props) {
     super(props);
-    this.state = { signature: null };
+    this.state = { signature: null, canvas:true, auth: null, pdVisible: false, };
   }
  
-  handleSignature = signature => {
-    this.setState({ signature });
-  };
   static navigationOptions = {
     title: "Canvas"
+  }
+
+  componentDidMount() {
+    this._clear()
+  }
+
+  enrollSign = async() => {
+  
+    this.setState({pdVisible: true})
+    let auth = await AsyncStorage.getItem("auth")
+    this.setState({auth: auth})
+    return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/update-signature',{
+    method: 'POST',
+    headers: {
+        'Authorization':this.state.auth,
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        "signatureType": 2,
+        "ImageBytes": this.state.signature
+    }),
+    }).then((response) => response.json())
+    .then((responseJson) => {
+        this.setState({pdVisible: false})
+        if(responseJson['message'] == null) {
+          this._clear()
+          alert("Enroll failed\nPlease check canvas")
+        } else {
+          this._clear()
+          console.warn(responseJson)
+          this.props.navigation.navigate('Settings')
+        }
+    })
+    .catch((error) => {
+        console.warn(error);
+    });
+  
 }
  
   render() {
-    const style = `.m-signature-pad--footer
-    .button {
-      background-color: red;
-      color: #FFF;
-    }`;
+    var pencolor = "#003d5a";
     return (
-      <View style={{ flex: 1 }}>
-        <View style={styles.preview}>
-          {this.state.signature ? (
-            <Image
-              resizeMode={"contain"}
-              style={{ width: 335, height: 114 }}
-              source={{ uri: this.state.signature }}
+      <View style={styles.mainContainer}>
+
+      <ProgressDialog
+                visible={this.state.pdVisible}
+                title="Enrolling !"
+                message="Please wait..."
+                activityIndicatorColor="#003d5a"
+                activityIndicatorSize="large"
+                animationType="slide"
             />
-          ) : null}
+
+      <View style={{flex:0.9}}>
+        <View style={styles.pad}>
+        {this.state.canvas?
+          <SignaturePad 
+            penColor={pencolor}
+            onError={this._signaturePadError}
+            onChange={this._signaturePadChange} />:
+              <View style={{flex: 1,justifyContent: 'center', alignContent:'center'}}> 
+                <ActivityIndicator color="#003d5a" size="large" /> 
+              </View>}
         </View>
-        <Signature
-          onOK={this.handleSignature}
-          descriptionText="Sign"
-          clearText="Clear"
-          confirmText="Save"
-          webStyle={style}
-        />
       </View>
-    );
+
+      <View style={styles.footerContainer}>       
+      <TouchableOpacity style = { styles.footerbuttonContainer} onPress={this._clear}>
+        <Text style = { styles.footerbuttonText }>Clear</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style = { styles.footerbuttonContainer} onPress={this._getSig}>
+        <Text style = { styles.footerbuttonText }>Save</Text>
+      </TouchableOpacity>
+      </View>  
+
+      </View>
+    )
+  };
+  _signaturePadError = (error) => {
+    console.error(error);
+  };
+ 
+  _signaturePadChange = ({base64DataUrl}) => {
+    var string = base64DataUrl
+    string = string.replace(/^data:image/, "");
+    string = string.replace('/', "");
+    string = string.replace(/^png;base64,/, "");
+    //console.warn(string)
+    this.setState({signature: string})
+    //console.warn(base64DataUrl);
+  };
+
+
+
+  _getSig = () => {
+    //console.warn(this.state.signature)
+    this.enrollSign()
+  }
+  _clear = () => {
+    this.setState({ canvas: false, signature: null }); 
+    setTimeout( () => { this.setState({ canvas: true }); }, 500);
   }
 }
- 
+
+
 const styles = StyleSheet.create({
-  preview: {
-    width: 335,
-    height: 114,
-    backgroundColor: "#F8F8F8",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 15
+  mainContainer: {
+      borderWidth:1,
+      flex:1,
+      backgroundColor: 'white',
+      margin: 7, 
+      borderWidth: 2,
+      borderRadius:5,
+      borderColor: "#003d5a",
+      padding: 10
   },
-  previewText: {
-    color: "#FFF",
-    fontSize: 14,
-    height: 40,
-    lineHeight: 40,
-    paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: "#69B2FF",
-    width: 120,
-    textAlign: "center",
-    marginTop: 10
-  }
-});
+  pad: {
+    flex: 0.9, 
+    //backgroundColor: 'green',
+    margin:10,
+    borderWidth: 1,
+    borderRadius:5,
+    borderColor: "#003d5a",
+  },
+  footerContainer:{
+    flex:0.1,
+    flexDirection:'row'
+  },
+  footerbuttonContainer: {
+    flex:0.5,
+    backgroundColor: '#003d5a',
+    paddingVertical: 10,
+    margin: 5,
+    borderRadius: 5,
+    justifyContent: 'center'
+},
+footerbuttonText: {
+    textAlign: 'center',
+    color: '#ffffff',
+    fontWeight: 'bold'
+},
+})
+ 
