@@ -127,6 +127,14 @@ class General extends Component {
 }
 
 export default createMaterialTopTabNavigator({
+   profile: { screen: Profile,
+        navigationOptions: {
+            tabBarLabel: 'Profile',
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="md-document" color={tintColor} size={18} />
+            )
+        }
+    }, 
     general: { screen: General,
         navigationOptions: {
             tabBarLabel: 'General',
@@ -135,14 +143,6 @@ export default createMaterialTopTabNavigator({
             )
         }
     },
-    profile: { screen: Profile,
-        navigationOptions: {
-            tabBarLabel: 'Profile',
-            tabBarIcon: ({tintColor}) => (
-                <Icon name="md-document" color={tintColor} size={18} />
-            )
-        }
-    }, 
 },
 {
     tabBarOptions: {

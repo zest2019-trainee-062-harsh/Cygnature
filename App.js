@@ -5,7 +5,8 @@ import Register from './src/components/Register/Index'
 import Dashboard from './src/components/Dashboard/Index.js'
 import SplashScreen from './src/components/SplashScreen/index.js'
 import Settings  from './src/components/Settings/General.js';
-import Canvas from './src/components/Canvas/Index.js'
+import Canvas from './src/components/Signature/Canvas.js'
+import Image from './src/components/Signature/ImageP.js'
 import DocumentDetails from './src/components/Documents/DocumentDetails.js'
 import Contacts from './src/components/Contacts/Index.js'
 import Forgot_Pass from './src/components/Login/Forgot_Pass.js'
@@ -22,6 +23,7 @@ const AppNavigator = createStackNavigator({
   Dashboard: {screen: Dashboard},
   Settings: {screen: Settings},
   Canvas: {screen: Canvas},
+  Image: {screen: Image},
   DocumentDetails: {screen: DocumentDetails},
   Contacts: {screen:Contacts},
   Forgot_Pass: {screen:Forgot_Pass},

@@ -4,7 +4,7 @@ import { StyleSheet, TouchableOpacity, View, Text, ActivityIndicator, AsyncStora
 import SignaturePad from 'react-native-signature-pad';
 
 import { ProgressDialog } from 'react-native-simple-dialogs';
-export default class Index extends Component {
+export default class Canvas extends Component {
   constructor(props) {
     super(props);
     this.state = { signature: null, canvas:true, auth: null, pdVisible: false, };
@@ -41,7 +41,7 @@ export default class Index extends Component {
           alert("Enroll failed\nPlease check canvas")
         } else {
           this._clear()
-          console.warn(responseJson)
+          //console.warn(responseJson)
           this.props.navigation.navigate('Settings')
         }
     })

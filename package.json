@@ -16,6 +16,7 @@
     "react-native-elements": "^1.0.0",
     "react-native-fingerprint-scanner": "^2.5.0",
     "react-native-gesture-handler": "^1.1.0",
+    "react-native-image-crop-picker": "^0.23.1",
     "react-native-location": "^2.2.0",
     "react-native-material-dropdown": "^0.11.1",
     "react-native-modalbox": "^1.7.1",

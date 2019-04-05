@@ -1,14 +1,15 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, AsyncStorage, Switch, TextInput, Image} from 'react-native'
-import AddModal from './AddModal'
+
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
-
+import Modal from 'react-native-modalbox'
 class Profile extends Component {
     state = {
         signature: null,
         visible: false
     }
+    
     componentWillMount= async() => {
         
         let auth = await AsyncStorage.getItem('auth');
@@ -31,7 +32,7 @@ class Profile extends Component {
     }
 
     showModal = () => {
-        this.refs.AddModal.show() 
+        this.refs.myModal.open()
     }
 
     render() {
@@ -51,6 +52,33 @@ class Profile extends Component {
         ]
         return(
             <View style={styles.mainContainer}>
+            <Modal
+            ref={"myModal"}
+            style={ styles.modal }
+            position= 'center'
+            backdrop={true}
+            onClosed={() =>{
+                //console.warn("modal closed")
+            }}
+            >
+
+            <Text style={styles.basic}>Set Signature</Text>
+
+            <TouchableOpacity style={styles.selectoption} onPress={() => this.props.navigation.navigate('Canvas')}>
+                <Text>Draw</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.selectoption} onPress={() => this.props.navigation.navigate('Image')}>
+                <Text>Capture</Text>
+            </TouchableOpacity>
+
+            
+
+             <TouchableOpacity style={styles.selectoption} onPress={() => this.sendtoCanvas()}>
+                <Text>Type</Text>
+            </TouchableOpacity> 
+
+            </Modal>
                 <ScrollView>
                     <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Profile Picture </Text>
                     <View style={styles.DocumentsList}>
@@ -153,15 +181,17 @@ class Profile extends Component {
                             :null}
                             </View>
                             <TouchableOpacity 
-                            onPress={this.floatClicked}
+                            onPress={this.showModal}
                             style={styles.boxadd}>
                             <Text style={styles.box3Text2}>Add/Edit E-Signature</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
+                    
+              
                 </ScrollView>
                 
-                <AddModal ref={'AddModal'}  parentFlatList={this} />
+               
             </View>
         )
     }
@@ -221,4 +251,48 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         fontWeight: 'bold'
     },
+    modal:{
+        justifyContent: 'center',
+        shadowRadius:20,
+        width:width-80,
+        height:height*.5,
+        borderColor:'#003d5a',
+        borderWidth: 1,
+        borderRadius:5,
+    },
+    basic:{
+        paddingLeft:90,
+        color:'white',
+        borderWidth:1,
+        marginTop:-30,
+        //marginBottom:20,
+        fontSize:18,
+        backgroundColor: '#003d5a',
+
+    },
+    selectoption:{
+        borderRadius: 5,
+        marginLeft:25,
+        width:230,
+        height:70,
+        borderWidth:1,
+        borderColor:'black',
+        color:'black',
+        fontSize:10,
+        marginTop:20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+      },
+      ImageContainer: {
+        //borderRadius: 10,
+        width: 400,
+        height: 800,
+        borderColor: '#9B9B9B',
+        //borderWidth: 1 / PixelRatio.get(),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#CDDC39',
+        
+      },
 })
