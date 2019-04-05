@@ -72,7 +72,7 @@ export default class SplashScreen extends Component{
             this.state.count["completed"] = responseJson["data"][0]["completed"]
             this.state.count["expireSoon"] = responseJson["data"][0]["expireSoon"]
             //this.props.navigation.navigate("Dashboard" ,{"count": this.state.count})
-            this.props.navigation.navigate("Canvas")
+            this.props.navigation.navigate("Settings")
         })
         .catch((error) => {
           Alert.alert(

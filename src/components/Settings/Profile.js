@@ -1,10 +1,39 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, TextInput, Image} from 'react-native'
-
+import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, AsyncStorage, Switch, TextInput, Image} from 'react-native'
+import AddModal from './AddModal'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 
 class Profile extends Component {
+    state = {
+        signature: null,
+        visible: false
+    }
+    componentWillMount= async() => {
+        
+        let auth = await AsyncStorage.getItem('auth');
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': auth,
+        },
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            //console.warn(responseJson['data'][0]['impressions'][0]['imageBytes'])
+            this.setState({signature: responseJson['data'][0]['impressions'][0]['imageBytes']}) 
+            //console.warn(this.state.signature)
+            this.setState({visible:true})
+        })
+        .catch((error) => {
+          console.error(error)
+        });
+    }
+
+    showModal = () => {
+        this.refs.AddModal.show() 
+    }
+
     render() {
         let data = [
             {
@@ -25,7 +54,9 @@ class Profile extends Component {
                 <ScrollView>
                     <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Profile Picture </Text>
                     <View style={styles.DocumentsList}>
+                    
                         <View style={styles.DocumentsList}>
+
                             <View style={{height: 212, width: 212, flexGrow:1, justifyContent: "center", alignItems: "center"}}>
                                 <Image
                                     source={require('../../../img/profile.png')}
@@ -113,22 +144,24 @@ class Profile extends Component {
                         </View>
                     </View>
                     <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20, width: width}}></View>
-                    <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Notifications </Text>
+                    <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Signature </Text>
                     <View style={styles.DocumentsList}>
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
-                                <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
-                                    Document Activity
-                                </Text>
-                                <Switch
-                                    style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }
-                                    thumbColor = "#003d5a"
-                                    trackColor = "#003d5a"
-                                />
+                            {this.state.visible?
+                                <Image style={styles.signContainer} source={{uri: `data:image/png;base64,${this.state.signature}`}}/>
+                            :null}
                             </View>
+                            <TouchableOpacity 
+                            onPress={this.floatClicked}
+                            style={styles.boxadd}>
+                            <Text style={styles.box3Text2}>Add/Edit E-Signature</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </ScrollView>
+                
+                <AddModal ref={'AddModal'}  parentFlatList={this} />
             </View>
         )
     }
@@ -166,6 +199,24 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     buttonText: {
+        textAlign: 'center',
+        color: '#ffffff',
+        fontWeight: 'bold'
+    },
+    signContainer: {
+        width:150,
+        height:150,
+        borderWidth:1,
+        borderRadius:5,
+        borderColor: "#003d5a",
+    },
+    boxadd:{
+        backgroundColor: '#003d5a',
+        paddingVertical: 10,
+        margin: 5,
+        borderRadius: 5,
+    },
+    box3Text2: {
         textAlign: 'center',
         color: '#ffffff',
         fontWeight: 'bold'
