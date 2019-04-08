@@ -134,6 +134,9 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-image-crop-picker')
+    implementation project(':react-native-webview')
+    implementation project(':react-native-fingerprint-scanner')
     implementation project(':react-native-document-picker')
     implementation project(':react-native-location')
     implementation project(':react-native-gesture-handler')

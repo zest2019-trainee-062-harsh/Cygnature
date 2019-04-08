@@ -5,12 +5,15 @@ import Register from './src/components/Register/Index'
 import Dashboard from './src/components/Dashboard/Index.js'
 import SplashScreen from './src/components/SplashScreen/index.js'
 import Settings  from './src/components/Settings/General.js';
-import Canvas from './src/components/Canvas/Index.js'
+import Canvas from './src/components/Signature/Canvas.js'
+import Image from './src/components/Signature/ImageP.js'
 import DocumentDetails from './src/components/Documents/DocumentDetails.js'
 import Contacts from './src/components/Contacts/Index.js'
 import Forgot_Pass from './src/components/Login/Forgot_Pass.js'
 import Document_Upload from './src/components/Documents/DocumentUpload.js'
-import ChangePassword from './src/components/Settings/ChangePassword'
+import Document_Preview from './src/components/Documents/DocumentPreview.js'
+import fp from './src/components/fp.js'
+import Document_PlaceHolder from './src/components/Documents/DocumentPlaceHolder.js'
 
 const AppNavigator = createStackNavigator({
   SplashScreen: {screen: SplashScreen},
@@ -19,12 +22,17 @@ const AppNavigator = createStackNavigator({
   Register: {screen: Register},
   Dashboard: {screen: Dashboard},
   Settings: {screen: Settings},
+  Canvas: {screen: Canvas},
+  Image: {screen: Image},
   DocumentDetails: {screen: DocumentDetails},
   Contacts: {screen:Contacts},
   Canvas:{screen:Canvas},
   Forgot_Pass: {screen:Forgot_Pass},
   Document_Upload: {screen:Document_Upload},
-  ChangePassword:{screen: ChangePassword}
+  Document_Preview: {screen:Document_Preview},
+  fp: {screen:fp},
+  Document_PlaceHolder: {screen:Document_PlaceHolder},
+  
 });
 
 

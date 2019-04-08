@@ -1,95 +1,42 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity,
-    Linking, TextInput,  AsyncStorage,Image} from 'react-native'
+import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, AsyncStorage, Switch, TextInput, Image} from 'react-native'
 
-    import { Dropdown } from 'react-native-material-dropdown';   
+import { Dropdown } from 'react-native-material-dropdown';   
 import AddModal from './AddModal'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
-
-
-
+import Modal from 'react-native-modalbox'
 class Profile extends Component {
-   
-    constructor(props) {
-        super(props)
-        this.floatClicked = this.floatClicked.bind(this)
-        this.state = {
-            data: [],
-        }
+    state = {
+        signature: null,
+        visible: false
     }
     
-    floatClicked=() => {
-      // alert("clicked")
-        this.refs.AddModal.show()    
-    }
-
-    sendtoCanvas = () => {
-        //this.props.navigation.navigate('Canvas');
-        console.warn("YES")
-     }
-
-     logout = async() => {
-        AsyncStorage.clear();
-        this.props.navigation.navigate("Login")
-    }
-
-    changepwd=() => {
-        this.props.navigation.navigate("ChangePassword")
-    }
-
-    update() {
-        console.warn(this.state.currentPassword)
-        console.warn(this.state.newPassword)
-    
-        return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile/{{signer1UserId}}',{
-            method: 'POST',
+    componentWillMount= async() => {
+        
+        let auth = await AsyncStorage.getItem('auth');
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
+        method: 'GET',
         headers: {
-          'Authorization':this.state.auth,
-          'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': auth,
         },
-        body: JSON.stringify({
-          currentPassword:this.state.currentPassword,
-          newPassword:this.state.newPassword,
-          confirmPassword:this.state.newPassword
-        }),
         }).then((response) => response.json())
         .then((responseJson) => {
-            this.state.rMes=responseJson["message"]
-            this.props.navigation.navigate('Login',{"message":this.state.rMes})
-            console.warn(responseJson)
+            //console.warn(responseJson['data'][0]['impressions'][0]['imageBytes'])
+            this.setState({signature: responseJson['data'][0]['impressions'][0]['imageBytes']}) 
+            //console.warn(this.state.signature)
+            this.setState({visible:true})
         })
         .catch((error) => {
-          console.warn(error);
+          console.error(error)
         });
-        }
-        
-        componentWillMount(){
-            return fetch('http://cygnatureapipoc.stagingapplications.com/api/setting/get/', {
-                method: 'GET',
-                }).then((response) => response.json())
-                .then((responseJson) => {
-            
-                    this.setState({data : responseJson["data"][0]["countries"]})
-                    //console.warn(this.state.data)
-                    
-                    //console.warn(this.state.countryCode)
-                })
-                .catch((error) => {
-                    console.warn(error);
-                });
-    
-        }
-        onChangeHandler = (value) => {
-            // console.warn(this.state.countryCode);
-            // console.warn("Selected value = ", value);
-            this.setState({countryCode: value.replace(/[^0-9]/g, '')})
-            
-            console.warn(this.state.countryCode);
-          }
+    }
 
-         
-     
+    showModal = () => {
+        this.refs.myModal.open()
+    }
+
     render() {
         const navigate = this.props.navigation;
         let data = [
@@ -108,10 +55,40 @@ class Profile extends Component {
         ]
         return(
             <View style={styles.mainContainer}>
+            <Modal
+            ref={"myModal"}
+            style={ styles.modal }
+            position= 'center'
+            backdrop={true}
+            onClosed={() =>{
+                //console.warn("modal closed")
+            }}
+            >
+
+            <Text style={styles.basic}>Set Signature</Text>
+
+            <TouchableOpacity style={styles.selectoption} onPress={() => this.props.navigation.navigate('Canvas')}>
+                <Text>Draw</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.selectoption} onPress={() => this.props.navigation.navigate('Image')}>
+                <Text>Capture</Text>
+            </TouchableOpacity>
+
+            
+
+             <TouchableOpacity style={styles.selectoption} onPress={() => this.sendtoCanvas()}>
+                <Text>Type</Text>
+            </TouchableOpacity> 
+
+            </Modal>
                 <ScrollView>
-                    <View style={{flex:1,flexDirection:'row'}}>
+                    <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Profile Picture </Text>
+                    <View style={styles.DocumentsList}>
+                    
                         <View style={styles.DocumentsList}>
-                            <View style={{height: 100, width: 100, flexGrow:1,}}>
+
+                            <View style={{height: 212, width: 212, flexGrow:1, justifyContent: "center", alignItems: "center"}}>
                                 <Image
                                 style={{height:100,width:100}}
                                     source={require('../../../img/profile.png')}
@@ -267,15 +244,27 @@ class Profile extends Component {
                             </View>
                         </View>
                     </View>
-                    <TouchableOpacity 
-                            onPress={this.floatClicked}
+                    <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20, width: width}}></View>
+                    <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Signature </Text>
+                    <View style={styles.DocumentsList}>
+                        <View style={styles.DocumentsList}>
+                            <View style={{flexDirection: "row"}}>
+                            {this.state.visible?
+                                <Image style={styles.signContainer} source={{uri: `data:image/png;base64,${this.state.signature}`}}/>
+                            :null}
+                            </View>
+                            <TouchableOpacity 
+                            onPress={this.showModal}
                             style={styles.boxadd}>
-                            <Text style={styles.box3Text2}>Update Profile</Text>
-                    </TouchableOpacity>
+                            <Text style={styles.box3Text2}>Add/Edit E-Signature</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                     
+              
                 </ScrollView>
-                <AddModal ref={'AddModal'} />
                 
+               
             </View>
         )
     }
@@ -340,15 +329,66 @@ const styles = StyleSheet.create({
         color: 'black',
         fontWeight: 'bold'
     },
+    signContainer: {
+        width:150,
+        height:150,
+        borderWidth:1,
+        borderRadius:5,
+        borderColor: "#003d5a",
+    },
+    boxadd:{
+        backgroundColor: '#003d5a',
+        paddingVertical: 10,
+        margin: 5,
+        borderRadius: 5,
+    },
     box3Text2: {
         textAlign: 'center',
-        color: '#ffffff',   
+        color: '#ffffff',
+        fontWeight: 'bold'
     },
-    Text4:{
-        fontWeight: 'bold',
-        color: 'blue',
-        textDecorationLine:'underline',
-        marginTop:15,
-        marginRight:10
-    }
+    modal:{
+        justifyContent: 'center',
+        shadowRadius:20,
+        width:width-80,
+        height:height*.5,
+        borderColor:'#003d5a',
+        borderWidth: 1,
+        borderRadius:5,
+    },
+    basic:{
+        paddingLeft:90,
+        color:'white',
+        borderWidth:1,
+        marginTop:-30,
+        //marginBottom:20,
+        fontSize:18,
+        backgroundColor: '#003d5a',
+
+    },
+    selectoption:{
+        borderRadius: 5,
+        marginLeft:25,
+        width:230,
+        height:70,
+        borderWidth:1,
+        borderColor:'black',
+        color:'black',
+        fontSize:10,
+        marginTop:20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+      },
+      ImageContainer: {
+        //borderRadius: 10,
+        width: 400,
+        height: 800,
+        borderColor: '#9B9B9B',
+        //borderWidth: 1 / PixelRatio.get(),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#CDDC39',
+        
+      },
 })

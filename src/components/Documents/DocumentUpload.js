@@ -1,7 +1,12 @@
 import React, {Component} from 'react'
-import {View, Text, Image,TouchableOpacity, StyleSheet} from 'react-native'
+import {View, Text, TouchableOpacity, StyleSheet, TextInput} from 'react-native'
 import { Dimensions } from "react-native"
-import Icon from 'react-native-vector-icons/FontAwesome';
+import DocumentUpload_SignerModal from './DocumentUpload_SignerModal';
+import DocumentUpload_ObserverModal from './DocumentUpload_ObserverModal';
+
+import DatePicker from 'react-native-datepicker'
+
+import moment from 'moment';
  
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
@@ -9,85 +14,96 @@ var height = Dimensions.get('window').height; //full width
 class DocumentUpload extends Component {
     constructor(props) {
         super(props)
-        this.state.data  = this.props.navigation.getParam('data')
-        this.state.totalPage = this.state.data["pageCount"]
+        //this.state.data  = this.props.navigation.getParam('data')
+    
+        var date = new Date().getDate(); //Current Date
+        var month = new Date().getMonth() + 1; //Current Month
+        var year = new Date().getFullYear(); //Current Year
+        var hours = new Date().getHours(); //Current Hours
+        var min = new Date().getMinutes(); //Current Minutes
+        var sec = new Date().getSeconds(); //Current Seconds
+        this.state.currentDate = '0'+ date + '-' + '0'+ month + '-' + year
     }
+
     state = {
         data: [],
         count: 0,
-        totalPage: 0,
-        nextButtonOpacity : 1,
-        previousButtonOpacity : 1,
-        prevButton: false,
-        nextButton: false,
+        date :null,
+        currentDate: null,
     }
 
     static navigationOptions = {
         title: "Document Upload"
     }
 
-    nextPage() {
-        this.setState({count:this.state.count+1})
-        console.warn("C"+this.state.count)
-        console.warn(this.state.totalPage)
-
-        if(this.state.count == this.state.totalPage) {
-            console.warn("Reached EOF")
-            this.setState({nextButtonOpacity: 0.5, nextButton : false}) 
-        }
-    }
-    prevPage() {
-        this.setState({count:this.state.count-1})
-        if(this.state.count == this.state.totalPage-1) {
-            this.setState({previousButtonOpacity: 0.5 ,prevButton: true}) 
-        }
+    addSigner() {
+        console.warn("yes")
     }
 
-     render() {
-        const base64Icon = this.state.data["pages"][this.state.count]
-         return (
-             <View style={styles.mainContainer}>
-                <Text>Id {this.state.data["Id"]}</Text>
-                <Text>name {this.state.data["name"]}</Text>
-                <Text>pageCount {this.state.data["pageCount"]}</Text>
-                <Text>pageFrom {this.state.data["pageFrom"]}</Text>
-                <Text>pageTo {this.state.data["pageTo"]}</Text>
+    render() {
+
+        return(
+            <View style={styles.mainContainer}>
+                <Text style={styles.textTitle}>File Name: </Text>
+                {/* <Text style={styles.textData}>{this.state.data['name']} </Text> */}
+                <Text style={styles.textData}>{this.state.currentDate}</Text>
+
+                <Text style={styles.textTitle}>Description: </Text>
+                <TextInput 
+                    textAlignVertical='top'
+                    placeholderTextColor='black'
+                    keyboardType="name-phone-pad"
+                    placeholder = "Enter file description"
+                    returnKeyType="done"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    style={styles.boxTI} 
+                    multiline={true} 
+                    numberOfLines={3} />
+
+                <Text style={styles.textTitle}>Signers: * </Text>
+                <TouchableOpacity  onPress={() => { this.refs.DocumentUpload_SignerModal.show() }}>
+                    <Text style={styles.textData}>Select</Text>
+                </TouchableOpacity>
+                <Text style={styles.textTitle}>Observers: </Text>
+                <TouchableOpacity  onPress={() => { this.refs.DocumentUpload_ObserverModal.show() }}>
+                    <Text style={styles.textData}>Select</Text>
+                </TouchableOpacity>
+                <Text style={styles.textTitle}>Due Date: </Text>
+                <DatePicker
+        style={{width: 200}}
+        date={this.state.date}
+        mode="date"
+        placeholder="Select Date"
+        format="DD-MM-YYYY"
+        minDate={this.state.currentDate}
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        customStyles={{
+          dateIcon: {
+            position: 'absolute',
+            left: 0,
+            top: 4,
+            marginLeft: 0
+          },
+          dateInput: {
+            marginLeft: 36
+          }
+          // ... You can check the source to find the other keys.
+        }}
+        onDateChange={(date) => {this.setState({date: date})}}
+      />
                 
-                            <View style={{margin:20, justifyContent:'center', alignItems: 'center'}}>
-                <Image style={styles.imageContainer} source={{uri: `data:image/png;base64,${base64Icon}`}}/> 
-                </View>
-                {this.state.data["pageCount"] > 1 ? 
-                    <View style={styles.footerContainer}>
-                        <View style={{flex: 0.5, alignItems: "center"}}>
-                            <TouchableOpacity style = { [styles.buttonContainer, { opacity: this.state.previousButtonOpacity}] }
-                                disabled = {this.state.prevButton}
-                                onPress = {() => this.prevPage()}
-                            >
-                                <Icon
-                                    name="arrow-left"
-                                    size={15}
-                                    color="white"
-                                />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{flex: 0.5, alignItems: "center"}}>
-                            <TouchableOpacity style = { [styles.buttonContainer, { opacity: this.state.nextButtonOpacity, alignItems: 'flex-end'}] }
-                                disabled = {this.state.nextButton}
-                                onPress = {() => this.nextPage()}
-                            >
-                                <Icon
-                                    name="arrow-right"
-                                    size={15}
-                                    color="white"
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    </View> : null
-                }
-             </View>
-                )
-         }
-     }
+                <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.props.navigation.navigate('Document_PlaceHolder')}>
+                        <Text style = { styles.buttonText }>Add PlaceHolder</Text>
+                </TouchableOpacity>
+                
+                <DocumentUpload_SignerModal ref={'DocumentUpload_SignerModal'}  parentFlatList={this}/>
+                <DocumentUpload_ObserverModal ref={'DocumentUpload_ObserverModal'}  parentFlatList={this}/>
+            </View>
+        )
+    }
+}
 
 export default DocumentUpload
 
@@ -103,22 +119,42 @@ const styles = StyleSheet.create({
         borderColor: "#003d5a",
         padding: 10
     },
+<<<<<<< HEAD
     imageContainer: {
         borderColor:'#003d5a',
         borderWidth:1,
         width:width/1.4,
         height:height/2,
+=======
+    textTitle: {
+        color: 'black',
+        fontSize: 17,
+        fontWeight: 'bold',
+    },
+    textData: {
+        color: 'black',
+        fontSize: 17,
+        margin:5
+    },
+    boxTI: {
+        margin: 5,
+        fontSize: 12,
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: 'black',
+        fontFamily: 'Helvetica'
+>>>>>>> 2f74a44a8bde6794c7bf2cb83d77baed90f7ea29
     },
     buttonContainer: {
-        backgroundColor: "#003d5a",
-        borderRadius: 5,
+        backgroundColor: '#003d5a',
         paddingVertical: 10,
-        padding: 10,
-        width: 100,
+        margin: 5,
+        marginLeft: "66%",
+        borderRadius: 5
     },
-    footerContainer: {
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "row"
+    buttonText: {
+        textAlign: 'center',
+        color: '#ffffff',
+        fontWeight: 'bold'
     },
 })

@@ -13,6 +13,18 @@ var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
  
 class General extends Component {
+    // constructor (props) {
+    //     super(props)
+    //     state = {
+    //         screenshots = false,
+    //         document_activity = false
+    //     }
+    // }
+
+    logout = async() => {
+        AsyncStorage.clear();
+        this.props.navigation.navigate("Login")
+    }
 
     render() {
         const navigate = this.props.navigation;
@@ -112,6 +124,14 @@ class General extends Component {
 }
 
 export default createMaterialTopTabNavigator({
+   profile: { screen: Profile,
+        navigationOptions: {
+            tabBarLabel: 'Profile',
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="md-document" color={tintColor} size={18} />
+            )
+        }
+    }, 
     general: { screen: General,
         navigationOptions: {
             tabBarLabel: 'General',
@@ -120,14 +140,6 @@ export default createMaterialTopTabNavigator({
             )
         }
     },
-    profile: { screen: Profile,
-        navigationOptions: {
-            tabBarLabel: 'Profile',
-            tabBarIcon: ({tintColor}) => (
-                <Icon name="md-document" color={tintColor} size={18} />
-            )
-        }
-    }, 
 },
 {
     tabBarOptions: {

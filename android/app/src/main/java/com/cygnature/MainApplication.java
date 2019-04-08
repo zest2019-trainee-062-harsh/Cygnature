@@ -3,6 +3,9 @@ package com.cygnature;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
+import com.hieuvp.fingerprint.ReactNativeFingerprintScannerPackage;
 import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
 import com.github.reactnativecommunity.location.RNLocationPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -27,6 +30,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new PickerPackage(),
+            new RNCWebViewPackage(),
+            new ReactNativeFingerprintScannerPackage(),
             new ReactNativeDocumentPicker(),
             new RNLocationPackage(),
             new RNGestureHandlerPackage(),

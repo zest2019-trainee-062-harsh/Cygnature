@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {View, StyleSheet,Text, TouchableOpacity, ScrollView, StatusBar, BackHandler, Alert, AsyncStorage,
 ActivityIndicator } from 'react-native'
-const util = require('util');
 import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Icon1 from 'react-native-vector-icons/FontAwesome5'
@@ -72,6 +71,7 @@ class Dashboard extends Component {
                 documents: responseJson["data"][0]["documents"],
                 loading: false
             })
+            //this.refs.UploadModal.show()
             // console.warn(this.state.documents)
         })
         .catch((error) => {
@@ -109,8 +109,8 @@ class Dashboard extends Component {
         {
             console.warn("no data")
         }else {
-            console.warn("return data"+data["Id"])
-            console.warn("return data"+data["name"])
+            //console.warn("return data"+data["Id"])
+            //console.warn("return data"+data["name"])
             this.props.navigation.navigate('Document_Upload',{'data':data})
         }
     }
@@ -188,10 +188,10 @@ class Dashboard extends Component {
                         </ScrollView>
                     </View>
                     <ActionButton buttonColor="#003d5a" bgColor="rgba(255,255,255,0.8)">
-                        <ActionButton.Item buttonColor='#6eab52' title="Upload File" onPress={() => this.uploadDocument()}>
+                        <ActionButton.Item buttonColor="#003d5a" title="Upload File" onPress={() => this.uploadDocument()}>
                             <Icon name="md-document" style={styles.actionButtonIcon} />
                         </ActionButton.Item>
-                        <ActionButton.Item buttonColor='#6eab52' title="Add Signature" onPress={() => {}}>
+                        <ActionButton.Item buttonColor="#003d5a" title="Add Signature" onPress={() => {}}>
                             <Icon1 name="signature" style={styles.actionButtonIcon} />
                         </ActionButton.Item>
                     </ActionButton>
@@ -241,7 +241,7 @@ export default createMaterialBottomTabNavigator({
     },
 },
 {
-    //initialRouteName: 'documents',
+    initialRouteName: 'settings',
     barStyle: { backgroundColor: '#003d5a' },
     activeTintColor: 'white',
     navigationOptions: () => ({ header: null })
