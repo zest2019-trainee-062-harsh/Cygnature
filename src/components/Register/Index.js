@@ -54,12 +54,7 @@ class Register extends Component {
         rPhone: " ",
         rLat: " ",
         rLon: " ",
-<<<<<<< HEAD
-        data:[],
-        countryCode: null,
-=======
         isVisible: true,
->>>>>>> 2f74a44a8bde6794c7bf2cb83d77baed90f7ea29
             
     }
 

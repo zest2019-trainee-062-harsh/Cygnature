@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
+import React, {Component} from './node_modules/reacte_modules/react'
 import {View, Image, StyleSheet, TouchableOpacity, Text, AsyncStorage} from 'react-native'
 import ImagePicker from 'react-native-image-crop-picker';
-import { ProgressDialog } from 'react-native-simple-dialogs';
+import { ProgressDialog } from './node_modules/react-native-simple-dialogs-simple-dialogs';
 
 class ImageP extends Component {
     constructor(props) {

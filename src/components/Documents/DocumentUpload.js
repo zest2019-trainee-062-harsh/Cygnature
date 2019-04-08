@@ -119,13 +119,6 @@ const styles = StyleSheet.create({
         borderColor: "#003d5a",
         padding: 10
     },
-<<<<<<< HEAD
-    imageContainer: {
-        borderColor:'#003d5a',
-        borderWidth:1,
-        width:width/1.4,
-        height:height/2,
-=======
     textTitle: {
         color: 'black',
         fontSize: 17,
@@ -143,7 +136,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: 'black',
         fontFamily: 'Helvetica'
->>>>>>> 2f74a44a8bde6794c7bf2cb83d77baed90f7ea29
     },
     buttonContainer: {
         backgroundColor: '#003d5a',

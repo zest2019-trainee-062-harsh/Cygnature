@@ -27,41 +27,6 @@ class UploadModal extends Component {
         DocumentPicker.show({
             filetype: [DocumentPickerUtil.allFiles()],
             },(error,res) => {
-<<<<<<< HEAD
-              this.setState({pdVisible: true})
-                
-       const formData = new FormData()
-       formData.append('file',{
-           
-        uri: res.uri,
-        type: res.type,
-        name: res.fileName,
-       })
-       //console.warn(res.uri+res.type+res.fileName)
-       //console.warn(formData)
-       
-            
-    return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/upload',{
-    method: 'POST',
-    headers: {
-        'Authorization':auth,
-        //'Content-Type':'multipart/form-data'
-        },
-    body: formData
-    }
-    ).then((response) => response.json())
-    .then((responseJson) => {
-        
-        this.setState({pdVisible: false})
-        //console.warn(responseJson["data"][0])
-        this.refs.myModal.close()
-        this.props.parentFlatList.showData(responseJson["data"][0])
-    
-    })
-    .catch((error) => {
-        console.warn(error.message);
-    });      
-=======
               
                 if(error) {
                     //console.warn("ERROR"+error)
@@ -108,7 +73,6 @@ class UploadModal extends Component {
 
 
    
->>>>>>> 2f74a44a8bde6794c7bf2cb83d77baed90f7ea29
           });
     }
     

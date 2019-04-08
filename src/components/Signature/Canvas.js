@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, {Component} from './node_modules/reacte_modules/react';
 import { StyleSheet, TouchableOpacity, View, Text, ActivityIndicator, AsyncStorage,  } from 'react-native';
 
-import SignaturePad from 'react-native-signature-pad';
+import SignaturePad from './node_modules/react-native-signature-pade-signature-pad';
 
-import { ProgressDialog } from 'react-native-simple-dialogs';
+import { ProgressDialog } from './node_modules/react-native-simple-dialogs-simple-dialogs';
 export default class Canvas extends Component {
   constructor(props) {
     super(props);
