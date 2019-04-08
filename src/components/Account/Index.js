@@ -2,23 +2,14 @@ import React, {Component} from 'react'
 import {
     View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, AsyncStorage, ImageBackground
 } from 'react-native'
-import { Dropdown } from 'react-native-material-dropdown'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import  { createMaterialTopTabNavigator } from 'react-navigation'
-
-import  Profile from '../Settings/Profile.js'
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
  
-export default class General extends Component {
-    // constructor (props) {
-    //     super(props)
-    //     state = {
-    //         screenshots = false,
-    //         document_activity = false
-    //     }
-    // }
+export default class Index extends Component {
+    constructor (props) {
+        super(props)
+    }
 
     state= {
         switch1: false,

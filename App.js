@@ -4,7 +4,7 @@ import OTP from './src/components/Login/OTP.js'
 import Register from './src/components/Register/Index'
 import Dashboard from './src/components/Dashboard/Index.js'
 import SplashScreen from './src/components/SplashScreen/index.js'
-import Account  from './src/components/Settings/General.js';
+import Account  from './src/components/Account/Index.js';
 import Canvas from './src/components/Signature/Canvas.js'
 import Image from './src/components/Signature/ImageP.js'
 import DocumentDetails from './src/components/Documents/DocumentDetails.js'
