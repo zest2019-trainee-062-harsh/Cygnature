@@ -3,6 +3,7 @@ import {
     View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, AsyncStorage, ImageBackground
 } from 'react-native'
 
+import { ProgressDialog } from 'react-native-simple-dialogs';
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
  
@@ -13,8 +14,37 @@ export default class Index extends Component {
 
     state= {
         switch1: false,
-        switch2: false
+        switch2: false,
+        userData: [],
+        userDataPic: null,
+        pdVisible: true
     }
+
+    componentWillMount= async() => {
+        let auth = await AsyncStorage.getItem('auth');
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': auth,
+        },
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            //console.warn(responseJson['data'][0]["profileByte"])
+            this.setState({userDataPic: responseJson['data'][0]["profileByte"]}) 
+            if(this.state.userDataPic == null || this.state.userDataPic == "") {
+                console.warn("null")
+            }
+            this.setState({userData: responseJson['data'][0]}) 
+            //console.warn(this.state.userData)
+            this.setState({pdVisible:false})
+        })
+        .catch((error) => {
+          console.error(error)
+        });
+    }
+
+   
     logout = async() => {
         AsyncStorage.clear();
         this.props.navigation.navigate("Login")
@@ -33,6 +63,15 @@ export default class Index extends Component {
     render() {
         return(
             <View style={styles.mainContainer}>
+            <ProgressDialog
+                    visible={this.state.pdVisible}
+                    title="Fetching Details !"
+                    message="Please wait..."
+                    activityIndicatorColor="#003d5a"
+                    activityIndicatorSize="large"
+                    animationType="slide"
+                />
+
                 <ScrollView>
                     
                 <View style={[styles.DocumentsList, {justifyContent: "center", alignItems: "center" } ]}>
