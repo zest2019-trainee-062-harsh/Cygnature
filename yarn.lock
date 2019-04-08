@@ -5108,6 +5108,11 @@ react-native-simple-dialogs@^1.1.0:
   resolved "https://registry.yarnpkg.com/react-native-simple-dialogs/-/react-native-simple-dialogs-1.1.0.tgz#8b07bbcd0c7552990b47dc33cd58e4ff34ac96f8"
   integrity sha512-+qduBMms/P64M+tmzV3A6PUJSjvO9oROQS6QI2DOCqyT7SVSdYHfv9/Qv0CvDBcllj3jLqM6TZBg/538b/HaCQ==
 
+react-native-simple-radio-button@^2.7.3:
+  version "2.7.3"
+  resolved "https://registry.yarnpkg.com/react-native-simple-radio-button/-/react-native-simple-radio-button-2.7.3.tgz#c7227c0f963d6bbcfa245255d18a5a8b98fde41f"
+  integrity sha512-kiYRarFj7PXzV9fbQwMBiYwS4YnhrR4NZGT68atlFIoNFxZLrt5OMCDqXZqu6R6bUWKLndzPpO/nhXc6/OU1Mg==
+
 react-native-status-bar-height@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/react-native-status-bar-height/-/react-native-status-bar-height-2.2.0.tgz#3bd51de134660efc5f5ad136ca573c7d5790f7ed"

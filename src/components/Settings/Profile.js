@@ -2,15 +2,21 @@ import React, {Component} from 'react'
 import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity,
     Linking, TextInput,  AsyncStorage,Image} from 'react-native'
 
+    import { Dropdown } from 'react-native-material-dropdown';   
 import AddModal from './AddModal'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
+
+
 
 class Profile extends Component {
    
     constructor(props) {
         super(props)
         this.floatClicked = this.floatClicked.bind(this)
+        this.state = {
+            data: [],
+        }
     }
     
     floatClicked=() => {
@@ -31,6 +37,58 @@ class Profile extends Component {
     changepwd=() => {
         this.props.navigation.navigate("ChangePassword")
     }
+
+    update() {
+        console.warn(this.state.currentPassword)
+        console.warn(this.state.newPassword)
+    
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile/{{signer1UserId}}',{
+            method: 'POST',
+        headers: {
+          'Authorization':this.state.auth,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          currentPassword:this.state.currentPassword,
+          newPassword:this.state.newPassword,
+          confirmPassword:this.state.newPassword
+        }),
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            this.state.rMes=responseJson["message"]
+            this.props.navigation.navigate('Login',{"message":this.state.rMes})
+            console.warn(responseJson)
+        })
+        .catch((error) => {
+          console.warn(error);
+        });
+        }
+        
+        componentWillMount(){
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api/setting/get/', {
+                method: 'GET',
+                }).then((response) => response.json())
+                .then((responseJson) => {
+            
+                    this.setState({data : responseJson["data"][0]["countries"]})
+                    //console.warn(this.state.data)
+                    
+                    //console.warn(this.state.countryCode)
+                })
+                .catch((error) => {
+                    console.warn(error);
+                });
+    
+        }
+        onChangeHandler = (value) => {
+            // console.warn(this.state.countryCode);
+            // console.warn("Selected value = ", value);
+            this.setState({countryCode: value.replace(/[^0-9]/g, '')})
+            
+            console.warn(this.state.countryCode);
+          }
+
+         
      
     render() {
         const navigate = this.props.navigation;
@@ -86,6 +144,36 @@ class Profile extends Component {
 
                     <View style={styles.DocumentsList}>
                         <View style={styles.DocumentsList}>
+                        <View>
+                        <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
+                            First Name
+                        </Text>
+                        <TextInput
+                            placeholderTextColor='grey'
+                            placeholder = "First Name"
+                            returnKeyType="next"
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            onSubmitEditing={() => this.REGInput1.focus()}
+                            onChangeText={text => this.validations(text, "fname")}
+                            style= { styles.boxTI }>
+                        </TextInput>
+                        </View>
+                        <View>
+                        <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
+                            Last Name
+                        </Text>
+                        <TextInput
+                            placeholderTextColor='grey'
+                            placeholder = "Last Name"
+                            returnKeyType="next"
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            onSubmitEditing={() => this.REGInput1.focus()}
+                            onChangeText={text => this.validations(text, "lname")}
+                            style= { styles.boxTI }>
+                        </TextInput>
+                        </View>
                             <View>
                                 <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
                                     Email
@@ -98,9 +186,23 @@ class Profile extends Component {
                                     keyboardType="email-address"
                                     autoCapitalize="none"
                                     autoCorrect={false}
+                                    onChangeText={text => this.update("email", text)}
+                                    onSubmitEditing={() => this.ref1.focus()}
                                     underlineColorAndroid = "#003d5a"
                                 >
                                 </TextInput>
+                            </View>
+                        </View> 
+                        <View style={styles.DocumentsList}>
+                            <View>
+                                <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
+                                    Gender
+                                </Text>
+                                {/* <RadioForm
+                                    radio_props={radio_props}
+                                    initial={0}
+                                    onPress={(value) => {this.setState({value:value})}}
+                                /> */}
                             </View>
                         </View>
                         <View style={styles.DocumentsList}>
@@ -117,6 +219,8 @@ class Profile extends Component {
                                     maxLength={10}
                                     autoCapitalize="none"
                                     autoCorrect={false}
+                                    onChangeText={text => this.update("phone", text)}
+                                    onSubmitEditing={() => this.ref1.focus()}
                                     underlineColorAndroid = "#003d5a"
                                 >
                                 </TextInput>
@@ -125,19 +229,23 @@ class Profile extends Component {
                         <View style={styles.DocumentsList}>
                             <View>
                                 <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
-                                    City
+                                    Country Id
                                 </Text>
-                                <TextInput
-                                    style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }
-                                    placeholder="Change city"
-                                    placeholderTextColor='grey'
-                                    returnKeyType="next"
-                                    keyboardType="email-address"
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                    underlineColorAndroid = "#003d5a"
-                                >
-                                </TextInput>
+                                <Dropdown
+                                containerStyle={{
+                                    marginBottom: -20,
+                                    paddingTop:10
+                                }}
+                                pickerStyle={{
+                                    marginBottom: -40,
+                                    paddingTop:10
+                                }}
+                                value="+91"
+                                data = {this.state.data}
+                                valueExtractor = {({countryCode}) => countryCode}
+                                onChangeText = {value => this.onChangeHandler(value)}
+                                selectedItemColor = "red"
+                        />
                             </View>
                         </View>
                         <View style={styles.DocumentsList}>
