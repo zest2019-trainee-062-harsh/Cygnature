@@ -4,6 +4,7 @@ ActivityIndicator } from 'react-native'
 import  { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Icon1 from 'react-native-vector-icons/FontAwesome5'
+import Icon2 from 'react-native-vector-icons/FontAwesome'
 import { Dimensions } from "react-native";
 import moment from 'moment';
 import ActionButton from 'react-native-action-button';
@@ -14,7 +15,8 @@ import UploadModal from './UploadModal.js'
 
 import  Documents from '../Documents/Index.js'
 import  Contacts from '../Contacts/Index.js'
-import  Settings from '../Settings/General.js'
+import  Account from '../Settings/General.js'
+import  Verify from '../Settings/General.js'
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
@@ -223,6 +225,14 @@ export default createMaterialBottomTabNavigator({
             ),
         }
     },
+    verify: { screen: Verify,
+        navigationOptions: {
+            tabBarLabel: 'Verify',
+            tabBarIcon: ({tintColor}) => (
+                <Icon2 name="check" color={tintColor} size={24} />
+            ),
+        }
+    },
     contacts: { screen: Contacts,
         navigationOptions: {
             tabBarLabel: 'Contacts',
@@ -231,17 +241,18 @@ export default createMaterialBottomTabNavigator({
             )
         }
     },
-    settings: { screen: Settings,
+    account: { screen: Account,
         navigationOptions: {
-            tabBarLabel: 'Settings',
+            tabBarLabel: 'Account',
             tabBarIcon: ({ tintColor}) => (
-                <Icon name="md-settings" color={tintColor} size={24} />
+                <Icon2 name="user-circle" color={tintColor} size={24} />
+                
             )
         }
     },
 },
 {
-    initialRouteName: 'settings',
+    initialRouteName: 'account',
     barStyle: { backgroundColor: '#003d5a' },
     activeTintColor: 'white',
     navigationOptions: () => ({ header: null })

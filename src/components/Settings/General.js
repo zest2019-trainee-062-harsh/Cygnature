@@ -1,18 +1,17 @@
 import React, {Component} from 'react'
 import {
-    View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, AsyncStorage
+    View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, AsyncStorage, ImageBackground
 } from 'react-native'
 import { Dropdown } from 'react-native-material-dropdown'
-
+import Icon from 'react-native-vector-icons/FontAwesome'
 import  { createMaterialTopTabNavigator } from 'react-navigation'
-import Icon from 'react-native-vector-icons/Ionicons'
 
 import  Profile from '../Settings/Profile.js'
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
  
-class General extends Component {
+export default class General extends Component {
     // constructor (props) {
     //     super(props)
     //     state = {
@@ -21,48 +20,105 @@ class General extends Component {
     //     }
     // }
 
+    state= {
+        switch1: false,
+        switch2: false
+    }
     logout = async() => {
         AsyncStorage.clear();
         this.props.navigation.navigate("Login")
     }
 
+    toggleSwitch1 = () => {
+        this.setState({ switch1: !this.state.switch1})
+     }
+     toggleSwitch2 = () => {
+        this.setState({ switch2: !this.state.switch2})
+        if(this.state.switch2 == true) {
+            console.warn("y")
+        }
+     }
+
     render() {
-        const navigate = this.props.navigation;
-        let data = [
-            {
-                value: "DD/MM/YYYY"
-            },
-            {
-                value: "MM/DD/YYYY"
-            },
-            {
-                value: "YYYY/DD/MM"
-            },
-            {
-                value: "YYYY/MM/DD"
-            }
-        ]
         return(
             <View style={styles.mainContainer}>
                 <ScrollView>
-                    <TouchableOpacity style = { [styles.buttonContainer]} onPress={() => this.logout()}>
+                    
+                <View style={[styles.DocumentsList, {justifyContent: "center", alignItems: "center" } ]}>
+                    
+                    <ImageBackground
+                        style={{height:200, width:200, alignItems: 'center', justifyContent: 'center',}}
+                        source={require('../../../img/profile.png')}>
+                     {/* <Icon color='white' size={25} name="md-add" style={{
+                            backgroundColor:'#003d5a',
+                            width:30,
+                            height: 30,
+                            backgroundColor: '#003d5a',
+                            borderRadius: 15,
+                            position: 'absolute',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            left: 130,
+                            right: 0,
+                            top: 170,
+                            bottom: 0
+                        }} /> */}
+
+                        <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
+                            <Text style={styles.floatButtonText}>+</Text>
+                        </TouchableOpacity>
+                    </ImageBackground>
+                </View>
+                   
+                <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Personal Details </Text>
+                <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20}}></View>
+                    
+                <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.logout()}>
+                        <Text style = { styles.buttonText }>Edit Profile</Text>
+                </TouchableOpacity>
+
+               <TouchableOpacity style = { [styles.buttonContainer]} onPress={() => this.logout()}>
+                        <Text style = { styles.buttonText }>Change Password</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style = { [styles.buttonContainer]} onPress={() => this.logout()}>
                         <Text style = { styles.buttonText }>Logout</Text>
-                    </TouchableOpacity>
-                    <View style={{margin: 10, width: width}}></View>
-                    <Text style={{fontWeight: "bold", fontSize: 22, color: "black"}}> General </Text>
+                </TouchableOpacity>
+
+                <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Security </Text>
+                <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20}}></View>
                     <View style={styles.DocumentsList}>
                         <View style={styles.DocumentsList}>
-                            <TouchableOpacity style={{marginTop: -height*0.03}}>
-                                <Dropdown
-                                    label="Change the date format from here"
-                                    data={data}
-                                    selectedItemColor="#003d5a"
-                                    rippleCentered={true}
-                                    itemTextStyle={"helvetica"}
-                                >
-                                </Dropdown>
-                            </TouchableOpacity>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
+                                    Allow Screenshots
+                                </Text>
+                                <Switch
+                                    onValueChange = {this.toggleSwitch1}
+                                    value={this.state.switch1}
+                                    style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }
+                                    thumbColor = "#003d5a"
+                                    trackColor = "#003d5a"
+                                />
+                            </View>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
+                                    Allow FingerPrint
+                                </Text>
+                                <Switch onValueChange = {this.toggleSwitch2}
+                                    value={this.state.switch2}
+                                    style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }
+                                    thumbColor = "#003d5a"
+                                    trackColor = "#003d5a"
+                                />
+                            </View>
                         </View>
+                    </View>
+
+                    <Text style={{fontWeight: "bold", fontSize: 22, color: "black"}}> General </Text>
+                    <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20}}></View>
+                    <View style={styles.DocumentsList}>
+                        
                         <View style={styles.DocumentsList}>
                             <Text
                                 style={[styles.DocumentsListFont, {fontSize: 17, color: "#003d5a", textDecorationLine: "underline"}]}
@@ -87,83 +143,15 @@ class General extends Component {
                                 About us
                             </Text>
                         </View>
-                    </View>
-                    <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20}}></View>
-                    <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Security </Text>
-                    <View style={styles.DocumentsList}>
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
-                                    Allow Screenshots
-                                </Text>
-                                <Switch
-                                    style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }
-                                    thumbColor = "#003d5a"
-                                    trackColor = "#003d5a"
-                                />
-                            </View>
-                        </View>
-                    </View>
-                    <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20}}></View>
-                    <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Notifications </Text>
-                    <View style={styles.DocumentsList}>
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
-                                    Document Activity
-                                </Text>
-                                <Switch
-                                    style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }
-                                    thumbColor = "#003d5a"
-                                    trackColor = "#003d5a"
-                                />
-                            </View>
-                        </View>
-                    </View>
+                    </View> 
+                    
                 </ScrollView>
             </View>
         )
     }
 }
 
-export default createMaterialTopTabNavigator({
-   profile: { screen: Profile,
-        navigationOptions: {
-            tabBarLabel: 'Profile',
-            tabBarIcon: ({tintColor}) => (
-                <Icon name="md-document" color={tintColor} size={18} />
-            )
-        }
-    }, 
-    general: { screen: General,
-        navigationOptions: {
-            tabBarLabel: 'General',
-            tabBarIcon: ({tintColor}) => (
-                <Icon name="md-home" color={tintColor} size={18} />
-            )
-        }
-    },
-},
-{
-    tabBarOptions: {
-        activeTintColor: 'white',
-        style: {
-            backgroundColor: '#003d5a'
-        },
-        indicatorStyle: {
-            height: 0
-        },
-        labelStyle: {
-            fontSize: 12,
-            fontWeight: 'bold'
-        },
-        showIcon: true,
-        //lazy:  true,
-        
-    },
-    navigationOptions: () => ({ header: null })
 
-})
     
 const styles = StyleSheet.create({
     mainContainer:{
@@ -177,12 +165,23 @@ const styles = StyleSheet.create({
         padding: 10
     },
     DocumentsList:{
-        flex: 1,
         backgroundColor: 'white',
-        marginLeft: 10,
-        marginRight: 10,
-        marginTop: 5,
-        marginBottom: 5
+        margin: 10
+    },
+    floatButton: {
+        position: 'absolute',
+        width:30,
+        height: 30,
+        backgroundColor: '#003d5a',
+        borderRadius: 30,
+        bottom: 3,
+        right: 35,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    floatButtonText: {
+        color: 'white',
+        fontSize: 25    
     },
     DocumentsListFont:{
         flex: 0.5,
@@ -193,7 +192,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#003d5a',
         paddingVertical: 10,
         margin: 5,
-        borderRadius: 5
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     buttonText: {
         textAlign: 'center',

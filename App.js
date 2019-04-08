@@ -4,7 +4,7 @@ import OTP from './src/components/Login/OTP.js'
 import Register from './src/components/Register/Index'
 import Dashboard from './src/components/Dashboard/Index.js'
 import SplashScreen from './src/components/SplashScreen/index.js'
-import Settings  from './src/components/Settings/General.js';
+import Account  from './src/components/Settings/General.js';
 import Canvas from './src/components/Signature/Canvas.js'
 import Image from './src/components/Signature/ImageP.js'
 import DocumentDetails from './src/components/Documents/DocumentDetails.js'
@@ -21,7 +21,7 @@ const AppNavigator = createStackNavigator({
   OTP: {screen: OTP},
   Register: {screen: Register},
   Dashboard: {screen: Dashboard},
-  Settings: {screen: Settings},
+  Account: {screen: Account},
   Canvas: {screen: Canvas},
   Image: {screen: Image},
   DocumentDetails: {screen: DocumentDetails},
