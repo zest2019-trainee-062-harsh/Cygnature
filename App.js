@@ -26,7 +26,6 @@ const AppNavigator = createStackNavigator({
   Image: {screen: Image},
   DocumentDetails: {screen: DocumentDetails},
   Contacts: {screen:Contacts},
-  Canvas:{screen:Canvas},
   Forgot_Pass: {screen:Forgot_Pass},
   Document_Upload: {screen:Document_Upload},
   Document_Preview: {screen:Document_Preview},
