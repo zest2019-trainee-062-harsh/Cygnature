@@ -52,6 +52,7 @@ class DocumentDetails extends Component {
             this.setState({data: responseJson["data"][0]["documentData"]})
             //console.warn(responseJson["data"][0]["documentData"])
             this.setState({pdVisible: false})
+            // this.props.navigation.navigate('Test', {'data': this.state.data})
             this.props.navigation.navigate('Document_Preview',{'data': this.state.data})
         }
         })
