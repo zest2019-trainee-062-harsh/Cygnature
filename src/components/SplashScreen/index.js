@@ -47,7 +47,6 @@ export default class SplashScreen extends Component{
   authCheck = async() =>{
     let auth = await AsyncStorage.getItem('auth');
     let otp = await AsyncStorage.getItem('otp_check');
-    AsyncStorage.setItem('fingerprint', 'enabled')
     if(otp == 'not_present' || otp == null){
         this.props.navigation.navigate('Login')
     }else{
@@ -56,6 +55,7 @@ export default class SplashScreen extends Component{
       }else{
         this.state.auth = auth;
         let fingerprint = await AsyncStorage.getItem('fingerprint')
+        //console.warn(fingerprint)
         this.state.fingerprint = fingerprint
         this.getCount();
       }

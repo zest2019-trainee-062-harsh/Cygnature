@@ -9,6 +9,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 export default class Index extends Component {
     constructor (props) {
         super(props)
+       
     }
 
     state= {
@@ -22,6 +23,14 @@ export default class Index extends Component {
     }
 
     componentWillMount= async() => {
+        let fingerprint = await AsyncStorage.getItem('fingerprint')
+        if(fingerprint == 'enabled') {
+            this.state.switch2 = true
+        }
+        if(fingerprint == 'disabled') {
+            this.state.switch2 = false
+        }
+        
         let auth = await AsyncStorage.getItem('auth');
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
         method: 'GET',
@@ -55,10 +64,16 @@ export default class Index extends Component {
         this.setState({ switch1: !this.state.switch1})
      }
     
-     toggleSwitch2 = () => {
-        this.setState({ switch2: !this.state.switch2})
-        if(this.state.switch2 == true) {
-            console.warn("y")
+     toggleSwitch2 = (value) => {
+        //console.warn(value)
+        this.setState({ switch2: value})
+        if(value == true) {
+          AsyncStorage.setItem('fingerprint', 'enabled')
+          //console.warn("y")
+        }
+        if(value == false) {
+            AsyncStorage.setItem('fingerprint', 'disabled')
+            //console.warn("n")
         }
      }
 
@@ -147,7 +162,7 @@ export default class Index extends Component {
                                 <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
                                     Allow FingerPrint
                                 </Text>
-                                <Switch onValueChange = {this.toggleSwitch2}
+                                <Switch onValueChange = {(text)  => this.toggleSwitch2(text)}
                                     value={this.state.switch2}
                                     style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }
                                     thumbColor = "#003d5a"
