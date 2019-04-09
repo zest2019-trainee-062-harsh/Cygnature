@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, AsyncStorage, Switch, TextInput, Image} from 'react-native'
 
 import { Dropdown } from 'react-native-material-dropdown';   
-import AddModal from './AddModal'
+
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 import Modal from 'react-native-modalbox'
