@@ -12,26 +12,26 @@ class Profile extends Component {
         visible: false
     }
     
-    componentWillMount= async() => {
+    // componentWillMount= async() => {
         
-        let auth = await AsyncStorage.getItem('auth');
-        return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': auth,
-        },
-        }).then((response) => response.json())
-        .then((responseJson) => {
-            //console.warn(responseJson['data'][0]['impressions'][0]['imageBytes'])
-            this.setState({signature: responseJson['data'][0]['impressions'][0]['imageBytes']}) 
-            //console.warn(this.state.signature)
-            this.setState({visible:true})
-        })
-        .catch((error) => {
-          console.error(error)
-        });
-    }
+    //     let auth = await AsyncStorage.getItem('auth');
+    //     return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
+    //     method: 'GET',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //         'Authorization': auth,
+    //     },
+    //     }).then((response) => response.json())
+    //     .then((responseJson) => {
+    //         //console.warn(responseJson['data'][0]['impressions'][0]['imageBytes'])
+    //         this.setState({signature: responseJson['data'][0]['impressions'][0]['imageBytes']}) 
+    //         //console.warn(this.state.signature)
+    //         this.setState({visible:true})
+    //     })
+    //     .catch((error) => {
+    //       console.error(error)
+    //     });
+    // }
 
     showModal = () => {
         this.refs.myModal.open()
