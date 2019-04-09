@@ -12,12 +12,16 @@ class DocumentPlaceHolder extends Component {
     constructor(props) {
         super(props)
         this.state.data = this.props.navigation.getParam('data')
-        this.state.signerIds = this.props.navigation.getParam('signerIds')
+        this.state.signers = this.props.navigation.getParam('signers')
         this.state.totalPage = this.state.data["pageCount"]
     }
 
+    componentDidMount(){
+        console.warn(this.state.signers)
+    }
+
     static navigationOptions = {
-        title: "Assign the signers"
+        title: "Document Placeholder"
     }
 
     state = {
@@ -31,17 +35,7 @@ class DocumentPlaceHolder extends Component {
         data : []
     }
 
-    render() { 
-        let data = [
-            {
-                label: "All Documents",
-                value: null
-            },
-            {
-                label: "Awaiting my sign",
-                value: 0
-            }
-        ]
+    render() {
         return (
             <View style={styles.mainContainer}>
                 <View style={styles.container1}>
@@ -65,7 +59,7 @@ class DocumentPlaceHolder extends Component {
                     <View style={styles.container1_sub2}>
                         <Dropdown
                             label="Select signer"
-                            data={data}
+                            data={this.state.signers}
                             selectedItemColor="#003d5a"
                             rippleCentered={true}
                             itemTextStyle={"helvetica"}
@@ -91,13 +85,12 @@ class DocumentPlaceHolder extends Component {
                             </View>
                         </ImageZoom>
                         {
-                            this.state.data.pages.map(() => {
+                            this.state.data.pages.map((item) => {
                                 this.state.count = this.state.count+1
                                 const image = this.state.data["pages"][this.state.count]
                                 if(this.state.count < this.state.totalPage){
                                     return(
                                         <ImageZoom
-                                            key= {this.state.pages}
                                             style={styles.imageContainer}
                                             cropWidth={width/1.4}
                                             cropHeight={height/2}
@@ -160,7 +153,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-     container1_sub2: {
+    container1_sub2: {
         flex: 0.5,
         //backgroundColor: 'green',
         margin:5,
@@ -173,6 +166,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius:5,
         borderColor: "#003d5a",
+        // justifyContent: "center",
+        // alignItems: "center"
     },
     buttonContainer: {
         backgroundColor: 'white',
