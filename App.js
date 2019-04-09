@@ -13,7 +13,9 @@ import Forgot_Pass from './src/components/Login/Forgot_Pass.js'
 import Document_Upload from './src/components/Documents/DocumentUpload.js'
 import Document_Preview from './src/components/Documents/DocumentPreview.js'
 import fp from './src/components/fp.js'
+import DocumentVerify from './src/components/Documents/DocumentVerify.js'
 import Document_PlaceHolder from './src/components/Documents/DocumentPlaceHolder.js'
+
 
 const AppNavigator = createStackNavigator({
   SplashScreen: {screen: SplashScreen},
@@ -31,7 +33,7 @@ const AppNavigator = createStackNavigator({
   Document_Preview: {screen:Document_Preview},
   fp: {screen:fp},
   Document_PlaceHolder: {screen:Document_PlaceHolder},
-  
+  DocumentVerify: {screen:DocumentVerify}
 });
 
 

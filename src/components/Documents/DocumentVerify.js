@@ -1,128 +1,103 @@
-import React, { Component } from 'react'
-import { StyleSheet,Text, View, Dimensions, TouchableOpacity, ActivityIndicator, } from 'react-native'
-import { TextInput } from 'react-native-paper';
+import React, {Component} from 'react'
+import {View, StyleSheet, Text,TextInput, TouchableOpacity, ScrollView,AsyncStorage, ActivityIndicator} from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
 
-var width = Dimensions.get('window').width
-var height = Dimensions.get('window').height
 
 export default class DocumentVerify extends Component {
     constructor(props) {
         super(props)
         }
-    
-        state= {
-            pdVisible: false,
-            fileName: "",
-        }
-
-        upload = async() => {
         
-            let auth = await AsyncStorage.getItem("auth")
-    
-            DocumentPicker.show({
-                filetype: [DocumentPickerUtil.allFiles()],
-                },(error,res) => {
-                  
-                    if(error) {
-                        //console.warn("ERROR"+error)
-                        this.setState({fileName: 'No file selected'})
-                    }
-                    else {
-                        //console.warn("Response"+res)
-                        this.setState({pdVisible: true, fileName: res.fileName})
-    
-                        const formData = new FormData()
-                        formData.append('file',{
-                            
-                         uri: res.uri,
-                         type: res.type,
-                         name: res.fileName,
-                        })
-                        //console.warn(res.uri+res.type+res.fileName)
-                        //console.warn(formData)
-                        
-                             
-                     return fetch('http://cygnatureapipoc.stagingapplications.com/api//verify/document-upload',{
-                     method: 'POST',
-                     headers: {
-                         'Authorization':auth,
-                     },
-                     body: formData
-                     }
-                     ).then((response) => response.json())
-                     .then((responseJson) => {
-                         
-                         this.setState({pdVisible: false})
-                         //console.warn(responseJson["data"][0])
-                         this.refs.myModal.close()
-                         this.props.parentFlatList.showData(responseJson["data"][0])
-                     
-                     })
-                     .catch((error) => {
-                         // this.refs.myModal.close();
-                         // Alert(error.message);
-                         console.warn(error.message)
-                     });      
-                    }
-                 
-    
-    
-       
-              });
+        state= {
+            data : {},
+            pdVisible: false,
+            fileHash: "",
+            auth: null
         }
+        
+
+        search = async() => {
+            let auth = await AsyncStorage.getItem("auth")
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/search-by-hash',{
+                method: 'POST',
+                headers: {
+                    'Authorization':this.state.auth,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "fileHash": this.state.fileHash,
+                    "transactionHash": null,
+                    "currentPage": 0,
+                }),
+                }).then((response) => response.json())
+                .then((responseJson) => {
+                    this.setState({data: responseJson["data"]})
+                    console.warn(this.state.data)
+                })
+                .catch((error) => {
+                    console.warn(error);
+                });
+              }
+    
         
   render() {
-    return (
-    <View style={styles.mainContainer}>
-      <View >
-        <Text>Document Hash</Text>
+    return (  
+        <View style={styles.mainContainer}>
+        <ScrollView>
+      <View style= {{marginTop:25}}>
+        <Text  style= {{textDecorationColor:'black', fontWeight:'bold'}}>Document Hash</Text>
         <TextInput
-         textAlignVertical='top'
+                    
                     placeholderTextColor='black'
-                    keyboardType="name-phone-pad"
+                    keyboardType="default"
                     placeholder = "Enter hashcode"
-                    returnKeyType="done"
-                    autoCapitalize="none"
-                    autoCorrect={false}
+                    placeholderTextColor ="grey"
+                   
                     style={styles.boxTI} 
         />
-        <TouchableOpacity><Text>Search</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.search} onPress={this.search}><Text>Search</Text></TouchableOpacity>
       </View>
 
-      <View >
-        <Text>Transaction Hash</Text>
+      <View style= {{marginTop:15}}>
+        <Text style= {{textDecorationColor:'black', fontWeight:'bold'}}>Transaction Hash</Text>
         <TextInput
-         textAlignVertical='top'
-                    placeholderTextColor='black'
-                    keyboardType="name-phone-pad"
-                    placeholder = "Enter hash code"
-                    returnKeyType="done"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    style={styles.boxTI} 
-        />
-        <TouchableOpacity><Text>Search</Text></TouchableOpacity>
+         
+         placeholderTextColor='grey'
+                        placeholder = "Email"
+                        returnKeyType="next"
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        style= { styles.boxTI }>
+
+                        </TextInput>
+
+        <TouchableOpacity style={styles.search}><Text>Search</Text></TouchableOpacity>
       </View>
 
         
-            <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
+            <View style={{flex:1, justifyContent: "center", alignItems: "center",marginTop:40}}>
             
-             <Icon name="md-cloud-upload" color='black' size={100} />
-             <Text style={{fontSize: 18,  color: 'red' ,}}>{this.state.fileName}</Text>
-             <Text style={{fontSize: 18,  color: 'black', fontWeight:'bold'}}>Upload a document to verify</Text>
+             <Icon name="md-cloud-upload" color='#003d5a' size={70} />
+             
+             <Text style={{fontSize: 15,  color: 'black', fontWeight:'bold'}}>Upload a document to verify</Text>
              {this.state.pdVisible ? <ActivityIndicator color='#003d5a' size="large" /> : null}
+
+             <Text style={{fontSize: 15,  color: 'red' ,}}>{this.state.fileName}</Text>
 
              <TouchableOpacity style={ styles.btnSave } onPress={this.upload}>
                     <Text style={styles.textSave}>Choose File</Text>
             </TouchableOpacity>
 
             </View>
-       
+            </ScrollView> 
     </View>
+       
+    
     )
   }
 }
-const styles = StylesSheet.create({
+const styles = StyleSheet.create({
     mainContainer:{
         borderWidth:1,
         borderColor:'#003d5a',
@@ -135,11 +110,33 @@ const styles = StylesSheet.create({
         padding: 10
     },
     boxTI: {
-        margin: 5,
+        margin: 3,
         fontSize: 12,
         borderWidth: 1,
         borderRadius: 10,
         borderColor: 'black',
-        fontFamily: 'Helvetica'
+        fontFamily: 'Helvetica',
+    },
+    search: {
+        textAlign:'center',
+        alignItems:'center',
+        fontWeight:'bold',
+        marginTop:5
+    },
+    btnSave: {
+        backgroundColor: '#003d5a',
+        marginLeft: "25%",
+        marginRight: "25%",
+        height:40,
+        marginTop: 20,
+        padding: 20,
+        justifyContent: 'center',
+        borderRadius: 5
+    },
+    textSave: {
+        justifyContent: 'center',
+        textAlign: 'center',
+        color: '#ffffff',
+        fontWeight: 'bold'
     },
 })

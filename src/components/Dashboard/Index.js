@@ -16,7 +16,7 @@ import UploadModal from './UploadModal.js'
 import  Documents from '../Documents/Index.js'
 import  Contacts from '../Contacts/Index.js'
 import  Account from '../Account/Index.js'
-import  Verify from '../Account/Index.js'
+import  DocumentVerify from '../Documents/DocumentVerify'
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
@@ -225,7 +225,7 @@ export default createMaterialBottomTabNavigator({
             ),
         }
     },
-    verify: { screen: Verify,
+    DocumentVerify: { screen: DocumentVerify,
         navigationOptions: {
             tabBarLabel: 'Verify',
             tabBarIcon: ({tintColor}) => (
@@ -252,7 +252,7 @@ export default createMaterialBottomTabNavigator({
     },
 },
 {
-    initialRouteName: 'account',
+    initialRouteName: 'DocumentVerify',
     barStyle: { backgroundColor: '#003d5a' },
     activeTintColor: 'white',
     navigationOptions: () => ({ header: null })

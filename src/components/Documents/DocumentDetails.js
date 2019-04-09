@@ -117,7 +117,7 @@ class DocumentDetails extends Component {
                                 <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
                                     Document Hash
                                 </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                <Text selectable  style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
                                     {this.state.details["documentDetail"]["documentFileHash"]}
                                 </Text>
                             </View>
