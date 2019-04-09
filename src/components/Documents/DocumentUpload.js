@@ -6,14 +6,16 @@ import DocumentUpload_ObserverModal from './DocumentUpload_ObserverModal';
 import moment from 'moment';
 
 import DatePicker from 'react-native-datepicker'
-import { checkPermission } from 'react-native-location';
 
 class DocumentUpload extends Component {
     constructor(props) {
         super(props)
         this.state.data = this.props.navigation.getParam('data')
         this.state.currentDate = (moment().utcOffset("+5:30").format("DD-MM-YYYY"))
-        this.view()
+    }
+
+    componentDidMount = async() =>{
+        this.state.auth = await AsyncStorage.getItem('auth')
     }
 
     state = {
@@ -23,46 +25,33 @@ class DocumentUpload extends Component {
         date :null,
         currentDate: null,
         signerIds: [],
-        signerIdsWithNames: [],
         observerIds: [],
-        observerIdsWithNames: [],
         opacity: 0.5,
         disabled: true,
-        contacts: [],
-        res: []
+        signers : []
     }
 
     static navigationOptions = {
         title: "Document Upload"
     }
 
-    view = async() => {
-        let auth = await AsyncStorage.getItem('auth');
-        return fetch('http://cygnatureapipoc.stagingapplications.com/api/contact/get/',{
-        method: 'GET',
-        headers: {
-            'Authorization':auth
-        }}).then((response) => response.json())
-        .then((responseJson) => { 
-            this.state.res.map((y) => {
-                this.state.contacts.pop(y)
-                })
-            this.setState({res: responseJson["data"]})
-            //console.warn(this.state.data)
-            this.state.res.map((y) => {
-                this.state.contacts.push(y)
-            })
-        })
-        .catch((error) => {
-            console.warn(error);
-        });      
-    }
-
     addSigners(Ids) {
-        console.warn(this.state.contacts)
+        Ids.map((item) => {
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api/contact/get-contact-by-id/'+item,{
+            method: 'GET',
+            headers: {
+                'Authorization': this.state.auth
+            }}).then((response) => response.json())
+            .then((responseJson) => {
+                let data = JSON.parse('{ "label": "'+responseJson["data"][0]["name"]+'", "value": "'+responseJson["data"][0]["Id"]+'"}');
+                this.state.signers.push(data)
+            })
+            .catch((error) => {
+                console.warn(error);
+            });
+        })
         this.state.signerIds = Ids
         this.check();
-        console.warn(this.state.signerIds)
     }
 
     check(){
@@ -82,7 +71,7 @@ class DocumentUpload extends Component {
     assignSigners(){
         this.props.navigation.navigate('Document_PlaceHolder', {
             'data' : this.state.data,
-            'signerIds': this.state.signerIds
+            'signers': this.state.signers
         })
     }
 
@@ -108,18 +97,18 @@ class DocumentUpload extends Component {
 
                 <Text style={styles.textTitle}>Signers: * </Text>
                 {
-                    this.state.signerIdsWithNames !== null ? 
-                    <View>
-                        <Text>
-                            No signers present at this moment.{"\n"}
-                            *Select at least one contact.
-                        </Text>
-                    </View>
-                    :
-                    this.state.signerIdsWithNames.map((key) => {
+                    // this.state.signers == "null" ? 
+                    // <View>
+                    //     <Text>
+                    //         No signers present at this moment.{"\n"}
+                    //         *Select at least one contact.
+                    //     </Text>
+                    // </View>
+                    // :
+                    this.state.signers.map(() => {
                         <View>
                             <Text>
-                                {this.state.signerIdsWithNames[key]}
+                                {this.state.signers}
                             </Text>
                         </View>
                     })
@@ -168,17 +157,16 @@ class DocumentUpload extends Component {
                             onPress={() => this.assignSigners()}
                             disabled = {this.state.disabled}
                         >
-                            <Text style = { styles.buttonText }>Assign the signers</Text>
+                            <Text style = { styles.buttonText }>Add Placeholder</Text>
                         </TouchableOpacity>
                     </View>
                     : 
                     <View style={{ flex: 0.5, justifyContent: "center", alignItems: "center", opacity: 1}}>
                         <TouchableOpacity
                             style = { styles.buttonContainer}
-                            onPress={() => this.props.navigation.navigate('Document_PlaceHolder')}
                             disabled = {this.state.disabled}
                         >
-                            <Text style = { styles.buttonText }>Assign the signers</Text>
+                            <Text style = { styles.buttonText }>Add Placeholder</Text>
                         </TouchableOpacity>
                     </View>
                 }
