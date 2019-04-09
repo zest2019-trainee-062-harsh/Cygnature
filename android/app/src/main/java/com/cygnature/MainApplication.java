@@ -3,6 +3,8 @@ package com.cygnature;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.rnfs.RNFSPackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.hieuvp.fingerprint.ReactNativeFingerprintScannerPackage;
@@ -30,6 +32,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFSPackage(),
+            new RNFetchBlobPackage(),
             new PickerPackage(),
             new RNCWebViewPackage(),
             new ReactNativeFingerprintScannerPackage(),
