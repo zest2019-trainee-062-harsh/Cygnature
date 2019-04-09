@@ -4,8 +4,7 @@ import {
 } from 'react-native'
 
 import { ProgressDialog } from 'react-native-simple-dialogs';
-var width = Dimensions.get('window').width; //full width
-var height = Dimensions.get('window').height; //full height
+import ImagePicker from 'react-native-image-crop-picker';
  
 export default class Index extends Component {
     constructor (props) {
@@ -17,7 +16,9 @@ export default class Index extends Component {
         switch2: false,
         userData: [],
         userDataPic: null,
-        pdVisible: true
+        pdVisible: true,
+        img : null,
+
     }
 
     componentWillMount= async() => {
@@ -36,7 +37,7 @@ export default class Index extends Component {
                 console.warn("null")
             }
             this.setState({userData: responseJson['data'][0]}) 
-            //console.warn(this.state.userData)
+            console.warn(this.state.userData)
             this.setState({pdVisible:false})
         })
         .catch((error) => {
@@ -53,12 +54,27 @@ export default class Index extends Component {
     toggleSwitch1 = () => {
         this.setState({ switch1: !this.state.switch1})
      }
+    
      toggleSwitch2 = () => {
         this.setState({ switch2: !this.state.switch2})
         if(this.state.switch2 == true) {
             console.warn("y")
         }
      }
+
+    floatClicked = () => {
+        //console.warn("Sss")
+        ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            cropping: true,
+            includeBase64: true
+          }).then(image => {
+              this.setState({img: image, imageP: true, userDataPic:image["data"]  })
+              setTimeout( () => { this.setState({ imageP: true }); }, 500);
+           
+          });
+    }
 
     render() {
         return(
@@ -75,35 +91,31 @@ export default class Index extends Component {
                 <ScrollView>
                     
                 <View style={[styles.DocumentsList, {justifyContent: "center", alignItems: "center" } ]}>
-                    
+                    {this.state.userDataPic == "" || this.state.userDataPic == null ?
                     <ImageBackground
-                        style={{height:200, width:200, alignItems: 'center', justifyContent: 'center',}}
+                        style={styles.imageContainer}
                         source={require('../../../img/profile.png')}>
-                     {/* <Icon color='white' size={25} name="md-add" style={{
-                            backgroundColor:'#003d5a',
-                            width:30,
-                            height: 30,
-                            backgroundColor: '#003d5a',
-                            borderRadius: 15,
-                            position: 'absolute',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            left: 130,
-                            right: 0,
-                            top: 170,
-                            bottom: 0
-                        }} /> */}
-
+                    
                         <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
                             <Text style={styles.floatButtonText}>+</Text>
                         </TouchableOpacity>
-                    </ImageBackground>
+                    </ImageBackground>:
+                    <ImageBackground
+                    style={styles.imageContainer}
+                    source={{uri: `data:${this.state.img["mime"]};base64,${this.state.userDataPic}`}}>
+                
+                    <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
+                        <Text style={styles.floatButtonText}>+</Text>
+                    </TouchableOpacity>
+                </ImageBackground>
+                
+                    }
                 </View>
                    
                 <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Personal Details </Text>
                 <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20}}></View>
                     
-                <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.logout()}>
+                <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.props.navigation.navigate('Profile', {"userData": this.state.userData })}>
                         <Text style = { styles.buttonText }>Edit Profile</Text>
                 </TouchableOpacity>
 
@@ -231,4 +243,11 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         fontWeight: 'bold'
     },
+    imageContainer: {
+        height:200, 
+        width:200, 
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius:200/2,
+    }
 })
