@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, Image, AsyncStorage} from 'react-native'
+import ImageZoom from 'react-native-image-pan-zoom';
  
 import Icon1 from 'react-native-vector-icons/FontAwesome5'
 import Icon2 from 'react-native-vector-icons/Ionicons'
@@ -10,168 +11,122 @@ var height = Dimensions.get('window').height; //full width
 class DocumentPlaceHolder extends Component {
     constructor(props) {
         super(props)
-        
-    }
-    static navigationOptions = {
-        title: "Document Placeholder"
+        this.state.data = this.props.navigation.getParam('data')
+        this.state.signerIds = this.props.navigation.getParam('signerIds')
+        this.state.totalPage = this.state.data["pageCount"]
     }
 
-    componentWillMount() {
-        this.preview()
+    static navigationOptions = {
+        title: "Assign the signers"
     }
+
     state = {
-        data: null,
         auth: null,
-        id: "d97e27c7-f382-4f20-aa05-a099c73e97b5", 
+        id: null, 
         count: 0,
         maxPages: 6,
         totalPage: 0,
-        pdVisible: true
+        pdVisible: true,
+        signerIds: [],
+        data : []
     }
 
-    preview = async() => {
-        console.log(":sad")
-        let auth = await AsyncStorage.getItem('auth');
-        this.setState({auth:auth})
-        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/preview/'+this.state.id,{
-        method: 'GET',
-        headers: {
-            'Authorization':this.state.auth,
-        }}).then((response) => response.json())
-        .then((responseJson) => {
-            if(responseJson["data"] == null)
-            {
-                this.setState({pdVisible: false})
-                console.warn(responseJson)
-            } else {
-            this.setState({data: responseJson["data"][0]["documentData"]})
-            console.warn(responseJson["data"][0]["documentData"])
-            this.setState({pdVisible: false})
-            //this.props.navigation.navigate('Document_PlaceHolder',{'data': this.state.data})
-        }
-        })
-        .catch((error) => {
-            console.warn(error.message);
-        });
-    }
-
-     render() { 
+    render() { 
         let data = [
-        {
-            label: "All Documents",
-            value: null
-        },
-        {
-            label: "Awaiting my sign",
-            value: 0
-        },
-        {
-            label: "Awaiting others",
-            value: 3
-        },
-        {
-            label: "Completed",
-            value: 2
-        },
-        {
-            label: "Due soon",
-            value: 6
-        },
-        {
-            label: "Declined",
-            value: 7
-        }
-    ]
-         return (
-             <View style={styles.mainContainer}>
-
+            {
+                label: "All Documents",
+                value: null
+            },
+            {
+                label: "Awaiting my sign",
+                value: 0
+            }
+        ]
+        return (
+            <View style={styles.mainContainer}>
                 <View style={styles.container1}>
-
                     <View style={styles.container1_sub1}>
-
-                     
-                    <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.props.navigation.navigate('Document_PlaceHolder')}>
-                        <Icon1 name="pen" style={styles.buttonIcon} >
-                        <Text style = { styles.buttonText }>Draw / Set</Text>
-                        </Icon1>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.props.navigation.navigate('Document_PlaceHolder')}>
-                        <Icon2 name="md-move" style={styles.buttonIcon} >
-                        <Text style = { styles.buttonText }>Move</Text>
-                        </Icon2>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.props.navigation.navigate('Document_PlaceHolder')}>
-                        <Icon2 name="md-remove-circle" style={styles.buttonIcon} >
-                        <Text style = { styles.buttonText }>Clear</Text>
-                        </Icon2>
-                    </TouchableOpacity>
-
-
+                        <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.props.navigation.navigate('Document_PlaceHolder')}>
+                            <Icon1 name="pen" style={styles.buttonIcon} >
+                            <Text style = { styles.buttonText }>Draw / Set</Text>
+                            </Icon1>
+                        </TouchableOpacity>
+                        <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.props.navigation.navigate('Document_PlaceHolder')}>
+                            <Icon2 name="md-move" style={styles.buttonIcon} >
+                            <Text style = { styles.buttonText }>Move</Text>
+                            </Icon2>
+                        </TouchableOpacity>
+                        <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.props.navigation.navigate('Document_PlaceHolder')}>
+                            <Icon2 name="md-remove-circle" style={styles.buttonIcon} >
+                            <Text style = { styles.buttonText }>Clear</Text>
+                            </Icon2>
+                        </TouchableOpacity>
                     </View>
-
                     <View style={styles.container1_sub2}>
                         <Dropdown
-                        label="Select signer"
-                        data={data}
-                        selectedItemColor="#003d5a"
-                        rippleCentered={true}
-                        itemTextStyle={"helvetica"}
-                        containerStyle={{
-                            marginLeft:"25%",
-                            marginRight:"25%"
-                        }}
-                        //onChangeText = {value => this.onChangeHandler(value)}
+                            label="Select signer"
+                            data={data}
+                            selectedItemColor="#003d5a"
+                            rippleCentered={true}
+                            itemTextStyle={"helvetica"}
+                            containerStyle={{
+                                marginLeft:"25%",
+                                marginRight:"25%"
+                            }}
+                            //onChangeText = {value => this.onChangeHandler(value)}
                         />
-
                     </View>
-
                 </View>
-
                 <View style={styles.container2}>
-
-            {this.state.pdVisible?
-            <View><Text>NODATA</Text></View>:
-                <ScrollView>
-                    <View style={{margin:20, justifyContent:'center', alignItems: 'center'}}>
-                        <Image style={styles.imageContainer} source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}/>
-                        <Text>Page: {this.state.count+1}/{this.state.totalPage}</Text>
-                    </View>
-                    {
-                        this.state.data.pages.map(() => {
-                            this.state.count = this.state.count+1
-                            const image = this.state.data["pages"][this.state.count]
-                            if(this.state.count < this.state.maxPages){
-                                return(
-                                    <View style={{margin:20, justifyContent:'center', alignItems: 'center'}} key={this.state.count}>
-                                        <Image style={styles.imageContainer} source={{uri: `data:image/png;base64,${image}`}}/>
-                                        <Text>Page: {this.state.count+1}/{this.state.totalPage}</Text>
-                                    </View>
-                                );
-                            }
-                            else{
-                                null
-                            };
-                        })
-                    }
-                </ScrollView>
-            }
-
+                    <ScrollView>
+                        <ImageZoom
+                            cropWidth={width/1.4}
+                            cropHeight={height/2}
+                            imageWidth={width/1.4}
+                            imageHeight={height/2}
+                        >
+                            <View style={{margin:20, justifyContent:'center', alignItems: 'center'}}>
+                                <Image style={styles.imageContainer} source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}/>
+                                <Text>Page: {this.state.count+1}/{this.state.totalPage}</Text>
+                            </View>
+                        </ImageZoom>
+                        {
+                            this.state.data.pages.map(() => {
+                                this.state.count = this.state.count+1
+                                const image = this.state.data["pages"][this.state.count]
+                                if(this.state.count < this.state.totalPage){
+                                    return(
+                                        <ImageZoom
+                                            key= {this.state.pages}
+                                            style={styles.imageContainer}
+                                            cropWidth={width/1.4}
+                                            cropHeight={height/2}
+                                            imageWidth={width/1.4}
+                                            imageHeight={height/2}
+                                        >
+                                            <View style={{margin:20, justifyContent:'center', alignItems: 'center'}} key={this.state.count}>
+                                                <Image style={styles.imageContainer} source={{uri: `data:image/png;base64,${image}`}}/>
+                                                <Text>Page: {this.state.count+1}/{this.state.totalPage}</Text>
+                                            </View>
+                                        </ImageZoom>
+                                    );
+                                }
+                                else{
+                                    null
+                                };
+                            })
+                        }
+                    </ScrollView>
                 </View>
-
                 <View style={styles.container3}>
-
-                <TouchableOpacity style = { styles.footerbuttonContainer} onPress={() => this.props.navigation.navigate('Document_Review')}>
-                        <Text style = { styles.footerbuttonText }>Review & Create</Text>
-                </TouchableOpacity>
-            
+                    <TouchableOpacity style = { styles.footerbuttonContainer} onPress={() => this.props.navigation.navigate('Document_Review')}>
+                            <Text style = { styles.footerbuttonText }>Review & Create</Text>
+                    </TouchableOpacity>
                 </View>
-                
-             </View>
-                )
-         }
-     }
+            </View>
+        )
+    }
+}
 
 export default DocumentPlaceHolder
 
@@ -179,6 +134,7 @@ export default DocumentPlaceHolder
 const styles = StyleSheet.create({
     mainContainer: {
         borderWidth:1,
+        borderColor:'black',
         flex:1,
         backgroundColor: 'white',
         margin: 7, 
@@ -226,6 +182,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
+        flex: 0.3
     },
     buttonText: {
         textAlign: 'center',

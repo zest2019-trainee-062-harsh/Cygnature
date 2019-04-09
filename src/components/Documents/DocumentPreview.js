@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {View, Text, Image, StyleSheet, ScrollView} from 'react-native'
 import { Dimensions } from "react-native"
+import ImageZoom from 'react-native-image-pan-zoom';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
@@ -10,7 +11,7 @@ class DocumentPreview extends Component {
     constructor(props) {
     super(props)
         this.state.data  = this.props.navigation.getParam('data')
-        console.warn(this.state.data['name'])
+        this.state.totalPage = this.state.data["pageCount"]
     }
 
     static navigationOptions = {
@@ -32,7 +33,7 @@ class DocumentPreview extends Component {
         return(
             <View style={styles.mainContainer}>
                 <Text>{this.state.data["name"]}</Text>
-                <Text>No. of pages: {this.state.data["pageCount"]}</Text>
+                <Text>No. of pages: {this.state.totalPage}</Text>
                 <Text>pageFrom {this.state.data["pageFrom"]}</Text>
                 <Text>pageTo {this.state.data["pageTo"]}</Text>
 
@@ -43,17 +44,39 @@ class DocumentPreview extends Component {
 
                 <ScrollView>
                     <View style={{margin:20, justifyContent:'center', alignItems: 'center'}}>
-                        <Image style={styles.imageContainer} source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}/>
+                    <ImageZoom
+                        style={styles.imageContainer}
+                        cropWidth={width/1.4}
+                        cropHeight={height/2}
+                        imageWidth={width/1.4}
+                        imageHeight={height/2}
+                    >
+                        <Image 
+                            style={styles.imageContainer}
+                            source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}
+                        />
+                    </ImageZoom>
                         <Text>Page: {this.state.count+1}/{this.state.totalPage}</Text>
                     </View>
                     {
                         this.state.data.pages.map(() => {
                             this.state.count = this.state.count+1
                             const image = this.state.data["pages"][this.state.count]
-                            if(this.state.count < this.state.maxPages){
+                            if(this.state.count < this.state.data["pageCount"]){
                                 return(
                                     <View style={{margin:20, justifyContent:'center', alignItems: 'center'}} key={this.state.count}>
-                                        <Image style={styles.imageContainer} source={{uri: `data:image/png;base64,${image}`}}/>
+                                        <ImageZoom
+                                            style={styles.imageContainer}
+                                            cropWidth={width/1.4}
+                                            cropHeight={height/2}
+                                            imageWidth={width/1.4}
+                                            imageHeight={height/2}
+                                        >
+                                            <Image 
+                                                style={styles.imageContainer}
+                                                source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}
+                                            />
+                                        </ImageZoom>
                                         <Text>Page: {this.state.count+1}/{this.state.totalPage}</Text>
                                     </View>
                                 );
