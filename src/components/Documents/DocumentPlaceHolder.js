@@ -84,31 +84,7 @@ class DocumentPlaceHolder extends Component {
                                 <Text>Page: {this.state.count+1}/{this.state.totalPage}</Text>
                             </View>
                         </ImageZoom>
-                        {
-                            this.state.data.pages.map((item) => {
-                                this.state.count = this.state.count+1
-                                const image = this.state.data["pages"][this.state.count]
-                                if(this.state.count < this.state.totalPage){
-                                    return(
-                                        <ImageZoom
-                                            style={styles.imageContainer}
-                                            cropWidth={width/1.4}
-                                            cropHeight={height/2}
-                                            imageWidth={width/1.4}
-                                            imageHeight={height/2}
-                                        >
-                                            <View style={{margin:20, justifyContent:'center', alignItems: 'center'}} key={this.state.count}>
-                                                <Image style={styles.imageContainer} source={{uri: `data:image/png;base64,${image}`}}/>
-                                                <Text>Page: {this.state.count+1}/{this.state.totalPage}</Text>
-                                            </View>
-                                        </ImageZoom>
-                                    );
-                                }
-                                else{
-                                    null
-                                };
-                            })
-                        }
+                        
                     </ScrollView>
                 </View>
                 <View style={styles.container3}>

@@ -2,9 +2,10 @@ import React, {Component} from 'react'
 import {
     View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, AsyncStorage, ImageBackground
 } from 'react-native'
-
+import { Avatar } from 'react-native-elements';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import ImagePicker from 'react-native-image-crop-picker';
+
  
 export default class Index extends Component {
     constructor (props) {
@@ -107,23 +108,26 @@ export default class Index extends Component {
                     
                 <View style={[styles.DocumentsList, {justifyContent: "center", alignItems: "center" } ]}>
                     {this.state.userDataPic == "" || this.state.userDataPic == null ?
-                    <ImageBackground
-                        style={styles.imageContainer}
-                        source={require('../../../img/profile.png')}>
-                    
-                        <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
-                            <Text style={styles.floatButtonText}>+</Text>
-                        </TouchableOpacity>
-                    </ImageBackground>:
-                    <ImageBackground
-                    style={styles.imageContainer}
-                    source={{uri: `data:${this.state.img["mime"]};base64,${this.state.userDataPic}`}}>
-                
-                    <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
-                        <Text style={styles.floatButtonText}>+</Text>
-                    </TouchableOpacity>
-                </ImageBackground>
-                
+                        <Avatar
+                            style={{height:200,width:200}}
+                            source={require('../../../img/profile.png')}
+                            rounded
+                            showEditButton
+                            onEditPress={this.floatClicked}
+                            editButton={{size:32}}
+                            imageProps={{borderRadius:100}}
+                            overlayContainerStyle={{backgroundColor:'white'}}
+                        />:
+                        <Avatar
+                            style={{height:200,width:200}}
+                            source={{uri: `data:${this.state.img["mime"]};base64,${this.state.userDataPic}`}}
+                            rounded
+                            showEditButton
+                            onEditPress={this.floatClicked}
+                            editButton={{size:32}}
+                            imageProps={{borderRadius:100}}
+                            overlayContainerStyle={{backgroundColor:'white'}}
+                        />
                     }
                 </View>
                    
