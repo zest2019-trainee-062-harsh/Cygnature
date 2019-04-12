@@ -32,28 +32,7 @@ class DocumentDetails extends Component {
         Clipboard.setString(this.state.fileHash);
         };
 
-        decline(){
-            return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/decline',{
-                method: 'POST',
-                headers: {
-                    'Authorization':this.state.auth,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    documentId: this.state.id,
-                    "declineReason": "don't want to sign"
-                }),
-                }).then((response) => response.json())
-                .then((responseJson)=>{
-                    this.setState({data: responseJson["data"][0]})
-                    
-            .catch((error) => {
-              alert(JSON.stringify(error));
-            });
-                });
-        
-            }  
-        }
+      
 
     documentDetails = async() => {
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/document-detail/'+this.state.id,{
@@ -334,13 +313,8 @@ class DocumentDetails extends Component {
                         </TouchableOpacity> 
                         </View>
 
-                    </ScrollView>
-
-
-                    : <ActivityIndicator color="white" size="large" />
-                }
-            </View>
-            );
+</ScrollView>
+          
         }
     }
 
