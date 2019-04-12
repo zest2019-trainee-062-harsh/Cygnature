@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, Text,TextInput, TouchableOpacity, ScrollView,AsyncStorage, ActivityIndicator} from 'react-native'
+import {View, StyleSheet, Text,TextInput, TouchableOpacity, ScrollView,AsyncStorage,Clipboard, ActivityIndicator} from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
-
 
 export default class DocumentVerify extends Component {
     constructor(props) {
@@ -15,7 +14,10 @@ export default class DocumentVerify extends Component {
             auth: null
         }
         
-
+        async _getContent() {
+            var content = await Clipboard.getString();
+          }
+        
         search = async() => {
             let auth = await AsyncStorage.getItem("auth")
             return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/search-by-hash',{
@@ -38,34 +40,37 @@ export default class DocumentVerify extends Component {
                     console.warn(error);
                 });
               }
-    
+         
         
   render() {
     return (  
         <View style={styles.mainContainer}>
         <ScrollView>
-      <View style= {{marginTop:25}}>
+      
         <Text  style= {{textDecorationColor:'black', fontWeight:'bold'}}>Document Hash</Text>
+        <View style={styles.textcontain}>
         <TextInput
                     
                     placeholderTextColor='black'
                     keyboardType="default"
                     placeholder = "Enter hashcode"
                     placeholderTextColor ="grey"
-                   
+                    returnKeyType="next"
                     style={styles.boxTI} 
         />
+        <TouchableOpacity style={styles.paste} onPress={this._getContent}><Text>Paste</Text></TouchableOpacity>
+        </View>
         <TouchableOpacity style={styles.search} onPress={this.search}><Text>Search</Text></TouchableOpacity>
-      </View>
+    
 
-      <View style= {{marginTop:15}}>
+      
         <Text style= {{textDecorationColor:'black', fontWeight:'bold'}}>Transaction Hash</Text>
         <TextInput
          
-         placeholderTextColor='grey'
-                        placeholder = "Email"
+                        placeholderTextColor='grey'
+                        placeholder = "enter hash code"
                         returnKeyType="next"
-                        keyboardType="email-address"
+                        keyboardType="default"
                         autoCapitalize="none"
                         autoCorrect={false}
                         style= { styles.boxTI }>
@@ -73,7 +78,7 @@ export default class DocumentVerify extends Component {
                         </TextInput>
 
         <TouchableOpacity style={styles.search}><Text>Search</Text></TouchableOpacity>
-      </View>
+     
 
         
             <View style={{flex:1, justifyContent: "center", alignItems: "center",marginTop:40}}>
@@ -110,12 +115,16 @@ const styles = StyleSheet.create({
         padding: 10
     },
     boxTI: {
-        margin: 3,
+        backgroundColor: 'rgba(255,255,255,0.7)',
+        paddingHorizontal: 20,
+        marginBottom: 15,
+        marginLeft:2,
         fontSize: 12,
-        borderWidth: 1,
-        borderRadius: 10,
-        borderColor: 'black',
+        borderRadius: 30,
         fontFamily: 'Helvetica',
+        borderWidth: 1,
+        width:150,
+        flex: 1,
     },
     search: {
         textAlign:'center',
@@ -139,4 +148,19 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         fontWeight: 'bold'
     },
+    textcontain:{
+        flex: 1,
+        flexDirection: 'row',
+    },
+    paste:{
+        borderWidth:1,
+        borderColor:'black',
+        borderRadius:8,   
+        flex:0.2,
+        height:30,
+        marginTop:20,
+        textAlign:'center',
+        backgroundColor:'#003d5a',
+        justifyContent:'center'
+    }
 })

@@ -16,6 +16,8 @@ import Document_Preview from './src/components/Documents/DocumentPreview.js'
 import fp from './src/components/fp.js'
 import DocumentVerify from './src/components/Documents/DocumentVerify.js'
 import Document_PlaceHolder from './src/components/Documents/DocumentPlaceHolder.js'
+import Index from './src/components/Annotation/Index.js'
+import Pan from './src/components/Pan.js'
 
 
 const AppNavigator = createStackNavigator({
@@ -35,7 +37,9 @@ const AppNavigator = createStackNavigator({
   Document_Preview: {screen:Document_Preview},
   fp: {screen:fp},
   Document_PlaceHolder: {screen:Document_PlaceHolder},
-  DocumentVerify: {screen:DocumentVerify}
+  DocumentVerify: {screen:DocumentVerify},
+  Index :{screen: Index}
+  
 });
 
 

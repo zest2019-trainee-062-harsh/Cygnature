@@ -32,24 +32,6 @@ class Profile extends Component {
     }
 
     render() {
-<<<<<<< HEAD
-        const navigate = this.props.navigation;
-        let data = [
-            {
-                value: "DD/MM/YYYY"
-            },
-            {
-                value: "MM/DD/YYYY"
-            },
-            {
-                value: "YYYY/DD/MM"
-            },
-            {
-                value: "YYYY/MM/DD"
-            }
-        ]
-=======
->>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
         return(
             <View style={styles.mainContainer}>
             
@@ -85,36 +67,6 @@ class Profile extends Component {
                     <Text style={{fontWeight: "bold", fontSize: 20, color: "black"}}> Signature</Text>
                     <View style={styles.DocumentsList}>
                         <View style={styles.DocumentsList}>
-<<<<<<< HEAD
-
-                            <View style={{height: 212, width: 212, flexGrow:1, justifyContent: "center", alignItems: "center"}}>
-                                <Image
-                                style={{height:100,width:100}}
-                                    source={require('../../../img/profile.png')}
-                                />
-                            </View>
-                            
-                              <Text style={{color: 'blue',textDecorationLine:'underline',marginTop:5,marginLeft:3}} onPress={ ()=> Linking.openURL('https://google.com') } >Update Photo</Text>
-                           
-                        </View>
-                        <View style={{flex:1,flexDirection:'column'}}>
-                        <View>
-                        <TouchableOpacity style = {styles.buttonContainer} onPress={() => this.logout()}>
-                            <Text style = { styles.buttonText }>Logout</Text>
-                        </TouchableOpacity>
-                        </View>
-                        <View>
-                        <TouchableOpacity 
-                            onPress={this.floatClicked}>
-                            <Text style={styles.Text4} >Add/Edit E-Signature</Text>
-                        </TouchableOpacity>
-                        </View>
-                        <View>
-                            <TouchableOpacity 
-                                onPress={this.changepwd}>
-                                <Text style={styles.Text4} >Change Password</Text>
-                            </TouchableOpacity> 
-=======
                             <View style={{flexDirection: "row"}}>
                             {this.state.visible?
                                 <ImageBackground style={styles.signContainer} source={{uri: `data:image/png;base64,${this.state.signature}`}}>
@@ -125,16 +77,12 @@ class Profile extends Component {
                             :null}
                             </View>
                           
->>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
                         </View>
                         </View>    
-                    </View>
+                   
 
-<<<<<<< HEAD
-=======
 
                     <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Profile </Text>
->>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
                     <View style={styles.DocumentsList}>
                         <View style={styles.DocumentsList}>
                         <View>
