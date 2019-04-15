@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View,Keyboard,Text,StyleSheet,Dimensions,TouchableOpacity,TextInput} from 'react-native'
+import {View,KeyboardAvoidingView,Text,StyleSheet,Dimensions,TouchableOpacity,TextInput} from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 
@@ -7,12 +7,6 @@ var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
  
 class Forgot_Pass extends Component {
-    constructor(props) {
-        super(props)
-        
-        this.keyboardWillShow = this.keyboardWillShow.bind(this)
-        this.keyboardWillHide = this.keyboardWillHide.bind(this)
-    }
     static navigationOptions = {
         header: null
     }
@@ -22,7 +16,6 @@ class Forgot_Pass extends Component {
         errorB: false,
         errorName: "Enter correct email format",
         pdVisible: false,
-        isVisible: true,
 
     }
     
@@ -75,27 +68,6 @@ class Forgot_Pass extends Component {
         
     }
     
-  componentWillMount() {
-    this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow)
-    this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide)
-  }
-
-  componentWillUnmount() {
-    this.keyboardWillShowSub.remove()
-    this.keyboardWillHideSub.remove()
-  }
-
-  keyboardWillShow = event => {
-    this.setState({
-      isVisible: false
-    })
-  }
-
-  keyboardWillHide = event => {
-    this.setState({
-      isVisible: true
-    })
-  }
 
      render() {
          return (
@@ -143,14 +115,14 @@ class Forgot_Pass extends Component {
                 
 
             </View>
-            {this.state.isVisible?
+
              <View style={{flex:0.1, borderTopColor: 'white', borderTopWidth: 1}}>
              <TouchableOpacity 
                     onPress={()=> this.props.navigation.navigate('Login')} 
                     style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                             <Text style = {{ color: 'white' }}>Back to Login</Text>
             </TouchableOpacity>
-             </View>:null}
+             </View>
 
              </View>
                 )

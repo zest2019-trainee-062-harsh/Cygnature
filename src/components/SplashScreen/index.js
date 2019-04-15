@@ -6,10 +6,6 @@ import moment from 'moment';
 var {height} = Dimensions.get('window')
 
 export default class SplashScreen extends Component{
-  constructor(props) {
-    super(props)
-   
-  }
   static navigationOptions = {
     header: null
   }
@@ -45,12 +41,14 @@ export default class SplashScreen extends Component{
       //End of animations
       //this.props.navigation.navigate('Login')
       this.authCheck()
+      // this.props.navigation.navigate('FilePreview')
     })
   }
 
   authCheck = async() =>{
     let auth = await AsyncStorage.getItem('auth');
     let otp = await AsyncStorage.getItem('otp_check');
+    AsyncStorage.setItem('fingerprint', 'disabled')
     if(otp == 'not_present' || otp == null){
         this.props.navigation.navigate('Login')
     }else{
@@ -59,14 +57,45 @@ export default class SplashScreen extends Component{
       }else{
         this.state.auth = auth;
         let fingerprint = await AsyncStorage.getItem('fingerprint')
-        //console.warn(fingerprint)
         this.state.fingerprint = fingerprint
-        this.getCount();
-        //this.props.navigation.navigate('Document_Upload')
+        this.refreshToken();
       }
     }
   }
 
+  refreshToken = async() =>{
+    let token = await AsyncStorage.getItem("token")
+    let refreshToken = await AsyncStorage.getItem("refreshToken")
+    let date = await AsyncStorage.getItem("date")
+    let currentDate = moment().utcOffset("+5:30").format("YYYY-MM-DD hh:mm:ss")
+    if(moment(currentDate,"YYYY-MM-DD hh:mm:ss").diff(moment(date,"YYYY-MM-DD hh:mm:ss"), 'hours') >= 4){
+      return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/refresh-token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        token: token,
+        refreshToken: refreshToken,
+      }),
+      }).then((response) => response.json())
+      .then((responseJson) => {
+        this.getCount();
+        console.warn(responseJson)
+        this.state.auth = "Bearer "+this.responseJson.data["token"];
+        AsyncStorage.setItem('auth',"Bearer "+this.responseJson.data["token"]);
+        AsyncStorage.setItem('token',this.responseJson.data["token"]);
+        AsyncStorage.setItem('refreshToken', this.responseJson.data["refreshToken"])
+        this.getCount();
+      })
+      .catch((error) => {
+        this.getCount()
+      })
+    }
+    else{
+      this.getCount();
+    }
+  }
 
   getCount= async() => {
     return fetch('http://cygnatureapipoc.stagingapplications.com/api/dashboard/document-counts/', {

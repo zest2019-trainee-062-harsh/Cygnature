@@ -1,76 +1,60 @@
 import React, { Component, PropTypes } from 'react';
 import {
   Alert,
+  Image,
   Text,
+  TouchableOpacity,
   View,
-  BackHandler
+  ViewPropTypes
 } from 'react-native';
 import FingerprintScanner from 'react-native-fingerprint-scanner';
 import Icon from 'react-native-vector-icons/Ionicons'
 
+
 class fp extends Component {
  constructor(props) {
     super(props);
-    this.state.count = this.props.navigation.getParam('count')
   }
-
-  static navigationOptions = {
-    header: null
-  }
-
   state = {
     text: "Scan your finger",
-    count: null,
   }
 
   componentDidMount() {
     FingerprintScanner
-    .authenticate({ onAttempt: this.handleAuthenticationAttempted })
-    .then(() => {
-      this.setState({
-        text: "Match found."
+      .authenticate({ onAttempt: this.handleAuthenticationAttempted })
+      .then(() => {
+        this.setState({ text: "Fingerprint Authentication" });
+
       })
-      // this.props.navigation.navigate('Test')
-      this.props.navigation.navigate('Dashboard', {'count': this.state.count})
-    })
-    .catch((error) => {
-      this.state.text = "Match not found. Try again!"
-    });
-    BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
+      .catch((error) => {
+        this.setState({ text: error.message });
+      });
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.onBackPressed);
     FingerprintScanner.release();
   }
 
-  onBackPressed() {
-    Alert.alert(
-    'Exit App',
-    'Do you want to exit?',
-    [
-      {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-      {text: 'Yes', onPress: () => BackHandler.exitApp()},
-    ],
-    { cancelable: false });
-    return true;
-  }
-
   handleAuthenticationAttempted = (error) => {
-    alert("Match not found. Try again!")
-    this.state.text = "Match not found. Try again!"
+    this.setState({ text: error.message });
+    
   };
 
   render() {
+
     return (
-      <View style={{flex:1 ,alignItems: 'center', justifyContent: 'center', backgroundColor: '#414345'}}>
-        <Icon name="md-finger-print" color='white' size={100} />
-          <Text style={{fontSize:18, color:'white'}}>
+      <View style={{flex:1 ,alignItems: 'center', justifyContent: 'center'}}>
+
+        <Icon name="md-finger-print" color='black' size={100} />
+        
+          <Text style={{fontSize:18, color: 'black', fontWeight: 'bold'}}>
             {this.state.text}
           </Text>
+  
       </View>
     );
   }
 }
+
 
 export default fp;

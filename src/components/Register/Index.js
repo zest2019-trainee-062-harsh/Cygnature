@@ -7,7 +7,7 @@ import {
     TouchableOpacity, 
     StatusBar,
     Image, 
-    Keyboard,
+    KeyboardAvoidingView,
     Dimensions,
     ScrollView,
     Alert,
@@ -25,9 +25,6 @@ class Register extends Component {
     constructor(props) {
         super(props)
         this.getLoc()
-          
-        this.keyboardWillShow = this.keyboardWillShow.bind(this)
-        this.keyboardWillHide = this.keyboardWillHide.bind(this)
         
     }
 
@@ -53,7 +50,6 @@ class Register extends Component {
         rPhone: " ",
         rLat: " ",
         rLon: " ",
-        isVisible: true,
             
     }
 
@@ -319,27 +315,6 @@ class Register extends Component {
             }
         }
     
-  componentWillMount() {
-    this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow)
-    this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide)
-  }
-
-  componentWillUnmount() {
-    this.keyboardWillShowSub.remove()
-    this.keyboardWillHideSub.remove()
-  }
-
-  keyboardWillShow = event => {
-    this.setState({
-      isVisible: false
-    })
-  }
-
-  keyboardWillHide = event => {
-    this.setState({
-      isVisible: true
-    })
-  }
 
     render(){
         return(
@@ -516,14 +491,14 @@ class Register extends Component {
                     </ScrollView>
                 </View>
                 </View>
-                {this.state.isVisible?
                 <View style={{flex:0.1, borderTopColor: 'white', borderTopWidth: 1}}>
+             
                 <TouchableOpacity 
                     onPress={()=> this.props.navigation.navigate('Login')} 
                     style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                             <Text style = {{ color: 'white' }}>Already have account? Login</Text>
-                </TouchableOpacity>
-                </View>:null}
+            </TouchableOpacity>
+                </View>
         </View>
         )
     }

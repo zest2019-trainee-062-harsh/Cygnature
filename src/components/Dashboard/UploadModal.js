@@ -58,7 +58,7 @@ class UploadModal extends Component {
                  .then((responseJson) => {
                      
                      this.setState({pdVisible: false})
-                     console.warn(responseJson)
+                     //console.warn(responseJson["data"][0])
                      this.refs.myModal.close()
                      this.props.parentFlatList.showData(responseJson["data"][0])
                  
