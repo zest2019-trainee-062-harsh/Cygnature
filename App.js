@@ -4,8 +4,10 @@ import OTP from './src/components/Login/OTP.js'
 import Register from './src/components/Register/Index'
 import Dashboard from './src/components/Dashboard/Index.js'
 import SplashScreen from './src/components/SplashScreen/index.js'
-import Settings  from './src/components/Settings/General.js';
-import Canvas from './src/components/Canvas/Index.js'
+import Account  from './src/components/Account/Index.js';
+import Profile  from './src/components/Account/Profile.js';
+import Canvas from './src/components/Signature/Canvas.js'
+import Image from './src/components/Signature/ImageP.js'
 import DocumentDetails from './src/components/Documents/DocumentDetails.js'
 import Contacts from './src/components/Contacts/Index.js'
 import Forgot_Pass from './src/components/Login/Forgot_Pass.js'
@@ -13,6 +15,8 @@ import Document_Upload from './src/components/Documents/DocumentUpload.js'
 import Document_Preview from './src/components/Documents/DocumentPreview.js'
 import fp from './src/components/fp.js'
 import Document_PlaceHolder from './src/components/Documents/DocumentPlaceHolder.js'
+import DocumentVerify from './src/components/Documents/DocumentVerify.js'
+import DocumentList from './src/components/Documents/DocumentList.js'
 
 const AppNavigator = createStackNavigator({
   SplashScreen: {screen: SplashScreen},
@@ -20,8 +24,10 @@ const AppNavigator = createStackNavigator({
   OTP: {screen: OTP},
   Register: {screen: Register},
   Dashboard: {screen: Dashboard},
-  Settings: {screen: Settings},
+  Account: {screen: Account},
+  Profile: {screen: Profile},
   Canvas: {screen: Canvas},
+  Image: {screen: Image},
   DocumentDetails: {screen: DocumentDetails},
   Contacts: {screen:Contacts},
   Forgot_Pass: {screen:Forgot_Pass},
@@ -29,6 +35,8 @@ const AppNavigator = createStackNavigator({
   Document_Preview: {screen:Document_Preview},
   fp: {screen:fp},
   Document_PlaceHolder: {screen:Document_PlaceHolder},
+  DocumentVerify:{screen:DocumentVerify},
+  DocumentList : {screen: DocumentList}  
 });
 
 const AppContainer = createAppContainer(AppNavigator);

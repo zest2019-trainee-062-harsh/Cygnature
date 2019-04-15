@@ -2,6 +2,9 @@ import React, {Component} from 'react'
 import {View, Text, StyleSheet, ScrollView, Dimensions, AsyncStorage, ActivityIndicator, TouchableOpacity} from 'react-native'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon1 from 'react-native-vector-icons/Ionicons';
+import fetch_blob from 'react-native-fetch-blob';
+import RNFS from 'react-native-fs';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
@@ -36,6 +39,55 @@ class DocumentDetails extends Component {
             console.warn(error);
         });
     }
+
+    download = () => {
+        this.setState({pdTitle:"Downloading", pdVisible: true})
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/download',{
+        method: 'POST',
+        headers: {
+            'Authorization':this.state.auth,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            documentId: this.state.id
+        }),
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            if(responseJson["data"] == null)
+            {
+                this.setState({pdVisible: false})
+                console.warn(responseJson)
+            } else {
+            this.setState({data: responseJson["data"][0]["fileBytes"]})
+            //console.warn(responseJson["data"][0]["fileBytes"])
+            this.setState({pdVisible: false})
+            const fs = fetch_blob.fs
+            const dirs = fetch_blob.fs.dirs 
+            const file_path = dirs.DownloadDir + "/" + this.state.details["documentDetail"]["fileName"]
+    //         console.warn(dirs.DocumentDir) // /data/user/0/com.bigjpg/files
+    //   console.warn(dirs.CacheDir)    // /data/user/0/com.bigjpg/cache
+    //   console.warn(dirs.DCIMDir)     // /storage/emulated/0/DCIM
+    //   console.lowarng(dirs.DownloadDir) // /storage/emulated/0/Download
+    //   console.warn(dirs.PictureDir)  // /storage/emulated/0/Pictures
+    var image_data = this.state.data
+    console.warn("Files Saved")
+    RNFS.writeFile(file_path, image_data, 'base64')
+    .catch((error) => {
+      alert(JSON.stringify(error));
+    });
+
+
+            // this.props.navigation.navigate('Test', {'data': this.state.data})
+            //this.props.navigation.navigate('Document_Preview',{'data': this.state.data})
+        }
+        })
+        .catch((error) => {
+            console.warn(error.message);
+        });
+
+
+    }
+
     preview = async() => {
         this.setState({pdTitle:"Previewing", pdVisible: true})
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/preview/'+this.state.id,{
@@ -52,6 +104,7 @@ class DocumentDetails extends Component {
             this.setState({data: responseJson["data"][0]["documentData"]})
             //console.warn(responseJson["data"][0]["documentData"])
             this.setState({pdVisible: false})
+            // this.props.navigation.navigate('Test', {'data': this.state.data})
             this.props.navigation.navigate('Document_Preview',{'data': this.state.data})
         }
         })
@@ -221,10 +274,21 @@ class DocumentDetails extends Component {
                             </View>
                         </View>
                         <View style={{flex:1, flexDirection:'row'}}>
-                         <TouchableOpacity  
+
+                        {this.state.details["documentDetail"]["documentStatus"] == 2 ?
+                        <TouchableOpacity  onPress={()=> this.download()}
+                        style = {[styles.buttonContainer, {flex: 0.2, alignItems:'center'}]}>
+                            <Icon1
+                                    name="md-cloud-download"
+                                    size={15}
+                                    color="white"
+                                />
+                        </TouchableOpacity> :  
+                        <TouchableOpacity  
                         style = {styles.buttonContainer}>
                             <Text style = { styles.buttonText }>Sign Now</Text>
-                        </TouchableOpacity> 
+                        </TouchableOpacity>}
+
                         <TouchableOpacity  onPress={()=> this.preview()}
                         style = {styles.buttonContainer}>
                             <Text style = { styles.buttonText }>Preview</Text>
