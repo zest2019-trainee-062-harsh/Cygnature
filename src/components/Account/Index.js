@@ -6,6 +6,7 @@ import { Avatar } from 'react-native-elements';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import ImagePicker from 'react-native-image-crop-picker';
 
+import { StackActions, NavigationActions } from 'react-navigation'
  
 export default class Index extends Component {
     constructor (props) {
@@ -58,7 +59,14 @@ export default class Index extends Component {
    
     logout = async() => {
         AsyncStorage.clear();
-        this.props.navigation.navigate("Login")
+        //this.props.navigation.navigate("Login")
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'Login'})
+            ]
+          })
+          this.props.navigation.dispatch(resetAction)
     }
 
     toggleSwitch1 = () => {

@@ -9,6 +9,7 @@ import { Dimensions } from "react-native";
 import moment from 'moment';
 import ActionButton from 'react-native-action-button';
 
+import { NavigationEvents } from 'react-navigation';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 
 import UploadModal from './UploadModal.js'
@@ -43,7 +44,7 @@ class Dashboard extends Component {
         documents: [],
         loading: true,
         pdVisible: false,
-        
+        refreshData:false
     }
 
     getRecentDocuments = async() => {
@@ -88,11 +89,12 @@ class Dashboard extends Component {
     }
     
     componentWillUnmount(){
+        console.warn("UM")
         BackHandler.removeEventListener('hardwareBackPress', this.onBackPressed);
     }
 
     onBackPressed() {
-        Alert.alert(
+        Alert.alert( 
         'Exit App',
         'Do you want to exit?',
         [
@@ -117,10 +119,18 @@ class Dashboard extends Component {
         }
     }
 
+    refresh = () => {
+        //console.warn("re")
+        this.setState({refreshData:true})
+    }
+
     render() {
     var {navigate} = this.props.navigation;
         return (
             <View style={{flex:1}}>
+            <NavigationEvents
+      onDidBlur={payload => this.getRecentDocuments()}
+    />
                 <StatusBar backgroundColor="#003d58" barStyle="light-content" />
                 <View style={styles.mainContainer}>
                     
@@ -192,7 +202,7 @@ class Dashboard extends Component {
                     <ActionButton buttonColor="#003d5a" bgColor="rgba(255,255,255,0.8)">
                         <ActionButton.Item buttonColor="#003d5a" title="Upload File" onPress={() => this.uploadDocument()}>
                             <Icon name="md-document" style={styles.actionButtonIcon} />
-                        </ActionButton.Item>
+                        </ActionButton.Item>`
                         <ActionButton.Item buttonColor="#003d5a" title="Add Signature" onPress={() => {}}>
                             <Icon1 name="signature" style={styles.actionButtonIcon} />
                         </ActionButton.Item>
