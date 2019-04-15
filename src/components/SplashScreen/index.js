@@ -6,6 +6,10 @@ import moment from 'moment';
 var {height} = Dimensions.get('window')
 
 export default class SplashScreen extends Component{
+  constructor(props) {
+    super(props)
+   
+  }
   static navigationOptions = {
     header: null
   }
@@ -58,6 +62,7 @@ export default class SplashScreen extends Component{
         //console.warn(fingerprint)
         this.state.fingerprint = fingerprint
         this.getCount();
+        //this.props.navigation.navigate('Document_Upload')
       }
     }
   }

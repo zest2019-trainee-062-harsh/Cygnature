@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, Dimensions, Text, TouchableOpacity, AsyncStorage, ActivityIndicator, Alert} from 'react-native'
+import {View, StyleSheet, Dimensions, Text, TouchableOpacity, AsyncStorage, ActivityIndicator} from 'react-native'
 import Modal from 'react-native-modalbox'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker'

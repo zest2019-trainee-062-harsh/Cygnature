@@ -4,6 +4,7 @@ import {View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions,
 import { Dropdown } from 'react-native-material-dropdown'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import DocumentVerify from './DocumentVerify';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
@@ -187,6 +188,8 @@ class Documents extends Component {
         });
       }
 
+      
+
     render() {
         const navigate = this.props.navigation;
         let data = [
@@ -347,6 +350,7 @@ class Documents extends Component {
                         </View>
                     </View> : null
                 }
+                
                 </View>
             )
         }

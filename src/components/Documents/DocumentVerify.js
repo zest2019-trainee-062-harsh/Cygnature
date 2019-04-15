@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, Text,TextInput, TouchableOpacity, ScrollView,AsyncStorage,Clipboard, ActivityIndicator} from 'react-native'
+import {View, StyleSheet, Text,TextInput, TouchableOpacity,AsyncStorage, ActivityIndicator} from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker'
 
 export default class DocumentVerify extends Component {
     constructor(props) {
@@ -8,18 +9,20 @@ export default class DocumentVerify extends Component {
         }
         
         state= {
-            data : {},
+            data : [],
             pdVisible: false,
-            fileHash: "",
-            auth: null
+            fileHash: null,
+            transactionHash: null,
+            auth: null,
+            documentList: [],
+            totalRows: [],  
         }
+        componentWillMount = async() =>{
+            this.state.auth = await AsyncStorage.getItem('auth')
+        }
+       
         
-        async _getContent() {
-            var content = await Clipboard.getString();
-          }
-        
-        search = async() => {
-            let auth = await AsyncStorage.getItem("auth")
+        search = () =>  {    
             return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/search-by-hash',{
                 method: 'POST',
                 headers: {
@@ -33,33 +36,119 @@ export default class DocumentVerify extends Component {
                 }),
                 }).then((response) => response.json())
                 .then((responseJson) => {
-                    this.setState({data: responseJson["data"]})
-                    console.warn(this.state.data)
+                    if(responseJson["data"][0]["totalRows"] > 1){
+                        this.setState({documentList: responseJson["data"][0]["documentList"]})
+                        console.warn(this.state.documentList)
+                        this.showData(responseJson["data"][0])
+                    }
+                    else{
+                        this.verifydetail(responseJson["data"][0])
+                        
+                    }
+                   
                 })
                 .catch((error) => {
                     console.warn(error);
                 });
               }
-         
+
+              update=(value, text)=> {
+                switch(value) {
+                    case "fileHash": {
+                        this.setState({fileHash: text})
+                        return
+                    }
+                    case "transactionHash": {
+                        this.setState({transactionHash: text})
+                        return
+                    }
+                }
+            }
+
+            upload = async() => {
+        
+                let auth = await AsyncStorage.getItem("auth")
+        
+                DocumentPicker.show({
+                    filetype: [DocumentPickerUtil.allFiles()],
+                    },(error,res) => {
+                      
+                        if(error) {
+                            //console.warn("ERROR"+error)
+                            this.setState({fileName: 'No file selected'})
+                        }
+                        else {
+                            //console.warn("Response"+res)
+                            this.setState({pdVisible: true, fileName: res.fileName})
+        
+                            const formData = new FormData()
+                            formData.append('file',{
+                                
+                             uri: res.uri,
+                             type: res.type,
+                             name: res.fileName,
+                            })
+                            //console.warn(res.uri+res.type+res.fileName)
+                            //console.warn(formData)
+                            
+                                 
+                         return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/document-upload',{
+                         method: 'POST',
+                         headers: {
+                             'Authorization':auth,
+                         },
+                         body: formData
+                         }
+                         ).then((response) => response.json())
+                         .then((responseJson) => {
+                             
+                             this.setState({pdVisible: false})
+                             console.warn(responseJson)
+                             this.showData(responseJson["data"][0])
+                         
+                         })
+                         .catch((error) => {
+                             // this.refs.myModal.close();
+                             // Alert(error.message);
+                             console.warn(error.message)
+                         });      
+                        }
+           
+                  });
+            }
+            showData = (data) => {
+                if(data == null)
+                {
+                    console.warn("no data")
+                }else {
+                   
+                    this.props.navigation.navigate('DocumentList',{'data':data})
+                }
+            }
+            verifydetail = (data) => {
+                return
+
+            }
+            
         
   render() {
     return (  
         <View style={styles.mainContainer}>
-        <ScrollView>
+        
       
         <Text  style= {{textDecorationColor:'black', fontWeight:'bold'}}>Document Hash</Text>
-        <View style={styles.textcontain}>
+      
         <TextInput
                     
-                    placeholderTextColor='black'
+                    placeholderTextColor='grey'
                     keyboardType="default"
                     placeholder = "Enter hashcode"
-                    placeholderTextColor ="grey"
+                    onChangeText = {text => this.update("fileHash",text)} 
+                    value = {this.state.fileHash}     
                     returnKeyType="next"
                     style={styles.boxTI} 
         />
-        <TouchableOpacity style={styles.paste} onPress={this._getContent}><Text>Paste</Text></TouchableOpacity>
-        </View>
+     
         <TouchableOpacity style={styles.search} onPress={this.search}><Text>Search</Text></TouchableOpacity>
     
 
@@ -67,15 +156,15 @@ export default class DocumentVerify extends Component {
         <Text style= {{textDecorationColor:'black', fontWeight:'bold'}}>Transaction Hash</Text>
         <TextInput
          
-                        placeholderTextColor='grey'
-                        placeholder = "enter hash code"
-                        returnKeyType="next"
-                        keyboardType="default"
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        style= { styles.boxTI }>
+                    placeholderTextColor='grey'
+                    keyboardType="default"
+                    placeholder = "Enter hashcode"
+                    onChangeText = {text => this.update("transactionHash",text)}
+                    value = {this.state.transactionHash}
+                    returnKeyType="next"
+                    style={styles.boxTI} 
 
-                        </TextInput>
+                        />
 
         <TouchableOpacity style={styles.search}><Text>Search</Text></TouchableOpacity>
      
@@ -95,9 +184,9 @@ export default class DocumentVerify extends Component {
             </TouchableOpacity>
 
             </View>
-            </ScrollView> 
-    </View>
-       
+            
+           </View>
+      
     
     )
   }
@@ -117,14 +206,16 @@ const styles = StyleSheet.create({
     boxTI: {
         backgroundColor: 'rgba(255,255,255,0.7)',
         paddingHorizontal: 20,
-        marginBottom: 15,
+        marginBottom: 10,
+        marginTop:10,
         marginLeft:2,
         fontSize: 12,
         borderRadius: 30,
         fontFamily: 'Helvetica',
         borderWidth: 1,
-        width:150,
-        flex: 1,
+        width:300,
+        height:40,
+        flex: 0.2,
     },
     search: {
         textAlign:'center',

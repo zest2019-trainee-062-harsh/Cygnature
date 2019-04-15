@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, ScrollView, Dimensions, AsyncStorage, ActivityIndicator, Clipboard,TouchableOpacity} from 'react-native'
+import {View, Text, StyleSheet, ScrollView, Dimensions, AsyncStorage, ActivityIndicator, TouchableOpacity} from 'react-native'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Ionicons';
@@ -19,20 +19,39 @@ class DocumentDetails extends Component {
         auth: null,
         id: this.props.navigation.state.params.Id,
         details: null,
+        cancel:null,
+        Document:[],
         data: [],
+       user:null,
         pdVisible: true,
         pdTitle: "Getting the info",
-        fileHash:[]
     }
 
-    
-    setClipboardContent = (value) => {
-        this.setState.fileHash = value;
-        console.warn(this.state.fileHash);
-        Clipboard.setString(this.state.fileHash);
-        };
+    decline= async() =>{
 
-      
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/decline',{
+            method: 'POST',
+            headers: {
+                'Authorization':this.state.auth,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                documentId: this.state.id,
+                declineReason: "don't want to sign"
+            }),
+            }).then((response) => response.json())
+            .then((responseJson)=>{
+               
+                    console.warn(responseJson)
+    
+                    
+            })     
+        .catch((error) => {
+          alert(JSON.stringify(error));
+        });
+    
+  
+    }
 
     documentDetails = async() => {
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/document-detail/'+this.state.id,{
@@ -75,13 +94,17 @@ class DocumentDetails extends Component {
             const fs = fetch_blob.fs
             const dirs = fetch_blob.fs.dirs 
             const file_path = dirs.DCIMDir + "/" + this.state.details["documentDetail"]["fileName"]
-   
-    var image_data = this.state.data
-    console.warn("Files Saved")
-    RNFS.writeFile(file_path, image_data, 'base64')
-    .catch((error) => {
-      alert(JSON.stringify(error));
-    });
+            //         console.warn(dirs.DocumentDir) // /data/user/0/com.bigjpg/files
+            //   console.warn(dirs.CacheDir)    // /data/user/0/com.bigjpg/cache
+            //   console.warn(dirs.DCIMDir)     // /storage/emulated/0/DCIM
+            //   console.lowarng(dirs.DownloadDir) // /storage/emulated/0/Download
+            //   console.warn(dirs.PictureDir)  // /storage/emulated/0/Pictures
+            var image_data = this.state.data
+            console.warn("Files Saved")
+            RNFS.writeFile(file_path, image_data, 'base64')
+            .catch((error) => {
+                alert(JSON.stringify(error));
+            });
 
 
             // this.props.navigation.navigate('Test', {'data': this.state.data})
@@ -118,8 +141,8 @@ class DocumentDetails extends Component {
         .catch((error) => {
             console.warn(error.message);
         });
-    
     }
+
 
     componentWillMount = async() =>{
         let auth = await AsyncStorage.getItem('auth');
@@ -127,9 +150,7 @@ class DocumentDetails extends Component {
         this.documentDetails();
     }
 
-
     render() {
-       
         return (
             <View style={styles.mainContainer}>
                 <ProgressDialog
@@ -167,7 +188,7 @@ class DocumentDetails extends Component {
                         </View>
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
-                                <Text selectable={true} style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}]}>
+                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
                                     Uploaded By
                                 </Text>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
@@ -177,10 +198,10 @@ class DocumentDetails extends Component {
                         </View>
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
-                                <Text  style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
+                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
                                     Document Hash
                                 </Text>
-                                <Text selectable={true}  onPress={()=>this.setstring(value)} style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                <Text selectable = {true} style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
                                     {this.state.details["documentDetail"]["documentFileHash"]}
                                 </Text>
                             </View>
@@ -302,19 +323,40 @@ class DocumentDetails extends Component {
                         <TouchableOpacity  onPress={()=> this.preview()}
                         style = {styles.buttonContainer}>
                             <Text style = { styles.buttonText }>Preview</Text>
-                        </TouchableOpacity> 
-                        <TouchableOpacity  onPress=(this.decline)
-                        style = {[styles.buttonContainer, {flex: 0.2, alignItems:'center'}]}>
-                            <Icon
-                                    name="close"
-                                    size={15}
-                                    color="white"
-                                />
-                        </TouchableOpacity> 
+                        </TouchableOpacity>
+                        {
+                            this.state.details["rejectedByCurrentUser"] ?
+                            <TouchableOpacity
+                            onPress={()=>alert("Already Declined!")}
+                            style = 
+                                {[styles.buttonContainer,
+                                {flex: 0.2, alignItems:'center', opacity: 0.5}]}
+                            >
+                                <Icon
+                                        name="close"
+                                        size={15}
+                                        color="white"
+                                    />
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity onPress={()=>this.decline()} 
+                            style = {[styles.buttonContainer, {flex: 0.2, alignItems:'center'}]}>
+                                <Icon
+                                        name="close"
+                                        size={15}
+                                        color="white"
+                                    />
+                            </TouchableOpacity>
+                        }
                         </View>
 
-</ScrollView>
-          
+                    </ScrollView>
+
+
+                    : <ActivityIndicator color="white" size="large" />
+                }
+            </View>
+            );
         }
     }
 
