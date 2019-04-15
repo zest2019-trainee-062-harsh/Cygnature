@@ -45,7 +45,10 @@ export default class Index extends Component {
             //console.warn(responseJson['data'][0]["profileByte"])
             this.setState({userDataPic: responseJson['data'][0]["profileByte"]}) 
             if(this.state.userDataPic == null || this.state.userDataPic == "") {
-                console.warn("null")
+                console.warn("pp null")
+            }
+            if(responseJson['data'][0]['impressions'][0] == null) {
+                console.warn("sign null")
             }
             this.setState({userData: responseJson['data'][0]}) 
             console.warn(this.state.userData)

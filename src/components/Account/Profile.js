@@ -4,6 +4,7 @@ import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, AsyncS
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 import Modal from 'react-native-modalbox'
+import { StackActions, NavigationActions } from 'react-navigation'
 class Profile extends Component {
     constructor(props) {
         super(props)
@@ -17,8 +18,13 @@ class Profile extends Component {
     }
     componentWillMount() {
         //console.warn(this.state.userData)
+        if(this.state.userData['impressions'][0] == null) {
+            console.warn("null")
+        }
+        else {
         this.setState({signature: this.state.userData['impressions'][0]['imageBytes']}) 
         this.setState({visible:true})
+    }
     }
  
     static navigationOptions = {
@@ -46,7 +52,18 @@ class Profile extends Component {
             <Text style={{marginLeft:14,  fontSize: 18,  color: 'black', fontWeight:'bold'}}>Set Signature</Text>
 
            
-            <TouchableOpacity style={styles.modalTI} onPress={() => this.props.navigation.navigate('Canvas')}>
+            <TouchableOpacity style={styles.modalTI} onPress={() =>
+                 //this.props.navigation.navigate('Canvas')
+                {
+                    const resetAction = StackActions.reset({
+                    index: 0,
+                    actions: [
+                      NavigationActions.navigate({ routeName: 'Canvas'})
+                    ]
+                  })
+                  this.props.navigation.dispatch(resetAction)
+                }
+                }>
                 <Text style={styles.modalText}>Draw</Text>
             </TouchableOpacity>
 
@@ -72,7 +89,11 @@ class Profile extends Component {
                                         <Text style={styles.floatButtonText}>+</Text>
                                     </TouchableOpacity>
                                 </ImageBackground>
-                            :null}
+                            :<ImageBackground style={styles.signContainer} >
+                            <TouchableOpacity style={styles.floatButton} onPress={this.showModal}>
+                                <Text style={styles.floatButtonText}>+</Text>
+                            </TouchableOpacity>
+                        </ImageBackground>}
                             </View>
                           
                         </View>
