@@ -52,7 +52,7 @@ export default class DocumentVerify extends Component {
         });
     }
 
-    search2 = () =>{    
+    search2 = () =>{
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/search-by-hash',{
         method: 'POST',
         headers: {
@@ -66,13 +66,8 @@ export default class DocumentVerify extends Component {
         }),
         }).then((response) => response.json())
         .then((responseJson) => {
-            if(responseJson["data"][0]["totalRows"] > 1){
-                this.showData(responseJson["data"][0]["documentList"])
-            }
-            else{
-                
-                this.verifydetail(responseJson["data"][0]["documentList"][0]["Id"])          
-            }
+           
+            this.props.navigation.navigate('VerifyDetails',{'data':responseJson["data"][0]})
             
         })
         .catch((error) => {

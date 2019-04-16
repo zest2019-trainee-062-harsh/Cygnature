@@ -69,7 +69,7 @@ class  VerifyDetails extends Component {
                     
                         <Text style={{fontSize:15,color: "black",}}>Notarized On</Text>
 
-                            {this.state.data["notarization"]["blockId"] == null ?
+                            {this.state.data["notarization"]["blockId"] != null ?
                                 <Text style={styles.DocumentsListFont}> {this.state.data["notarization"]["notarizedOn"]} </Text> : 
                                 <Text style={styles.DocumentsListFont}> This document is yet not notarized </Text>     
                             }
