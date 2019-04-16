@@ -47,9 +47,31 @@ class Dashboard extends Component {
         refreshData:false
     }
 
+    getCount() {
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/dashboard/document-counts/', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': this.state.auth,
+            },
+            }).then((response) => response.json())
+            .then((responseJson) => {
+            
+                //this.state.count = responseJson["data"]
+                //console.warn(responseJson["data"][0]["awaitingMySign"])
+                this.state.count["awaitingMySign"] = responseJson["data"][0]["awaitingMySign"]
+                this.state.count["awaitingOthers"] = responseJson["data"][0]["awaitingOthers"]
+                this.state.count["completed"] = responseJson["data"][0]["completed"]
+                this.state.count["expireSoon"] = responseJson["data"][0]["expireSoon"]
+                //console.warn(this.state.count)
+            })
+            .catch((error) => {
+                console.warn(error);
+            });
+    }
+
     getRecentDocuments = async() => {
-        let auth = await AsyncStorage.getItem("auth")
-        this.setState({auth: auth})
+        this.setState({loading: true, documents: null})
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/documents',{
         method: 'POST',
         headers: {
@@ -82,16 +104,12 @@ class Dashboard extends Component {
         });
       }
 
-    componentWillMount = async() =>{
-        this.getRecentDocuments();
-        this.state.count  = this.props.navigation.getParam('count')
-        BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
-    }
+    // componentWillMount = async() =>{
+    //     this.getRecentDocuments();
+    //     this.state.count  = this.props.navigation.getParam('count')
+      
+    // }
     
-    componentWillUnmount(){
-        console.warn("UM")
-        BackHandler.removeEventListener('hardwareBackPress', this.onBackPressed);
-    }
 
     onBackPressed() {
         Alert.alert( 
@@ -108,6 +126,7 @@ class Dashboard extends Component {
     uploadDocument= async() => {
         this.refs.UploadModal.show()
     }
+
     showData = (data) => {
         if(data == null)
         {
@@ -119,18 +138,28 @@ class Dashboard extends Component {
         }
     }
 
-    refresh = () => {
-        //console.warn("re")
-        this.setState({refreshData:true})
+    didBlur = () => {
+        BackHandler.removeEventListener('hardwareBackPress', this.onBackPressed);
     }
+    
+    didFocus = async() => {
+        let auth = await AsyncStorage.getItem("auth")
+        this.setState({auth: auth})
+
+        this.getCount();
+        this.getRecentDocuments();
+        BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
+    }
+
 
     render() {
     var {navigate} = this.props.navigation;
         return (
             <View style={{flex:1}}>
             <NavigationEvents
-      onDidBlur={payload => this.getRecentDocuments()}
-    />
+                onDidBlur={payload => this.didBlur()}
+                onDidFocus={payload => this.didFocus()}
+                />
                 <StatusBar backgroundColor="#003d58" barStyle="light-content" />
                 <View style={styles.mainContainer}>
                     
@@ -171,6 +200,7 @@ class Dashboard extends Component {
                             <ActivityIndicator color="#003d5a" size="large" /> 
                         </View> 
                         : null}
+                        {this.state.documents ?
                         <ScrollView>
                         {
                             this.state.documents.map((docs)=>{
@@ -198,6 +228,7 @@ class Dashboard extends Component {
                             })
                         }
                         </ScrollView>
+                        :null}
                     </View>
                     <ActionButton buttonColor="#003d5a" bgColor="rgba(255,255,255,0.8)">
                         <ActionButton.Item buttonColor="#003d5a" title="Upload File" onPress={() => this.uploadDocument()}>
