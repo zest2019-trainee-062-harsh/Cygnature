@@ -22,7 +22,7 @@ class DocumentDetails extends Component {
         cancel:null,
         Document:[],
         data: [],
-       user:null,
+        user:null,
         pdVisible: true,
         pdTitle: "Getting the info",
     }
