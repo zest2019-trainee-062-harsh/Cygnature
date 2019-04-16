@@ -17,12 +17,14 @@ export default class DocumentList extends Component {
     componentWillMount = async() =>{
         this.state.auth = await AsyncStorage.getItem('auth')
     }
+
     state ={
         data : [],
         loading: true,
         pdVisible: false,
         documentList:[],
     }
+    
     verifydetail = (id) => {
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/document-detail/'+id,{
         method: 'GET',

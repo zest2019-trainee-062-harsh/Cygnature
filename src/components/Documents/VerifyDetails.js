@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, ScrollView, Dimensions, AsyncStorage, ActivityIndicator, TouchableOpacity} from 'react-native'
-import { ProgressDialog } from 'react-native-simple-dialogs';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Icon1 from 'react-native-vector-icons/Ionicons';
+
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
@@ -67,15 +66,15 @@ class  VerifyDetails extends Component {
                             <Text style={styles.DocumentsListFont}> This document is yet not signed by all users </Text>     
                         }
                     
-                        <Text style={{fontSize:15,color: "black",}}>Notarized On</Text>
+                    <Text style={{fontSize:15,color: "black",}}>Notarized On</Text>
 
-                            {this.state.data["notarization"]["blockId"] != null ?
-                                <Text style={styles.DocumentsListFont}> {this.state.data["notarization"]["notarizedOn"]} </Text> : 
-                                <Text style={styles.DocumentsListFont}> This document is yet not notarized </Text>     
-                            }
-                        
-                        <Text style={{fontSize:15,color: "black",}}>Document Hash</Text>
-                        <Text style={styles.DocumentsListFont}> {this.state.data["documentDetail"]["documentFileHash"]} </Text>
+                        {this.state.data["notarization"]["blockId"] != null ?
+                            <Text style={styles.DocumentsListFont}> {this.state.data["notarization"]["notarizedOn"]} </Text> : 
+                            <Text style={styles.DocumentsListFont}> This document is yet not notarized </Text>     
+                        }
+                    
+                    <Text style={{fontSize:15,color: "black",}}>Document Hash</Text>
+                    <Text style={styles.DocumentsListFont}> {this.state.data["documentDetail"]["documentFileHash"]} </Text>
                     </View>
 
                     <Text style={styles.head}>Signers</Text>
@@ -87,10 +86,10 @@ class  VerifyDetails extends Component {
                     <Text style={styles.head}>Observers</Text>
 
                     <View style={{borderWidth:1, borderColor:"#003d5a", padding:5,marginTop:10,marginBottom:10}}>
-                    {this.state.data["notarization"]["blockId"] != null ?
-                                <Text style={styles.DocumentsListFont}> {this.state.data["observers"]} </Text> : 
-                                <Text style={styles.DocumentsListFont}> There are no observers </Text>     
-                            } 
+                        {this.state.data["notarization"]["blockId"] != null ?
+                            <Text style={styles.DocumentsListFont}> {this.state.data["observers"]} </Text> : 
+                            <Text style={styles.DocumentsListFont}> There are no observers </Text>     
+                        } 
                     </View>
 
                     <Text style={styles.head}>Document History</Text>

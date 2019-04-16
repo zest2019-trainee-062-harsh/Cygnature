@@ -97,11 +97,11 @@ export default class DocumentVerify extends Component {
             },(error,res) => {
                 
                 if(error) {
-                    //console.warn("ERROR"+error)
+                    
                     this.setState({fileName: 'No file selected'})
                 }
                 else {
-                    //console.warn("Response"+res)
+                   
                     this.setState({pdVisible: true, fileName: res.fileName})
 
                     const formData = new FormData()
@@ -111,9 +111,6 @@ export default class DocumentVerify extends Component {
                         type: res.type,
                         name: res.fileName,
                     })
-                    //console.warn(res.uri+res.type+res.fileName)
-                    //console.warn(formData)
-                    
                             
                     return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/document-upload',{
                     method: 'POST',
