@@ -19,12 +19,13 @@ class Test extends Component {
     this.state.data = this.props.navigation.getParam('data')
     this.state.signers = this.props.navigation.getParam('signers')
     this.state.totalPage = this.state.data["pageCount"]
-    this.state.height = null
-    this.state.width = null
+    this.state.imageHeight = null
+    this.state.imageWidth = null
+    this.state.ratio = null
   }
 
   componentWillMount(){
-    console.warn(this.state.signers)
+    // console.warn(this.state.signers)
     this.Animatedvalue = new Animated.ValueXY();
     this._value = {x: 0, y: 0}
     this.Animatedvalue.addListener((value)=> this._value = value)
@@ -45,16 +46,21 @@ class Test extends Component {
         console.warn(this._value)
       },
     })
+    this.getImageSize();
   }
 
   getImageSize(){
-    const image = "data:image/png;base64,"+this.state.data["pages"][this.state.count]
-    console.warn(image)
+    const image = "data:image/png;base64,"+this.state.data["pages"][0]
+    // console.warn(image)
+    let imageHeight=null;
+    let imageWidth=null;
+    let ratio = null;
     Image.getSize(image, (height, width) => {
-      this.state.height= height
-      this.state.width = width
+      imageHeight = height
+      imageWidth = width
+      ratio = imageHeight/imageWidth
     })
-    console.warn("Image resoultions as per their view"+height/2+" "+width/1.4)
+    console.warn((width/1.4)+" "+(height/2))
   }
 
   static navigationOptions = {
@@ -81,7 +87,7 @@ class Test extends Component {
 
   changeId(value){
     this.state.currentSigner = value
-    console.warn(this.state.currentSigner)
+    // console.warn(this.state.currentSigner)
   }
 
   addAnnotation(){
@@ -105,10 +111,14 @@ class Test extends Component {
   }
 
   review = async() => {
-      const xPercentage = ((this._value.x * 100)/100)
-      const yPercentage = ((this._value.y * 100)/20)
-      const wPercentage = (100/this.state.width)*100
-      const hPercentage = (20/this.state.height )*100
+      
+      console.warn((width/1.4)+" "+height/2)
+      const xPercentage = ((this._value.x * 100)/(height/2))
+      const yPercentage = ((this._value.y * 100)/(width/1.4))
+      const wPercentage = (100/(width/1.4))*100
+      const hPercentage = (20/(height/2) )*100
+      const ratio = (width/1.4)/(height/2)
+      console.warn(this._value.x+" "+this._value.y+" "+xPercentage+" "+yPercentage+" "+wPercentage+" "+hPercentage+" "+ratio)
       let auth = await AsyncStorage.getItem("auth")
       return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/create',{
       method: 'POST',
@@ -166,7 +176,7 @@ class Test extends Component {
       })
       .catch((error) => {
           console.warn(error.message)
-      });      
+      }); 
   }
 
   render() {  
@@ -231,7 +241,6 @@ class Test extends Component {
               >
                 <ImageBackground style={styles.imageContainer}
                   source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}
-                  onLoad={this.getImageSize()}
                 >
                     <Animated.View
                         style={styles.imageContainer}
@@ -260,7 +269,6 @@ class Test extends Component {
                       >
                         <ImageBackground style={styles.imageContainer}
                           source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}
-                          onLoad={this.getImageSize()}
                         >
                             <Animated.View
                                 {...this.PanResponder.panHandlers}
