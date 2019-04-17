@@ -22,6 +22,7 @@ class DocumentDetails extends Component {
         data: [],
         pdVisible: true,
         pdTitle: "Getting the info",
+        history: [],
     }
 
     documentDetails = async() => {
@@ -31,8 +32,8 @@ class DocumentDetails extends Component {
             'Authorization':this.state.auth,
         }}).then((response) => response.json())
         .then((responseJson) => {
-            this.setState({details: responseJson["data"][0]})
-            //console.warn(responseJson["data"][0])
+            this.setState({details: responseJson["data"][0], history: responseJson["data"][0]["documentHistory"]})
+            console.warn(responseJson["data"][0])
             this.setState({pdVisible: false})
         })
         .catch((error) => {
@@ -64,17 +65,20 @@ class DocumentDetails extends Component {
             const fs = fetch_blob.fs
             const dirs = fetch_blob.fs.dirs 
             const file_path = dirs.DownloadDir + "/" + this.state.details["documentDetail"]["fileName"]
-    //         console.warn(dirs.DocumentDir) // /data/user/0/com.bigjpg/files
-    //   console.warn(dirs.CacheDir)    // /data/user/0/com.bigjpg/cache
-    //   console.warn(dirs.DCIMDir)     // /storage/emulated/0/DCIM
-    //   console.lowarng(dirs.DownloadDir) // /storage/emulated/0/Download
-    //   console.warn(dirs.PictureDir)  // /storage/emulated/0/Pictures
-    var image_data = this.state.data
-    console.warn("Files Saved")
-    RNFS.writeFile(file_path, image_data, 'base64')
-    .catch((error) => {
-      alert(JSON.stringify(error));
-    });
+            //console.warn(dirs.DocumentDir)  /data/user/0/com.bigjpg/files
+            //console.warn(dirs.CacheDir)     /data/user/0/com.bigjpg/cache
+            //console.warn(dirs.DCIMDir)      /storage/emulated/0/DCIM
+            //console.lowarng(dirs.DownloadDir)  /storage/emulated/0/Download
+            //console.warn(dirs.PictureDir)   /storage/emulated/0/Pictures
+            var image_data = this.state.data
+                
+            RNFS.writeFile(file_path, image_data, 'base64')
+                .then((success) => {
+                    alert('Document Saved!');
+                })
+                .catch((error) => {
+                    alert(JSON.stringify(error.message));
+            });
 
 
             // this.props.navigation.navigate('Test', {'data': this.state.data})
@@ -264,12 +268,19 @@ class DocumentDetails extends Component {
                         <View style={styles.box}>
                         <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> History </Text>
                         <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text>
-                                    {this.state.details["documentHistory"][0]["fullName"]}: 
-                                    {this.state.details["documentHistory"][0]["historyText"]}
-                                </Text>
-                            </View>
+                        <ScrollView>
+                        {
+                            this.state.history.map((history)=>{
+                                //console.warn(history)
+                                return(
+                                <View key={history.Id} >
+                                    <Text style={styles.DocumentsListFont}>
+                                        {history.historyText}
+                                    </Text>
+                                </View>
+                        );
+                        })}
+                        </ScrollView>
                         </View>
                         </View>
 
@@ -290,7 +301,7 @@ class DocumentDetails extends Component {
                                 </Text>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
                                     {
-                                        this.state.details["signedByCurrentUser"] ? <Text>Yes</Text>
+                                        this.state.details["signedByAll"] ? <Text>Yes</Text>
                                         : <Text>NO</Text>
                                     }
                                 </Text>

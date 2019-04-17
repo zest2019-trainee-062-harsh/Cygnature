@@ -195,6 +195,7 @@ class Documents extends Component {
         let token = await AsyncStorage.getItem('token');
         this.state.auth = auth;
         this.state.token = token;
+        this.setState({currentPage: 0})
         //this.state.totalPages = null;
         this.fetchData()
     }

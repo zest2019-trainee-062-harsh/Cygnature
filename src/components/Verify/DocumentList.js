@@ -23,6 +23,7 @@ export default class DocumentList extends Component {
         loading: true,
         pdVisible: false,
         documentList:[],
+        documentColor: null
     }
     
     verifydetail = (id) => {
