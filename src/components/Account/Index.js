@@ -105,7 +105,7 @@ export default class Index extends Component {
         FingerprintScanner
         .isSensorAvailable()
         .then(biometryType => {
-            this.setState({ switch2: value})
+            this.setState({ switch2: true})
             AsyncStorage.setItem('fingerprint', 'enabled')
             RNRestart.Restart();
         })

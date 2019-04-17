@@ -6,129 +6,166 @@ import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker
 export default class DocumentVerify extends Component {
     constructor(props) {
         super(props)
-        }
+    }
         
-        state= {
-            data : [],
-            pdVisible: false,
-            fileHash: null,
-            transactionHash: null,
-            auth: null,
-            documentList: [],
-            totalRows: [],  
-        }
-        componentWillMount = async() =>{
-            this.state.auth = await AsyncStorage.getItem('auth')
-        }
+    state= {
+        data : [],
+        pdVisible: false,
+        fileHash: null,
+        transactionHash: null,
+        auth: null,
+        token:null,
+        documentList: [],
+        totalRows: [],  
+    }
+
+    componentWillMount = async() =>{
+        this.state.auth = await AsyncStorage.getItem('auth')
+    }
        
         
-        search = () =>  {    
-            return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/search-by-hash',{
-                method: 'POST',
-                headers: {
-                    'Authorization':this.state.auth,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    "fileHash": this.state.fileHash,
-                    "transactionHash": null,
-                    "currentPage": 0,
-                }),
-                }).then((response) => response.json())
-                .then((responseJson) => {
-                    if(responseJson["data"][0]["totalRows"] > 1){
-                        this.setState({documentList: responseJson["data"][0]["documentList"]})
-                        console.warn(this.state.documentList)
-                        this.showData(responseJson["data"][0])
-                    }
-                    else{
-                        this.verifydetail(responseJson["data"][0])
-                        
-                    }
-                   
-                })
-                .catch((error) => {
-                    console.warn(error);
-                });
-              }
-
-              update=(value, text)=> {
-                switch(value) {
-                    case "fileHash": {
-                        this.setState({fileHash: text})
-                        return
-                    }
-                    case "transactionHash": {
-                        this.setState({transactionHash: text})
-                        return
-                    }
-                }
+    search = () =>{    
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/search-by-hash',{
+        method: 'POST',
+        headers: {
+            'Authorization':this.state.auth,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "fileHash": this.state.fileHash,
+            "transactionHash": null,
+            "currentPage": 0,
+        }),
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            if(responseJson["data"][0]["totalRows"] > 1){
+                this.showData(responseJson["data"][0]["documentList"])
             }
+            else{
+                
+                this.verifydetail(responseJson["data"][0]["documentList"][0]["Id"])          
+            }
+            
+        })
+        .catch((error) => {
+            console.warn(error);
+        });
+    }
 
-            upload = async() => {
-        
-                let auth = await AsyncStorage.getItem("auth")
-        
-                DocumentPicker.show({
-                    filetype: [DocumentPickerUtil.allFiles()],
-                    },(error,res) => {
-                      
-                        if(error) {
-                            //console.warn("ERROR"+error)
-                            this.setState({fileName: 'No file selected'})
-                        }
-                        else {
-                            //console.warn("Response"+res)
-                            this.setState({pdVisible: true, fileName: res.fileName})
-        
-                            const formData = new FormData()
-                            formData.append('file',{
-                                
-                             uri: res.uri,
-                             type: res.type,
-                             name: res.fileName,
-                            })
-                            //console.warn(res.uri+res.type+res.fileName)
-                            //console.warn(formData)
-                            
-                                 
-                         return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/document-upload',{
-                         method: 'POST',
-                         headers: {
-                             'Authorization':auth,
-                         },
-                         body: formData
-                         }
-                         ).then((response) => response.json())
-                         .then((responseJson) => {
-                             
-                             this.setState({pdVisible: false})
-                             console.warn(responseJson)
-                             this.showData(responseJson["data"][0])
-                         
-                         })
-                         .catch((error) => {
-                             // this.refs.myModal.close();
-                             // Alert(error.message);
-                             console.warn(error.message)
-                         });      
-                        }
+    search2 = () =>{
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/search-by-hash',{
+        method: 'POST',
+        headers: {
+            'Authorization':this.state.auth,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "fileHash": null,
+            "transactionHash": this.state.transactionHash,
+            "currentPage": 0,
+        }),
+        }).then((response) => response.json())
+        .then((responseJson) => {
            
-                  });
-            }
-            showData = (data) => {
-                if(data == null)
-                {
-                    console.warn("no data")
-                }else {
-                   
-                    this.props.navigation.navigate('DocumentList',{'data':data})
-                }
-            }
-            verifydetail = (data) => {
-                return
+            this.props.navigation.navigate('VerifyDetails',{'data':responseJson["data"][0]})
+            
+        })
+        .catch((error) => {
+            console.warn(error);
+        });
+    }
 
+    update=(value, text)=> {
+        switch(value) {
+            case "fileHash": {
+                this.setState({fileHash: text})
+                return
             }
+            case "transactionHash": {
+                this.setState({transactionHash: text})
+                return
+            }
+        }
+    }
+
+    upload = async() => {
+
+        let auth = await AsyncStorage.getItem("auth")
+
+        DocumentPicker.show({
+            filetype: [DocumentPickerUtil.allFiles()],
+            },(error,res) => {
+                
+                if(error) {
+                    
+                    this.setState({fileName: 'No file selected'})
+                }
+                else {
+                   
+                    this.setState({pdVisible: true, fileName: res.fileName})
+
+                    const formData = new FormData()
+                    formData.append('file',{
+                        
+                        uri: res.uri,
+                        type: res.type,
+                        name: res.fileName,
+                    })
+                            
+                    return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/document-upload',{
+                    method: 'POST',
+                    headers: {
+                        'Authorization':auth,
+                    },
+                    body: formData
+                    }
+                    ).then((response) => response.json())
+                    .then((responseJson) => {
+                       
+                        if(responseJson["data"][0]["totalRows"] > 1){
+                            this.showData(responseJson["data"][0]["documentList"])
+                        }
+                        else{
+                            
+                            this.verifydetail(responseJson["data"][0]["documentList"][0]["Id"])          
+                        }
+                    
+                    })
+                    .catch((error) => {
+                        
+                        console.warn(error.message)
+                    });      
+                }
+    
+            });
+    }
+
+    showData = (data) => {
+        if(data == null)
+        {
+            console.warn("no data")
+        }else {
+            
+            this.props.navigation.navigate('DocumentList',{'data':data})
+        }
+    }
+   
+
+
+    verifydetail = (id) => {
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/document-detail/'+id,{
+        method: 'GET',
+        headers: {
+            'Authorization': this.state.auth
+        }}).then((response) => response.json())
+        .then((responseJson) => {
+           
+             this.props.navigation.navigate('VerifyDetails',{'data':responseJson["data"][0]})
+        })
+        .catch((error) => {
+            console.warn(error);
+        });
+    }
             
         
   render() {
@@ -166,7 +203,7 @@ export default class DocumentVerify extends Component {
 
                         />
 
-        <TouchableOpacity style={styles.search}><Text>Search</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.search} onPress={this.search2}><Text>Search</Text></TouchableOpacity>
      
 
         
@@ -214,7 +251,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Helvetica',
         borderWidth: 1,
         width:300,
-        height:40,
         flex: 0.2,
     },
     search: {

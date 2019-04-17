@@ -17,6 +17,7 @@ import fp from './src/components/fp.js'
 import Document_PlaceHolder from './src/components/Documents/DocumentPlaceHolder.js'
 import DocumentVerify from './src/components/Documents/DocumentVerify.js'
 import DocumentList from './src/components/Documents/DocumentList.js'
+import VerifyDetails from './src/components/Documents/VerifyDetails.js'
 
 const AppNavigator = createStackNavigator({
   SplashScreen: {screen: SplashScreen},
@@ -36,7 +37,8 @@ const AppNavigator = createStackNavigator({
   fp: {screen:fp},
   Document_PlaceHolder: {screen:Document_PlaceHolder},
   DocumentVerify:{screen:DocumentVerify},
-  DocumentList : {screen: DocumentList}  
+  DocumentList : {screen: DocumentList},  
+  VerifyDetails : {screen:VerifyDetails},
 });
 
 const AppContainer = createAppContainer(AppNavigator);

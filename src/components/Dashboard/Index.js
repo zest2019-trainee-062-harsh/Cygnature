@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
     box1Text: {
         color: 'white',
         textAlign: 'center',
-        fontSize: 25,
+        fontSize: 18,
         fontFamily: 'monospace',
         fontWeight: 'bold',
     },
