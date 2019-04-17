@@ -162,8 +162,8 @@ class Dashboard extends Component {
             <View style={{flex:1}}>
             <NavigationEvents
                 onDidBlur={payload => this.didBlur()}
-                onDidFocus={payload => this.didFocus()}
-                />
+                onDidFocus={payload => this.didFocus()}/>
+                
                 <StatusBar backgroundColor="#003d58" barStyle="light-content" />
                 <View style={styles.mainContainer}>
                 

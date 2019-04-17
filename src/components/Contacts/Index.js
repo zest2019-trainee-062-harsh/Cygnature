@@ -5,6 +5,7 @@ import {View, Text, StyleSheet, Alert,
 import Icon from 'react-native-vector-icons/Ionicons'
 import AddModal from './AddModal'
 import UpdateModal from './UpdateModal'
+import { NavigationEvents } from 'react-navigation';
 
 export default class Contacts extends Component {
     constructor(props) {
@@ -21,17 +22,23 @@ export default class Contacts extends Component {
     }
 
 
-    static navigationOptions = {
-        title: "Contacts"
+    // componentDidMount() {
+    //       this.view()
+    //       this.onRefresh()
+    // }
+
+    
+    didFocus = async() => {
+        let auth = await AsyncStorage.getItem('auth');
+        this.state.auth = auth;
+
+        this.view()
+       
+        setTimeout(() => {
+            this.onRefresh()
+        }, 1000);
     }
 
-    componentWillMount() {
-          this.view()
-          this.onRefresh()
-
-    }
-
-     
     floatClicked=() => {
         //alert("clicked")
         this.refs.AddModal.show()
@@ -47,9 +54,7 @@ export default class Contacts extends Component {
       }
     
 
-    view = async() => {
-        let auth = await AsyncStorage.getItem('auth');
-        this.state.auth = auth;
+    view = () => {
 
         //this.setState({res:" ", data: " "})
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/contact/get/',{
@@ -68,12 +73,11 @@ export default class Contacts extends Component {
             this.state.res.map((y) => {
                 this.state.data.push(y)
                 })
-                
-
-                if(this.state.data.length < 1) {
-                    this.setState({ contactsCount: 0})
-                }
-                //console.warn(this.state.data)
+            
+            if(this.state.data.length < 1) {
+                this.setState({ contactsCount: 0})
+            }
+            
         })
         .catch((error) => {
             console.warn(error);
@@ -110,8 +114,9 @@ export default class Contacts extends Component {
         <Text style={{ fontSize:25, fontWeight: 'bold'}}> NO Contacts </Text>
         <Text style={{marginLeft:"20%", marginRight:"20%", fontSize:25, fontStyle: 'italic' }}>
          You can add contacts by clicking "+" button at bottom right.
-         </Text>
-        
+        </Text>
+        <NavigationEvents
+                onDidFocus={payload => this.didFocus()}/>
 
 
         <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
@@ -133,6 +138,8 @@ export default class Contacts extends Component {
                 margin: 7,
                 padding: 10}
             }>
+            <NavigationEvents
+                onDidFocus={payload => this.didFocus()}/>
             <Text style={{margin:10, fontSize:24, fontWeight: 'bold', color: 'black'}}>
                 Contact(s)
             </Text>
