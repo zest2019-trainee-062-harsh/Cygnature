@@ -230,6 +230,17 @@ class DocumentDetails extends Component {
                                 </Text>
                             </View>
                         </View>
+                        {this.state.details["notarization"]["txHash"] ?
+                        <View style={styles.DocumentsList}>
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
+                                    Transaction Hash
+                                </Text>
+                                <Text selectable = {true} style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
+                                    {this.state.details["notarization"]["txHash"]}
+                                </Text>
+                            </View>
+                        </View> : null}
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                                 <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
