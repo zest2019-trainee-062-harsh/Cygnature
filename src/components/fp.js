@@ -7,11 +7,12 @@ import {
 } from 'react-native';
 import FingerprintScanner from 'react-native-fingerprint-scanner';
 import Icon from 'react-native-vector-icons/Ionicons'
+import { StackActions, NavigationActions } from 'react-navigation'
 
 class fp extends Component {
  constructor(props) {
     super(props);
-    this.state.count = this.props.navigation.getParam('count')
+    
   }
 
   static navigationOptions = {
@@ -20,7 +21,7 @@ class fp extends Component {
 
   state = {
     text: "Scan your finger",
-    count: null,
+    attemptCounter: 3
   }
 
   componentDidMount() {
@@ -36,7 +37,14 @@ class fp extends Component {
         text: "Match found."
       })
       // this.props.navigation.navigate('Test')
-      this.props.navigation.navigate('Dashboard')
+      //this.props.navigation.navigate('Dashboard')
+      const resetAction = StackActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'Dashboard'})
+        ]
+      })
+      this.props.navigation.dispatch(resetAction)
     })
     .catch((error) => {
       this.state.text = "Match not found. Try again!"
@@ -45,6 +53,7 @@ class fp extends Component {
   }
 
   componentWillUnmount() {
+    //console.warn("FP UM")
     BackHandler.removeEventListener('hardwareBackPress', this.onBackPressed);
     FingerprintScanner.release();
   }
@@ -64,6 +73,11 @@ class fp extends Component {
   handleAuthenticationAttempted = (error) => {
     alert("Match not found. Try again!")
     this.state.text = "Match not found. Try again!"
+    this.setState({attemptCounter: this.state.attemptCounter-1})
+    if(this.state.attemptCounter == 0) {
+      //console.warn("err")
+      BackHandler.exitApp()
+    }
   };
 
   render() {
@@ -72,6 +86,9 @@ class fp extends Component {
         <Icon name="md-finger-print" color='white' size={100} />
           <Text style={{fontSize:18, color:'white'}}>
             {this.state.text}
+          </Text>
+          <Text style={{fontSize:18, color:'white'}}>
+            Remaining Attempt(s): {this.state.attemptCounter}
           </Text>
       </View>
     );

@@ -127,7 +127,7 @@ export default class SplashScreen extends Component{
         this.state.count["expireSoon"] = responseJson["data"][0]["expireSoon"]
         //console.warn(this.state.fingerprint)
         if(this.state.fingerprint == "enabled"){
-          this.props.navigation.navigate("fp", {"count": this.state.count})
+          this.props.navigation.navigate("fp")
         }else{
           this.props.navigation.navigate("Dashboard", {"count": this.state.count})
         }
