@@ -180,7 +180,7 @@ export default class DocumentVerify extends Component {
                     placeholderTextColor='grey'
                     keyboardType="default"
                     placeholder = "Enter hashcode"
-                    onChangeText = {text => this.update("fileHash",text)} 
+                    onChangeText = {text => this.update("fileHash", text)} 
                     value = {this.state.fileHash}     
                     returnKeyType="next"
                     style={styles.boxTI} 
@@ -207,7 +207,7 @@ export default class DocumentVerify extends Component {
      
 
         
-            <View style={{flex:1, justifyContent: "center", alignItems: "center",marginTop:40}}>
+        <View style={{flex:1, justifyContent: "center", alignItems: "center",marginTop:40}}>
             
              <Icon name="md-cloud-upload" color='#003d5a' size={70} />
              
@@ -220,9 +220,9 @@ export default class DocumentVerify extends Component {
                     <Text style={styles.textSave}>Choose File</Text>
             </TouchableOpacity>
 
-            </View>
+        </View>
             
-           </View>
+    </View>
       
     
     )
