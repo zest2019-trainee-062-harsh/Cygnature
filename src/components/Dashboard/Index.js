@@ -19,6 +19,7 @@ import  Contacts from '../Contacts/Index.js'
 import  Account from '../Account/Index.js'
 import  DocumentVerify from '../Documents/DocumentVerify'
 
+var Spinner = require('react-native-spinkit');
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
 
@@ -42,12 +43,14 @@ class Dashboard extends Component {
         },
         auth: null,
         documents: [],
+        loadingCount: true,
         loading: true,
         pdVisible: false,
         refreshData:false
     }
 
     getCount() {
+        this.setState({loadingCount: true})
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/dashboard/document-counts/', {
             method: 'GET',
             headers: {
@@ -63,6 +66,7 @@ class Dashboard extends Component {
                 this.state.count["awaitingOthers"] = responseJson["data"][0]["awaitingOthers"]
                 this.state.count["completed"] = responseJson["data"][0]["completed"]
                 this.state.count["expireSoon"] = responseJson["data"][0]["expireSoon"]
+                this.setState({loadingCount: false})
                 //console.warn(this.state.count)
             })
             .catch((error) => {
@@ -162,34 +166,56 @@ class Dashboard extends Component {
                 />
                 <StatusBar backgroundColor="#003d58" barStyle="light-content" />
                 <View style={styles.mainContainer}>
-                    
+                
                     <View style={styles.box1}>
-                        <View style={styles.boxHalf}>
+                        <View style={[styles.boxHalf, {justifyContent:'center', alignItems: 'center'}]}>
+                        
+                        {this.state.loadingCount ? 
+                        <Spinner style={styles.spinner} isVisible={true} size={40} type={'ThreeBounce'} color={'white'}/>
+                        :
                             <Text style={styles.box1Text}>
-                                {this.state.count["awaitingMySign"]}
-                                {"\n"}{"\n"} Need to Sign
+                            {this.state.count["awaitingMySign"]}
+                               {"\n"}{"\n"} Need to Sign
                             </Text>
+                        }
                         </View>
-                        <View style={styles.boxHalf}>
+
+                       <View style={[styles.boxHalf, {justifyContent:'center', alignItems: 'center'}]}>
+                        
+                        {this.state.loadingCount ? 
+                        <Spinner style={styles.spinner} isVisible={true} size={40} type={'ThreeBounce'} color={'white'}/>
+                        :
                             <Text style={styles.box1Text}>
-                                {this.state.count["awaitingOthers"]}
-                                {"\n"}{"\n"} Waiting for Others
+                            {this.state.count["awaitingOthers"]}
+                               {"\n"}{"\n"} Waiting for others
                             </Text>
+                        }
+
                         </View>
                     </View>
-
+                        
                     <View style={styles.box1}>
-                        <View style={styles.boxHalf}>
+                    <View style={[styles.boxHalf, {justifyContent:'center', alignItems: 'center'}]}>
+                        
+                        {this.state.loadingCount ? 
+                        <Spinner style={styles.spinner} isVisible={true} size={40} type={'ThreeBounce'} color={'white'}/>
+                        :
                             <Text style={styles.box1Text}>
-                                {this.state.count["completed"]}
-                                {"\n"}{"\n"} Completed
+                            {this.state.count["completed"]}
+                               {"\n"}{"\n"} Completed
                             </Text>
+                        }
                         </View>
-                        <View style={styles.boxHalf}>
+                        <View style={[styles.boxHalf, {justifyContent:'center', alignItems: 'center'}]}>
+                        
+                        {this.state.loadingCount ? 
+                        <Spinner style={styles.spinner} isVisible={true} size={40} type={'ThreeBounce'} color={'white'}/>
+                        :
                             <Text style={styles.box1Text}>
-                                {this.state.count["expireSoon"]}
-                                {"\n"}{"\n"} Expire Soon
+                            {this.state.count["expireSoon"]}
+                               {"\n"}{"\n"} Expire Soon
                             </Text>
+                        }
                         </View>
                     </View>
 
