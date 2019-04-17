@@ -14,12 +14,17 @@ class Profile extends Component {
     state = {
         signature: null,
         visible: false,
-        userData: []
+        userData: [],
+        isSignature: null,
     }
     componentWillMount() {
         //console.warn(this.state.userData)
         if(this.state.userData['impressions'][0] == null) {
-            console.warn("null")
+            //console.warn("null")
+            setTimeout(()=>{
+                this.setState({isSignature:false})
+            },1000)
+            console.warn(this.state.isSignature)
         }
         else {
         this.setState({signature: this.state.userData['impressions'][0]['imageBytes']}) 

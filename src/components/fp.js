@@ -24,6 +24,11 @@ class fp extends Component {
   }
 
   componentDidMount() {
+    // FingerprintScanner
+    // .isSensorAvailable()
+    // .then(biometryType => console.log(biometryType))
+    // .catch(error => console.warn(error.message));
+
     FingerprintScanner
     .authenticate({ onAttempt: this.handleAuthenticationAttempted })
     .then(() => {
@@ -31,7 +36,7 @@ class fp extends Component {
         text: "Match found."
       })
       // this.props.navigation.navigate('Test')
-      this.props.navigation.navigate('Dashboard', {'count': this.state.count})
+      this.props.navigation.navigate('Dashboard')
     })
     .catch((error) => {
       this.state.text = "Match not found. Try again!"

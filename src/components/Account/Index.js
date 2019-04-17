@@ -8,6 +8,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import RNRestart from 'react-native-restart';
 import { NavigationEvents } from 'react-navigation';
 import { StackActions, NavigationActions } from 'react-navigation'
+import FingerprintScanner from 'react-native-fingerprint-scanner';
  
 export default class Index extends Component {
     constructor (props) {
@@ -85,17 +86,31 @@ export default class Index extends Component {
     
      toggleSwitch2 = (value) => {
         //console.warn(value)
-        this.setState({ switch2: value})
         if(value == true) {
-            AsyncStorage.setItem('fingerprint', 'enabled')
+            this.checkSensor()
+            //AsyncStorage.setItem('fingerprint', 'enabled')
             //console.warn("y")
-            RNRestart.Restart();
+            //RNRestart.Restart();
         }
         if(value == false) {
+            this.setState({ switch2: value})
             AsyncStorage.setItem('fingerprint', 'disabled')
             //console.warn("n")
             RNRestart.Restart();
         }
+     }
+
+     checkSensor () {
+        //console.warn("y")
+        FingerprintScanner
+        .isSensorAvailable()
+        .then(biometryType => {
+            this.setState({ switch2: value})
+            AsyncStorage.setItem('fingerprint', 'enabled')
+            RNRestart.Restart();
+        })
+        .catch(error => alert(error.message));
+    
      }
 
     floatClicked = () => {
