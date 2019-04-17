@@ -15,9 +15,9 @@ import Document_Upload from './src/components/Documents/DocumentUpload.js'
 import Document_Preview from './src/components/Documents/DocumentPreview.js'
 import fp from './src/components/fp.js'
 import Document_PlaceHolder from './src/components/Documents/DocumentPlaceHolder.js'
-import DocumentVerify from './src/components/Documents/DocumentVerify.js'
-import DocumentList from './src/components/Documents/DocumentList.js'
-import VerifyDetails from './src/components/Documents/VerifyDetails.js'
+import DocumentVerify from './src/components/Verify/Index.js'
+import DocumentList from './src/components/Verify/DocumentList.js'
+import VerifyDetails from './src/components/Verify/VerifyDetails.js'
 
 const AppNavigator = createStackNavigator({
   SplashScreen: {screen: SplashScreen},

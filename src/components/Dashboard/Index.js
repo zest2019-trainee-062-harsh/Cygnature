@@ -17,7 +17,7 @@ import UploadModal from './UploadModal.js'
 import  Documents from '../Documents/Index.js'
 import  Contacts from '../Contacts/Index.js'
 import  Account from '../Account/Index.js'
-import  DocumentVerify from '../Documents/DocumentVerify'
+import  DocumentVerify from '../Verify/Index.js'
 
 var Spinner = require('react-native-spinkit');
 var width = Dimensions.get('window').width; //full width

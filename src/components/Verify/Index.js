@@ -3,7 +3,7 @@ import {View, StyleSheet, Text,TextInput, TouchableOpacity,AsyncStorage, Activit
 import Icon from 'react-native-vector-icons/Ionicons'
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker'
 
-export default class DocumentVerify extends Component {
+export default class Index extends Component {
     constructor(props) {
         super(props)
     }
