@@ -5,7 +5,7 @@ import {
 import { Avatar } from 'react-native-elements';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import ImagePicker from 'react-native-image-crop-picker';
-
+import RNRestart from 'react-native-restart';
 import { NavigationEvents } from 'react-navigation';
 import { StackActions, NavigationActions } from 'react-navigation'
  
@@ -87,12 +87,14 @@ export default class Index extends Component {
         //console.warn(value)
         this.setState({ switch2: value})
         if(value == true) {
-          AsyncStorage.setItem('fingerprint', 'enabled')
-          //console.warn("y")
+            AsyncStorage.setItem('fingerprint', 'enabled')
+            //console.warn("y")
+            RNRestart.Restart();
         }
         if(value == false) {
             AsyncStorage.setItem('fingerprint', 'disabled')
             //console.warn("n")
+            RNRestart.Restart();
         }
      }
 
