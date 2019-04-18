@@ -17,12 +17,19 @@ class DocumentDetails extends Component {
 
     state = {
         auth: null,
+        userId: null,
+        signButtonDisable: true,
+        signButtonOpacity: 0.5,
         id: this.props.navigation.state.params.Id,
         details: null,
         data: [],
         pdVisible: true,
         pdTitle: "Getting the info",
         history: [],
+        signers: [],
+        observers: [],
+        isObservers: false,
+        sequentialFlow: null,
     }
 
     documentDetails = async() => {
@@ -32,8 +39,30 @@ class DocumentDetails extends Component {
             'Authorization':this.state.auth,
         }}).then((response) => response.json())
         .then((responseJson) => {
-            this.setState({details: responseJson["data"][0], history: responseJson["data"][0]["documentHistory"]})
+            this.setState({details: responseJson["data"][0], observers: responseJson["data"][0]["observers"], signers: responseJson["data"][0]["signers"], history: responseJson["data"][0]["documentHistory"]})
             console.warn(responseJson["data"][0])
+
+            if(responseJson["data"][0]["sequentialFlow"] == true) {
+                //console.warn("yes")
+                this.setState({sequentialFlow: "Sequential Signature"})
+            } else this.setState({sequentialFlow: "Parallel Signature"})
+            
+            this.state.signers.map((signers)=>{
+                    //console.warn(history)
+                    const userID  = []
+                    userID.push(signers.userId)
+                    for (let i=0; i<userID.length;i++) {
+                        if(userID[i] == this.state.userId) {
+                            //console.warn("yess")
+                            this.setState({signButtonDisable: false, signButtonOpacity:1.0});
+                            return true;
+                        }
+                    }   
+            })
+            if(!this.state.observers.length == 0) {
+                //console.warn("err")
+                this.setState({isObservers:true})
+            }
             this.setState({pdVisible: false})
         })
         .catch((error) => {
@@ -174,7 +203,10 @@ class DocumentDetails extends Component {
 
     componentWillMount = async() =>{
         let auth = await AsyncStorage.getItem('auth');
+        let userId = await AsyncStorage.getItem('userId');
         this.state.auth = auth;
+        this.state.userId = userId;
+        console.warn(this.state.userId)
         this.documentDetails();
     }
 
@@ -284,7 +316,64 @@ class DocumentDetails extends Component {
                         </View>
                         </View>
 
+                        <View style={styles.box}>
+                        <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Signers </Text>
+                        <Text style={{fontSize: 15, color: "black", marginLeft: 5}}> {this.state.sequentialFlow} </Text>
                         <View style={styles.DocumentsList}>
+                        <ScrollView>
+                        {
+                            this.state.signers.map((signers)=>{
+                                //console.warn(history)
+                                // const userID  = []
+                                // userID.push(signers.userId)
+                                // for (let i=0; i<userID.length;i++) {
+                                //     if(userID[i] == this.state.userId) {
+                                //         //console.warn("yess")
+                                //         this.setState({signButtonDisable: true});
+                                //         return true;
+                                //     }
+                                // }
+                                
+                                
+                                return(
+                                <View key={signers.userId} >
+                                    <Text style={styles.DocumentsListFont}>
+                                        {signers.userId}
+                                    </Text>
+                                </View>
+                        );
+                        })}
+                        </ScrollView>
+                        </View>
+                        </View>
+
+                        <View style={styles.box}>
+                        <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Observers </Text>
+                        <View style={styles.DocumentsList}>
+                        {this.state.isObservers ?
+                        <ScrollView>
+                        {
+                            this.state.observers.map((observers)=>{
+                                //console.warn(history)
+                                return(
+                                <View key={observers.userId} >
+                                    <Text style={styles.DocumentsListFont}>
+                                        {observers.userId}
+                                    </Text>
+                                </View>
+                        );
+                        })} 
+                        </ScrollView> :
+                            <View>
+                                <Text style={styles.DocumentsListFont}>
+                                    There are no Observers
+                                </Text>
+                            </View> 
+                        }
+                        </View>
+                        </View>
+
+                        {/* <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
                                     Signed by current user?
@@ -306,8 +395,8 @@ class DocumentDetails extends Component {
                                     }
                                 </Text>
                             </View>
-                        </View> 
-                        <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Signers </Text>
+                        </View>  */}
+                        {/* <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Signers </Text>
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
@@ -317,8 +406,8 @@ class DocumentDetails extends Component {
                                     {this.state.details["signers"][0]["email"]}
                                 </Text>
                             </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
+                        </View> */}
+                        {/* <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
                                     User Name
@@ -327,8 +416,8 @@ class DocumentDetails extends Component {
                                     {this.state.details["signers"][0]["fullName"]}
                                 </Text>
                             </View>
-                        </View>
-                        <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Observers </Text>
+                        </View> */}
+                        {/* <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Observers </Text>
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
@@ -338,8 +427,8 @@ class DocumentDetails extends Component {
                                     {this.state.details["observers"]}
                                 </Text>
                             </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
+                        </View> */}
+                        {/* <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
                                     Rejected?
@@ -349,7 +438,7 @@ class DocumentDetails extends Component {
                                     : <Text>No</Text>}
                                 </Text>
                             </View>
-                        </View>
+                        </View> */}
                         <View style={{flex:1, flexDirection:'row'}}>
 
                         {this.state.details["documentDetail"]["documentStatus"] == 2 ?
@@ -361,8 +450,10 @@ class DocumentDetails extends Component {
                                     color="white"
                                 />
                         </TouchableOpacity> :  
-                        <TouchableOpacity   onPress={()=> this.sign()}
-                        style = {styles.buttonContainer}>
+                        <TouchableOpacity  
+                        disabled={this.state.signButtonDisable} 
+                        onPress={()=> this.sign()}
+                        style = {[styles.buttonContainer, {opacity: this.state.signButtonOpacity}]}>
                             <Text style = { styles.buttonText }>Sign Now</Text>
                         </TouchableOpacity>}
 
