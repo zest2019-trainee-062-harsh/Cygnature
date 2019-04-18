@@ -67,8 +67,8 @@ class DocumentDetails extends Component {
 
             if(responseJson["data"][0]["sequentialFlow"] == true) {
                 //console.warn("yes")
-                this.setState({sequentialFlow: "Sequential Signature"})
-            } else this.setState({sequentialFlow: "Parallel Signature"})
+                this.setState({sequentialFlow: "Sequential Flow"})
+            } else this.setState({sequentialFlow: "Parallel Flow"})
             
             this.state.signers.map((signers)=>{
                     //console.warn(history)
@@ -421,22 +421,14 @@ class DocumentDetails extends Component {
                         <ScrollView>
                         {
                             this.state.signers.map((signers)=>{
-                                //console.warn(history)
-                                // const userID  = []
-                                // userID.push(signers.userId)
-                                // for (let i=0; i<userID.length;i++) {
-                                //     if(userID[i] == this.state.userId) {
-                                //         //console.warn("yess")
-                                //         this.setState({signButtonDisable: true});
-                                //         return true;
-                                //     }
-                                // }
-                                
-                                
+
                                 return(
                                 <View key={signers.userId} >
-                                    <Text style={styles.DocumentsListFont}>
-                                        {signers.userId}
+                                    <TouchableOpacity disabled style={[styles.rowDataBg, {marginLeft:20}]}>
+                                        <Text style={styles.rowDataText1}>{signers.profileShortName}</Text>
+                                    </TouchableOpacity>
+                                    <Text style={[styles.DocumentsListFont, {marginLeft:60}]}>
+                                        {signers.fullName}
                                     </Text>
                                 </View>
                         );
@@ -452,11 +444,14 @@ class DocumentDetails extends Component {
                         <ScrollView>
                         {
                             this.state.observers.map((observers)=>{
-                                //console.warn(history)
+                                
                                 return(
                                 <View key={observers.userId} >
-                                    <Text style={styles.DocumentsListFont}>
-                                        {observers.userId}
+                                    <TouchableOpacity disabled style={[styles.rowDataBg, {marginLeft:20}]}>
+                                        <Text style={styles.rowDataText1}>{observers.profileShortName}</Text>
+                                    </TouchableOpacity>
+                                    <Text style={[styles.DocumentsListFont, {marginLeft:60}]}>
+                                        {observers.fullName}
                                     </Text>
                                 </View>
                         );
@@ -629,5 +624,20 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#ffffff',
         fontWeight: 'bold'
+    },
+    rowDataBg: {
+        position: 'absolute',
+        width:25,
+        height: 25,
+        backgroundColor: '#003d5a',
+        borderRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    rowDataText1: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        color: 'white',
+        borderRadius: 5,
     },
 })
