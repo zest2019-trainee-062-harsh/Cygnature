@@ -156,7 +156,7 @@ export default class Index extends Component {
                         />:
                         <Avatar
                             style={{height:200,width:200}}
-                            source={{uri: `data:${this.state.img["mime"]};base64,${this.state.userDataPic}`}}
+                            source={{uri: `data:image/png;base64,${this.state.userDataPic}`}}
                             rounded
                             showEditButton
                             onEditPress={this.floatClicked}
