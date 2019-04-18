@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, ScrollView, Dimensions, AsyncStorage, ActivityIndicator, TouchableOpacity} from 'react-native'
+import {View, Text, StyleSheet, ScrollView, Dimensions, AsyncStorage, ActivityIndicator, TouchableOpacity, Clipboard} from 'react-native'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Ionicons';
@@ -230,6 +230,16 @@ class DocumentDetails extends Component {
         });
     }
 
+    copyDH = async() => {
+        await Clipboard.setString(this.state.details["documentDetail"]["documentFileHash"]);
+        alert('Copied to Clipboard!');
+    }
+
+    copyTH = async() => {
+        await Clipboard.setString(this.state.details["notarization"]["txHash"]);
+        alert('Copied to Clipboard!');
+    }
+
     componentWillMount = async() =>{
         let auth = await AsyncStorage.getItem('auth');
         let userId = await AsyncStorage.getItem('userId');
@@ -252,7 +262,7 @@ class DocumentDetails extends Component {
                 />
                 {this.state.details != null ? 
                     <ScrollView>
-                        <View style={styles.DocumentsList}>
+                        {/* <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                                 <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
                                     File Name
@@ -261,8 +271,60 @@ class DocumentDetails extends Component {
                                     {this.state.details["documentDetail"]["fileName"]}
                                 </Text>
                             </View>
+                        </View> */}
+                        <View style={styles.box}>
+
+                            <View style = {[{flex: 1, flexDirection:'row'}, ]}>
+                                <View style={{flex:0.2, justifyContent: "center", alignItems: "center" , color:'red'}}>
+                                    {this.state.details["documentDetail"]["extension"] == ".pdf" ?
+                                        <Icon
+                                            name="file-pdf-o"
+                                            size={30}
+                                            color="red"
+                                        /> : null
+                                    }
+                                    {this.state.details["documentDetail"]["extension"] == ".docx" || this.state.details["documentDetail"]["extension"] == ".doc" ?
+                                        <Icon
+                                            name="file-word-o"
+                                            size={30}
+                                            color="red"
+                                        /> : null
+                                    } 
+                                </View>
+
+                            <View style={[{flex:0.8},styles.DocumentsList]}>
+                                    <Text style={ [styles.DocumentsListFont, {fontSize:17, fontWeight: 'bold'}] }>
+                                        {this.state.details["documentDetail"]["fileName"]}
+                                    </Text>
+                                    <Text style={ [styles.DocumentsListFont, {color: 'grey'}] }>
+                                    Uploaded By: {this.state.details["documentDetail"]["uploadedBy"]}
+                                    </Text>
+                                </View>
+                            </View>
+
+                            <View style = {[{flex: 1, flexDirection:'row', marginTop:10}, ]}>
+                                <View style={styles.DocumentsList}>
+                                    <Text style={ [styles.DocumentsListFont, { alignContent: "flex-start"}] }>
+                                        Document Hash
+                                    </Text>
+                                    <View style={{flexDirection:'row'}}>
+                                        <Text selectable = {true} style={ [styles.DocumentsListFont, {flex:0.92,color:'grey', alignContent: "flex-end"}] }>
+                                            {this.state.details["documentDetail"]["documentFileHash"]}
+                                        </Text>
+                                        <TouchableOpacity onPress={()=>this.copyDH()} 
+                                            style = {{flex: 0.08, backgroundColor:'#003d5a', justifyContent: 'center', alignItems:'center'}}>
+                                        <Icon
+                                            name="copy"
+                                            size={15}
+                                            color="white"
+                                        />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </View>
+                            
                         </View>
-                        <View style={styles.DocumentsList}>
+                        {/* <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                                 <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
                                     Activation Status
@@ -325,7 +387,8 @@ class DocumentDetails extends Component {
                                     {this.state.details["documentDetail"]["creationTime"]}
                                 </Text>
                             </View>
-                        </View>
+                        </View> */}
+
                         <View style={styles.box}>
                         <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> History </Text>
                         <View style={styles.DocumentsList}>
@@ -334,8 +397,14 @@ class DocumentDetails extends Component {
                             this.state.history.map((history)=>{
                                 //console.warn(history)
                                 return(
-                                <View key={history.Id} >
-                                    <Text style={styles.DocumentsListFont}>
+                                <View key={history.Id} style={{flexDirection:'row', flex:1}} >
+                                    <Icon1
+                                        name="md-information-circle"
+                                        style={{padding:10, flex:0.05}}
+                                        size={15}
+                                        color="black"
+                                    />
+                                    <Text style={[styles.DocumentsListFont, {flex:0.95}]}>
                                         {history.historyText}
                                     </Text>
                                 </View>
@@ -347,7 +416,7 @@ class DocumentDetails extends Component {
 
                         <View style={styles.box}>
                         <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Signers </Text>
-                        <Text style={{fontSize: 15, color: "black", marginLeft: 5}}> {this.state.sequentialFlow} </Text>
+                        <Text style={{fontSize: 15, color: "grey", marginLeft: 5}}> {this.state.sequentialFlow} </Text>
                         <View style={styles.DocumentsList}>
                         <ScrollView>
                         {
@@ -468,7 +537,7 @@ class DocumentDetails extends Component {
                                 </Text>
                             </View>
                         </View> */}
-                        <View style={{flex:1, flexDirection:'row'}}>
+                        <View style={{flex:1, flexDirection:'row', justifyContent: 'center'}}>
 
                         {this.state.details["documentDetail"]["documentStatus"] == 2 ?
                         <TouchableOpacity  onPress={()=> this.download()}
