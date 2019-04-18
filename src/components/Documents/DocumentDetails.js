@@ -31,6 +31,29 @@ class DocumentDetails extends Component {
         isObservers: false,
         sequentialFlow: null,
     }
+    decline= async() =>{
+
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/decline',{
+            method: 'POST',
+            headers: {
+                'Authorization':this.state.auth,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                documentId: this.state.id,
+                declineReason: "Don't want to sign"
+            }),
+            }).then((response) => response.json())
+            .then((responseJson)=>{
+               alert(responseJson["message"])
+                    
+            })     
+        .catch((error) => {
+          alert(JSON.stringify(error));
+        });
+    
+  
+    }
 
     documentDetails = async() => {
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/document-detail/'+this.state.id,{
@@ -59,6 +82,12 @@ class DocumentDetails extends Component {
                         }
                     }   
             })
+
+            if(this.state.details["rejectedByCurrentUser"]) {
+                
+               this.setState({signButtonDisable: true, signButtonOpacity:0.5});
+            }
+
             if(!this.state.observers.length == 0) {
                 //console.warn("err")
                 this.setState({isObservers:true})
@@ -206,7 +235,7 @@ class DocumentDetails extends Component {
         let userId = await AsyncStorage.getItem('userId');
         this.state.auth = auth;
         this.state.userId = userId;
-        console.warn(this.state.userId)
+        //console.warn(this.state.userId)
         this.documentDetails();
     }
 
@@ -461,14 +490,19 @@ class DocumentDetails extends Component {
                         style = {styles.buttonContainer}>
                             <Text style = { styles.buttonText }>Preview</Text>
                         </TouchableOpacity> 
-                        <TouchableOpacity  
-                        style = {[styles.buttonContainer, {flex: 0.2, alignItems:'center'}]}>
-                            <Icon
-                                    name="close"
-                                    size={15}
-                                    color="white"
-                                />
-                        </TouchableOpacity> 
+                        {
+                            this.state.details["rejectedByCurrentUser"] ?
+                            null
+                            :
+                            <TouchableOpacity onPress={()=>this.decline()} 
+                            style = {[styles.buttonContainer, {flex: 0.2, alignItems:'center'}]}>
+                                <Icon
+                                        name="close"
+                                        size={15}
+                                        color="white"
+                                    />
+                            </TouchableOpacity>
+                        }
                         </View>
 
                     </ScrollView>
