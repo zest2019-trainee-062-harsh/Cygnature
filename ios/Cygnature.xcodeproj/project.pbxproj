@@ -60,10 +60,10 @@
 		22F747FA719449A9B112DFD2 /* libRNLocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA8B9D81130D451BAA8BE300 /* libRNLocation.a */; };
 		5615F09B96144B92AD5B8B86 /* libRNDocumentPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE36D2E9FDE74EB4B920656E /* libRNDocumentPicker.a */; };
 		9848DBD577E04F968B0CC5E2 /* libReactNativeFingerprintScanner.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FD75DF21256647BCB7CC639E /* libReactNativeFingerprintScanner.a */; };
-		8C9A06A897394936BD216B91 /* libRNCWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CF21E95FAE84A4CBA84E297 /* libRNCWebView.a */; };
-		72425C69A9B145FF8A102876 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C99BFD8626214338AD1F5ACD /* libimageCropPicker.a */; };
-		9597FD3E36B547D4945F4439 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88025511C04E450AB0E5C40C /* libRNFetchBlob.a */; };
-		B58A708824F04ECD9A1EE1F7 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E142DE2C63F4FC4ADA2E8DB /* libRNFS.a */; };
+		AE61CD61A5D64C65B81155D8 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F281DFEC43A4589AECC87B6 /* libRNFetchBlob.a */; };
+		59DEC76B00D44FA29379C53A /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CC326B8671A47D7BE376FF9 /* libRNFS.a */; };
+		70B34A11C04F4E01B5ADE4B6 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A57AE1457F534AC389902A50 /* libimageCropPicker.a */; };
+		BD68EF36A9F8493F8F9FE789 /* libRNCWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 551E714512F241FEA2E12DA3 /* libRNCWebView.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -410,6 +410,7 @@
 =======
 		5CECE7818FB0487BBC207D63 /* ReactNativeFingerprintScanner.xcodeproj */ = {isa = PBXFileReference; name = "ReactNativeFingerprintScanner.xcodeproj"; path = "../node_modules/react-native-fingerprint-scanner/ios/ReactNativeFingerprintScanner.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		FD75DF21256647BCB7CC639E /* libReactNativeFingerprintScanner.a */ = {isa = PBXFileReference; name = "libReactNativeFingerprintScanner.a"; path = "libReactNativeFingerprintScanner.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+<<<<<<< HEAD
 		59BD6141F04C4B8387F4D692 /* RNCWebView.xcodeproj */ = {isa = PBXFileReference; name = "RNCWebView.xcodeproj"; path = "../node_modules/react-native-webview/ios/RNCWebView.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		5CF21E95FAE84A4CBA84E297 /* libRNCWebView.a */ = {isa = PBXFileReference; name = "libRNCWebView.a"; path = "libRNCWebView.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		C31F911ADD7147FF9BFD74C5 /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; name = "imageCropPicker.xcodeproj"; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
@@ -422,6 +423,16 @@
 		2D4F1C100DB04371AF8F5B2B /* RNFS.xcodeproj */ = {isa = PBXFileReference; name = "RNFS.xcodeproj"; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		7E142DE2C63F4FC4ADA2E8DB /* libRNFS.a */ = {isa = PBXFileReference; name = "libRNFS.a"; path = "libRNFS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 >>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
+=======
+		9037314865AC449C8FE98366 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; name = "RNFetchBlob.xcodeproj"; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		2F281DFEC43A4589AECC87B6 /* libRNFetchBlob.a */ = {isa = PBXFileReference; name = "libRNFetchBlob.a"; path = "libRNFetchBlob.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		9F9EEA5E60644656A3DF901C /* RNFS.xcodeproj */ = {isa = PBXFileReference; name = "RNFS.xcodeproj"; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		9CC326B8671A47D7BE376FF9 /* libRNFS.a */ = {isa = PBXFileReference; name = "libRNFS.a"; path = "libRNFS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		3388784341CB45A195C792FE /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; name = "imageCropPicker.xcodeproj"; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		A57AE1457F534AC389902A50 /* libimageCropPicker.a */ = {isa = PBXFileReference; name = "libimageCropPicker.a"; path = "libimageCropPicker.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		55BBF75B7E2B499B859A5996 /* RNCWebView.xcodeproj */ = {isa = PBXFileReference; name = "RNCWebView.xcodeproj"; path = "../node_modules/react-native-webview/ios/RNCWebView.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		551E714512F241FEA2E12DA3 /* libRNCWebView.a */ = {isa = PBXFileReference; name = "libRNCWebView.a"; path = "libRNCWebView.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+>>>>>>> 76e3e1d825c45074343ecfe52f5361879ac3545f
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -464,6 +475,7 @@
 >>>>>>> 39ed49510eb59874b6be64cd025f3cdbea5aa93f
 =======
 				9848DBD577E04F968B0CC5E2 /* libReactNativeFingerprintScanner.a in Frameworks */,
+<<<<<<< HEAD
 				8C9A06A897394936BD216B91 /* libRNCWebView.a in Frameworks */,
 				72425C69A9B145FF8A102876 /* libimageCropPicker.a in Frameworks */,
 <<<<<<< HEAD
@@ -472,6 +484,12 @@
 				9597FD3E36B547D4945F4439 /* libRNFetchBlob.a in Frameworks */,
 				B58A708824F04ECD9A1EE1F7 /* libRNFS.a in Frameworks */,
 >>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
+=======
+				AE61CD61A5D64C65B81155D8 /* libRNFetchBlob.a in Frameworks */,
+				59DEC76B00D44FA29379C53A /* libRNFS.a in Frameworks */,
+				70B34A11C04F4E01B5ADE4B6 /* libimageCropPicker.a in Frameworks */,
+				BD68EF36A9F8493F8F9FE789 /* libRNCWebView.a in Frameworks */,
+>>>>>>> 76e3e1d825c45074343ecfe52f5361879ac3545f
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -676,6 +694,7 @@
 >>>>>>> 39ed49510eb59874b6be64cd025f3cdbea5aa93f
 =======
 				5CECE7818FB0487BBC207D63 /* ReactNativeFingerprintScanner.xcodeproj */,
+<<<<<<< HEAD
 				59BD6141F04C4B8387F4D692 /* RNCWebView.xcodeproj */,
 				C31F911ADD7147FF9BFD74C5 /* imageCropPicker.xcodeproj */,
 <<<<<<< HEAD
@@ -684,6 +703,12 @@
 				65EB0A368E1E4240ADC56185 /* RNFetchBlob.xcodeproj */,
 				2D4F1C100DB04371AF8F5B2B /* RNFS.xcodeproj */,
 >>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
+=======
+				9037314865AC449C8FE98366 /* RNFetchBlob.xcodeproj */,
+				9F9EEA5E60644656A3DF901C /* RNFS.xcodeproj */,
+				3388784341CB45A195C792FE /* imageCropPicker.xcodeproj */,
+				55BBF75B7E2B499B859A5996 /* RNCWebView.xcodeproj */,
+>>>>>>> 76e3e1d825c45074343ecfe52f5361879ac3545f
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1389,6 +1414,7 @@
 >>>>>>> 39ed49510eb59874b6be64cd025f3cdbea5aa93f
 =======
 					"$(SRCROOT)\..\node_modules\react-native-fingerprint-scanner\ios",
+<<<<<<< HEAD
 					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
 					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
 <<<<<<< HEAD
@@ -1397,6 +1423,12 @@
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fs/**",
 >>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
+=======
+					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-fs/**",
+					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
+>>>>>>> 76e3e1d825c45074343ecfe52f5361879ac3545f
 				);
 			};
 			name = Debug;
@@ -1456,6 +1488,7 @@
 >>>>>>> 39ed49510eb59874b6be64cd025f3cdbea5aa93f
 =======
 					"$(SRCROOT)\..\node_modules\react-native-fingerprint-scanner\ios",
+<<<<<<< HEAD
 					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
 					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
 <<<<<<< HEAD
@@ -1464,6 +1497,12 @@
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fs/**",
 >>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
+=======
+					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-fs/**",
+					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
+>>>>>>> 76e3e1d825c45074343ecfe52f5361879ac3545f
 				);
 			};
 			name = Release;
@@ -1500,6 +1539,7 @@
 >>>>>>> 39ed49510eb59874b6be64cd025f3cdbea5aa93f
 =======
 					"$(SRCROOT)\..\node_modules\react-native-fingerprint-scanner\ios",
+<<<<<<< HEAD
 					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
 					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
 <<<<<<< HEAD
@@ -1508,6 +1548,12 @@
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fs/**",
 >>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
+=======
+					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-fs/**",
+					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
+>>>>>>> 76e3e1d825c45074343ecfe52f5361879ac3545f
 				);
 			};
 			name = Debug;
@@ -1543,6 +1589,7 @@
 >>>>>>> 39ed49510eb59874b6be64cd025f3cdbea5aa93f
 =======
 					"$(SRCROOT)\..\node_modules\react-native-fingerprint-scanner\ios",
+<<<<<<< HEAD
 					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
 					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
 <<<<<<< HEAD
@@ -1551,6 +1598,12 @@
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fs/**",
 >>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
+=======
+					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-fs/**",
+					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
+>>>>>>> 76e3e1d825c45074343ecfe52f5361879ac3545f
 				);
 			};
 			name = Release;
@@ -1619,6 +1672,7 @@
 >>>>>>> 39ed49510eb59874b6be64cd025f3cdbea5aa93f
 =======
 					"$(SRCROOT)\..\node_modules\react-native-fingerprint-scanner\ios",
+<<<<<<< HEAD
 					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
 					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
 <<<<<<< HEAD
@@ -1627,6 +1681,12 @@
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fs/**",
 >>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
+=======
+					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-fs/**",
+					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
+>>>>>>> 76e3e1d825c45074343ecfe52f5361879ac3545f
 				);
 			};
 			name = Debug;
@@ -1695,6 +1755,7 @@
 >>>>>>> 39ed49510eb59874b6be64cd025f3cdbea5aa93f
 =======
 					"$(SRCROOT)\..\node_modules\react-native-fingerprint-scanner\ios",
+<<<<<<< HEAD
 					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
 					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
 <<<<<<< HEAD
@@ -1703,6 +1764,12 @@
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fs/**",
 >>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
+=======
+					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-fs/**",
+					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
+>>>>>>> 76e3e1d825c45074343ecfe52f5361879ac3545f
 				);
 			};
 			name = Release;
@@ -1769,6 +1836,7 @@
 >>>>>>> 39ed49510eb59874b6be64cd025f3cdbea5aa93f
 =======
 					"$(SRCROOT)\..\node_modules\react-native-fingerprint-scanner\ios",
+<<<<<<< HEAD
 					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
 					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
 <<<<<<< HEAD
@@ -1777,6 +1845,12 @@
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fs/**",
 >>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
+=======
+					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-fs/**",
+					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
+>>>>>>> 76e3e1d825c45074343ecfe52f5361879ac3545f
 				);
 			};
 			name = Debug;
@@ -1844,6 +1918,7 @@
 >>>>>>> 39ed49510eb59874b6be64cd025f3cdbea5aa93f
 =======
 					"$(SRCROOT)\..\node_modules\react-native-fingerprint-scanner\ios",
+<<<<<<< HEAD
 					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
 					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
 <<<<<<< HEAD
@@ -1852,6 +1927,12 @@
 					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-fs/**",
 >>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
+=======
+					"$(SRCROOT)\..\node_modules\react-native-fetch-blob\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-fs/**",
+					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
+>>>>>>> 76e3e1d825c45074343ecfe52f5361879ac3545f
 				);
 			};
 			name = Release;

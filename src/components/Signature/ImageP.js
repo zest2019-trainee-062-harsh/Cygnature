@@ -70,7 +70,7 @@ class ImageP extends Component {
                   alert("Enroll failed\nPlease select/capture image again")
                 } else {
                   //console.warn(responseJson)
-                  this.props.navigation.navigate('Settings')
+                  this.props.navigation.navigate('Account')
                 }
             })
             .catch((error) => {

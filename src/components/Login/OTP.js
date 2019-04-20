@@ -18,7 +18,7 @@ class OTP extends Component {
     componentWillMount = async() =>{
         let auth = await AsyncStorage.getItem('auth');
         this.state.auth = auth;
-        this.getCount()
+        //this.getCount()
     }
 
     static navigationOptions = {

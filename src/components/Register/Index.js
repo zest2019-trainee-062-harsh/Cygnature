@@ -160,7 +160,6 @@ class Register extends Component {
                         console.warn(error);
                     });
         }
-                return
             }
 
             case "password":{
@@ -206,6 +205,14 @@ class Register extends Component {
                 }
                 return
             }
+            case "jobTitle": {
+                this.setState({jobTitle: text})
+                return
+            } 
+            case "organization": {
+                this.setState({organization: text})
+                return
+            } 
         }
     }
     OTP() {
@@ -479,15 +486,15 @@ class Register extends Component {
                          <Text style = { styles.errorText }>{this.state.errorCPass}</Text>
                         }
 
-                        {/*
+                        
                         <TextInput
                             placeholderTextColor='grey'
                             placeholder = "Job Title"
                             returnKeyType="next"
                             autoCapitalize="none"
                             autoCorrect={false}
-                            ref={(input) => this.REGInput5 = input}
-                            onSubmitEditing={() => this.REGInput6.focus()}
+                            onChangeText={text => this.validations("jobTitle", text)}
+                            onSubmitEditing={() => this.ref1.focus()}
                             style= { styles.boxTI }>
                         </TextInput>
 
@@ -497,11 +504,11 @@ class Register extends Component {
                             returnKeyType="next"
                             autoCapitalize="none"
                             autoCorrect={false}
-                            ref={(input) => this.REGInput6 = input}
-                            onSubmitEditing={() => this.REGInput7.focus()}
+                            onChangeText={text => this.validations("organization", text)}
+                            onSubmitEditing={() => this.ref1.focus()}
                             style= { styles.boxTI }>
                         </TextInput>
-                        */} 
+                        
                         
                     <View style={styles.mainBox}>
                        <View style={styles.box1}>

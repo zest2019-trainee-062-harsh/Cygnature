@@ -1,11 +1,14 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, AsyncStorage, Switch, TextInput, Image, ImageBackground} from 'react-native'
-
-import { Dropdown } from 'react-native-material-dropdown';   
+import Moment from 'moment';
+import { Dropdown } from 'react-native-material-dropdown'; 
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';  
+//import ModalDatePicker from 'react-native-datepicker-modal'
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 import Modal from 'react-native-modalbox'
+import { StackActions, NavigationActions } from 'react-navigation'
 class Profile extends Component {
     constructor(props) {
         super(props)
@@ -15,12 +18,146 @@ class Profile extends Component {
     state = {
         signature: null,
         visible: false,
-        userData: []
+        userData: [],
+        fname:"",
+        lname:"",
+        phoneNumber:"",
+        jobTitle:"",
+        organization:"",
+        birthDate:"",
+        value:"",
+        gender:"",
+        userId:"",
+        valueIndex: ""
     }
-    componentWillMount() {
-        //console.warn(this.state.userData)
-        this.setState({signature: this.state.userData['impressions'][0]['imageBytes']}) 
+    componentWillMount = async() => {
+        
+            this.state.auth = await AsyncStorage.getItem('auth')
+       
+        if(this.state.userData['impressions'][0] == null) {
+            console.warn("null")
+        }
+        else {
+        this.setState({signature: this.state.userData['impressions'][0]['imageBytes']})
+        this.setState({visible:true}) 
+        }
+        this.setState({userId: this.state.userData['userId']})
+        this.setState({email: this.state.userData['email']})
+        this.setState({gender: this.state.userData['gender']})
+        this.setState({fname: this.state.userData['firstName']})
+        this.setState({lname: this.state.userData['lastName']})
+        this.setState({email: this.state.userData['email']})
+        this.setState({gender: this.state.userData['gender']})
+        this.setState({valueIndex: this.state.userData['gender']})
+        this.setState({phoneNumber : this.state.userData['phoneNumber']})
+        this.setState({description: this.state.userData['description']})
+        this.setState({countryId: this.state.userData['countryId']})
+        this.setState({jobTitle: this.state.userData['jobTitle']})
+        this.setState({organization: this.state.userData['organization']})
+        this.setState({birthDate: this.state.userData['birthDate']})
         this.setState({visible:true})
+    
+    }
+
+    onChangeHandler = (value) => {
+        // console.warn(this.state.countryCode);
+        // console.warn("Selected value = ", value);
+        this.setState({countryCode: value.replace(/[^0-9]/g, '')})
+        
+        console.warn(this.state.countryCode);
+    }
+
+    validations(text, value)
+    {
+        switch(value) {
+
+            case "fname": {
+                name= text
+                let reg = /^([a-zA-z\s]{0,32})$/ ;
+            
+                if(reg.test(name) === false)
+                {
+                   
+                    this.setState({errorFName: "Only alphabets allows"})
+                }
+                else {
+                    this.setState({fname: name})
+                }
+                break
+            }
+                
+
+            case "lname": {
+                name= text
+                let reg = /^([a-zA-z\s]{0,32})$/ ;
+            
+                if(reg.test(name) === false)
+                {
+                    // console.warn("error")
+                    this.setState({errorLName: "Only alphabets allows"})
+                }
+                else {
+                    
+                    this.setState({lname: name})
+                }
+            break
+            }
+
+            case "phone" : {
+                name= text
+                this.setState({phoneNumber: name})
+
+                break
+            }
+            case "jobTitle": {
+                name= text
+                this.setState({jobTitle: name})
+                break
+            } 
+            case "organization": {
+                name= text
+                this.setState({organization: name})
+                break
+            } 
+            case "birthDate": {
+                name= text
+                this.setState({birthDate: name})
+                break
+            } 
+        }
+    }
+    
+    putprofile = () =>{
+        console.warn(this.state.gender)
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile/'+this.state.userId, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': this.state.auth,
+            },
+            body: JSON.stringify({
+                userId:this.state.userId,
+                email:this.state.email,
+                firstName:this.state.fname,
+                lastName:this.state.lname,
+                gender:this.state.gender,
+                countryId:this.state.countryId,
+                jobTitle:this.state.jobTitle,
+                organization:this.state.organization,
+                phoneNumber:this.state.phoneNumber,
+                birthDate:"1996/06/20",    
+            }),
+            }).then((response) => response.json())
+            .then((responseJson) => {
+                
+                console.warn(responseJson)
+                this.setState({pdVisible:false})
+            })
+            .catch((error) => {
+              console.error(error)
+            });
+
+
     }
  
     static navigationOptions = {
@@ -32,6 +169,14 @@ class Profile extends Component {
     }
 
     render() {
+
+        var radio_props = [
+            {label: 'Female', value: 0 },
+            {label: 'Male', value: 1 }
+          ];
+
+        Moment.locale('en');
+        var dt = this.state.birthDate
         return(
             <View style={styles.mainContainer}>
             
@@ -40,15 +185,24 @@ class Profile extends Component {
             style={ styles.modal }
             position= 'center'
             backdrop={true}
-            onClosed={() =>{
-                //console.warn("modal closed")
-            }}
+           
             >
             
             <Text style={{marginLeft:14,  fontSize: 18,  color: 'black', fontWeight:'bold'}}>Set Signature</Text>
 
            
-            <TouchableOpacity style={styles.modalTI} onPress={() => this.props.navigation.navigate('Canvas')}>
+            <TouchableOpacity style={styles.modalTI} onPress={() =>
+                 //this.props.navigation.navigate('Canvas')
+                {
+                    const resetAction = StackActions.reset({
+                    index: 0,
+                    actions: [
+                      NavigationActions.navigate({ routeName: 'Canvas'})
+                    ]
+                  })
+                  this.props.navigation.dispatch(resetAction)
+                }
+                }>
                 <Text style={styles.modalText}>Draw</Text>
             </TouchableOpacity>
 
@@ -74,7 +228,11 @@ class Profile extends Component {
                                         <Text style={styles.floatButtonText}>+</Text>
                                     </TouchableOpacity>
                                 </ImageBackground>
-                            :null}
+                            :<ImageBackground style={styles.signContainer} >
+                            <TouchableOpacity style={styles.floatButton} onPress={this.showModal}>
+                                <Text style={styles.floatButtonText}>+</Text>
+                            </TouchableOpacity>
+                        </ImageBackground>}
                             </View>
                           
                         </View>
@@ -97,7 +255,9 @@ class Profile extends Component {
                             autoCorrect={false}
                             onSubmitEditing={() => this.REGInput1.focus()}
                             onChangeText={text => this.validations(text, "fname")}
-                            style= { styles.boxTI }>
+                            value={this.state.fname}
+                            style= { {color:'grey',alignContent: "flex-end"} }
+                            underlineColorAndroid = "#003d5a">
                         </TextInput>
                         </View>
                         <View>
@@ -112,7 +272,9 @@ class Profile extends Component {
                             autoCorrect={false}
                             onSubmitEditing={() => this.REGInput1.focus()}
                             onChangeText={text => this.validations(text, "lname")}
-                            style= { styles.boxTI }>
+                            value={this.state.lname}
+                            style= { {color:'grey',alignContent: "flex-end"} }
+                            underlineColorAndroid = "#003d5a">
                         </TextInput>
                         </View>
                             <View>
@@ -120,30 +282,58 @@ class Profile extends Component {
                                     Email
                                 </Text>
                                 <TextInput
-                                    style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }
+                                    style={ {color:'grey',alignContent: "flex-end"} }
                                     placeholder="Change email"
                                     placeholderTextColor='grey'
                                     returnKeyType="next"
                                     keyboardType="email-address"
                                     autoCapitalize="none"
                                     autoCorrect={false}
-                                    onChangeText={text => this.update("email", text)}
-                                    onSubmitEditing={() => this.ref1.focus()}
+                                    value={this.state.email}
                                     underlineColorAndroid = "#003d5a"
                                 >
                                 </TextInput>
                             </View>
-                        </View> 
+                        </View>
                         <View style={styles.DocumentsList}>
                             <View>
                                 <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
                                     Gender
                                 </Text>
-                                {/* <RadioForm
+                                <RadioForm
+                                    style={{marginTop:10}}
                                     radio_props={radio_props}
-                                    initial={0}
-                                    onPress={(value) => {this.setState({value:value})}}
-                                /> */}
+                                    onPress={(value) => {this.setState({gender:value})}}
+                                    animation={true}
+                                    formHorizontal={true}
+                                    labelHorizontal={true}
+                                    labelStyle={{color:'grey'}}
+                                    buttonColor={'grey'}
+                                    buttonSize={10} 
+                                    selectedButtonColor={'black'}
+                                    initial={radio_props[this.state.gender]}
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.DocumentsList}>
+                            <View>
+                                <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
+                                    Birth Date
+                                </Text>
+                                <TextInput
+                                    style={{color:'grey', alignContent: "flex-end"}}
+                                    placeholder="Change organization"
+                                    placeholderTextColor='grey'
+                                    returnKeyType="next"
+                                    keyboardType="email-address"
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                    value={Moment(dt).format('d / MM / YYYY')}
+                                    onSubmitEditing={() => this.REGInput1.focus()}
+                                    onChangeText={text => this.validations(text, "birthDate")}
+                                    underlineColorAndroid = "#003d5a"
+                                >
+                                </TextInput>
                             </View>
                         </View>
                         <View style={styles.DocumentsList}>
@@ -152,7 +342,7 @@ class Profile extends Component {
                                     Mobile Number
                                 </Text>
                                 <TextInput
-                                    style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }
+                                    style={ {color:'grey', alignContent: "flex-end"} }
                                     placeholder="Change phone number"
                                     placeholderTextColor='grey'
                                     returnKeyType="next"
@@ -160,8 +350,9 @@ class Profile extends Component {
                                     maxLength={10}
                                     autoCapitalize="none"
                                     autoCorrect={false}
-                                    onChangeText={text => this.update("phone", text)}
+                                    onChangeText={text => this.validations(text,"phone")}
                                     onSubmitEditing={() => this.ref1.focus()}
+                                    value={this.state.phoneNumber}
                                     underlineColorAndroid = "#003d5a"
                                 >
                                 </TextInput>
@@ -174,14 +365,15 @@ class Profile extends Component {
                                 </Text>
                                 <Dropdown
                                 containerStyle={{
-                                    marginBottom: -20,
-                                    paddingTop:10
+                                    marginBottom: 8,
+                                    paddingTop:10,
+                                    marginTop:-25
                                 }}
                                 pickerStyle={{
                                     marginBottom: -40,
                                     paddingTop:10
                                 }}
-                                value="+91"
+                                value="91"
                                 data = {this.state.data}
                                 valueExtractor = {({countryCode}) => countryCode}
                                 onChangeText = {value => this.onChangeHandler(value)}
@@ -192,21 +384,50 @@ class Profile extends Component {
                         <View style={styles.DocumentsList}>
                             <View>
                                 <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
-                                    Country
+                                    Job Title
                                 </Text>
                                 <TextInput
-                                    style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }
-                                    placeholder="Change email"
+                                    style={{color:'grey',alignContent: "flex-end"}} 
+                                    placeholder="Change job title"
                                     placeholderTextColor='grey'
                                     returnKeyType="next"
-                                    keyboardType="email-address"
+                                    keyboardType="default"
                                     autoCapitalize="none"
                                     autoCorrect={false}
+                                    onChangeText={text => this.validations(text, "jobTitle")}
+                                    onSubmitEditing={() => this.ref1.focus()}
+                                    value={this.state.jobTitle}
                                     underlineColorAndroid = "#003d5a"
                                 >
                                 </TextInput>
                             </View>
                         </View>
+                        <View style={styles.DocumentsList}>
+                            <View>
+                                <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
+                                    Organization
+                                </Text>
+                                <TextInput
+                                    style={ { color:'grey',alignContent: "flex-end"} }
+                                    placeholder="Change organization"
+                                    placeholderTextColor='grey'
+                                    returnKeyType="next"
+                                    keyboardType="default"
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                    onChangeText={text => this.validations(text,"organization")}
+                                    onSubmitEditing={() => this.ref1.focus()}
+                                    value={this.state.organization}
+                                    underlineColorAndroid = "#003d5a"
+                                >
+                                </TextInput>
+                            </View>
+                        </View>
+
+                <TouchableOpacity style = { [styles.buttonContainer]} onPress={() => this.putprofile()}>
+                        <Text style = { styles.buttonText }>Update Profile</Text>
+                </TouchableOpacity>
+
                     </View>
 
                 </ScrollView>
@@ -241,21 +462,22 @@ const styles = StyleSheet.create({
     DocumentsListFont:{
         flex: 0.5,
         color: "black",
-        fontSize: 12
+        fontSize: 13
     },
     buttonContainer: {
         backgroundColor: '#003d5a',
         paddingVertical: 10,
         borderRadius: 5,
-        marginTop:15,
         width:130,
         height:30,
+        marginLeft:95,
         justifyContent:'center',
+        marginTop:15
     },
     buttonText: {
         textAlign: 'center',
         color: '#ffffff',
-        justifyContent:'center'  
+        alignItems:'center'  
     },
     boxadd:{
         backgroundColor: '#003d5a',

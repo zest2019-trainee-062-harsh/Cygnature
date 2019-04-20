@@ -93,18 +93,18 @@ class DocumentDetails extends Component {
             this.setState({pdVisible: false})
             const fs = fetch_blob.fs
             const dirs = fetch_blob.fs.dirs 
-            const file_path = dirs.DCIMDir + "/" + this.state.details["documentDetail"]["fileName"]
-            //         console.warn(dirs.DocumentDir) // /data/user/0/com.bigjpg/files
-            //   console.warn(dirs.CacheDir)    // /data/user/0/com.bigjpg/cache
-            //   console.warn(dirs.DCIMDir)     // /storage/emulated/0/DCIM
-            //   console.lowarng(dirs.DownloadDir) // /storage/emulated/0/Download
-            //   console.warn(dirs.PictureDir)  // /storage/emulated/0/Pictures
-            var image_data = this.state.data
-            console.warn("Files Saved")
-            RNFS.writeFile(file_path, image_data, 'base64')
-            .catch((error) => {
-                alert(JSON.stringify(error));
-            });
+            const file_path = dirs.DownloadDir + "/" + this.state.details["documentDetail"]["fileName"]
+    //         console.warn(dirs.DocumentDir) // /data/user/0/com.bigjpg/files
+    //   console.warn(dirs.CacheDir)    // /data/user/0/com.bigjpg/cache
+    //   console.warn(dirs.DCIMDir)     // /storage/emulated/0/DCIM
+    //   console.lowarng(dirs.DownloadDir) // /storage/emulated/0/Download
+    //   console.warn(dirs.PictureDir)  // /storage/emulated/0/Pictures
+    var image_data = this.state.data
+    console.warn("Files Saved")
+    RNFS.writeFile(file_path, image_data, 'base64')
+    .catch((error) => {
+      alert(JSON.stringify(error));
+    });
 
 
             // this.props.navigation.navigate('Test', {'data': this.state.data})
@@ -140,6 +140,61 @@ class DocumentDetails extends Component {
         })
         .catch((error) => {
             console.warn(error.message);
+        });
+    }  
+      signTheDocument(){
+        Alert.alert(
+            'Alert!',
+            'Make sure to view the document before signing the document.',
+            [
+              {
+                text: 'Cancel',
+                style: 'cancel',
+              },
+              {text: 'OK', onPress: () => this.sign()},
+            ],
+            {cancelable: false},
+        );
+    }
+
+    sign = async() =>{
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
+        method: 'GET',
+        headers: {
+            'Authorization': this.state.auth,
+        },
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/sign',{
+            method: 'POST',
+            headers: {
+                'Authorization': this.state.auth,
+                'Content-Type': "application/json"
+            },
+            body: JSON.stringify({
+                "documentId": this.state.id,
+                "aspectRatio": 1,
+                "isSigner": true,
+                "signatureType": "ESignature",
+                "documentLatitude": 4.092356,
+                "documentLongitude": -56.062161,
+                "userAgent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36",
+                "userIPAddress": "61.12.66.6",
+                "userTimeZoneOffSet": "+05:30",
+                "rememberSign": false,
+                "signData": responseJson["data"][0]["impressions"][0]["imageBytes"]
+            })
+            }).then((response) => response.json())
+            .then((responseJson) => {
+                // console.warn(responseJson)
+                alert(responseJson["message"])
+            })
+            .catch((error) => {
+                console.warn(error.message);
+            });
+        })
+        .catch((error) => {
+            console.warn(error);
         });
     }
 
@@ -325,7 +380,7 @@ class DocumentDetails extends Component {
                                     color="white"
                                 />
                         </TouchableOpacity> :  
-                        <TouchableOpacity  
+                        <TouchableOpacity   onPress={()=> this.sign()}
                         style = {styles.buttonContainer}>
                             <Text style = { styles.buttonText }>Sign Now</Text>
                         </TouchableOpacity>}

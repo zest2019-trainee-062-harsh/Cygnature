@@ -4915,13 +4915,6 @@ react-native-document-picker@^2.3.0:
   resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-2.3.0.tgz#5a09735b5c905d85064260e34b053f8d37285634"
   integrity sha512-bHMyAOzFl+II0ZdfzobKsZKvTErmXfmQGalpxpGbeN8+/uhfhUcdp4WuIMecZhFyX6rbj3h3XXLdA12hVlGgmw==
 
-react-native-draggable@^1.0.14:
-  version "1.0.14"
-  resolved "https://registry.yarnpkg.com/react-native-draggable/-/react-native-draggable-1.0.14.tgz#33a27c2b17ce981d87c897caf68b9c154ebc16d9"
-  integrity sha512-53v3NUfIhTc6mIBkCl4donih29E7H1uR9NWjORJ5YhAIKWI1Ld2u7C/MbAnyN8T0LtH2GkmwY6Xkzc4abaHikw==
-  dependencies:
-    prop-types "^15.6.0"
-
 react-native-drawer-layout-polyfill@^1.3.2:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/react-native-drawer-layout-polyfill/-/react-native-drawer-layout-polyfill-1.3.2.tgz#192c84d7a5a6b8a6d2be2c7daa5e4164518d0cc7"
@@ -5098,11 +5091,6 @@ react-native-safe-area-view@^0.13.0:
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-1.0.0-alpha.22.tgz#7a120377b52aa9bbb94d0b8541a014026be9289b"
   integrity sha512-kSyAt0AeVU6N7ZonfV6dP6iZF8B7Bce+tk3eujXhzBGsLg0VSLnU7uE9VqJF0xdQrHR91ZjGgVMieo/8df9KTA==
 
-react-native-signature-canvas@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-signature-canvas/-/react-native-signature-canvas-1.3.0.tgz#8cbbdfd8058773e7844cae664f9aa33c6c39b6a8"
-  integrity sha512-Yvip9DzRHg31vr/RgiiA2wnqwJlb4Zzngvp+itcQYxCT2nsJQNsNN0u+J0m4HQBNiCR8FGkKuX4ddemeJq+0vQ==
-
 react-native-signature-pad@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/react-native-signature-pad/-/react-native-signature-pad-0.1.0.tgz#b921c290f06cce99664b5bff23aa3ec30f482c63"
@@ -5124,6 +5112,13 @@ react-native-status-bar-height@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/react-native-status-bar-height/-/react-native-status-bar-height-2.2.0.tgz#3bd51de134660efc5f5ad136ca573c7d5790f7ed"
   integrity sha512-4WJpyZirzeMHyZiyNEy4LnSPOtuLRVy3+28Rhz7ffrjCVcc5RFcC0HVjFnkwfuhcTyXIDtzPG6canJkXzbTtBA==
+
+react-native-swiper@^1.5.14:
+  version "1.5.14"
+  resolved "https://registry.yarnpkg.com/react-native-swiper/-/react-native-swiper-1.5.14.tgz#1c6f949ca377186300f972bb0f30d24062c899aa"
+  integrity sha512-Kn0fxKooN7Shwu1qJYHB+Y8ssXXnvrIwReHXU5jCdyYNfz2QbBv0Cv3sa2Mqzr+XgzORCFFIokc8uCCUITDrVA==
+  dependencies:
+    prop-types "^15.5.10"
 
 react-native-tab-view@^0.0.77:
   version "0.0.77"
@@ -5149,9 +5144,9 @@ react-native-vector-icons@^6.3.0:
     yargs "^8.0.2"
 
 react-native-webview@^5.6.1:
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-5.6.1.tgz#6b4c7d441e4b4546410c475c2e6e63f6747bc6b5"
-  integrity sha512-lqoN/mvDY5Pgo52ObQvRe7kcbhPi0mqmwWSJc0O22CEjdpBWVH06CfVuR/PuDOkkB6tcBP7xV80lh1PUeM2qkg==
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-5.7.0.tgz#a0417e23ff65053be0ba248de3f98938db4688cf"
+  integrity sha512-0QFhZoKer8jV+avXJJALAC9J/T9PkX4uhCxeprDKLBXO6y2tQUIaVv+uPo2k07tGoeaSU1rKgoh3D8fYGaOwLQ==
   dependencies:
     escape-string-regexp "1.0.5"
     invariant "2.2.4"

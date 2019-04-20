@@ -42,8 +42,8 @@ class Login extends Component {
         val: false,
         anim: false,
         enable: true,
-        resData: {  },
-        data: {  },
+        resData: {},
+        data: {},
         auth: [],
         opacity: 0.5,
         isVisible: true

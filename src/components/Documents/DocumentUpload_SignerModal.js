@@ -68,7 +68,7 @@ class DocumentUpload_SignerModal extends Component {
     }
 
     addSigners(Id){
-        let ID = "{ '"+Id+"' }"
+        let ID = Id
         this.state.signerIds.push(ID)
         let filteredArray = this.state.data.filter(item => item.Id !== Id)
         this.setState({data: filteredArray});
@@ -77,6 +77,7 @@ class DocumentUpload_SignerModal extends Component {
     sendSigners(){
         this.refs.myModal.close();
         this.props.parentFlatList.addSigners(this.state.signerIds);
+        this.state.signerIds = []
     }
 
     render() {
@@ -175,7 +176,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#003d5a',
         marginLeft: "25%",
         marginRight: "25%",
-        marginBottom: "10%",
         height:40,
         marginTop: 20,
         padding: 20,

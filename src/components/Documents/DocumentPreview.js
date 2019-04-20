@@ -18,6 +18,10 @@ class DocumentPreview extends Component {
         title: "Document Preview"
     }
 
+    componentWillMount(){
+        this.getImageSize()
+    }
+
     state = {
         data: [],
         count: 0,
@@ -27,6 +31,18 @@ class DocumentPreview extends Component {
         previousButtonOpacity : 0.5,
         prevButton: true,
         nextButton: false,
+    }
+
+    getImageSize(){
+        const image = "data:image/png;base64,"+this.state.data["pages"][0]
+        // console.warn(image)
+        let imageHeight=null; let imageWidth=null
+        Image.getSize(image, (height, width) => {
+            imageHeight = height
+            imageWidth = width
+            console.warn(imageHeight/imageWidth)
+            console.warn(imageWidth+" "+imageHeight)
+        })
     }
 
     render() {
@@ -61,7 +77,6 @@ class DocumentPreview extends Component {
                     {
                         this.state.data.pages.map(() => {
                             this.state.count = this.state.count+1
-                            const image = this.state.data["pages"][this.state.count]
                             if(this.state.count < this.state.data["pageCount"]){
                                 return(
                                     <View style={{margin:20, justifyContent:'center', alignItems: 'center'}} key={this.state.count}>

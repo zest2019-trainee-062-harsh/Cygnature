@@ -42,7 +42,7 @@ export default class Canvas extends Component {
         } else {
           this._clear()
           //console.warn(responseJson)
-          this.props.navigation.navigate('Settings')
+          this.props.navigation.navigate('Account')
         }
     })
     .catch((error) => {

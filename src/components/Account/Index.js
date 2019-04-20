@@ -6,6 +6,7 @@ import { Avatar } from 'react-native-elements';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import ImagePicker from 'react-native-image-crop-picker';
 
+import { StackActions, NavigationActions } from 'react-navigation'
  
 export default class Index extends Component {
     constructor (props) {
@@ -41,13 +42,12 @@ export default class Index extends Component {
         },
         }).then((response) => response.json())
         .then((responseJson) => {
-            //console.warn(responseJson['data'][0]["profileByte"])
-            // this.setState({userDataPic: responseJson['data'][0]["profileByte"]}) 
-            // if(this.state.userDataPic == null || this.state.userDataPic == "") {
-            //     console.warn("null")
-            // }
+            console.warn(responseJson)
+            this.setState({userDataPic: responseJson['data'][0]["profileByte"]})
+            if(responseJson['data'][0]['impressions'][0] == null) {
+                console.warn("sign null")
+            }
             this.setState({userData: responseJson['data'][0]}) 
-            console.warn(this.state.userData)
             this.setState({pdVisible:false})
         })
         .catch((error) => {
@@ -55,10 +55,18 @@ export default class Index extends Component {
         });
     }
 
+
    
     logout = async() => {
         AsyncStorage.clear();
-        this.props.navigation.navigate("Login")
+        //this.props.navigation.navigate("Login")
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'Login'})
+            ]
+          })
+          this.props.navigation.dispatch(resetAction)
     }
 
     toggleSwitch1 = () => {
@@ -120,7 +128,7 @@ export default class Index extends Component {
                         />:
                         <Avatar
                             style={{height:200,width:200}}
-                            source={{uri: `data:${this.state.img["mime"]};base64,${this.state.userDataPic}`}}
+                            source={{uri: `data:image/png;base64,${this.state.userDataPic}`}}
                             rounded
                             showEditButton
                             onEditPress={this.floatClicked}
@@ -134,7 +142,7 @@ export default class Index extends Component {
                 <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Personal Details </Text>
                 <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20}}></View>
                     
-                <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.props.navigation.navigate('Profile', {"userData": this.state.userData })}>
+                <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.props.navigation.navigate('Profile',{'userData':this.state.userData})}>
                         <Text style = { styles.buttonText }>Edit Profile</Text>
                 </TouchableOpacity>
 

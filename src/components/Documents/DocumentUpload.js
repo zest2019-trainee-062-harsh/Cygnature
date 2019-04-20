@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {View, Text, TouchableOpacity, StyleSheet, TextInput, AsyncStorage} from 'react-native'
 import DocumentUpload_SignerModal from './DocumentUpload_SignerModal';
 import DocumentUpload_ObserverModal from './DocumentUpload_ObserverModal';
-import { CheckBox } from 'react-native-elements'
 
 import moment from 'moment';
 
@@ -20,8 +19,6 @@ class DocumentUpload extends Component {
     }
 
     state = {
-        checked1: false,
-        checked2: false,
         auth: null,
         data: [],
         count: 0,
@@ -76,13 +73,12 @@ class DocumentUpload extends Component {
             'data' : this.state.data,
             'signers': this.state.signers
         })
+        // this.props.navigation.navigate('Test', {
+        //     'data' : this.state.data,
+        //     'signers': this.state.signers
+        // })
     }
-    onChangeCheck1() {
-        this.setState({ checked1: !this.state.checked1, checked2:false})
-    }
-    onChangeCheck2() {
-        this.setState({ checked2: !this.state.checked2, checked1:false})
-    }
+
     render() {
         return(
             <View style={styles.mainContainer}>
@@ -105,11 +101,18 @@ class DocumentUpload extends Component {
 
                 <Text style={styles.textTitle}>Signers: * </Text>
                 {
-                   
-                    this.state.signers.map(() => {
+                    this.state.signers[0] == [] ? 
+                    <View>
+                        <Text>
+                            No signers present at this moment.{"\n"}
+                            *Select at least one contact.
+                        </Text>
+                    </View>
+                    :
+                    this.state.signers.map((index) => {
                         <View>
                             <Text>
-                                {this.state.signers}
+                                {index["label"]}
                             </Text>
                         </View>
                     })
@@ -146,24 +149,6 @@ class DocumentUpload extends Component {
                     }}
                     onDateChange={(date) => {this.setState({date: date})}}
                 />
-                <CheckBox
-                        title='Remember Me'
-                        textStyle={{color: 'black'}}
-                        uncheckedColor="black"
-                        checkedColor="#6eab52"
-                        size={20}
-                        checked={this.state.checked1}
-                        onPress={() => this.onChangeCheck1()}
-                    /> 
-                     <CheckBox
-                    title='Remember Me'
-                    textStyle={{color: 'black'}}
-                    uncheckedColor="black"
-                    checkedColor="#6eab52"
-                    size={20}
-                    checked={this.state.checked2}
-                    onPress={() => this.onChangeCheck2()}
-                />
 
                 {
                     this.state.signerIds != [] ? 
@@ -180,7 +165,7 @@ class DocumentUpload extends Component {
                         </TouchableOpacity>
                     </View>
                     : 
-                    <View style={{ flex: 0.5, opacity: 1}}>
+                    <View style={{ flex: 0.5, justifyContent: "center", alignItems: "center", opacity: 1}}>
                         <TouchableOpacity
                             style = { styles.buttonContainer}
                             disabled = {this.state.disabled}
@@ -232,12 +217,13 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         backgroundColor: "#003d5a",
-        marginLeft: "66%",
         borderRadius: 5,
         paddingVertical: 10,
         padding: 10,
         margin: 10,
         width: 100,
+        justifyContent: "center",
+        alignContent: "center"
     },
     buttonText: {
         textAlign: 'center',
