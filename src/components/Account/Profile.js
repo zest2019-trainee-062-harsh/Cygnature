@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, AsyncStorage, Switch, TextInput, Image, ImageBackground} from 'react-native'
+import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity,
+    Alert, AsyncStorage, TextInput, ImageBackground} from 'react-native'
 import Moment from 'moment';
 import { Dropdown } from 'react-native-material-dropdown'; 
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';  
-//import ModalDatePicker from 'react-native-datepicker-modal'
+import DatePicker from 'react-native-datepicker';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
@@ -24,11 +25,12 @@ class Profile extends Component {
         phoneNumber:"",
         jobTitle:"",
         organization:"",
-        birthDate:"",
-        value:"",
+        countryId:"",
         gender:"",
         userId:"",
-        valueIndex: ""
+        valueIndex: "",
+        date:"",
+        message:""
     }
     componentWillMount = async() => {
         
@@ -47,7 +49,6 @@ class Profile extends Component {
         this.setState({fname: this.state.userData['firstName']})
         this.setState({lname: this.state.userData['lastName']})
         this.setState({email: this.state.userData['email']})
-        this.setState({gender: this.state.userData['gender']})
         this.setState({valueIndex: this.state.userData['gender']})
         this.setState({phoneNumber : this.state.userData['phoneNumber']})
         this.setState({description: this.state.userData['description']})
@@ -56,15 +57,35 @@ class Profile extends Component {
         this.setState({organization: this.state.userData['organization']})
         this.setState({birthDate: this.state.userData['birthDate']})
         this.setState({visible:true})
+
+        this.countryCode()
     
     }
 
+    countryCode() {
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/setting/get/', {
+                method: 'GET',
+                }).then((response) => response.json())
+                .then((responseJson) => {
+            
+                    this.setState({data : responseJson["data"][0]["countries"]})
+                    //console.warn(this.state.data)
+                    
+                    //console.warn(this.state.countryCode)
+                })
+                .catch((error) => {
+                    console.warn(error);
+                });
+    
+        }
+
     onChangeHandler = (value) => {
-        // console.warn(this.state.countryCode);
+        
         // console.warn("Selected value = ", value);
         this.setState({countryCode: value.replace(/[^0-9]/g, '')})
         
         console.warn(this.state.countryCode);
+        
     }
 
     validations(text, value)
@@ -119,16 +140,10 @@ class Profile extends Component {
                 this.setState({organization: name})
                 break
             } 
-            case "birthDate": {
-                name= text
-                this.setState({birthDate: name})
-                break
-            } 
         }
     }
     
     putprofile = () =>{
-        console.warn(this.state.gender)
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile/'+this.state.userId, {
             method: 'PUT',
             headers: {
@@ -145,12 +160,13 @@ class Profile extends Component {
                 jobTitle:this.state.jobTitle,
                 organization:this.state.organization,
                 phoneNumber:this.state.phoneNumber,
-                birthDate:"1996/06/20",    
+                birthDate:this.state.date,    
             }),
             }).then((response) => response.json())
             .then((responseJson) => {
+                 this.setState({message:responseJson["message"]})
+                console.warn(this.state.message)
                 
-                console.warn(responseJson)
                 this.setState({pdVisible:false})
             })
             .catch((error) => {
@@ -184,9 +200,7 @@ class Profile extends Component {
             ref={"myModal"}
             style={ styles.modal }
             position= 'center'
-            backdrop={true}
-           
-            >
+            backdrop={true}>
             
             <Text style={{marginLeft:14,  fontSize: 18,  color: 'black', fontWeight:'bold'}}>Set Signature</Text>
 
@@ -320,20 +334,28 @@ class Profile extends Component {
                                 <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
                                     Birth Date
                                 </Text>
-                                <TextInput
-                                    style={{color:'grey', alignContent: "flex-end"}}
-                                    placeholder="Change organization"
-                                    placeholderTextColor='grey'
-                                    returnKeyType="next"
-                                    keyboardType="email-address"
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                    value={Moment(dt).format('d / MM / YYYY')}
-                                    onSubmitEditing={() => this.REGInput1.focus()}
-                                    onChangeText={text => this.validations(text, "birthDate")}
-                                    underlineColorAndroid = "#003d5a"
-                                >
-                                </TextInput>
+                                <DatePicker
+                                    style={{width: 200}}
+                                    date={this.state.birthDate} //initial date from state
+                                    mode="date" //The enum of date, datetime and time
+                                    placeholder="select date"
+                                    format="YYYY-MM-DD"
+                                    confirmBtnText="Confirm"
+                                    cancelBtnText="Cancel"
+                                    customStyles={{
+                                        dateIcon: {
+                                        position: 'absolute',
+                                        left: 0,
+                                        top: 4,
+                                        marginLeft: 0
+                                        },
+                                        dateInput: {
+                                        marginLeft: 36
+                                        }
+                                    }}
+                                    onDateChange={(date) => {this.setState({'date': date})}}
+                                    />
+ 
                             </View>
                         </View>
                         <View style={styles.DocumentsList}>
@@ -363,6 +385,7 @@ class Profile extends Component {
                                 <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
                                     Country Id
                                 </Text>
+                                
                                 <Dropdown
                                 containerStyle={{
                                     marginBottom: 8,
@@ -373,12 +396,13 @@ class Profile extends Component {
                                     marginBottom: -40,
                                     paddingTop:10
                                 }}
-                                value="91"
+                                value={this.state.countryId}
                                 data = {this.state.data}
                                 valueExtractor = {({countryCode}) => countryCode}
                                 onChangeText = {value => this.onChangeHandler(value)}
                                 selectedItemColor = "red"
-                        />
+                                />
+                        
                             </View>
                         </View>
                         <View style={styles.DocumentsList}>

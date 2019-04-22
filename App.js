@@ -13,7 +13,6 @@ import Contacts from './src/components/Contacts/Index.js'
 import Forgot_Pass from './src/components/Login/Forgot_Pass.js'
 import Document_Upload from './src/components/Documents/DocumentUpload.js'
 import Document_Preview from './src/components/Documents/DocumentPreview.js'
-import fp from './src/components/fp.js'
 import DocumentVerify from './src/components/Documents/DocumentVerify.js'
 import Document_PlaceHolder from './src/components/Documents/DocumentPlaceHolder.js'
 import DocumentList from './src/components/Documents/DocumentList.js'
@@ -34,7 +33,6 @@ const AppNavigator = createStackNavigator({
   Forgot_Pass: {screen:Forgot_Pass},
   Document_Upload: {screen:Document_Upload},
   Document_Preview: {screen:Document_Preview},
-  fp: {screen:fp},
   Document_PlaceHolder: {screen:Document_PlaceHolder},
   DocumentVerify:{screen:DocumentVerify},
   DocumentList : {screen: DocumentList},

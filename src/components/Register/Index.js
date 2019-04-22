@@ -326,7 +326,7 @@ class Register extends Component {
                 });
             }
         }
-        componentWillMount(){
+        countryCode(){
             return fetch('http://cygnatureapipoc.stagingapplications.com/api/setting/get/', {
                 method: 'GET',
                 }).then((response) => response.json())
@@ -355,6 +355,7 @@ class Register extends Component {
   componentWillMount() {
     this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow)
     this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide)
+    this.countryCode()
   }
 
   componentWillUnmount() {

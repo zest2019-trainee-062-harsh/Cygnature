@@ -47,7 +47,9 @@ export default class Index extends Component {
             if(responseJson['data'][0]['impressions'][0] == null) {
                 console.warn("sign null")
             }
-            this.setState({userData: responseJson['data'][0]}) 
+           this.setState({userData: responseJson['data'][0]}) 
+           // this.setState({userData: responseJson['data'][0]['userId']}) 
+
             this.setState({pdVisible:false})
         })
         .catch((error) => {
@@ -98,6 +100,42 @@ export default class Index extends Component {
               setTimeout( () => { this.setState({ imageP: true }); }, 500);
            
           });
+          
+          this.updatepic();
+    }
+
+    updatepic = () => {
+        
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile/'+this.state.userData, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': this.state.auth,
+            },
+            body: JSON.stringify({
+                userId:this.state.userId,
+                email:this.state.email,
+                firstName:this.state.fname,
+                lastName:this.state.lname,
+                gender:this.state.gender,
+                countryId:this.state.countryId,
+                jobTitle:this.state.jobTitle,
+                organization:this.state.organization,
+                phoneNumber:this.state.phoneNumber,
+                birthDate:this.state.date,    
+                profileByte:this.state.userDataPic
+            }),
+            }).then((response) => response.json())
+            .then((responseJson) => {
+                
+                console.warn(responseJson)
+                this.setState({pdVisible:false})
+            })
+            .catch((error) => {
+              console.error(error)
+            });
+
+
     }
 
     render() {
