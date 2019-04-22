@@ -63,7 +63,7 @@ class DocumentDetails extends Component {
         }}).then((response) => response.json())
         .then((responseJson) => {
             this.setState({details: responseJson["data"][0], observers: responseJson["data"][0]["observers"], signers: responseJson["data"][0]["signers"], history: responseJson["data"][0]["documentHistory"]})
-            console.warn(responseJson["data"][0])
+            //console.warn(responseJson["data"][0])
 
             if(responseJson["data"][0]["sequentialFlow"] == true) {
                 //console.warn("yes")
@@ -83,7 +83,7 @@ class DocumentDetails extends Component {
                     }   
             })
 
-            if(this.state.details["rejectedByCurrentUser"]) {
+            if(this.state.details["rejectedByCurrentUser"] || this.state.details["notarization"]["isNotarized"]) {
                 
                this.setState({signButtonDisable: true, signButtonOpacity:0.5});
             }
@@ -423,7 +423,7 @@ class DocumentDetails extends Component {
                             this.state.signers.map((signers)=>{
 
                                 return(
-                                <View key={signers.userId} >
+                                <View style={{margin:10}} key={signers.userId} >
                                     <TouchableOpacity disabled style={[styles.rowDataBg, {marginLeft:20}]}>
                                         <Text style={styles.rowDataText1}>{signers.profileShortName}</Text>
                                     </TouchableOpacity>
@@ -466,6 +466,52 @@ class DocumentDetails extends Component {
                         </View>
                         </View>
 
+                        <View style={styles.box}>
+                        <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Notarization </Text>
+
+                        <View style = {[{flex: 1, flexDirection:'row', marginTop:10}, ]}>
+                        {this.state.details["notarization"]["isNotarized"] ? 
+                            <View style={styles.DocumentsList}>
+                                <Text style={ [styles.DocumentsListFont, { alignContent: "flex-start"}] }>
+                                   Block ID
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {color:'grey', alignContent: "flex-end"}] }>
+                                    {this.state.details["notarization"]["blockId"]}
+                                </Text>
+         
+                                <Text style={ [styles.DocumentsListFont, { alignContent: "flex-start"}] }>
+                                   Notarized On
+                                </Text>
+                                <Text style={ [styles.DocumentsListFont, {color:'grey', alignContent: "flex-end"}] }>
+                                    {this.state.details["notarization"]["notarizedOn"]}
+                                </Text>
+
+                                <Text style={ [styles.DocumentsListFont, { alignContent: "flex-start"}] }>
+                                    Transaction Hash
+                                </Text>
+                                <View style={{flexDirection:'row'}}>
+                                    <Text selectable = {true} style={ [styles.DocumentsListFont, {flex:0.92,color:'grey', alignContent: "flex-end"}] }>
+                                        {this.state.details["notarization"]["txHash"]}
+                                    </Text>
+                                    <TouchableOpacity onPress={()=>this.copyDH()} 
+                                        style = {{flex: 0.08, backgroundColor:'#003d5a', justifyContent: 'center', alignItems:'center'}}>
+                                    <Icon
+                                        name="copy"
+                                        size={15}
+                                        color="white"
+                                    />
+                                    </TouchableOpacity>
+                                </View>
+                               
+                            </View>:<View style={styles.DocumentsList}>
+                                <Text style={styles.DocumentsListFont}>
+                                    Document is not Notarized yet
+                                </Text>
+                            </View> }
+ 
+                        </View>
+
+                        </View>
                         {/* <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                                 <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
@@ -555,10 +601,10 @@ class DocumentDetails extends Component {
                             <Text style = { styles.buttonText }>Preview</Text>
                         </TouchableOpacity> 
                         {
-                            this.state.details["rejectedByCurrentUser"] ?
+                            this.state.details["rejectedByCurrentUser"] || this.state.details["notarization"]["isNotarized"] ?
                             null
                             :
-                            <TouchableOpacity onPress={()=>this.decline()} 
+                            <TouchableOpacity  onPress={()=>this.decline()} 
                             style = {[styles.buttonContainer, {flex: 0.2, alignItems:'center'}]}>
                                 <Icon
                                         name="close"
