@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, Text,TextInput, TouchableOpacity,AsyncStorage, ActivityIndicator} from 'react-native'
+import {View, StyleSheet, Text,TextInput, TouchableOpacity,AsyncStorage, ActivityIndicator, Keyboard} from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker'
+import { NavigationEvents } from 'react-navigation';
+import { ProgressDialog } from 'react-native-simple-dialogs';
 
 export default class Index extends Component {
     constructor(props) {
@@ -10,21 +12,44 @@ export default class Index extends Component {
         
     state= {
         data : [],
-        pdVisible: false,
+        pdVisible1: false,
+        pdVisible2: false,
         fileHash: null,
         transactionHash: null,
         auth: null,
         token:null,
         documentList: [],
         totalRows: [],  
+        isVisible: true,
     }
 
-    componentWillMount = async() =>{
+    didFocus= async() => {
         this.state.auth = await AsyncStorage.getItem('auth')
+
+        this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow)
+        this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide)
+        this.setState({transactionHash:null, fileHash:null, pdVisible1:false, pdVisible2:false, fileName:null})
     }
        
-        
+       
+    keyboardWillShow = event => {
+        this.setState({
+        isVisible: false
+        })
+    }
+
+    keyboardWillHide = event => {
+        this.setState({
+        isVisible: true
+        })
+    } 
+
+    didBlur = () => {
+        this.keyboardWillShowSub.remove()
+        this.keyboardWillHideSub.remove()
+    }
     search = () =>{    
+        this.setState({pdVisible1:true})
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/search-by-hash',{
         method: 'POST',
         headers: {
@@ -38,6 +63,8 @@ export default class Index extends Component {
         }),
         }).then((response) => response.json())
         .then((responseJson) => {
+            
+        this.setState({pdVisible1:false})
             if(responseJson["message"]) {
                 alert(responseJson["message"])
             }
@@ -58,6 +85,7 @@ export default class Index extends Component {
     }
 
     search2 = () =>{
+        this.setState({pdVisible1:true})
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/search-by-hash',{
         method: 'POST',
         headers: {
@@ -73,6 +101,8 @@ export default class Index extends Component {
         .then((responseJson) => {
             //console.warn(responseJson)
             //console.warn(responseJson["data"][0])
+            
+            this.setState({pdVisible1:false})
             if(responseJson["message"]) {
                 alert(responseJson["message"])
             }
@@ -111,7 +141,7 @@ export default class Index extends Component {
                 }
                 else {
                    
-                    this.setState({pdVisible: true, fileName: res.fileName})
+                    this.setState({pdVisible2: true, fileName: res.fileName})
 
                     const formData = new FormData()
                     formData.append('file',{
@@ -180,6 +210,20 @@ export default class Index extends Component {
   render() {
     return (  
         <View style={styles.mainContainer}>
+        
+        <NavigationEvents
+            onDidBlur={payload => this.didBlur()}
+            onDidFocus={payload => this.didFocus()}/>
+        
+        <ProgressDialog
+            visible={this.state.pdVisible1}
+            title="Fetching Documents!"
+            message="Please wait..."
+            activityIndicatorColor="#003d5a"
+            activityIndicatorSize="large"
+            animationType="slide"
+        />
+
             <View style={styles.box}>
                 <Text style= {{fontWeight: "bold", fontSize: 22, color: "black"}}>Document Hash</Text>
                 <TextInput
@@ -198,6 +242,8 @@ export default class Index extends Component {
             <View style={styles.box}>
                 <Text style= {{fontWeight: "bold", fontSize: 22, color: "black"}}>Transaction Hash</Text>
                 <TextInput
+                editable={true} 
+                selectTextOnFocus={true}
                     placeholderTextColor='grey'
                     placeholder = "Enter hashcode"
                     onChangeText = {text => this.update("transactionHash",text)}
@@ -209,12 +255,13 @@ export default class Index extends Component {
                     <Text style={styles.textSave}>Search</Text>
                 </TouchableOpacity>
             </View>
-     
+
+            {this.state.isVisible?
             <View style={{flex:1, justifyContent: "center", alignItems: "center",marginTop:20}}>
                 <Icon name="md-cloud-upload" color='#003d5a' size={70} />
                 <Text style={{fontSize: 22,  color: 'black', fontWeight:'bold'}}>Upload a document to verify</Text>
                 
-                {this.state.pdVisible ? <ActivityIndicator color='#003d5a' size="large" /> : null}
+                {this.state.pdVisible2 ? <ActivityIndicator color='#003d5a' size="large" /> : null}
 
                 <Text style={{fontSize: 20,  color: 'red' ,}}>{this.state.fileName}</Text>
 
@@ -222,7 +269,7 @@ export default class Index extends Component {
                         <Text style={styles.textSave}>Choose File</Text>
                 </TouchableOpacity>
 
-            </View>
+            </View>:null}
             
            </View>
       
@@ -244,13 +291,11 @@ const styles = StyleSheet.create({
     },
     boxTI: {
         backgroundColor: 'rgba(255,255,255,0.7)',
-        paddingHorizontal: 20,
         margin: 15,
-        fontSize: 12,
         borderRadius: 30,
         borderWidth:1,
         fontFamily: 'Helvetica',
-        fontSize:20
+        fontSize:20,
     },
     search: {
         textAlign:'center',
@@ -292,5 +337,6 @@ const styles = StyleSheet.create({
     box: { 
         margin: 5,
         padding: 5,
+        flex:1
     },
 })

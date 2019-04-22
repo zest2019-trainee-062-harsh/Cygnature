@@ -155,6 +155,10 @@ class Dashboard extends Component {
         BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
     }
 
+    componentDidMount () {
+        +
+        BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
+    }
 
     render() {
     var {navigate} = this.props.navigation;
