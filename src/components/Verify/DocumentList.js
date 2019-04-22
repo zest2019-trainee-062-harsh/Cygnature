@@ -57,19 +57,19 @@ export default class DocumentList extends Component {
             <ScrollView>
                 {
                     this.state.data.map((docs)=>{
-                        if(docs.documentStatusForUser == 0){
+                        if(docs.documentStatus == 0){
                             this.state.documentColor = '#111E6C'
                         }
-                        if(docs.documentStatusForUser == 3){
+                        if(docs.documentStatus == 3){
                             this.state.documentColor = '#FADA5E'
                         }
-                        if(docs.documentStatusForUser == 2){
+                        if(docs.documentStatus == 2){
                             this.state.documentColor = '#98FB98'
                         }
-                        if(docs.documentStatusForUser == 6){
+                        if(docs.documentStatus == 6){
                             this.state.documentColor = '#6593F5'
                         }
-                        if(docs.documentStatusForUser == 7){
+                        if(docs.documentStatus == 7){
                             this.state.documentColor = '#Df2800'
                         }
                     return(
