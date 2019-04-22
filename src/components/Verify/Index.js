@@ -180,54 +180,47 @@ export default class Index extends Component {
   render() {
     return (  
         <View style={styles.mainContainer}>
-        
-      
-        <Text  style= {{textDecorationColor:'black', fontWeight:'bold'}}>Document Hash</Text>
-      
-        <TextInput
-                    
+            <View style={styles.box}>
+                <Text style= {{fontWeight: "bold", fontSize: 22, color: "black"}}>Document Hash</Text>
+                <TextInput
                     placeholderTextColor='grey'
-                    keyboardType="default"
                     placeholder = "Enter hashcode"
                     onChangeText = {text => this.update("fileHash",text)} 
                     value = {this.state.fileHash}     
                     returnKeyType="next"
                     style={styles.boxTI} 
-        />
-     
-        <TouchableOpacity style={styles.search} onPress={this.search}><Text>Search</Text></TouchableOpacity>
-    
+                />
+                <TouchableOpacity style={styles.btnSave} onPress={this.search}>
+                    <Text style={styles.textSave}>Search</Text>
+                </TouchableOpacity>
+            </View>
 
-      
-        <Text style= {{textDecorationColor:'black', fontWeight:'bold'}}>Transaction Hash</Text>
-        <TextInput
-         
+            <View style={styles.box}>
+                <Text style= {{fontWeight: "bold", fontSize: 22, color: "black"}}>Transaction Hash</Text>
+                <TextInput
                     placeholderTextColor='grey'
-                    keyboardType="default"
                     placeholder = "Enter hashcode"
                     onChangeText = {text => this.update("transactionHash",text)}
                     value = {this.state.transactionHash}
                     returnKeyType="next"
                     style={styles.boxTI} 
-
-                        />
-
-        <TouchableOpacity style={styles.search} onPress={this.search2}><Text>Search</Text></TouchableOpacity>
+                />
+                <TouchableOpacity style={styles.btnSave} onPress={this.search2}>
+                    <Text style={styles.textSave}>Search</Text>
+                </TouchableOpacity>
+            </View>
      
+            <View style={{flex:1, justifyContent: "center", alignItems: "center",marginTop:20}}>
+                <Icon name="md-cloud-upload" color='#003d5a' size={70} />
+                <Text style={{fontSize: 22,  color: 'black', fontWeight:'bold'}}>Upload a document to verify</Text>
+                
+                {this.state.pdVisible ? <ActivityIndicator color='#003d5a' size="large" /> : null}
 
-        
-            <View style={{flex:1, justifyContent: "center", alignItems: "center",marginTop:40}}>
-            
-             <Icon name="md-cloud-upload" color='#003d5a' size={70} />
-             
-             <Text style={{fontSize: 15,  color: 'black', fontWeight:'bold'}}>Upload a document to verify</Text>
-             {this.state.pdVisible ? <ActivityIndicator color='#003d5a' size="large" /> : null}
+                <Text style={{fontSize: 20,  color: 'red' ,}}>{this.state.fileName}</Text>
 
-             <Text style={{fontSize: 15,  color: 'red' ,}}>{this.state.fileName}</Text>
-
-             <TouchableOpacity style={ styles.btnSave } onPress={this.upload}>
-                    <Text style={styles.textSave}>Choose File</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={ styles.btnSave } onPress={this.upload}>
+                        <Text style={styles.textSave}>Choose File</Text>
+                </TouchableOpacity>
 
             </View>
             
@@ -252,15 +245,12 @@ const styles = StyleSheet.create({
     boxTI: {
         backgroundColor: 'rgba(255,255,255,0.7)',
         paddingHorizontal: 20,
-        marginBottom: 10,
-        marginTop:10,
-        marginLeft:2,
+        margin: 15,
         fontSize: 12,
         borderRadius: 30,
+        borderWidth:1,
         fontFamily: 'Helvetica',
-        borderWidth: 1,
-        width:300,
-        flex: 0.2,
+        fontSize:20
     },
     search: {
         textAlign:'center',
@@ -298,5 +288,9 @@ const styles = StyleSheet.create({
         textAlign:'center',
         backgroundColor:'#003d5a',
         justifyContent:'center'
-    }
+    },
+    box: { 
+        margin: 5,
+        padding: 5,
+    },
 })
