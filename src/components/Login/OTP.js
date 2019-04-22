@@ -27,7 +27,13 @@ class OTP extends Component {
 
     state = {
         mobileNumber: null,
-        defaultotp: 12345,
+        defaultotp: 123456,
+        otp1: "",
+        otp2: "",
+        otp3: "",
+        otp4: "",
+        otp5: "",
+        otp6: "",
         otp: "",
         data: { },
         token: null,
@@ -64,24 +70,83 @@ class OTP extends Component {
     }
 
     handleNext(text,value) {
-        this.state.otp = this.state.otp + text
+        //this.setState({otp: this.state.otp + text})
         
         switch(value) {
             case 1:
-                this.OTPInput1.focus()
+                this.setState({otp1:text})
+                setTimeout( () => { this.setState({otp: this.state.otp1+this.state.otp2+this.state.otp3+this.state.otp4+this.state.otp5+this.state.otp6}) }, 500);
+                if(text=="" || text==null) console.log("err")
+                else this.OTPInput1.focus()
                 break;
             case 2:
-                this.OTPInput2.focus()
+                this.setState({otp2:text})
+                setTimeout( () => { this.setState({otp: this.state.otp1+this.state.otp2+this.state.otp3+this.state.otp4+this.state.otp5+this.state.otp6}) }, 500);
+                if(text=="" || text==null) console.log("err")
+                else this.OTPInput2.focus()
                 break;
             case 3:
-                this.OTPInput3.focus()
+                this.setState({otp3:text})
+                setTimeout( () => { this.setState({otp: this.state.otp1+this.state.otp2+this.state.otp3+this.state.otp4+this.state.otp5+this.state.otp6}) }, 500);
+                if(text=="" || text==null) console.log("err")
+                else this.OTPInput3.focus()
                 break;
             case 4:
+                this.setState({otp4:text})
+                setTimeout( () => { this.setState({otp: this.state.otp1+this.state.otp2+this.state.otp3+this.state.otp4+this.state.otp5+this.state.otp6}) }, 500);
+                if(text=="" || text==null) console.log("err")
+                else this.OTPInput4.focus()
+                break; 
+            case 5:
+                this.setState({otp5:text})
+                setTimeout( () => { this.setState({otp: this.state.otp1+this.state.otp2+this.state.otp3+this.state.otp4+this.state.otp5+this.state.otp6}) }, 500);
+                if(text=="" || text==null) console.log("err")
+                else this.OTPInput5.focus()
+                break; 
+            case 6:
+                this.setState({otp6:text})
+                if(text=="" || text==null) console.log("err")
+                break;              
+        }
+    }
+
+    handleBack(value) {
+        //this.setState({otp: this.state.otp + text})
+        
+        switch(value) {
+            case 1:
+                this.setState({otp1:""})
+                setTimeout( () => { this.setState({otp: this.state.otp1+this.state.otp2+this.state.otp3+this.state.otp4+this.state.otp5+this.state.otp6}) }, 500);
+                break;              
+            case 2:
+                this.setState({otp2:""})
+                setTimeout( () => { this.setState({otp: this.state.otp1+this.state.otp2+this.state.otp3+this.state.otp4+this.state.otp5+this.state.otp6}) }, 500);
+                this.OTPInput0.focus()
+                break;              
+            case 3:
+                this.setState({otp3:""})
+                setTimeout( () => { this.setState({otp: this.state.otp1+this.state.otp2+this.state.otp3+this.state.otp4+this.state.otp5+this.state.otp6}) }, 500);
+                this.OTPInput1.focus()
+                break;              
+            case 4:
+                this.setState({otp4:""})
+                setTimeout( () => { this.setState({otp: this.state.otp1+this.state.otp2+this.state.otp3+this.state.otp4+this.state.otp5+this.state.otp6}) }, 500);
+                this.OTPInput2.focus()
+                break;              
+            case 5:
+                this.setState({otp5:""})
+                setTimeout( () => { this.setState({otp: this.state.otp1+this.state.otp2+this.state.otp3+this.state.otp4+this.state.otp5+this.state.otp6}) }, 500);
+                this.OTPInput3.focus()
+                break;                            
+            case 6:
+                this.setState({otp6:""})
+                setTimeout( () => { this.setState({otp: this.state.otp1+this.state.otp2+this.state.otp3+this.state.otp4+this.state.otp5+this.state.otp6}) }, 500);
                 this.OTPInput4.focus()
-                break;                
+                break;              
         }
     }
     checkOTP = async() => {
+        //console.warn(this.state.otp)
         if(this.state.otp == this.state.defaultotp) {
             AsyncStorage.setItem('otp_check','done');
             this.props.navigation.navigate("Dashboard" ,{"data":this.state.data, "count": this.state.count})
@@ -92,6 +157,7 @@ class OTP extends Component {
         }
     }
 
+    
     resendOTP() {
         console.warn("OTP Sent")
     }
@@ -128,10 +194,14 @@ class OTP extends Component {
                                 keyboardType="numeric"
                                 returnKeyType="next"
                                 onChangeText={text => this.handleNext(text,1)}
+                                ref={(input) => this.OTPInput0 = input}
                                 underlineColorAndroid='white'
                                 placeholderTextColor='white'
                                 style={styles.OTPTI} 
                                 placeholder="-" 
+                                onKeyPress={({ nativeEvent }) => {
+                                    nativeEvent.key === 'Backspace' ? this.handleBack(1) : null
+                                }}
                             /> 
                             <TextInput    
                                 maxLength={1}
@@ -143,6 +213,9 @@ class OTP extends Component {
                                 placeholderTextColor='white'
                                 style={styles.OTPTI} 
                                 placeholder="-"
+                                onKeyPress={({ nativeEvent }) => {
+                                    nativeEvent.key === 'Backspace' ? this.handleBack(2) : null
+                                }}
                             /> 
                             <TextInput
                                 maxLength={1}
@@ -154,6 +227,9 @@ class OTP extends Component {
                                 placeholderTextColor='white'
                                 style={styles.OTPTI} 
                                 placeholder="-"
+                                onKeyPress={({ nativeEvent }) => {
+                                    nativeEvent.key === 'Backspace' ? this.handleBack(3) : null
+                                }}
                             /> 
                             <TextInput
                                 maxLength={1}
@@ -165,18 +241,38 @@ class OTP extends Component {
                                 placeholderTextColor='white'
                                 style={styles.OTPTI} 
                                 placeholder="-"
+                                onKeyPress={({ nativeEvent }) => {
+                                    nativeEvent.key === 'Backspace' ? this.handleBack(4) : null
+                                }}
                             />
                             <TextInput
                                 maxLength={1}
                                 keyboardType="numeric"
-                                returnKeyType="done"
+                                returnKeyType="next"
                                 onChangeText={text => this.handleNext(text,5)}  
                                 ref={(input) => this.OTPInput4 = input}  
                                 underlineColorAndroid='white'
                                 placeholderTextColor='white'
                                 style={styles.OTPTI} 
                                 placeholder="-"
+                                onKeyPress={({ nativeEvent }) => {
+                                    nativeEvent.key === 'Backspace' ? this.handleBack(5) : null
+                                }}
                             />
+                            <TextInput
+                            maxLength={1}
+                            keyboardType="numeric"
+                            returnKeyType="done"
+                            onChangeText={text => this.handleNext(text,6)}  
+                            ref={(input) => this.OTPInput5 = input}  
+                            underlineColorAndroid='white'
+                            placeholderTextColor='white'
+                            style={styles.OTPTI} 
+                            placeholder="-"
+                            onKeyPress={({ nativeEvent }) => {
+                                nativeEvent.key === 'Backspace' ? this.handleBack(6) : null
+                            }}
+                        />
                         </View>
                         <View style={styles.footerContainer}>
                             <View style={{flex: 0.5, alignItems: "center"}}>
@@ -249,12 +345,15 @@ const styles = StyleSheet.create({
         marginTop: 20,
         flexDirection: 'row',
         justifyContent: 'center',
+        alignItems: 'center',
+        flex:1
     },
     OTPTI: {
         textAlign: 'center',
         width: 50,
         margin: 8, 
         color:'white', 
+        flex: 0.15
     },
     footerContainer: {
         marginTop: 40,
