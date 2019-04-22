@@ -38,17 +38,22 @@ export default class Index extends Component {
         }),
         }).then((response) => response.json())
         .then((responseJson) => {
-            if(responseJson["data"][0]["totalRows"] > 1){
-                this.showData(responseJson["data"][0]["documentList"])
+            if(responseJson["message"]) {
+                alert(responseJson["message"])
             }
-            else{
-                
-                this.verifydetail(responseJson["data"][0]["documentList"][0]["Id"])          
+            else {
+                if(responseJson["data"][0]["totalRows"] > 1){
+                    this.showData(responseJson["data"][0]["documentList"])
+                }
+                else{
+                    
+                    this.verifydetail(responseJson["data"][0]["documentList"][0]["Id"])          
+                }
             }
             
         })
         .catch((error) => {
-            console.warn(error);
+            console.warn(error.message);
         });
     }
 
@@ -66,12 +71,16 @@ export default class Index extends Component {
         }),
         }).then((response) => response.json())
         .then((responseJson) => {
-           
-            this.props.navigation.navigate('VerifyDetails',{'data':responseJson["data"][0]})
+            //console.warn(responseJson)
+            //console.warn(responseJson["data"][0])
+            if(responseJson["message"]) {
+                alert(responseJson["message"])
+            }
+            else this.props.navigation.navigate('VerifyDetails',{'data':responseJson["data"][0]})
             
         })
         .catch((error) => {
-            console.warn(error);
+            console.warn(error.message);
         });
     }
 

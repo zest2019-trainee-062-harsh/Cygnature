@@ -493,7 +493,7 @@ class DocumentDetails extends Component {
                                     <Text selectable = {true} style={ [styles.DocumentsListFont, {flex:0.92,color:'grey', alignContent: "flex-end"}] }>
                                         {this.state.details["notarization"]["txHash"]}
                                     </Text>
-                                    <TouchableOpacity onPress={()=>this.copyDH()} 
+                                    <TouchableOpacity onPress={()=>this.copyTH()} 
                                         style = {{flex: 0.08, backgroundColor:'#003d5a', justifyContent: 'center', alignItems:'center'}}>
                                     <Icon
                                         name="copy"
