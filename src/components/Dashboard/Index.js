@@ -146,6 +146,7 @@ class Dashboard extends Component {
 
     didBlur = () => {
         BackHandler.removeEventListener('hardwareBackPress', this.onBackPressed);
+        this.refs.UploadModal.close()
     }
     
     didFocus = async() => {
@@ -262,7 +263,7 @@ class Dashboard extends Component {
                         </ScrollView>
                         :null}
                     </View></View>
-                    <ActionButton autoInactive={false} size={50} offsetX={10} offsetY={10} buttonColor="#003d5a" bgColor="rgba(255,255,255,0.9)">
+                    <ActionButton size={50} offsetX={10} offsetY={10} buttonColor="#003d5a" bgColor="rgba(255,255,255,0.9)">
                     {this.state.isExpired == 'true' ?
                         <ActionButton.Item shadowStyle={{opacity:0.5}} buttonColor="#003d5a" title="Upload File" onPress={() => console.log("Your account is expired")}>
                             <Icon name="md-document" style={styles.actionButtonIcon} />

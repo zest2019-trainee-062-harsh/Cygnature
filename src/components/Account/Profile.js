@@ -49,6 +49,7 @@ class Profile extends Component {
             style={ styles.modal }
             position= 'center'
             backdrop={true}
+            backdropPressToClose={false}
             onClosed={() =>{
                 //console.warn("modal closed")
             }}

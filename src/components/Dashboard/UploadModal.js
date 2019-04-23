@@ -20,6 +20,11 @@ class UploadModal extends Component {
         
         this.refs.myModal.open()
     }
+    
+    close = () => {
+        
+        this.refs.myModal.close()
+    }
     upload = async() => {
         
         let auth = await AsyncStorage.getItem("auth")
@@ -85,10 +90,12 @@ class UploadModal extends Component {
                 style={ styles.modal }
                 position= 'center'
                 backdrop={true}
+                backdropPressToClose={false}
                 onClosed={() =>{
                     //console.warn("modal closed")
                 }}
             >
+            <View style={{alignItems:'flex-end', margin:10}}><Icon name="md-close" color='black' size={30} onPress={()=>this.close()} /></View>
             <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
             
              <Icon name="md-cloud-upload" color='black' size={100} />

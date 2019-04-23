@@ -34,6 +34,8 @@ export default class Contacts extends Component {
 
         this.view()
         this.onRefresh()
+        this.refs.AddModal.close()
+        //this.refs.UpdateModal.close()
         // setTimeout(() => {
         //     this.onRefresh()
         // }, 1000);
