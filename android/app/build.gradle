@@ -104,6 +104,16 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs {
+        release {
+            if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+                storeFile file(MYAPP_RELEASE_STORE_FILE)
+                storePassword MYAPP_RELEASE_STORE_PASSWORD
+                keyAlias MYAPP_RELEASE_KEY_ALIAS
+                keyPassword MYAPP_RELEASE_KEY_PASSWORD
+            }
+        }
+    }
     splits {
         abi {
             reset()
@@ -134,13 +144,13 @@ android {
 }
 
 dependencies {
+    implementation project(':rn-fetch-blob')
     implementation project(':react-native-restart')
     implementation project(':react-native-spinkit')
     implementation project(':react-native-webview')
     implementation project(':react-native-image-crop-picker')
     implementation project(':react-native-fs')
-    implementation project(':react-native-fetch-blob')
-    implementation project(':react-native-fingerprint-scanner')
+   implementation project(':react-native-fingerprint-scanner')
     implementation project(':react-native-document-picker')
     implementation project(':react-native-location')
     implementation project(':react-native-gesture-handler')

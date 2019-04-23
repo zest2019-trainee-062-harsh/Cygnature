@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, ScrollView, Dimensions, AsyncStorage, ActivityIn
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Ionicons';
-import fetch_blob from 'react-native-fetch-blob';
+import fetch_blob from 'rn-fetch-blob';
 import RNFS from 'react-native-fs';
 
 var width = Dimensions.get('window').width; //full width
