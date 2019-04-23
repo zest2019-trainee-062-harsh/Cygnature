@@ -52,7 +52,7 @@ export default class Index extends Component {
         .then((responseJson) => {
             //console.warn(responseJson['data'][0]["profileByte"])
             this.setState({userDataPic: responseJson['data'][0]["profileByte"]}) 
-            if(this.state.userDataPic == null || this.state.userDataPic == "") {
+            if(!responseJson['data'][0]["isProfileImage"]) {
                 console.warn("pp null")
             }
             if(responseJson['data'][0]['impressions'][0] == null) {
@@ -145,7 +145,7 @@ export default class Index extends Component {
                 <View style={[styles.DocumentsList, {justifyContent: "center", alignItems: "center" } ]}>
                     {this.state.userDataPic == "" || this.state.userDataPic == null ?
                         <Avatar
-                            style={{height:200,width:200}}
+                            style={{height:180,width:180}}
                             source={require('../../../img/profile.png')}
                             rounded
                             showEditButton
