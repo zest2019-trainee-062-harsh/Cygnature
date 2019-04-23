@@ -661,7 +661,7 @@ export default DocumentDetails
 
 const styles = StyleSheet.create({
     mainContainer:{
-        height: height*0.85,
+        height: height*0.87,
         margin: 7,
         borderWidth: 2,
         borderRadius:5,
