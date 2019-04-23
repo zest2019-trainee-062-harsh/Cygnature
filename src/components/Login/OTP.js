@@ -5,6 +5,7 @@ import {
 } from 'react-native'
 import { Dimensions } from "react-native";
 
+import { StackActions, NavigationActions } from 'react-navigation'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 class OTP extends Component {
@@ -149,7 +150,14 @@ class OTP extends Component {
         //console.warn(this.state.otp)
         if(this.state.otp == this.state.defaultotp) {
             AsyncStorage.setItem('otp_check','done');
-            this.props.navigation.navigate("Dashboard" ,{"data":this.state.data, "count": this.state.count})
+            //this.props.navigation.navigate("Dashboard")
+            const resetAction = StackActions.reset({
+                index: 0,
+                actions: [
+                  NavigationActions.navigate({ routeName: 'Dashboard'})
+                ]
+              })
+              this.props.navigation.dispatch(resetAction)
         }
         else {
             AsyncStorage.setItem('otp_check','not_present');
