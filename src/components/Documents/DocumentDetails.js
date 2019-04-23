@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, ScrollView, Dimensions, AsyncStorage, ActivityIndicator, TouchableOpacity, Clipboard} from 'react-native'
+import {View, Text, StyleSheet, ScrollView, Dimensions, AsyncStorage, ActivityIndicator, TouchableOpacity, Clipboard, PermissionsAndroid} from 'react-native'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Ionicons';
@@ -14,7 +14,18 @@ class DocumentDetails extends Component {
     static navigationOptions = {
         title: "Document Detail"
     }
-
+    requestStoragePermission = async() => {
+        try {
+          const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log('You can use the storage');
+          } else {
+            console.log('Storage permission denied');
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      }
     state = {
         auth: null,
         userId: null,
@@ -246,7 +257,9 @@ class DocumentDetails extends Component {
         this.state.auth = auth;
         this.state.userId = userId;
         //console.warn(this.state.userId)
+        setTimeout( () => { this.requestStoragePermission() }, 500);
         this.documentDetails();
+        
     }
 
     render() {
