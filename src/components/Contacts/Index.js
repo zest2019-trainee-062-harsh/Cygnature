@@ -18,7 +18,8 @@ export default class Contacts extends Component {
         res:[],
         data:[],
         contactId: null,
-        refreshing:false
+        refreshing:false,
+        searchText: ""
     }
 
 
@@ -108,6 +109,27 @@ export default class Contacts extends Component {
         });        
     }
 
+    search (text) {
+        
+        this.setState({searchText:text, refreshing: true})
+        if(this.state.searchText == "" || this.state.searchText.length == 0) {
+            
+            this.view()
+        } else {
+        const newData = this.state.data.filter(function(item) {
+            //applying filter for the inserted text in search bar
+            const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
+            const textData = text.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+          });
+          this.setState({
+            //setting the filtered newData on datasource
+            //After setting the data it will automatically re-render the view
+            data: newData,
+            refreshing:false
+          });
+        }
+    }
     render() {
     if( this.state.contactsCount == 0) {
         return (
@@ -160,10 +182,14 @@ export default class Contacts extends Component {
             <SearchBar
                 placeholder="Type Here..."
                 platform="android"
-                round
                 containerStyle={{borderRadius:30}}
-                onChangeText={this.updateSearch}
-                //value={search}
+                onChangeText={ (text) =>this.search(text)}
+                value={this.state.searchText}
+                onClear = { () => this.view() }
+                onCancel = { () => this.view() }
+                onKeyPress={({ nativeEvent }) => {
+                    nativeEvent.key === 'Backspace' ? console.warn("D") : null
+                }}
             />
             <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
                         <Text style={styles.floatButtonText}>+</Text>
