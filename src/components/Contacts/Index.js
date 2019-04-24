@@ -171,10 +171,13 @@ export default class Contacts extends Component {
         return (
             <View style={styles.row}>
                 <View style={styles.rowData}>
-                <TouchableOpacity disabled style={styles.rowDataBg}>
-                        <Text style={styles.rowDataText1}>{item.shortName}</Text>
-                </TouchableOpacity>
-                    <Text style={styles.rowDataText2}>{item.name}</Text>
+                    <TouchableOpacity disabled style={styles.rowDataBg}>
+                            <Text style={styles.rowDataText1}>{item.shortName}</Text>
+                    </TouchableOpacity>
+                    <View style={{flexDirection:'column', flex: 1}}>
+                        <Text style={styles.rowDataText2}>{item.name}</Text>
+                        <Text style={[styles.rowDataText2, {color:'grey', fontSize:12}]}>{item.email}</Text>
+                    </View>
                 </View>
             </View>
         )
@@ -246,12 +249,13 @@ rowData: {
 },
 rowDataBg: {
     position: 'absolute',
-    width:30,
-    height: 30,
+    width:40,
+    height: 40,
     backgroundColor: '#003d5a',
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 5
 },
 rowDataText1: {
     fontSize: 14,
@@ -260,7 +264,8 @@ rowDataText1: {
     borderRadius: 5,
 },
 rowDataText2: {
-    fontSize: 20,
+    flex:0.5,
+    fontSize: 15,
     marginLeft: 50,
     fontWeight: '400',
     color: 'black'

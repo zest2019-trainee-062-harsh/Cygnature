@@ -91,7 +91,7 @@ class DocumentDetails extends Component {
         }}).then((response) => response.json())
         .then((responseJson) => {
             this.setState({details: responseJson["data"][0], observers: responseJson["data"][0]["observers"], signers: responseJson["data"][0]["signers"], history: responseJson["data"][0]["documentHistory"]})
-            //console.warn(responseJson["data"][0])
+            console.warn(responseJson["data"][0])
 
             if(responseJson["data"][0]["sequentialFlow"] == true) {
                 //console.warn("yes")

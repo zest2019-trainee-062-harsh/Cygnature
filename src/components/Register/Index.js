@@ -15,7 +15,7 @@ import {
 } from 'react-native'
 
 import { ProgressDialog } from 'react-native-simple-dialogs';
-
+import { Dropdown } from 'react-native-material-dropdown';
 import RNLocation from 'react-native-location';
 
 var width = Dimensions.get('window').width; //full width
@@ -25,7 +25,7 @@ class Register extends Component {
     constructor(props) {
         super(props)
         this.getLoc()
-          
+        this.getCode()
         this.keyboardWillShow = this.keyboardWillShow.bind(this)
         this.keyboardWillHide = this.keyboardWillHide.bind(this)
         
@@ -54,7 +54,28 @@ class Register extends Component {
         rLat: " ",
         rLon: " ",
         isVisible: true,
+        data: [],
+        countryCode: [],
             
+    }
+
+    getCode() {
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/setting/get/', {
+            method: 'GET',
+            }).then((response) => response.json())
+            .then((responseJson) => {
+        
+                this.setState({data : responseJson["data"][0]["countries"]})
+                //console.warn(this.state.data)
+                this.state.data.map((y) => {
+                    this.state.countryCode.push(y.countryCode)
+                })
+                
+                //console.warn(this.state.countryCode)
+            })
+            .catch((error) => {
+                console.warn(error);
+            });
     }
 
     getLoc() {
@@ -273,6 +294,8 @@ class Register extends Component {
     }
     
     register(){
+        console.warn(this.state.countryCode
+            )
         const { register } = this.state
         if (register == null) {
 
@@ -297,7 +320,7 @@ class Register extends Component {
                     email: this.state.rEmail,
                     password: this.state.rPassword,
                     confirmPassword: this.state.rPassword,
-                    countryId: "91",
+                    countryId: this.state.countryCode,
                     phoneNumber: this.state.rPhone,
                     userLatitude: this.state.rLat,
                     userLongitude: this.state.rLon,
@@ -340,6 +363,11 @@ class Register extends Component {
       isVisible: true
     })
   }
+  onChangeHandler = (value) => {     
+    // console.warn("Selected value = ", value);
+    this.setState({countryCode: value.replace(/[^0-9]/g, '')})
+    //console.warn(this.state.countryCode);   
+}
 
     render(){
         return(
@@ -478,6 +506,30 @@ class Register extends Component {
                             style= { styles.boxTI }>
                         </TextInput>
                         */}
+                        <View style={{flexDirection:'row'}}>
+
+                        <Dropdown 
+                            containerStyle={{
+                                flex:0.2,
+                                backgroundColor: 'rgba(255,255,255,0.7)',
+                                paddingHorizontal: 10,
+                                borderRadius: 30,
+                                height:50,
+                                borderBottomColor: 'rgba(255,255,255,0.7)',
+                            }}
+                            itemTextStyle={{
+                                textAlign:'center'
+                            }}
+                            value={"+91"}
+                            dropdownOffset={{top:15, left:0}}
+                            data = {this.state.data}
+                            fontSize = {12}
+                            selectedItemColor = "black"
+                            disabledItemColor = "grey"
+                            valueExtractor = {({countryCode}) => countryCode}
+                            onChangeText = {value => this.onChangeHandler(value)}
+                        />
+        
                         <TextInput
                             placeholderTextColor='grey'
                             keyboardType="numeric"
@@ -490,8 +542,9 @@ class Register extends Component {
                             //ref={(input) => this.REGInput7 = input
                             ref={(input) => this.REGInput5 = input
                             }
-                            style= { styles.boxTI }>
+                            style= {[ styles.boxTI, {flex:0.8, marginLeft:10}] }>
                         </TextInput>
+                        </View>
 
                         <Text style={ styles.boxDisc }>
                         By Clicking on 'Register' Button , You agree to the 

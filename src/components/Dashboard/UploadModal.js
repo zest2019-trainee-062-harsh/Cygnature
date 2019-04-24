@@ -61,23 +61,24 @@ class UploadModal extends Component {
                  }
                  ).then((response) => response.json())
                  .then((responseJson) => {
-                     
-                     this.setState({pdVisible: false})
-                     //console.warn(responseJson["data"][0])
-                     this.refs.myModal.close()
-                     this.props.parentFlatList.showData(responseJson["data"][0])
+                     //console.warn(responseJson["data"])
+                    this.setState({pdVisible: false})
+
+                    if(responseJson["data"] == null) {
+                        alert(responseJson["error"])
+                    } else {
+                        this.props.parentFlatList.showData(responseJson["data"][0])
+                    }
+
+                    this.refs.myModal.close()
                  
                  })
                  .catch((error) => {
-                     // this.refs.myModal.close();
-                     // Alert(error.message);
-                     console.warn(error.message)
+                    this.refs.myModal.close();
+                    //alert(error.message);
+                    console.warn(error.message)
                  });      
                 }
-             
-
-
-   
           });
     }
     
