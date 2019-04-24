@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, Alert, 
     TouchableOpacity,TouchableHighlight, SwipeableFlatList, AsyncStorage} from 'react-native'
-
+import { SearchBar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons'
 import AddModal from './AddModal'
 import UpdateModal from './UpdateModal'
@@ -156,10 +156,18 @@ export default class Contacts extends Component {
             renderQuickActions={this._renderQuickActions.bind(this)}
             />
 
+            
+            <SearchBar
+                placeholder="Type Here..."
+                platform="android"
+                round
+                containerStyle={{borderRadius:30}}
+                onChangeText={this.updateSearch}
+                //value={search}
+            />
             <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
                         <Text style={styles.floatButtonText}>+</Text>
             </TouchableOpacity>
-
                 <AddModal ref={'AddModal'} parentFlatList={this} />
                 <UpdateModal ref={'UpdateModal'} parentFlatList={this} />
             </View>
@@ -226,8 +234,8 @@ floatButton: {
     height: 50,
     backgroundColor: '#003d5a',
     borderRadius: 30,
-    bottom: 5,
-    right: -1,
+    bottom: 80,
+    right: 6,
     alignItems: 'center',
     justifyContent: 'center',
 },
@@ -245,7 +253,7 @@ row: {
 rowData: {
     flex: 1,
     flexDirection: 'row',
-    margin:7,
+    margin:7, 
 },
 rowDataBg: {
     position: 'absolute',
