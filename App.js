@@ -13,10 +13,11 @@ import Contacts from './src/components/Contacts/Index.js'
 import Forgot_Pass from './src/components/Login/Forgot_Pass.js'
 import Document_Upload from './src/components/Documents/DocumentUpload.js'
 import Document_Preview from './src/components/Documents/DocumentPreview.js'
-import DocumentVerify from './src/components/Documents/DocumentVerify.js'
+import fp from './src/components/fp.js'
 import Document_PlaceHolder from './src/components/Documents/DocumentPlaceHolder.js'
-import DocumentList from './src/components/Documents/DocumentList.js'
-import VerifyDetails from './src/components/Documents/VerifyDetails.js'
+import DocumentVerify from './src/components/Verify/Index.js'
+import DocumentList from './src/components/Verify/DocumentList.js'
+import VerifyDetails from './src/components/Verify/VerifyDetails.js'
 
 const AppNavigator = createStackNavigator({
   SplashScreen: {screen: SplashScreen},
@@ -35,8 +36,13 @@ const AppNavigator = createStackNavigator({
   Document_Preview: {screen:Document_Preview},
   Document_PlaceHolder: {screen:Document_PlaceHolder},
   DocumentVerify:{screen:DocumentVerify},
+<<<<<<< HEAD
   DocumentList : {screen: DocumentList},
   VerifyDetails: {screen: VerifyDetails}  
+=======
+  DocumentList : {screen: DocumentList},  
+  VerifyDetails : {screen:VerifyDetails},
+>>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
 });
 
 

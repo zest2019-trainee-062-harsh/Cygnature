@@ -5,8 +5,10 @@ import {
 import { Avatar } from 'react-native-elements';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import ImagePicker from 'react-native-image-crop-picker';
-
+import RNRestart from 'react-native-restart';
+import { NavigationEvents } from 'react-navigation';
 import { StackActions, NavigationActions } from 'react-navigation'
+import FingerprintScanner from 'react-native-fingerprint-scanner';
  
 export default class Index extends Component {
     constructor (props) {
@@ -21,10 +23,11 @@ export default class Index extends Component {
         userDataPic: null,
         pdVisible: true,
         img : null,
+        auth: null,
 
     }
 
-    componentWillMount= async() => {
+    didFocus= async() => {
         let fingerprint = await AsyncStorage.getItem('fingerprint')
         if(fingerprint == 'enabled') {
             this.state.switch2 = true
@@ -34,11 +37,16 @@ export default class Index extends Component {
         }
         
         let auth = await AsyncStorage.getItem('auth');
+        this.setState({auth:auth})
+        this.view()
+    }
+
+    view () {
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': auth,
+            'Authorization': this.state.auth,
         },
         }).then((response) => response.json())
         .then((responseJson) => {
@@ -77,15 +85,31 @@ export default class Index extends Component {
     
      toggleSwitch2 = (value) => {
         //console.warn(value)
-        this.setState({ switch2: value})
         if(value == true) {
-          AsyncStorage.setItem('fingerprint', 'enabled')
-          //console.warn("y")
+            this.checkSensor()
+            //AsyncStorage.setItem('fingerprint', 'enabled')
+            //console.warn("y")
+            //RNRestart.Restart();
         }
         if(value == false) {
+            this.setState({ switch2: value})
             AsyncStorage.setItem('fingerprint', 'disabled')
             //console.warn("n")
+            RNRestart.Restart();
         }
+     }
+
+     checkSensor () {
+        //console.warn("y")
+        FingerprintScanner
+        .isSensorAvailable()
+        .then(biometryType => {
+            this.setState({ switch2: true})
+            AsyncStorage.setItem('fingerprint', 'enabled')
+            RNRestart.Restart();
+        })
+        .catch(error => alert(error.message));
+    
      }
 
     floatClicked = () => {
@@ -149,7 +173,8 @@ export default class Index extends Component {
                     activityIndicatorSize="large"
                     animationType="slide"
                 />
-
+                <NavigationEvents
+                onDidFocus={payload => this.didFocus()}/>
                 <ScrollView>
                     
                 <View style={[styles.DocumentsList, {justifyContent: "center", alignItems: "center" } ]}>

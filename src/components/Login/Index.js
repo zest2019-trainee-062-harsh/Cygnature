@@ -188,6 +188,7 @@ class Login extends Component {
                     this.state.auth = "Bearer "+this.state.data["token"];
                     AsyncStorage.setItem('auth',this.state.auth);
                     AsyncStorage.setItem('token',this.state.data["token"]);
+                    AsyncStorage.setItem('userId',this.state.data["userId"]);
                     this.props.navigation.navigate('OTP',{"data":this.state.data});
                  
                 }

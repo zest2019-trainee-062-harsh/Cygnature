@@ -49,7 +49,6 @@ export default class SplashScreen extends Component{
   authCheck = async() =>{
     let auth = await AsyncStorage.getItem('auth');
     let otp = await AsyncStorage.getItem('otp_check');
-    AsyncStorage.setItem('fingerprint', 'disabled')
     if(otp == 'not_present' || otp == null){
         //this.props.navigation.navigate('Login')
         const resetAction = StackActions.reset({
@@ -126,9 +125,9 @@ export default class SplashScreen extends Component{
         this.state.count["awaitingOthers"] = responseJson["data"][0]["awaitingOthers"]
         this.state.count["completed"] = responseJson["data"][0]["completed"]
         this.state.count["expireSoon"] = responseJson["data"][0]["expireSoon"]
-        // console.warn(this.state.fingerprint)
+        //console.warn(this.state.fingerprint)
         if(this.state.fingerprint == "enabled"){
-          this.props.navigation.navigate("fp", {"count": this.state.count})
+          this.props.navigation.navigate("fp")
         }else{
           this.props.navigation.navigate("Dashboard", {"count": this.state.count})
         }

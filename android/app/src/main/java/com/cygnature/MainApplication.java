@@ -3,6 +3,8 @@ package com.cygnature;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.avishayil.rnrestart.ReactNativeRestartPackage;
+import com.react.rnspinkit.RNSpinkitPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.rnfs.RNFSPackage;
@@ -32,6 +34,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactNativeRestartPackage(),
+            new RNSpinkitPackage(),
             new RNCWebViewPackage(),
             new PickerPackage(),
             new RNFSPackage(),

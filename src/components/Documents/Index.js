@@ -4,6 +4,7 @@ import {View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions,
 import { Dropdown } from 'react-native-material-dropdown'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { NavigationEvents } from 'react-navigation';
 
 
 var width = Dimensions.get('window').width; //full width
@@ -26,16 +27,17 @@ class Documents extends Component {
         documentColor: null,
     }
 
-    componentWillMount = async() =>{
-        let auth = await AsyncStorage.getItem('auth');
-        let token = await AsyncStorage.getItem('token');
-        this.state.auth = auth;
-        this.state.token = token;
-        this.state.totalPages = null;
-        this.fetchData()
-    }
+    // componentWillMount = async() =>{
+    //     let auth = await AsyncStorage.getItem('auth');
+    //     let token = await AsyncStorage.getItem('token');
+    //     this.state.auth = auth;
+    //     this.state.token = token;
+    //     this.state.totalPages = null;
+    //     this.fetchData()
+    // }
 
     fetchData = async() =>{
+        this.setState({pdVisible: true}) 
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/documents',{
         method: 'POST',
         headers: {
@@ -186,7 +188,19 @@ class Documents extends Component {
         .catch((error) => {
             console.warn(error);
         });
-      }
+      } 
+      
+
+    didFocus = async() => {
+        let auth = await AsyncStorage.getItem('auth');
+        let token = await AsyncStorage.getItem('token');
+        this.state.auth = auth;
+        this.state.token = token;
+        this.setState({currentPage: 0})
+        //this.state.totalPages = null;
+        this.fetchData()
+    }
+
 
       
 
@@ -228,6 +242,9 @@ class Documents extends Component {
                     activityIndicatorSize="large"
                     animationType="slide"
                 />
+                <NavigationEvents
+                onDidFocus={payload => this.didFocus()}/>
+
                 <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Documents-List </Text>
                 <Text style={{fontWeight: "bold", fontSize: 10, color: "black"}}>
                     {this.state.currentPage}/{this.state.totalPages}
