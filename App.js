@@ -36,13 +36,9 @@ const AppNavigator = createStackNavigator({
   Document_Preview: {screen:Document_Preview},
   Document_PlaceHolder: {screen:Document_PlaceHolder},
   DocumentVerify:{screen:DocumentVerify},
-<<<<<<< HEAD
-  DocumentList : {screen: DocumentList},
-  VerifyDetails: {screen: VerifyDetails}  
-=======
   DocumentList : {screen: DocumentList},  
   VerifyDetails : {screen:VerifyDetails},
->>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+  fp: {screen:fp}
 });
 
 

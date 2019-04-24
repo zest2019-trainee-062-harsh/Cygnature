@@ -260,8 +260,6 @@ class DocumentDetails extends Component {
         });
     }
 
-<<<<<<< HEAD
-=======
     copyDH = async() => {
         await Clipboard.setString(this.state.details["documentDetail"]["documentFileHash"]);
         alert('Copied to Clipboard!');
@@ -271,7 +269,6 @@ class DocumentDetails extends Component {
         await Clipboard.setString(this.state.details["notarization"]["txHash"]);
         alert('Copied to Clipboard!');
     }
->>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
 
     componentWillMount = async() =>{
         let auth = await AsyncStorage.getItem('auth');
@@ -642,32 +639,12 @@ class DocumentDetails extends Component {
                         <TouchableOpacity  onPress={()=> this.preview()}
                         style = {styles.buttonContainer}>
                             <Text style = { styles.buttonText }>Preview</Text>
-<<<<<<< HEAD
-                        </TouchableOpacity>
-                        {
-                            this.state.details["rejectedByCurrentUser"] ?
-                            <TouchableOpacity
-                            onPress={()=>alert("Already Declined!")}
-                            style = 
-                                {[styles.buttonContainer,
-                                {flex: 0.2, alignItems:'center', opacity: 0.5}]}
-                            >
-                                <Icon
-                                        name="close"
-                                        size={15}
-                                        color="white"
-                                    />
-                            </TouchableOpacity>
-                            :
-                            <TouchableOpacity onPress={()=>this.decline()} 
-=======
                         </TouchableOpacity> 
                         {
                             this.state.details["rejectedByCurrentUser"] || this.state.details["notarization"]["isNotarized"] ?
                             null
                             :
                             <TouchableOpacity  onPress={()=>this.decline()} 
->>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
                             style = {[styles.buttonContainer, {flex: 0.2, alignItems:'center'}]}>
                                 <Icon
                                         name="close"

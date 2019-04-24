@@ -31,20 +31,13 @@ class Profile extends Component {
         valueIndex: "",
         date:"",
         message:""
-=======
-        isSignature: null,
->>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
     }
     componentWillMount = async() => {
         
             this.state.auth = await AsyncStorage.getItem('auth')
        
         if(this.state.userData['impressions'][0] == null) {
-            //console.warn("null")
-            setTimeout(()=>{
-                this.setState({isSignature:false})
-            },1000)
-            console.warn(this.state.isSignature)
+            console.warn("null")
         }
         else {
         this.setState({signature: this.state.userData['impressions'][0]['imageBytes']})
@@ -173,7 +166,6 @@ class Profile extends Component {
             .then((responseJson) => {
                  this.setState({message:responseJson["message"]})
                 console.warn(this.state.message)
-                
                 this.setState({pdVisible:false})
             })
             .catch((error) => {
