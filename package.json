@@ -14,7 +14,6 @@
     "react-native-datepicker": "^1.7.2",
     "react-native-document-picker": "^2.3.0",
     "react-native-elements": "^1.0.0",
-    "react-native-fetch-blob": "^0.10.8",
     "react-native-fingerprint-scanner": "^2.5.0",
     "react-native-fs": "^2.13.3",
     "react-native-gesture-handler": "^1.1.0",
@@ -35,6 +34,7 @@
     "react-native-webview": "^5.6.1",
     "react-navigation": "^3.3.0",
     "react-navigation-material-bottom-tabs": "^1.0.0",
+    "rn-fetch-blob": "^0.10.15",
     "util": "^0.11.1"
   },
   "devDependencies": {

@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, ScrollView, Dimensions, AsyncStorage, ActivityIndicator, TouchableOpacity, Clipboard} from 'react-native'
+import {View, Text, StyleSheet, Alert, ScrollView, Dimensions, AsyncStorage, ActivityIndicator, TouchableOpacity, Clipboard, PermissionsAndroid} from 'react-native'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Ionicons';
-import fetch_blob from 'react-native-fetch-blob';
+import fetch_blob from 'rn-fetch-blob';
 import RNFS from 'react-native-fs';
 
 var width = Dimensions.get('window').width; //full width
@@ -14,12 +14,14 @@ class DocumentDetails extends Component {
     static navigationOptions = {
         title: "Document Detail"
     }
-
+    
     state = {
         auth: null,
         userId: null,
         signButtonDisable: true,
         signButtonOpacity: 0.5,
+        downloadButtonDisable: false,
+        downloadButtonOpacity: 1.0,
         id: this.props.navigation.state.params.Id,
         details: null,
         cancel:null,
@@ -34,6 +36,32 @@ class DocumentDetails extends Component {
         isObservers: false,
         sequentialFlow: null,
     }
+    
+    requestStoragePermission = async() => {
+        try {
+          const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log('You can use the storage');
+          } else {
+            console.log('Storage permission denied');
+            Alert.alert(
+                'Allow Permission? ',
+                "By denying permission you won't able to download document",
+                [
+                    {
+                        text: 'Yes', onPress: ()=> this.requestStoragePermission()
+                    },
+                    {
+                        text: 'NO', onPress: () => this.setState({downloadButtonDisable:true, downloadButtonOpacity: 0.5})
+                    },
+                ],
+                {cancelable: true},
+            )
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      }
     decline= async() =>{
 
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/decline',{
@@ -276,7 +304,9 @@ class DocumentDetails extends Component {
         this.state.auth = auth;
         this.state.userId = userId;
         //console.warn(this.state.userId)
+        setTimeout( () => { this.requestStoragePermission() }, 500);
         this.documentDetails();
+        
     }
 
     render() {
@@ -621,18 +651,20 @@ class DocumentDetails extends Component {
                         <View style={{flex:1, flexDirection:'row', justifyContent: 'center'}}>
 
                         {this.state.details["documentDetail"]["documentStatus"] == 2 ?
-                        <TouchableOpacity  onPress={()=> this.download()}
-                        style = {[styles.buttonContainer, {flex: 0.2, alignItems:'center'}]}>
-                            <Icon1
+                        <TouchableOpacity  
+                            disabled={this.state.downloadButtonDisable}
+                            onPress={()=> this.download()}
+                            style = {[styles.buttonContainer, {opacity:this.state.downloadButtonOpacity, flex: 0.2, alignItems:'center'}]}>
+                                <Icon1
                                     name="md-cloud-download"
                                     size={15}
                                     color="white"
                                 />
                         </TouchableOpacity> :  
                         <TouchableOpacity  
-                        disabled={this.state.signButtonDisable} 
-                        onPress={()=> this.sign()}
-                        style = {[styles.buttonContainer, {opacity: this.state.signButtonOpacity}]}>
+                            disabled={this.state.signButtonDisable} 
+                            onPress={()=> this.sign()}
+                            style = {[styles.buttonContainer, {opacity: this.state.signButtonOpacity}]}>
                             <Text style = { styles.buttonText }>Sign Now</Text>
                         </TouchableOpacity>}
 
@@ -669,7 +701,7 @@ export default DocumentDetails
 
 const styles = StyleSheet.create({
     mainContainer:{
-        height: height*0.85,
+        height: height*0.87,
         margin: 7,
         borderWidth: 2,
         borderRadius:5,

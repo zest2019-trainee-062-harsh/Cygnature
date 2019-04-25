@@ -46,7 +46,8 @@ class Dashboard extends Component {
         loadingCount: true,
         loading: true,
         pdVisible: false,
-        refreshData:false
+        refreshData:false,
+        isExpired: ""
     }
 
     getCount() {
@@ -108,11 +109,12 @@ class Dashboard extends Component {
         });
       }
 
-    // componentWillMount = async() =>{
-    //     this.getRecentDocuments();
-    //     this.state.count  = this.props.navigation.getParam('count')
-      
-    // }
+    componentWillMount = async() =>{
+        this.setState({isExpired: await AsyncStorage.getItem('isExpired')}) 
+        {this.state.isExpired == 'true' ?
+            alert("Your account is expired")
+        :null}
+    }
     
 
     onBackPressed() {
@@ -144,6 +146,7 @@ class Dashboard extends Component {
 
     didBlur = () => {
         BackHandler.removeEventListener('hardwareBackPress', this.onBackPressed);
+        this.refs.UploadModal.close()
     }
     
     didFocus = async() => {
@@ -259,11 +262,17 @@ class Dashboard extends Component {
                         }
                         </ScrollView>
                         :null}
-                    </View>
-                    <ActionButton buttonColor="#003d5a" bgColor="rgba(255,255,255,0.8)">
+                    </View></View>
+                    <ActionButton size={50} offsetX={10} offsetY={10} buttonColor="#003d5a" bgColor="rgba(255,255,255,0.9)">
+                    {this.state.isExpired == 'true' ?
+                        <ActionButton.Item shadowStyle={{opacity:0.5}} buttonColor="#003d5a" title="Upload File" onPress={() => console.log("Your account is expired")}>
+                            <Icon name="md-document" style={styles.actionButtonIcon} />
+                        </ActionButton.Item>
+                    :
                         <ActionButton.Item buttonColor="#003d5a" title="Upload File" onPress={() => this.uploadDocument()}>
                             <Icon name="md-document" style={styles.actionButtonIcon} />
-                        </ActionButton.Item>`
+                        </ActionButton.Item>
+                    }
                         <ActionButton.Item buttonColor="#003d5a" title="Add Signature" onPress={() => {}}>
                             <Icon1 name="signature" style={styles.actionButtonIcon} />
                         </ActionButton.Item>
@@ -271,7 +280,7 @@ class Dashboard extends Component {
                     {/* <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
                         <Text style={styles.floatButtonText}>+</Text>
                     </TouchableOpacity> */}
-                </View>
+                
                 <UploadModal ref={'UploadModal'}  parentFlatList={this}/>
             </View>
             )
@@ -372,7 +381,7 @@ const styles = StyleSheet.create({
     },
     box2Text1: {
         marginLeft:10,
-        fontSize:18,
+        fontSize:20,
         color: 'black',
         fontWeight: 'bold'
     },

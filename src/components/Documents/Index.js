@@ -320,9 +320,9 @@ class Documents extends Component {
                             );
                         })}
                     </ScrollView> :
-                    <View style={styles.DocumentsList}>
-                        <Text style={{fontSize: 25, fontWeight: "bold"}}>
-                            No filtered documents present.
+                    <View style={[styles.DocumentsList, { backgroundColor:'white', justifyContent:'center', alignContent: 'center'}]}>
+                        <Text style={{fontSize: 25, color:'black', fontWeight: "bold", textAlign:'center'}}>
+                            No filtered documents
                         </Text>
                     </View>
                 }    
@@ -330,6 +330,8 @@ class Documents extends Component {
                     style={{borderColor: "#003d5a", borderWidth: 0.5, marginBottom: 5, marginTop: 5, padding: 10}}
                 >
                     <Dropdown
+                        value={null}
+                        itemCount={6}
                         label="Select the status"
                         data={data}
                         selectedItemColor="#003d5a"

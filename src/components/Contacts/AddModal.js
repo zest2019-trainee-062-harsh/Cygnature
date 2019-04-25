@@ -1,7 +1,12 @@
 import React, {Component} from 'react'
 import {TouchableOpacity, View, Text, Dimensions, TextInput,
      StyleSheet, AsyncStorage, } from 'react-native'
+<<<<<<< HEAD
 
+=======
+ 
+import Icon from 'react-native-vector-icons/Ionicons'
+>>>>>>> 94bb0c6cb1420a1c991c4b38806caa621a34d6fb
 import Modal from 'react-native-modalbox'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 
@@ -28,6 +33,10 @@ class AddModal extends Component {
     show = () => {
         
         this.refs.myModal.open()
+    }
+    close = () => {
+        
+        this.refs.myModal.close()
     }
     add = () => {
         //console.warn("add contact api")
@@ -114,6 +123,7 @@ class AddModal extends Component {
             style={ styles.modal }
             position= 'center'
             backdrop={true}
+            backdropPressToClose={false}
             onClosed={() =>{
                 //console.warn("modal closed")
             }}
@@ -126,8 +136,20 @@ class AddModal extends Component {
             activityIndicatorSize="large"
             animationType="slide"
             /> 
+<<<<<<< HEAD
             <Text style={{marginLeft:14, fontSize: 18,  color: 'black', fontWeight:'bold'}}>Add Contact</Text>
             <TextInput
+=======
+        <View style={{ margin:10, flex:1, flexDirection: 'row'}}>
+            <View style={{flex:0.5,}}>
+                <Text style={{marginLeft:4, fontSize: 18,  color: 'black', fontWeight:'bold'}}>Add Contact</Text>
+            </View>
+            <View style={{flex:0.5,alignItems:'flex-end'}}>
+                <Icon name="md-close" color='black' size={30} onPress={()=>this.close()} />
+            </View>
+        </View>
+         <TextInput
+>>>>>>> 94bb0c6cb1420a1c991c4b38806caa621a34d6fb
                 style={ styles.textIn }
                 placeholder="Enter Name *"
                 placeholderTextColor='grey'
@@ -208,7 +230,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         shadowRadius:20,
         width:width-80,
-        height:height*.5,
+        height:'auto',
         borderColor:'#003d5a',
         borderWidth: 1,
         borderRadius:5,
@@ -227,7 +249,7 @@ const styles = StyleSheet.create({
         marginRight: "33%",
         height:40,
         marginTop: 20,
-        
+        marginBottom: 20,
         justifyContent: 'center',
     },
     textSave: {

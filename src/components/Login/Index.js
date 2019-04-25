@@ -170,7 +170,9 @@ class Login extends Component {
             .then((responseJson) => {
                 
                 this.setState({anim:false})
-                //console.warn(responseJson.data)
+                //console.warn(responseJson)
+                //console.warn(responseJson["license"]["expired"])
+               
                 if(responseJson.data == null) {
                     Alert.alert(
                         'Login Failed!',
@@ -182,6 +184,9 @@ class Login extends Component {
                     );
                 }
                 else {
+                    if(responseJson["license"]["expired"]) {
+                        AsyncStorage.setItem('isExpired','true')
+                    } else  AsyncStorage.setItem('isExpired','false')
                     this.state.resData=responseJson.data
                     this.state.data=this.state.resData[0]
                     //console.warn(this.state.data)

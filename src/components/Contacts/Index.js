@@ -33,10 +33,12 @@ export default class Contacts extends Component {
         this.state.auth = auth;
 
         this.view()
-       
-        setTimeout(() => {
-            this.onRefresh()
-        }, 1000);
+        this.onRefresh()
+        this.refs.AddModal.close()
+        //this.refs.UpdateModal.close()
+        // setTimeout(() => {
+        //     this.onRefresh()
+        // }, 1000);
     }
 
     floatClicked=() => {
@@ -191,14 +193,15 @@ export default class Contacts extends Component {
                 onPress={() =>  
                     Alert.alert(
                         'Are you sure? ',
-                        'By clicking OK will delete this contact ',
+                        'By clicking YES will delete this contact ',
                         [
+                            {
+                                text: 'No'
+                            },
                             {
                                 text: 'Yes', onPress: ()=> this.delete(item.Id)
                             },
-                            {
-                                text: 'NO'
-                            },
+                            
                         ],
                         {cancelable: true},
                     )

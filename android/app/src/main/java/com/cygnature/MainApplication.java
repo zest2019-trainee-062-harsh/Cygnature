@@ -3,12 +3,12 @@ package com.cygnature;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.rnfs.RNFSPackage;
-import com.RNFetchBlob.RNFetchBlobPackage;
 import com.hieuvp.fingerprint.ReactNativeFingerprintScannerPackage;
 import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
 import com.github.reactnativecommunity.location.RNLocationPackage;
@@ -34,12 +34,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFetchBlobPackage(),
             new ReactNativeRestartPackage(),
             new RNSpinkitPackage(),
             new RNCWebViewPackage(),
             new PickerPackage(),
             new RNFSPackage(),
-            new RNFetchBlobPackage(),
             new ReactNativeFingerprintScannerPackage(),
             new ReactNativeDocumentPicker(),
             new RNLocationPackage(),

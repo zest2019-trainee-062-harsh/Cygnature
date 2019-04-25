@@ -199,7 +199,16 @@ class Profile extends Component {
             ref={"myModal"}
             style={ styles.modal }
             position= 'center'
+<<<<<<< HEAD
             backdrop={true}>
+=======
+            backdrop={true}
+            backdropPressToClose={false}
+            onClosed={() =>{
+                //console.warn("modal closed")
+            }}
+            >
+>>>>>>> 94bb0c6cb1420a1c991c4b38806caa621a34d6fb
             
             <Text style={{marginLeft:14,  fontSize: 18,  color: 'black', fontWeight:'bold'}}>Set Signature</Text>
 

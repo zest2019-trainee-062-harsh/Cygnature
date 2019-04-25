@@ -136,7 +136,6 @@ export default class Index extends Component {
             },(error,res) => {
                 
                 if(error) {
-                    
                     this.setState({fileName: 'No file selected'})
                 }
                 else {
@@ -160,18 +159,20 @@ export default class Index extends Component {
                     }
                     ).then((response) => response.json())
                     .then((responseJson) => {
-                       
+                        //console.warn(responseJson)
+                        if(responseJson["message"]) {
+                            this.setState({pdVisible2:false, fileName:null})
+                            alert(responseJson["message"])
+                        }
                         if(responseJson["data"][0]["totalRows"] > 1){
                             this.showData(responseJson["data"][0]["documentList"])
                         }
                         else{
-                            
                             this.verifydetail(responseJson["data"][0]["documentList"][0]["Id"])          
                         }
                     
                     })
                     .catch((error) => {
-                        
                         console.warn(error.message)
                     });      
                 }
