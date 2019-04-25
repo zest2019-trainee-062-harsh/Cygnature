@@ -183,14 +183,18 @@ class Test extends Component {
       }).then((response) => response.json())
       .then((responseJson) => {
           alert(responseJson["message"])
+          const popAction = StackActions.pop({
+            n: 2,
+          });
+          this.props.navigation.dispatch(popAction)    
           //this.props.navigation.navigate("DocumentDetails", {"Id": responseJson["data"][0]["documentId"]})
-          const resetAction = StackActions.reset({
-            index: 0,
-            actions: [
-              NavigationActions.navigate({ routeName: 'DocumentDetails', params:{"Id": responseJson["data"][0]["documentId"]} })
-            ]
-          })
-          this.props.navigation.dispatch(resetAction)
+          // const resetAction = StackActions.reset({
+          //   index: 0,
+          //   actions: [
+          //     NavigationActions.navigate({ routeName: 'DocumentDetails', params:{"Id": responseJson["data"][0]["documentId"]} })
+          //   ]
+          // })
+          // this.props.navigation.dispatch(resetAction)
         })
       .catch((error) => {
           console.warn(error.message)

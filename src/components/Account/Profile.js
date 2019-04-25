@@ -49,7 +49,6 @@ class Profile extends Component {
             style={ styles.modal }
             position= 'center'
             backdrop={true}
-            backdropPressToClose={false}
             onClosed={() =>{
                 //console.warn("modal closed")
             }}
@@ -59,16 +58,16 @@ class Profile extends Component {
 
            
             <TouchableOpacity style={styles.modalTI} onPress={() =>
-                 //this.props.navigation.navigate('Canvas')
-                {
-                    const resetAction = StackActions.reset({
-                    index: 0,
-                    actions: [
-                      NavigationActions.navigate({ routeName: 'Canvas'})
-                    ]
-                  })
-                  this.props.navigation.dispatch(resetAction)
-                }
+                 this.props.navigation.navigate('Canvas')
+                // {
+                //     const resetAction = StackActions.reset({
+                //     index: 1,
+                //     actions: [
+                //       NavigationActions.navigate({ routeName: 'Canvas'})
+                //     ]
+                //   })
+                //   this.props.navigation.dispatch(resetAction)
+                // }
                 }>
                 <Text style={styles.modalText}>Draw</Text>
             </TouchableOpacity>
@@ -90,7 +89,11 @@ class Profile extends Component {
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                             {this.state.visible?
-                                <ImageBackground style={styles.signContainer} source={{uri: `data:image/png;base64,${this.state.signature}`}}>
+                                <ImageBackground
+                                    style={[styles.signContainer, {"paddingBottom": 10}]}
+                                    source={{uri: `data:image/png;base64,${this.state.signature}`}}
+                                    resizeMode="contain"
+                                >
                                     <TouchableOpacity style={styles.floatButton} onPress={this.showModal}>
                                         <Text style={styles.floatButtonText}>+</Text>
                                     </TouchableOpacity>
@@ -235,6 +238,7 @@ const styles = StyleSheet.create({
         borderRadius:5,
         margin:5,
         borderColor: "#003d5a",
+        paddingBottom: 10
     },
     boxadd:{
         backgroundColor: '#003d5a',

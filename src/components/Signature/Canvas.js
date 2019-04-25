@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, View, Text, ActivityIndicator, AsyncStora
 
 import SignaturePad from 'react-native-signature-pad';
 
+import { StackActions, NavigationActions } from 'react-navigation'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 export default class Canvas extends Component {
   constructor(props) {
@@ -42,7 +43,7 @@ export default class Canvas extends Component {
         } else {
           this._clear()
           //console.warn(responseJson)
-          this.props.navigation.navigate('Account')
+          //this.props.navigation.navigate('Account')
         }
     })
     .catch((error) => {
@@ -110,6 +111,11 @@ export default class Canvas extends Component {
   _getSig = () => {
     //console.warn(this.state.signature)
     this.enrollSign()
+    alert("Enrolled")
+    const popAction = StackActions.pop({
+      n: 2,
+    });
+    this.props.navigation.dispatch(popAction)    
   }
   _clear = () => {
     this.setState({ canvas: false, signature: null }); 

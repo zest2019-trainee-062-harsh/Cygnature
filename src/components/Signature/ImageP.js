@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
-import {View, Image, StyleSheet, TouchableOpacity, Text, AsyncStorage} from 'react-native'
+import {View, Image, StyleSheet, TouchableOpacity, Text, AsyncStorage, PermissionsAndroid} from 'react-native'
 import ImagePicker from 'react-native-image-crop-picker';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 
+import { StackActions, NavigationActions } from 'react-navigation'
 class ImageP extends Component {
     constructor(props) {
         super(props)
+        this.requestCameraPermission()
         
     }
     state = {
@@ -19,7 +21,31 @@ class ImageP extends Component {
         title: "Image"
     }
 
-    
+    requestCameraPermission = async() => {
+        try {
+          const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log('You can use the camera');
+          } else {
+            console.log('Camera permission denied');
+            Alert.alert(
+                'Allow Permission? ',
+                "By denying permission you won't able to capture ",
+                [
+                    {
+                        text: 'Yes', onPress: ()=> this.requestCameraPermission()
+                    },
+                    {
+                        text: 'NO', onPress: () => this.setState({downloadButtonDisable:true, downloadButtonOpacity: 0.5})
+                    },
+                ],
+                {cancelable: true},
+            )
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      }
     openCameraPicker() {
         ImagePicker.openCamera({
             width: 300,
@@ -70,7 +96,12 @@ class ImageP extends Component {
                   alert("Enroll failed\nPlease select/capture image again")
                 } else {
                   //console.warn(responseJson)
-                  this.props.navigation.navigate('Account')
+                  //this.props.navigation.navigate('Account')
+                  alert("Enrolled")
+                  const popAction = StackActions.pop({
+                    n: 2,
+                  });
+                  this.props.navigation.dispatch(popAction)   
                 }
             })
             .catch((error) => {

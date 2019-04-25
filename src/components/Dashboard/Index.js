@@ -19,6 +19,7 @@ import  Documents from '../Documents/Index.js'
 import  Contacts from '../Contacts/Index.js'
 import  Account from '../Account/Index.js'
 import  DocumentVerify from '../Verify/Index.js'
+import AddModal from '../Contacts/AddModal.js';
 
 var Spinner = require('react-native-spinkit');
 var width = Dimensions.get('window').width; //full width
@@ -134,6 +135,14 @@ class Dashboard extends Component {
         this.refs.UploadModal.show()
     }
 
+    canvas = async() => {
+
+    }
+
+    addContact = async() => {
+        this.refs.AddContactModal.show()
+    }
+
     showData = (data) => {
         if(data == null)
         {
@@ -242,14 +251,14 @@ class Dashboard extends Component {
                                         style={styles.DocumentsList}
                                         key={docs.Id}
                                         onPress={()=>{
-                                            //this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})
-                                            const resetAction = StackActions.reset({
-                                                index: 0,
-                                                actions: [
-                                                  NavigationActions.navigate({ routeName: 'DocumentDetails', params:{Id: docs.Id, token: this.state.token}, navigationOptions:{tabBarVisible: true} })
-                                                ]
-                                              })
-                                              this.props.navigation.dispatch(resetAction)
+                                            this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})
+                                            // const resetAction = StackActions.reset({
+                                            //     index: 0,
+                                            //     actions: [
+                                            //       NavigationActions.navigate({ routeName: 'DocumentDetails', params:{Id: docs.Id, token: this.state.token}, navigationOptions:{tabBarVisible: true} })
+                                            //     ]
+                                            //   })
+                                            //   this.props.navigation.dispatch(resetAction)
                                             }
                                         }
                                     >
@@ -283,15 +292,17 @@ class Dashboard extends Component {
                             <Icon name="md-document" style={styles.actionButtonIcon} />
                         </ActionButton.Item>
                     }
-                        <ActionButton.Item buttonColor="#003d5a" title="Add Signature" onPress={() => {}}>
+                        <ActionButton.Item buttonColor="#003d5a" title="Add Signature" onPress={() => this.canvas()}>
                             <Icon1 name="signature" style={styles.actionButtonIcon} />
                         </ActionButton.Item>
+                        
+                        <ActionButton.Item buttonColor="#003d5a" title="Add Comtact" onPress={() => this.addContact()}>
+                            <Icon name="md-add" style={styles.actionButtonIcon} />
+                        </ActionButton.Item>
                     </ActionButton>
-                    {/* <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
-                        <Text style={styles.floatButtonText}>+</Text>
-                    </TouchableOpacity> */}
                 
                 <UploadModal ref={'UploadModal'}  parentFlatList={this}/>
+                <AddModal ref={'AddContactModal'} parentFlatList={this}/>
             </View>
             )
         }
