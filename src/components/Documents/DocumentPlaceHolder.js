@@ -5,6 +5,7 @@ import
 from 'react-native'
 import ImageZoom from 'react-native-image-pan-zoom';
 
+import { StackActions, NavigationActions } from 'react-navigation'
 import Swiper from 'react-native-swiper';
 import Icon1 from 'react-native-vector-icons/FontAwesome5'
 import Icon2 from 'react-native-vector-icons/Ionicons'
@@ -182,8 +183,15 @@ class Test extends Component {
       }).then((response) => response.json())
       .then((responseJson) => {
           alert(responseJson["message"])
-          this.props.navigation.navigate("DocumentDetails", {"Id": responseJson["data"][0]["documentId"]})
-      })
+          //this.props.navigation.navigate("DocumentDetails", {"Id": responseJson["data"][0]["documentId"]})
+          const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'DocumentDetails', params:{"Id": responseJson["data"][0]["documentId"]} })
+            ]
+          })
+          this.props.navigation.dispatch(resetAction)
+        })
       .catch((error) => {
           console.warn(error.message)
       });

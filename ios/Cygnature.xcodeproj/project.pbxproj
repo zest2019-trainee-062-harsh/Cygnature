@@ -66,6 +66,8 @@
 		BD68EF36A9F8493F8F9FE789 /* libRNCWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 551E714512F241FEA2E12DA3 /* libRNCWebView.a */; };
 		D98361BEE629461183740D77 /* libRNSpinkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB33803539F4BF782931820 /* libRNSpinkit.a */; };
 		13342D82C6C04AA38A543EF4 /* libRCTRestart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77EC6F9A496344F6875756BD /* libRCTRestart.a */; };
+		8999D443FD3B4F709987DB61 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFEC3F14FFBA4B5AB868E1B0 /* libRNDeviceInfo.a */; };
+		927514B1477F4D79850750B3 /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77E8D5FBD0A04973A37B3B46 /* libRNDeviceInfo-tvOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -411,6 +413,9 @@
 		9CB33803539F4BF782931820 /* libRNSpinkit.a */ = {isa = PBXFileReference; name = "libRNSpinkit.a"; path = "libRNSpinkit.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		7B14B0C92FF1497DA5EDE0A7 /* RCTRestart.xcodeproj */ = {isa = PBXFileReference; name = "RCTRestart.xcodeproj"; path = "../node_modules/react-native-restart/ios/RCTRestart.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		77EC6F9A496344F6875756BD /* libRCTRestart.a */ = {isa = PBXFileReference; name = "libRCTRestart.a"; path = "libRCTRestart.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		25A5E893E5F648F1835607E1 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; name = "RNDeviceInfo.xcodeproj"; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		AFEC3F14FFBA4B5AB868E1B0 /* libRNDeviceInfo.a */ = {isa = PBXFileReference; name = "libRNDeviceInfo.a"; path = "libRNDeviceInfo.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		77E8D5FBD0A04973A37B3B46 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; name = "libRNDeviceInfo-tvOS.a"; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -450,6 +455,7 @@
 				BD68EF36A9F8493F8F9FE789 /* libRNCWebView.a in Frameworks */,
 				D98361BEE629461183740D77 /* libRNSpinkit.a in Frameworks */,
 				13342D82C6C04AA38A543EF4 /* libRCTRestart.a in Frameworks */,
+				8999D443FD3B4F709987DB61 /* libRNDeviceInfo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -467,6 +473,7 @@
 				2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */,
 				2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */,
 				FC8692257D604AFF8C81BB39 /* libRNVectorIcons-tvOS.a in Frameworks */,
+				927514B1477F4D79850750B3 /* libRNDeviceInfo-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -651,6 +658,7 @@
 				55BBF75B7E2B499B859A5996 /* RNCWebView.xcodeproj */,
 				6FE8F82DAF7B4462A52B2F0D /* RNSpinkit.xcodeproj */,
 				7B14B0C92FF1497DA5EDE0A7 /* RCTRestart.xcodeproj */,
+				25A5E893E5F648F1835607E1 /* RNDeviceInfo.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1329,6 +1337,8 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1343,6 +1353,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
 				);
 			};
 			name = Debug;
@@ -1376,6 +1387,8 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1390,6 +1403,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
 				);
 			};
 			name = Release;
@@ -1423,6 +1437,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
 				);
 			};
 			name = Debug;
@@ -1455,6 +1470,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
 				);
 			};
 			name = Release;
@@ -1496,6 +1512,8 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1510,6 +1528,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
 				);
 			};
 			name = Debug;
@@ -1551,6 +1570,8 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1565,6 +1586,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
 				);
 			};
 			name = Release;
@@ -1605,6 +1627,8 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1619,6 +1643,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
 				);
 			};
 			name = Debug;
@@ -1659,6 +1684,8 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1673,6 +1700,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-webview\ios",
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
 				);
 			};
 			name = Release;

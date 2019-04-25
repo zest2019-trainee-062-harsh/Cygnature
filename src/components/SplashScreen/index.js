@@ -3,6 +3,7 @@ import {
   AppRegistry, Text, View, StyleSheet, StatusBar, Animated, Dimensions, AsyncStorage, Alert
 } from 'react-native';
 import moment from 'moment';
+import DeviceInfo from 'react-native-device-info';
 var {height} = Dimensions.get('window')
 import { StackActions, NavigationActions } from 'react-navigation'
 
@@ -43,6 +44,15 @@ export default class SplashScreen extends Component{
       //this.props.navigation.navigate('Login')
       this.authCheck()
       // this.props.navigation.navigate('FilePreview')
+      DeviceInfo.getIPAddress().then(ip => {
+        //console.warn(ip)
+        AsyncStorage.setItem('ipAddress',ip);
+      });
+      const userAgent = DeviceInfo.getSystemName() + " - " + DeviceInfo.getSystemVersion()
+      //console.warn(userAgent)
+      AsyncStorage.setItem('userAgent',userAgent);
+      //console.warn(DeviceInfo.getTimezone());
+      AsyncStorage.setItem('timeZone',DeviceInfo.getTimezone());
     })
   }
 

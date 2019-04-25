@@ -189,7 +189,7 @@ class DocumentDetails extends Component {
             if(responseJson["data"] == null)
             {
                 this.setState({pdVisible: false})
-                console.warn(responseJson)
+                alert(responseJson["error"])
             } else {
             this.setState({data: responseJson["data"][0]["documentData"]})
             //console.warn(responseJson["data"][0]["documentData"])
@@ -202,7 +202,8 @@ class DocumentDetails extends Component {
             console.warn(error.message);
         });
     }  
-      signTheDocument(){
+    
+    signTheDocument(){
         Alert.alert(
             'Alert!',
             'Make sure to view the document before signing the document.',
@@ -247,7 +248,9 @@ class DocumentDetails extends Component {
             }).then((response) => response.json())
             .then((responseJson) => {
                 // console.warn(responseJson)
-                alert(responseJson["message"])
+                if(responseJson["data"] == null) {
+                    alert(responseJson["error"])
+                } else alert(responseJson["message"])
             })
             .catch((error) => {
                 console.warn(error.message);

@@ -9,6 +9,7 @@ import { Dimensions } from "react-native";
 import moment from 'moment';
 import ActionButton from 'react-native-action-button';
 
+import { StackActions, NavigationActions } from 'react-navigation'
 import { NavigationEvents } from 'react-navigation';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 
@@ -159,7 +160,6 @@ class Dashboard extends Component {
     }
 
     componentDidMount () {
-        +
         BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
     }
 
@@ -241,7 +241,17 @@ class Dashboard extends Component {
                                     <TouchableOpacity
                                         style={styles.DocumentsList}
                                         key={docs.Id}
-                                        onPress={()=>this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})}
+                                        onPress={()=>{
+                                            //this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})
+                                            const resetAction = StackActions.reset({
+                                                index: 0,
+                                                actions: [
+                                                  NavigationActions.navigate({ routeName: 'DocumentDetails', params:{Id: docs.Id, token: this.state.token}, navigationOptions:{tabBarVisible: true} })
+                                                ]
+                                              })
+                                              this.props.navigation.dispatch(resetAction)
+                                            }
+                                        }
                                     >
                                         <View style={{margin: 2}}>
                                             <Text style={[styles.DocumentsListFont, {fontWeight: 'bold'}]}>
@@ -332,7 +342,7 @@ export default createMaterialBottomTabNavigator({
     },
 },
 {
-    initialRouteName: 'contacts',
+    //initialRouteName: 'contacts',
     barStyle: { backgroundColor: '#003d5a' },
     activeTintColor: 'white',
     navigationOptions: () => ({ header: null })
