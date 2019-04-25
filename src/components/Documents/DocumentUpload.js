@@ -7,10 +7,12 @@ import moment from 'moment';
 
 import DatePicker from 'react-native-datepicker'
 
+import { CheckBox } from 'react-native-elements'
 class DocumentUpload extends Component {
     constructor(props) {
         super(props)
         this.state.data = this.props.navigation.getParam('data')
+        console.warn(this.state.data)
         this.state.currentDate = (moment().utcOffset("+5:30").format("DD-MM-YYYY"))
     }
 
@@ -28,7 +30,11 @@ class DocumentUpload extends Component {
         observerIds: [],
         opacity: 0.5,
         disabled: true,
-        signers : []
+        signers : [],
+        observors: [],
+        checked1: false,
+        checked2: false,
+        enabled: false,
     }
 
     static navigationOptions = {
@@ -44,13 +50,17 @@ class DocumentUpload extends Component {
             }}).then((response) => response.json())
             .then((responseJson) => {
                 let data = JSON.parse('{ "label": "'+responseJson["data"][0]["name"]+'", "value": "'+responseJson["data"][0]["Id"]+'"}');
-                this.state.signers.push(data)
+                
+                setTimeout(() => {
+                    this.state.signers.push(data)
+                }, 1000);
             })
             .catch((error) => {
                 console.warn(error);
             });
         })
         this.state.signerIds = Ids
+        console.warn(this.state.signers[0])
         this.check();
     }
 
@@ -58,7 +68,8 @@ class DocumentUpload extends Component {
         if(this.state.signerIds != []){
             this.setState({
                 opacity: 1,
-                disabled: false
+                disabled: false,
+                enabled: true,
             })
         }
     }
@@ -78,6 +89,17 @@ class DocumentUpload extends Component {
         //     'signers': this.state.signers
         // })
     }
+
+    onChangeCheck1() {
+        this.setState({ checked2: false})
+        this.setState({ checked1: !this.state.checked1})
+    }
+
+    onChangeCheck2() {
+        this.setState({ checked1: false})
+        this.setState({ checked2: !this.state.checked2})
+    }
+    
 
     render() {
         return(
@@ -101,7 +123,30 @@ class DocumentUpload extends Component {
 
                 <Text style={styles.textTitle}>Signers: * </Text>
                 {
-                    this.state.signers[0] == [] ? 
+                    !this.state.enabled ? 
+                    <View>
+                        <Text style={styles.textData}>
+                            No signers present at this moment.{"\n"}
+                            *Select at least one contact.
+                        </Text>
+                    </View>
+                    :
+                        <View>
+                        <Text style={styles.textData}>
+                                {this.state.signers["label"]}
+                            </Text>
+                        </View>
+                    
+                }
+                <View style={{marginLeft:5}}>
+                    <TouchableOpacity style={{backgroundColor: "#003d5a",borderRadius: 5, width:100, justifyContent:'center', alignItems:'center'}} onPress={() => { this.refs.DocumentUpload_SignerModal.show() }}>
+                        <Text style={[styles.textData, {color:'white'}]}>Select</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <Text style={styles.textTitle}>Observors:</Text>
+                {
+                    this.state.observors[0] == [] ? 
                     <View>
                         <Text>
                             No signers present at this moment.{"\n"}
@@ -109,7 +154,7 @@ class DocumentUpload extends Component {
                         </Text>
                     </View>
                     :
-                    this.state.signers.map((index) => {
+                    this.state.observors.map((index) => {
                         <View>
                             <Text>
                                 {index["label"]}
@@ -117,15 +162,13 @@ class DocumentUpload extends Component {
                         </View>
                     })
                 }
-                <TouchableOpacity  onPress={() => { this.refs.DocumentUpload_SignerModal.show() }}>
-                    <Text style={styles.textData}>Select</Text>
-                </TouchableOpacity>
-                
-                <Text style={styles.textTitle}>Observers: </Text>
-                <TouchableOpacity  onPress={() => { this.refs.DocumentUpload_ObserverModal.show() }}>
-                    <Text style={styles.textData}>Select</Text>
-                </TouchableOpacity>
-                
+
+                <View style={{marginLeft:5}}>
+                <TouchableOpacity style={{backgroundColor: "#003d5a",borderRadius: 5, width:100, justifyContent:'center', alignItems:'center'}} onPress={() => { this.refs.DocumentUpload_SignerModal.show() }}>
+                        <Text style={[styles.textData, {color:'white'}]}>Select</Text>
+                    </TouchableOpacity>
+                </View>
+
                 <Text style={styles.textTitle}>Due Date: </Text>
                 <DatePicker
                     style={{width: 200}}
@@ -149,6 +192,29 @@ class DocumentUpload extends Component {
                     }}
                     onDateChange={(date) => {this.setState({date: date})}}
                 />
+                <View style={{flex:1}}>
+                    <Text style={styles.textTitle}>Signature Flow: </Text>
+                    <CheckBox
+                        title='Sequential'
+                        textStyle={{color: 'black', fontWeight: 'normal', fontSize:17}}
+                        uncheckedColor="black"
+                        checkedColor="#003d5a"
+                        size={20}
+                        checked={this.state.checked1}
+                        containerStyle={{ backgroundColor:'white', borderColor: 'white' }}
+                        onPress={() => this.onChangeCheck1()}
+                    />
+                    <CheckBox
+                        title='Parallel'
+                        textStyle={{color: 'black', fontWeight: 'normal', fontSize:17}}
+                        uncheckedColor="black"
+                        checkedColor="#003d5a"
+                        size={20}
+                        checked={this.state.checked2}
+                        containerStyle={{ backgroundColor:'white', borderColor: 'white' }}
+                        onPress={() => this.onChangeCheck2()}
+                    />
+                </View>
 
                 {
                     this.state.signerIds != [] ? 
@@ -165,7 +231,7 @@ class DocumentUpload extends Component {
                         </TouchableOpacity>
                     </View>
                     : 
-                    <View style={{ flex: 0.5, justifyContent: "center", alignItems: "center", opacity: 1}}>
+                    <View style={{ flex: 0.5,  opacity: 1}}>
                         <TouchableOpacity
                             style = { styles.buttonContainer}
                             disabled = {this.state.disabled}
@@ -213,17 +279,15 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10,
         borderColor: 'black',
-        fontFamily: 'Helvetica'
+        fontFamily: 'Helvetica',
+        fontSize: 17
     },
     buttonContainer: {
         backgroundColor: "#003d5a",
         borderRadius: 5,
         paddingVertical: 10,
         padding: 10,
-        margin: 10,
-        width: 100,
-        justifyContent: "center",
-        alignContent: "center"
+        marginLeft: "66%",
     },
     buttonText: {
         textAlign: 'center',

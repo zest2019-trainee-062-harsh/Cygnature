@@ -226,11 +226,13 @@ class Test extends Component {
           </View>
           <View style={styles.container1_sub2}>
               <Dropdown
+                value={this.state.signers[0]["label"]}
                 label="Select signer"
                 data={this.state.signers}
                 selectedItemColor="#003d5a"
                 rippleCentered={true}
-                itemTextStyle={"helvetica"}
+                itemTextStyle={{color:"white"}}
+                baseColor="white"
                 containerStyle={{
                   marginLeft:"25%",
                   marginRight:"25%"
