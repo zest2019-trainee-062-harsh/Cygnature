@@ -35,6 +35,7 @@ class DocumentDetails extends Component {
         observers: [],
         isObservers: false,
         sequentialFlow: null,
+        notarized:[],
     }
     
     requestStoragePermission = async() => {
@@ -62,29 +63,6 @@ class DocumentDetails extends Component {
           console.warn(err);
         }
       }
-    decline= async() =>{
-
-        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/decline',{
-            method: 'POST',
-            headers: {
-                'Authorization':this.state.auth,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                documentId: this.state.id,
-                declineReason: "Don't want to sign"
-            }),
-            }).then((response) => response.json())
-            .then((responseJson)=>{
-               alert(responseJson["message"])
-                    
-            })     
-        .catch((error) => {
-          alert(JSON.stringify(error));
-        });
-    
-  
-    }
 
     decline= async() =>{
 
@@ -247,6 +225,27 @@ class DocumentDetails extends Component {
         );
     }
 
+    certificate = () =>{
+        if(this.state.details["notarization"]["isNotarized"] == true)
+        {
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/certificate/'+this.state.id,{
+                method: 'GET',
+                headers: {
+                    'Authorization':this.state.auth,
+                }}).then((response) => response.json())
+                .then((responseJson) => {
+                    this.setState({data: responseJson["data"][0]})
+                    this.props.navigation.navigate('DocumentCertificate',{'data': this.state.data})    
+                })
+                .catch((error) => {
+                    console.warn(error);
+                });
+        }
+        else{
+            alert('Document is not yet Notarized');
+        }
+    }
+
     sign = async() =>{
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
         method: 'GET',
@@ -322,16 +321,7 @@ class DocumentDetails extends Component {
                 />
                 {this.state.details != null ? 
                     <ScrollView>
-                        {/* <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
-                                    File Name
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["documentDetail"]["fileName"]}
-                                </Text>
-                            </View>
-                        </View> */}
+        
                         <View style={styles.box}>
 
                             <View style = {[{flex: 1, flexDirection:'row'}, ]}>
@@ -384,80 +374,6 @@ class DocumentDetails extends Component {
                             </View>
                             
                         </View>
-                        {/* <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
-                                    Activation Status
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {
-                                        this.state.details["documentDetail"]["isActive"] ? <Text>Yes</Text>
-                                        : <Text>NO</Text>
-                                    }
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
-                                    Uploaded By
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["documentDetail"]["uploadedBy"]}
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
-                                    Document Hash
-                                </Text>
-                                <Text selectable = {true} style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["documentDetail"]["documentFileHash"]}
-                                </Text>
-                            </View>
-                        </View>
-                        {this.state.details["notarization"]["txHash"] ?
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
-                                    Transaction Hash
-                                </Text>
-                                <Text selectable = {true} style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["notarization"]["txHash"]}
-                                </Text>
-                            </View>
-                        </View> : null}
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
-                                    Transaction Hash
-                                </Text>
-                                <Text selectable = {true} style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["notarization"]["txHash"]}
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
-                                    Status
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["documentDetail"]["documentStatus"]}
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
-                                    Created at
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["documentDetail"]["creationTime"]}
-                                </Text>
-                            </View>
-                        </View> */}
 
                         <View style={styles.box}>
                         <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> History </Text>
@@ -582,72 +498,6 @@ class DocumentDetails extends Component {
                         </View>
 
                         </View>
-                        {/* <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Signed by current user?
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["signedByCurrentUser"]}
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Signed by all users?
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {
-                                        this.state.details["signedByAll"] ? <Text>Yes</Text>
-                                        : <Text>NO</Text>
-                                    }
-                                </Text>
-                            </View>
-                        </View>  */}
-                        {/* <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Signers </Text>
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    User Email
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["signers"][0]["email"]}
-                                </Text>
-                            </View>
-                        </View> */}
-                        {/* <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    User Name
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["signers"][0]["fullName"]}
-                                </Text>
-                            </View>
-                        </View> */}
-                        {/* <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Observers </Text>
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Observers
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["observers"]}
-                                </Text>
-                            </View>
-                        </View> */}
-                        {/* <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Rejected?
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["rejectedByCurrentUser"] ? <Text>Yes</Text>
-                                    : <Text>No</Text>}
-                                </Text>
-                            </View>
-                        </View> */}
                         <View style={{flex:1, flexDirection:'row', justifyContent: 'center'}}>
 
                         {this.state.details["documentDetail"]["documentStatus"] == 2 ?
@@ -685,6 +535,11 @@ class DocumentDetails extends Component {
                                     />
                             </TouchableOpacity>
                         }
+
+                        <TouchableOpacity  onPress={()=> this.certificate()}
+                        style = {styles.buttonContainer}>
+                            <Text style = { styles.buttonText }>Certificate</Text>
+                        </TouchableOpacity> 
                         </View>
 
                     </ScrollView>

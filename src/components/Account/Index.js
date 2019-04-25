@@ -50,16 +50,11 @@ export default class Index extends Component {
         },
         }).then((response) => response.json())
         .then((responseJson) => {
-<<<<<<< HEAD
-            console.warn(responseJson)
-            this.setState({userDataPic: responseJson['data'][0]["profileByte"]})
-=======
             //console.warn(responseJson['data'][0]["profileByte"])
             this.setState({userDataPic: responseJson['data'][0]["profileByte"]}) 
             if(!responseJson['data'][0]["isProfileImage"]) {
                 console.warn("pp null")
             }
->>>>>>> 94bb0c6cb1420a1c991c4b38806caa621a34d6fb
             if(responseJson['data'][0]['impressions'][0] == null) {
                 console.warn("sign null")
             }

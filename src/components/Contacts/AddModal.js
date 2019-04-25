@@ -1,12 +1,8 @@
 import React, {Component} from 'react'
 import {TouchableOpacity, View, Text, Dimensions, TextInput,
      StyleSheet, AsyncStorage, } from 'react-native'
-<<<<<<< HEAD
-
-=======
  
 import Icon from 'react-native-vector-icons/Ionicons'
->>>>>>> 94bb0c6cb1420a1c991c4b38806caa621a34d6fb
 import Modal from 'react-native-modalbox'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 
@@ -136,10 +132,6 @@ class AddModal extends Component {
             activityIndicatorSize="large"
             animationType="slide"
             /> 
-<<<<<<< HEAD
-            <Text style={{marginLeft:14, fontSize: 18,  color: 'black', fontWeight:'bold'}}>Add Contact</Text>
-            <TextInput
-=======
         <View style={{ margin:10, flex:1, flexDirection: 'row'}}>
             <View style={{flex:0.5,}}>
                 <Text style={{marginLeft:4, fontSize: 18,  color: 'black', fontWeight:'bold'}}>Add Contact</Text>
@@ -149,7 +141,6 @@ class AddModal extends Component {
             </View>
         </View>
          <TextInput
->>>>>>> 94bb0c6cb1420a1c991c4b38806caa621a34d6fb
                 style={ styles.textIn }
                 placeholder="Enter Name *"
                 placeholderTextColor='grey'
