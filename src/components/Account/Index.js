@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {
-    View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, AsyncStorage, ImageBackground
+    View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, AsyncStorage, Alert
 } from 'react-native'
 import { Avatar } from 'react-native-elements';
 import { ProgressDialog } from 'react-native-simple-dialogs';
@@ -42,6 +42,8 @@ export default class Index extends Component {
     }
 
     view () {
+        this.setState({pdVisible:true})
+
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
         method: 'GET',
         headers: {
@@ -53,13 +55,13 @@ export default class Index extends Component {
             //console.warn(responseJson['data'][0]["profileByte"])
             this.setState({userDataPic: responseJson['data'][0]["profileByte"]}) 
             if(!responseJson['data'][0]["isProfileImage"]) {
-                console.warn("pp null")
+                //console.warn("pp null")
             }
             if(responseJson['data'][0]['impressions'][0] == null) {
-                console.warn("sign null")
+                //console.warn("sign null")
             }
             this.setState({userData: responseJson['data'][0]}) 
-            console.warn(this.state.userData)
+            //console.warn(this.state.userData)
             this.setState({pdVisible:false})
         })
         .catch((error) => {
@@ -69,15 +71,32 @@ export default class Index extends Component {
 
    
     logout = async() => {
-        AsyncStorage.clear();
         //this.props.navigation.navigate("Login")
-        const resetAction = StackActions.reset({
-            index: 0,
-            actions: [
-              NavigationActions.navigate({ routeName: 'Login'})
-            ]
-          })
-          this.props.navigation.dispatch(resetAction)
+        Alert.alert(
+            'Are you Sure?',
+            'Clicking yes will redirect you to Login',
+            [
+                
+                {
+                    text: 'No'
+                },
+                {
+                    text: 'Yes', onPress: ()=>{
+                        AsyncStorage.clear();
+                        const resetAction = StackActions.reset({
+                            index: 0,
+                            actions: [
+                              NavigationActions.navigate({ routeName: 'Login'})
+                            ]
+                          })
+                        this.props.navigation.dispatch(resetAction)
+                    }
+                },
+            ],
+            {cancelable: true},
+        );
+
+        
     }
 
     toggleSwitch1 = () => {
