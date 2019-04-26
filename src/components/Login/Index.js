@@ -213,6 +213,7 @@ class Login extends Component {
                     AsyncStorage.setItem('auth',this.state.auth);
                     AsyncStorage.setItem('token',this.state.data["token"]);
                     AsyncStorage.setItem('userId',this.state.data["userId"]);
+                    AsyncStorage.setItem('password',this.state.password);
                     this.props.navigation.navigate('OTP',{"data":this.state.data});
                     // if(this.state.checked == true){
                     //     AsyncStorage.setItem('email',this.state.email)

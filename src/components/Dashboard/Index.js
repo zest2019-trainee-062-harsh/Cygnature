@@ -353,7 +353,7 @@ export default createMaterialBottomTabNavigator({
     },
 },
 {
-    //initialRouteName: 'contacts',
+    initialRouteName: 'account',
     barStyle: { backgroundColor: '#003d5a' },
     activeTintColor: 'white',
     navigationOptions: () => ({ header: null })

@@ -66,7 +66,7 @@ class Forgot_Pass extends Component {
                 }
                 else{
                     this.setState({ pdVisible:false })
-                    console.warn(responseJson["message"])
+                    alert(responseJson["message"])
                 }
             })
             .catch((error) => {

@@ -8,7 +8,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 import RNRestart from 'react-native-restart';
 import { NavigationEvents } from 'react-navigation';
 import { StackActions, NavigationActions } from 'react-navigation'
-import FingerprintScanner from 'react-native-fingerprint-scanner';
+import FingerprintScanner from 'react-native-fingerprint-scanner'
+import ChangePwd from './ChangePwd.js'
  
 export default class Index extends Component {
     constructor (props) {
@@ -53,13 +54,8 @@ export default class Index extends Component {
         }).then((response) => response.json())
         .then((responseJson) => {
             //console.warn(responseJson['data'][0]["profileByte"])
-            this.setState({userDataPic: responseJson['data'][0]["profileByte"]}) 
-            if(!responseJson['data'][0]["isProfileImage"]) {
-                //console.warn("pp null")
-            }
-            if(responseJson['data'][0]['impressions'][0] == null) {
-                //console.warn("sign null")
-            }
+            //this.setState({userDataPic: responseJson['data'][0]["profileByte"]}) 
+           
             this.setState({userData: responseJson['data'][0]}) 
             //console.warn(this.state.userData)
             this.setState({pdVisible:false})
@@ -70,6 +66,12 @@ export default class Index extends Component {
     }
 
    
+    redirect = () => {
+        console.warn("Y")
+        AsyncStorage.clear();
+        this.props.navigation.navigate("Login")
+    }
+    
     logout = async() => {
         //this.props.navigation.navigate("Login")
         Alert.alert(
@@ -89,7 +91,7 @@ export default class Index extends Component {
                               NavigationActions.navigate({ routeName: 'Login'})
                             ]
                           })
-                        this.props.navigation.dispatch(resetAction)
+                        this.props.navigation.navigate(resetAction)
                     }
                 },
             ],
@@ -146,6 +148,10 @@ export default class Index extends Component {
           });
     }
 
+    changePwd = () =>{
+        this.refs.ChangePwd.show()
+    }
+
     render() {
         return(
             <View style={styles.mainContainer}>
@@ -193,7 +199,7 @@ export default class Index extends Component {
                         <Text style = { styles.buttonText }>Edit Profile</Text>
                 </TouchableOpacity>
 
-               <TouchableOpacity style = { [styles.buttonContainer]} onPress={() => this.logout()}>
+               <TouchableOpacity style = { [styles.buttonContainer]} onPress={() => this.changePwd()}>
                         <Text style = { styles.buttonText }>Change Password</Text>
                 </TouchableOpacity>
 
@@ -262,6 +268,8 @@ export default class Index extends Component {
                     </View> 
                     
                 </ScrollView>
+                
+                <ChangePwd ref={'ChangePwd'} parentFlatList={this} />
             </View>
         )
     }
