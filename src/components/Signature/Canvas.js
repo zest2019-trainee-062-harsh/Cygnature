@@ -8,8 +8,16 @@ import { ProgressDialog } from 'react-native-simple-dialogs';
 export default class Canvas extends Component {
   constructor(props) {
     super(props);
-    this.state = { signature: null, canvas:true, auth: null, pdVisible: false, };
+    this.state.isSignature  = this.props.navigation.getParam('isSignature')
+    //console.warn(this.state.isSignature)
   }
+    state = { 
+      signature: null,
+      canvas:true,
+      auth: null,
+      pdVisible: false,
+      isSignature: true,
+    }
  
   static navigationOptions = {
     title: "Canvas"
@@ -24,31 +32,72 @@ export default class Canvas extends Component {
     this.setState({pdVisible: true})
     let auth = await AsyncStorage.getItem("auth")
     this.setState({auth: auth})
-    return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/update-signature',{
-    method: 'POST',
-    headers: {
-        'Authorization':this.state.auth,
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-        "signatureType": 2,
-        "ImageBytes": this.state.signature
-    }),
-    }).then((response) => response.json())
-    .then((responseJson) => {
-        this.setState({pdVisible: false})
-        if(responseJson['message'] == null) {
-          this._clear()
-          alert("Enroll failed\nPlease check canvas")
-        } else {
-          this._clear()
-          //console.warn(responseJson)
-          //this.props.navigation.navigate('Account')
-        }
-    })
-    .catch((error) => {
-        console.warn(error);
-    });
+
+    if(this.state.isSignature) { 
+      return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/update-signature',{
+      method: 'POST',
+      headers: {
+          'Authorization':this.state.auth,
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          "signatureType": 2,
+          "ImageBytes": this.state.signature
+      }),
+      }).then((response) => response.json())
+      .then((responseJson) => {
+          this.setState({pdVisible: false})
+          if(responseJson['message'] == null) {
+            this._clear()
+            alert("Update failed\nPlease check canvas")
+          } else {
+            this._clear()
+            //console.warn(responseJson)
+            //this.props.navigation.navigate('Account')
+            alert("Updated")
+            const popAction = StackActions.pop({
+              n: 2,
+            });
+            this.props.navigation.dispatch(popAction) 
+          }
+      })
+      .catch((error) => {
+          console.warn(error);
+      })
+  }
+  else {
+    return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/enroll-signature',{
+      method: 'POST',
+      headers: {
+          'Authorization':this.state.auth,
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          "signatureType": 2,
+          "ImageBytes": this.state.signature
+      }),
+      }).then((response) => response.json())
+      .then((responseJson) => {
+          this.setState({pdVisible: false})
+          if(responseJson['message'] == null) {
+            this._clear()
+            alert("Enroll failed\nPlease check canvas")
+          } else {
+            this._clear()
+            //console.warn(responseJson)
+            //this.props.navigation.navigate('Account')
+            alert("Enrolled")
+            const popAction = StackActions.pop({
+              n: 2,
+            });
+            this.props.navigation.dispatch(popAction) 
+          }
+      })
+      .catch((error) => {
+          console.warn(error);
+      })
+  }
+    
   
 }
  
@@ -111,11 +160,6 @@ export default class Canvas extends Component {
   _getSig = () => {
     //console.warn(this.state.signature)
     this.enrollSign()
-    alert("Enrolled")
-    const popAction = StackActions.pop({
-      n: 2,
-    });
-    this.props.navigation.dispatch(popAction)    
   }
   _clear = () => {
     this.setState({ canvas: false, signature: null }); 

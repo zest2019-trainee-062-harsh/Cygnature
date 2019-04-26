@@ -15,21 +15,22 @@ class Profile extends Component {
         signature: null,
         visible: false,
         userData: [],
-        isSignature: null,
+        isSignature: true,
     }
     componentWillMount() {
         //console.warn(this.state.userData)
-        if(this.state.userData['impressions'][0] == null) {
+        if(this.state.userData['impressions'][0] == null || this.state.userData['impressions'][0] == "" ) {
             //console.warn("null")
             setTimeout(()=>{
                 this.setState({isSignature:false})
             },1000)
-            console.warn(this.state.isSignature)
+            
         }
         else {
         this.setState({signature: this.state.userData['impressions'][0]['imageBytes']}) 
         this.setState({visible:true})
-    }
+        }
+        //console.warn(this.state.isSignature)
     }
  
     static navigationOptions = {
@@ -58,7 +59,7 @@ class Profile extends Component {
 
            
             <TouchableOpacity style={styles.modalTI} onPress={() =>
-                 this.props.navigation.navigate('Canvas')
+                 this.props.navigation.navigate('Canvas', {'isSignature':this.state.isSignature})
                 // {
                 //     const resetAction = StackActions.reset({
                 //     index: 1,
@@ -72,7 +73,7 @@ class Profile extends Component {
                 <Text style={styles.modalText}>Draw</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.modalTI} onPress={() => this.props.navigation.navigate('Image')}>
+            <TouchableOpacity style={styles.modalTI} onPress={() => this.props.navigation.navigate('Image', {'isSignature':this.state.isSignature})}>
                 <Text style={styles.modalText}>Capture</Text>
             </TouchableOpacity>
 

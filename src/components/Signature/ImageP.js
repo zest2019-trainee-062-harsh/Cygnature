@@ -8,7 +8,7 @@ class ImageP extends Component {
     constructor(props) {
         super(props)
         this.requestCameraPermission()
-        
+        this.state.isSignature  = this.props.navigation.getParam('isSignature')
     }
     state = {
         img : [],
@@ -74,10 +74,12 @@ class ImageP extends Component {
     }
 
     enrollSign = async() => {
-  
-            this.setState({pdVisible: true})
-            let auth = await AsyncStorage.getItem("auth")
-            this.setState({auth: auth})
+
+        this.setState({pdVisible: true})
+        let auth = await AsyncStorage.getItem("auth")
+        this.setState({auth: auth})
+
+        if(this.state.isSignature) {
             return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/update-signature',{
             method: 'POST',
             headers: {
@@ -90,23 +92,24 @@ class ImageP extends Component {
             }),
             }).then((response) => response.json())
             .then((responseJson) => {
-               
+                
                 this.setState({pdVisible: false})
                 if(responseJson['message'] == null) {
-                  alert("Enroll failed\nPlease select/capture image again")
+                    alert("Update failed\nPlease select/capture image again")
                 } else {
-                  //console.warn(responseJson)
-                  //this.props.navigation.navigate('Account')
-                  alert("Enrolled")
-                  const popAction = StackActions.pop({
+                    //console.warn(responseJson)
+                    //this.props.navigation.navigate('Account')
+                    alert("Updated")
+                    const popAction = StackActions.pop({
                     n: 2,
-                  });
-                  this.props.navigation.dispatch(popAction)   
+                    });
+                    this.props.navigation.dispatch(popAction)   
                 }
             })
             .catch((error) => {
                 console.warn(error);
-            });
+            })
+        }
           
     }
 
