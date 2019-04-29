@@ -61,7 +61,7 @@ export default class Index extends Component {
             this.setState({pdVisible:false})
         })
         .catch((error) => {
-          console.error(error)
+          console.error(error.message)
         });
     }
 

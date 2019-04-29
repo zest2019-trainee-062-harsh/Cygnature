@@ -20,6 +20,7 @@ import  Contacts from '../Contacts/Index.js'
 import  Account from '../Account/Index.js'
 import  DocumentVerify from '../Verify/Index.js'
 import AddModal from '../Contacts/AddModal.js';
+import AddSignModal from './AddSignModal.js';
 
 var Spinner = require('react-native-spinkit');
 var width = Dimensions.get('window').width; //full width
@@ -136,7 +137,7 @@ class Dashboard extends Component {
     }
 
     canvas = async() => {
-
+        this.refs.AddSignModal.show()
     }
 
     addContact = async() => {
@@ -151,6 +152,21 @@ class Dashboard extends Component {
             //console.warn("return data"+data["Id"])
             //console.warn("return data"+data["name"])
             this.props.navigation.navigate('Document_Upload',{'data':data})
+        }
+    }
+
+    addSignNavigate(num, param) {
+        this.refs.AddSignModal.close()
+            switch(num) {
+                case 1: 
+                        this.props.navigation.navigate('Canvas', {'isSignature':param, 'flow':1})
+                    break;
+                case 2:
+                        this.props.navigation.navigate('Image', {'isSignature':param, 'flow': 1})
+                    break;
+                case 3:
+                        this.props.navigation.navigate('Fonts')
+                    break;
         }
     }
 
@@ -302,6 +318,7 @@ class Dashboard extends Component {
                     </ActionButton>
                 
                 <UploadModal ref={'UploadModal'}  parentFlatList={this}/>
+                <AddSignModal ref={'AddSignModal'}  parentFlatList={this}/>
                 <AddModal ref={'AddContactModal'} parentFlatList={this}/>
             </View>
             )

@@ -46,30 +46,16 @@ class Profile extends Component {
             <View style={styles.mainContainer}>
             
             <Modal
-            ref={"myModal"}
-            style={ styles.modal }
-            position= 'center'
-            backdrop={true}
-            onClosed={() =>{
-                //console.warn("modal closed")
-            }}
+                ref={"myModal"}
+                style={ styles.modal }
+                position= 'center'
+                backdrop={true}
             >
             
             <Text style={{marginLeft:14,  fontSize: 18,  color: 'black', fontWeight:'bold'}}>Set Signature</Text>
 
            
-            <TouchableOpacity style={styles.modalTI} onPress={() =>
-                 this.props.navigation.navigate('Canvas', {'isSignature':this.state.isSignature})
-                // {
-                //     const resetAction = StackActions.reset({
-                //     index: 1,
-                //     actions: [
-                //       NavigationActions.navigate({ routeName: 'Canvas'})
-                //     ]
-                //   })
-                //   this.props.navigation.dispatch(resetAction)
-                // }
-                }>
+            <TouchableOpacity style={styles.modalTI} onPress={() =>this.props.navigation.navigate('Canvas', {'isSignature':this.state.isSignature})}>
                 <Text style={styles.modalText}>Draw</Text>
             </TouchableOpacity>
 
@@ -255,7 +241,7 @@ const styles = StyleSheet.create({
     modal:{
         shadowRadius:20,
         width:width-80,
-        height:height*.5,
+        height:'auto',
         borderColor:'#003d5a',
         borderWidth: 1,
         borderRadius:5,

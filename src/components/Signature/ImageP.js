@@ -9,6 +9,7 @@ class ImageP extends Component {
         super(props)
         this.requestCameraPermission()
         this.state.isSignature  = this.props.navigation.getParam('isSignature')
+        this.state.flow  = this.props.navigation.getParam('flow')
     }
     state = {
         img : [],
@@ -16,6 +17,7 @@ class ImageP extends Component {
         auth: null,
         signature: null,
         pdVisible: false,
+        flow: null
     }
     static navigationOptions = {
         title: "Image"
@@ -100,15 +102,59 @@ class ImageP extends Component {
                     //console.warn(responseJson)
                     //this.props.navigation.navigate('Account')
                     alert("Updated")
-                    const popAction = StackActions.pop({
-                    n: 2,
-                    });
-                    this.props.navigation.dispatch(popAction)   
-                }
+                    if(this.state.flow == 1) {
+                        const popAction = StackActions.pop({
+                          n: 1,
+                        });
+                        this.props.navigation.dispatch(popAction)
+                      } else {
+                        const popAction = StackActions.pop({
+                          n: 2,
+                        });
+                        this.props.navigation.dispatch(popAction) 
+                      }
+                    }
             })
             .catch((error) => {
                 console.warn(error);
             })
+        } else {
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/enroll-signature',{
+                method: 'POST',
+                headers: {
+                    'Authorization':this.state.auth,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "signatureType": 2,
+                    "ImageBytes": this.state.signature
+                }),
+                }).then((response) => response.json())
+                .then((responseJson) => {
+                    
+                    this.setState({pdVisible: false})
+                    if(responseJson['message'] == null) {
+                        alert("Update failed\nPlease select/capture image again")
+                    } else {
+                        //console.warn(responseJson)
+                        //this.props.navigation.navigate('Account')
+                        alert("Enrolled")
+                        if(this.state.flow == 1) {
+                            const popAction = StackActions.pop({
+                              n: 1,
+                            });
+                            this.props.navigation.dispatch(popAction)
+                          } else {
+                            const popAction = StackActions.pop({
+                              n: 2,
+                            });
+                            this.props.navigation.dispatch(popAction) 
+                          }
+                        }
+                })
+                .catch((error) => {
+                    console.warn(error);
+                })
         }
           
     }

@@ -9,6 +9,7 @@ export default class Canvas extends Component {
   constructor(props) {
     super(props);
     this.state.isSignature  = this.props.navigation.getParam('isSignature')
+    this.state.flow  = this.props.navigation.getParam('flow')
     //console.warn(this.state.isSignature)
   }
     state = { 
@@ -17,6 +18,7 @@ export default class Canvas extends Component {
       auth: null,
       pdVisible: false,
       isSignature: true,
+      flow: null
     }
  
   static navigationOptions = {
@@ -55,10 +57,17 @@ export default class Canvas extends Component {
             //console.warn(responseJson)
             //this.props.navigation.navigate('Account')
             alert("Updated")
-            const popAction = StackActions.pop({
-              n: 2,
-            });
-            this.props.navigation.dispatch(popAction) 
+            if(this.state.flow == 1) {
+              const popAction = StackActions.pop({
+                n: 1,
+              });
+              this.props.navigation.dispatch(popAction)
+            } else {
+              const popAction = StackActions.pop({
+                n: 2,
+              });
+              this.props.navigation.dispatch(popAction) 
+            }
           }
       })
       .catch((error) => {
@@ -87,10 +96,18 @@ export default class Canvas extends Component {
             //console.warn(responseJson)
             //this.props.navigation.navigate('Account')
             alert("Enrolled")
-            const popAction = StackActions.pop({
-              n: 2,
-            });
-            this.props.navigation.dispatch(popAction) 
+            if(this.state.flow == 1) {
+              const popAction = StackActions.pop({
+                n: 1,
+              });
+              this.props.navigation.dispatch(popAction)
+            } else {
+              const popAction = StackActions.pop({
+                n: 2,
+              });
+              this.props.navigation.dispatch(popAction) 
+            }
+          
           }
       })
       .catch((error) => {
@@ -102,7 +119,7 @@ export default class Canvas extends Component {
 }
  
   render() {
-    var pencolor = "#003d5a";
+    var pencolor = "black";
     return (
       <View style={styles.mainContainer}>
 

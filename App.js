@@ -8,6 +8,7 @@ import Account  from './src/components/Account/Index.js';
 import Profile  from './src/components/Account/Profile.js';
 import Canvas from './src/components/Signature/Canvas.js'
 import Image from './src/components/Signature/ImageP.js'
+import Fonts from './src/components/Signature/Fonts.js'
 import DocumentDetails from './src/components/Documents/DocumentDetails.js'
 import Contacts from './src/components/Contacts/Index.js'
 import Forgot_Pass from './src/components/Login/Forgot_Pass.js'
@@ -29,6 +30,7 @@ const AppNavigator = createStackNavigator({
   Profile: {screen: Profile},
   Canvas: {screen: Canvas},
   Image: {screen: Image},
+  Fonts: {screen: Fonts},
   DocumentDetails: {screen: DocumentDetails},
   Contacts: {screen:Contacts},
   Forgot_Pass: {screen:Forgot_Pass},
