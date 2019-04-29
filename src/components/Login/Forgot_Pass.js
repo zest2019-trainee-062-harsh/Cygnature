@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255,255,255,0.7)',
         paddingHorizontal: 20,
         margin: 20,
-        fontSize: 12,
+        fontSize: 14,
         borderRadius: 30,
         fontFamily: 'Helvetica'
     },

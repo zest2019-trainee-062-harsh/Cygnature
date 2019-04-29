@@ -523,7 +523,7 @@ class Register extends Component {
                             value={"+91"}
                             dropdownOffset={{top:15, left:0}}
                             data = {this.state.data}
-                            fontSize = {12}
+                            fontSize = {14}
                             selectedItemColor = "black"
                             disabledItemColor = "grey"
                             valueExtractor = {({countryCode}) => countryCode}
@@ -599,7 +599,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255,255,255,0.7)',
         paddingHorizontal: 20,
         marginBottom: 15,
-        fontSize: 12,
+        fontSize: 14,
         borderRadius: 30,
         fontFamily: 'Helvetica'
     },
@@ -619,7 +619,7 @@ const styles = StyleSheet.create({
         color: '#ff0000',
         marginLeft:15,
         marginBottom:15,
-        fontSize: 11,
+        fontSize: 12,
     },
     bkImg: {
         width: width,

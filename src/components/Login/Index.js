@@ -19,6 +19,7 @@ import {StyleSheet,
 
 import { CheckBox } from 'react-native-elements'
 
+import Icon from 'react-native-vector-icons/FontAwesome'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 
@@ -46,7 +47,9 @@ class Login extends Component {
         data: {  },
         auth: [],
         opacity: 0.5,
-        isVisible: true
+        isVisible: true,
+        passwordIconName: "toggle-on",
+        passwordSecureTextEntry: true
     }
 
     checkConn() {
@@ -163,6 +166,7 @@ class Login extends Component {
 
     call(text) {
         switch(text){
+            
             case "Register":
             this.props.navigation.navigate('Register')
             return
@@ -225,18 +229,12 @@ class Login extends Component {
                 }
             })
             .catch((error) => {
-                console.warn(error);
+                console.warn(error.message);
             })
             return
         }
     }
     }
-
-    showData = async()=> {
-        let auth = await AsyncStorage.getItem('stored_password');
-        alert(auth)
-    }
-  
 
   componentWillMount() {
     this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow)
@@ -297,33 +295,51 @@ class Login extends Component {
                         onChangeText={text => this.validate(text, "email")}
                         style= { styles.boxTI }>
                     </TextInput>
-                    {/* <Text style = { styles.boxLabel }>Password</Text> */}
-                    <TextInput
-                        placeholderTextColor='grey'
-                        placeholder = "Password"
-                        returnKeyType="done"
-                        ref={(input) => this.passwordInput = input}
-                        onChangeText={text => this.validate(text, "password")}
-                        secureTextEntry
-                        style= { styles.boxTI }>
-                    </TextInput>               
-                    
+
+                    <View style={[styles.boxTI, {justifyContent:'center', alignItems: 'center', flex:1, flexDirection: 'row'}]}>
+                        <TextInput
+                            placeholderTextColor='grey'
+                            placeholder = "Password"
+                            returnKeyType="done"
+                            ref={(input) => this.passwordInput = input}
+                            onChangeText={text => this.validate(text, "password")}
+                            secureTextEntry={this.state.passwordSecureTextEntry}
+                            style={{flex:0.87}}
+                        />
+                        <Icon
+                            style={{flex:0.13}}
+                            name={this.state.passwordIconName}
+                            size={30}
+                            color='black'
+                            onPress= {()=> {
+                                    if(this.state.passwordSecureTextEntry){
+                                        this.setState({passwordIconName:"toggle-off", passwordSecureTextEntry: false})
+                                    } 
+                                    else {
+                                        this.setState({passwordIconName:"toggle-on", passwordSecureTextEntry: true})
+                                    }
+                            
+                                }
+                            }
+                        />  
+                    </View>
+
                     <View style={{flex:1, flexDirection: 'row'}}>
-                    <CheckBox
-                        title='Remember Me'
-                        textStyle={{color: 'white'}}
-                        uncheckedColor="white"
-                        checkedColor="#6eab52"
-                        size={20}
-                        checked={this.state.checked}
-                        containerStyle={{flex:1 , borderColor:'#414345' , backgroundColor:'rgba(255,255,255,0)'}}
-                        onPress={() => this.onChangeCheck()}
-                    />
-                    <TouchableOpacity 
-                        onPress={()=> this.call("Forgot_Pass")} 
-                        style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                            <Text style = { styles.buttonText }>Forgot Password?</Text>
-                    </TouchableOpacity>
+                        <CheckBox
+                            title='Remember Me'
+                            textStyle={{color: 'white'}}
+                            uncheckedColor="white"
+                            checkedColor="#6eab52"
+                            size={20}
+                            checked={this.state.checked}
+                            containerStyle={{flex:1 , borderColor:'#414345' , backgroundColor:'rgba(255,255,255,0)'}}
+                            onPress={() => this.onChangeCheck()}
+                        />
+                        <TouchableOpacity 
+                            onPress={()=> this.call("Forgot_Pass")} 
+                            style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                                <Text style = { styles.buttonText }>Forgot Password?</Text>
+                        </TouchableOpacity>
                     </View>
                     {this.state.anim ? <ActivityIndicator color="white" size="large" /> : null}
 
@@ -382,7 +398,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255,255,255,0.7)',
         paddingHorizontal: 20,
         marginBottom: 15,
-        fontSize: 12,
+        fontSize: 14,
         borderRadius: 30,
         fontFamily: 'Helvetica'
     },

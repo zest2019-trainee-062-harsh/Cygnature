@@ -67,7 +67,7 @@ export default class Index extends Component {
 
    
     redirect = () => {
-        console.warn("Y")
+        //console.warn("Y")
         AsyncStorage.clear();
         this.props.navigation.navigate("Login")
     }
@@ -84,14 +84,14 @@ export default class Index extends Component {
                 },
                 {
                     text: 'Yes', onPress: ()=>{
-                        AsyncStorage.clear();
                         const resetAction = StackActions.reset({
                             index: 0,
                             actions: [
                               NavigationActions.navigate({ routeName: 'Login'})
                             ]
                           })
-                        this.props.navigation.navigate(resetAction)
+                        this.props.navigation.dispatch(resetAction)
+                        AsyncStorage.clear();
                     }
                 },
             ],
