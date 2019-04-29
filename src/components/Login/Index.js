@@ -29,7 +29,7 @@ class Login extends Component {
         this.checkConn()
         this.keyboardWillShow = this.keyboardWillShow.bind(this)
         this.keyboardWillHide = this.keyboardWillHide.bind(this)
-    
+        
     }
     
     static navigationOptions = {
@@ -91,12 +91,13 @@ class Login extends Component {
     // }
 
     onChangeCheck() {
-        this.setState({ checked: !this.state.checked})
+        this.setState({ checked: !this.state.checked}) 
     }
 
     validate = (text, value) => {
         switch(value) {
             case "email": {
+                this.setState({email:text})
                 //console.warn(text);
                 let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
                 if(reg.test(text) === false){
@@ -176,6 +177,12 @@ class Login extends Component {
             return
 
             case "Login":
+            setTimeout( () => {
+                if(this.state.checked) {
+                    AsyncStorage.setItem('email',this.state.email);
+                    AsyncStorage.setItem('password',this.state.password);
+                } 
+            }, 500);
             this.checkCred()
             this.setState({anim:true})
             if(this.state.val) {
@@ -217,7 +224,6 @@ class Login extends Component {
                     AsyncStorage.setItem('auth',this.state.auth);
                     AsyncStorage.setItem('token',this.state.data["token"]);
                     AsyncStorage.setItem('userId',this.state.data["userId"]);
-                    AsyncStorage.setItem('password',this.state.password);
                     this.props.navigation.navigate('OTP',{"data":this.state.data});
                     // if(this.state.checked == true){
                     //     AsyncStorage.setItem('email',this.state.email)
@@ -236,9 +242,14 @@ class Login extends Component {
     }
     }
 
-  componentWillMount() {
+  componentWillMount= async() => {
     this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow)
     this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide)
+    
+    let email = await AsyncStorage.getItem('email');
+    let password = await AsyncStorage.getItem('password');
+    this.setState({email: email, password: password})
+    
   }
 
   componentWillUnmount() {
@@ -285,6 +296,7 @@ class Login extends Component {
                     {/* <Text style = { styles.boxLabel }>E-Mail</Text> */}
 
                     <TextInput
+                        value={this.state.email}
                         placeholderTextColor='grey'
                         placeholder = "Email"
                         returnKeyType="next"
@@ -298,6 +310,7 @@ class Login extends Component {
 
                     <View style={[styles.boxTI, {justifyContent:'center', alignItems: 'center', flex:1, flexDirection: 'row'}]}>
                         <TextInput
+                            value={this.state.password}
                             placeholderTextColor='grey'
                             placeholder = "Password"
                             returnKeyType="done"

@@ -91,7 +91,12 @@ export default class Index extends Component {
                             ]
                           })
                         this.props.navigation.dispatch(resetAction)
-                        AsyncStorage.clear();
+                        //AsyncStorage.clear();
+                        let keys = ['auth', 'otp_check', 'token', 'userId'];
+                        AsyncStorage.multiRemove(keys, (err) => {
+                        // keys k1 & k2 removed, if they existed
+                        // callback to do some action after removal of item
+                        });
                     }
                 },
             ],
