@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { StyleSheet,Text, View,ScrollView, Dimensions ,TouchableOpacity,Image} from 'react-native'
+import { StyleSheet,Text, View,ScrollView, Dimensions , ToastAndroid,TouchableOpacity,Image,AsyncStorage} from 'react-native'
+import fetch_blob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs';
 
 var height = Dimensions.get('window').height; //full height
 
@@ -7,21 +9,58 @@ export default class DocumentCertificate extends Component {
 
     constructor(props){
         super(props)
-            this.state.data  = this.props.navigation.getParam('data')
+            this.state.data  = this.props.navigation.getParam('data');
     }
+
     static navigationOptions = {
         title: "Document Certificate"
     }
     state = {
         data: [],
+        Id:"",
+        pdVisible:true,
+        newData: ""
     }
+
+    download = () => {
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/certificate-download/'+this.state.Id, {
+        method: 'GET',
+        headers: {
+            'Authorization': this.state.auth,
+        },
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            
+            const fs = fetch_blob.fs
+            const dirs = fetch_blob.fs.dirs 
+            const file_path = dirs.DownloadDir + "/" + "Certficiate_"+this.state.data["documentDetail"]["fileName"]+"_"+this.state.data["documentDetail"]["creationTime"]
+            
+            RNFS.writeFile(file_path, responseJson["data"][0], 'base64')
+                .then((success) => {
+                    alert('Document Saved!');
+                })
+                .catch((error) => {
+                    alert(JSON.stringify(error.message));
+            });
+        })
+        .catch((error) => {
+            console.warn(error);
+        });
+    }
+    
+    
+    componentWillMount = async() =>{
+        this.state.auth = await AsyncStorage.getItem('auth');
+        this.setState({Id: this.state.data["documentDetail"]["Id"]})
+    }
+
     
   render() {
     return (
       <View style={styles.mainContainer}>
       <View style={styles.header}>
         <Image source={require('../../../img/logo-white.png')} style={{marginLeft:5,marginTop:5}}/>
-        <Text style={{marginTop:10,color:"white",fontWeight:"bold",marginLeft:10}}> {this.state.data["documentDetail"]["name"]}</Text>
+        <Text style={{marginTop:10,color:"white",fontWeight:"bold",marginLeft:10}}> Harsh</Text>
       </View>
       <ScrollView>             
         <View style={styles.box}>
@@ -151,7 +190,7 @@ export default class DocumentCertificate extends Component {
             </View>
         </View> 
 
-        <TouchableOpacity  onPress={()=> this.certificate()}
+        <TouchableOpacity  onPress={()=> this.download()}
             style = {styles.buttonContainer}>
                 <Text style = { styles.buttonText }>Download</Text>
         </TouchableOpacity>              
