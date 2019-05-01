@@ -5,14 +5,15 @@ import
 from 'react-native'
 import ImageZoom from 'react-native-image-pan-zoom';
 
-import { StackActions, NavigationActions } from 'react-navigation'
 import Swiper from 'react-native-swiper';
 import Icon1 from 'react-native-vector-icons/FontAwesome5'
 import Icon2 from 'react-native-vector-icons/Ionicons'
 import { Dropdown } from 'react-native-material-dropdown'
 
+import { StackActions, NavigationActions } from 'react-navigation'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
+var ratio = "0.612903225806452";
 
 class Test extends Component {
   constructor(props) {
@@ -20,14 +21,11 @@ class Test extends Component {
     this.state.data = this.props.navigation.getParam('data')
     this.state.signers = this.props.navigation.getParam('signers')
     this.state.totalPage = this.state.data["pageCount"]
-    this.state.imageHeight = null
-    this.state.imageWidth = null
-    this.state.ratio = null
+    this.state.imageHeight = 1078.0487
+    this.state.imageWidth = 760
   }
 
   componentWillMount(){
-    this.getImageSize();
-    // console.warn(this.state.signers)
     this.Animatedvalue = new Animated.ValueXY();
     this._value = {x: 0, y: 0}
     this.Animatedvalue.addListener((value)=> this._value = value)
@@ -48,28 +46,6 @@ class Test extends Component {
         console.warn(this._value)
       },
     })
-  }
-
-  getImageSize(){
-    const image = "data:image/png;base64,"+this.state.data["pages"][0]
-    // console.warn(image)
-    Image.getSize(image, (height, width) => {
-      let imageHeight=null;
-      let imageWidth=null;
-      let ratio = null;
-      imageHeight = height
-      imageWidth = width
-      ratio = imageWidth/imageHeight
-      this.calculate(ratio, imageHeight, imageWidth)
-    })
-  }
-
-  calculate(x, y, z){
-    this.state.ratio = x;
-    this.state.imageHeight = y;
-    this.state.imageWidth =z;
-    const calculatedHeight = (width/1.4)/x;
-    console.warn(calculatedHeight)
   }
 
   static navigationOptions = {
@@ -96,7 +72,6 @@ class Test extends Component {
 
   changeId(value){
     this.state.currentSigner = value
-    // console.warn(this.state.currentSigner)
   }
 
   addAnnotation(){
@@ -120,16 +95,14 @@ class Test extends Component {
   }
 
   review = async() => {
-      const xPercentage = ((this._value.x * 100)/(width/1.4))
-      const yPercentage = ((this._value.y * 100)/(height/2))
+      const realWidth = width/1.4
+      const realHeight = height/2
+      const xPercentage = ((this._value.x * 100)/realWidth)
+      const yPercentage = ((this._value.y * 100)/realHeight)
       const realxPercentage = (xPercentage * this.state.imageWidth)/100
       const realyPercentage = (yPercentage * this.state.imageHeight)/100
-      // console.warn(realxPercentage+" "+realyPercentage)
       const wPercentage = (100/(width/1.4))*100
-      const hPercentage = (20/(height/2))*100
-      const ratio = (width/1.4)/(height/2)
-      // console.warn((width/1.4)+" "+(height/2))
-      // console.warn(this._value.x+" "+this._value.y+" "+xPercentage+" "+yPercentage+" "+wPercentage+" "+hPercentage+" "+ratio)
+      const hPercentage = (100/realHeight)*100
       let auth = await AsyncStorage.getItem("auth")
       return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/create',{
       method: 'POST',
@@ -139,8 +112,8 @@ class Test extends Component {
       },
       body: JSON.stringify({
         "processDocumentId": this.state.data["Id"],
-        "name": "Sample Cygnature Document",
-        "fileName": "Sample Document",
+        "name": "Code Updated",
+        "fileName": "Code Updated",
         "extension": ".pdf",
         "description": "This is test description",
         "expiryStartDate": "2018-11-19 11:42:59.803",
@@ -149,24 +122,24 @@ class Test extends Component {
         "reminderBefore": 3,
         "documentShapeModel": [
           { 
-              "x": realxPercentage,
-              "xPercentage": xPercentage,
-              "y": realyPercentage,
-              "yPercentage": yPercentage,
-              "w": 100,
-              "wPercentage": wPercentage,
-              "h": 20,
-              "hPercentage": hPercentage,
-              "p": 1,
-              "ratio": "0.612903225806452",
-              "userId": "E1255565-0444-462F-8EC3-F47A74D4D45E",
-              "isAnnotation": true,
-              "SignatureType": "ESignature"
+            "x": realxPercentage,
+            "xPercentage": xPercentage,
+            "y": realyPercentage,
+            "yPercentage": yPercentage,
+            "w": 100,
+            "wPercentage": wPercentage,
+            "h": 100,
+            "hPercentage": hPercentage,
+            "p": 1,
+            "ratio": "0.612903225806452",
+            "userId": "ED2C932F-E887-4EE2-A174-5351CBB33E0E",
+            "isAnnotation": true,
+            "SignatureType": "ESignature"
           }
         ],
         "signingFlowType": 1,
         "signerIds": [
-          "E1255565-0444-462F-8EC3-F47A74D4D45E"
+          "ED2C932F-E887-4EE2-A174-5351CBB33E0E"
         ],
         "observerIds": [],
         "signatures": [
@@ -182,20 +155,13 @@ class Test extends Component {
       })
       }).then((response) => response.json())
       .then((responseJson) => {
-          alert(responseJson["message"])
-          const popAction = StackActions.pop({
-            n: 2,
-          });
-          this.props.navigation.dispatch(popAction)    
-          //this.props.navigation.navigate("DocumentDetails", {"Id": responseJson["data"][0]["documentId"]})
-          // const resetAction = StackActions.reset({
-          //   index: 0,
-          //   actions: [
-          //     NavigationActions.navigate({ routeName: 'DocumentDetails', params:{"Id": responseJson["data"][0]["documentId"]} })
-          //   ]
-          // })
-          // this.props.navigation.dispatch(resetAction)
-        })
+        alert(responseJson["message"])
+        const popAction = StackActions.pop({
+          n: 2,
+        });
+        this.props.navigation.dispatch(popAction)    
+       
+      })
       .catch((error) => {
           console.warn(error.message)
       });
@@ -235,12 +201,11 @@ class Test extends Component {
                 data={this.state.signers}
                 selectedItemColor="#003d5a"
                 rippleCentered={true}
-                itemTextStyle={{color:"white"}}
-                baseColor="white"
+                itemTextStyle={"helvetica"}
                 containerStyle={{
                   marginLeft:"25%",
                   marginRight:"25%"
-                }}
+                }}  
                 onChangeText={(value) => {
                   this.changeId(value)
                 }}
@@ -257,26 +222,24 @@ class Test extends Component {
               style={{margin:20, justifyContent:'center', alignItems: 'center'}}
               title={<Text>{this.state.count+1}/{this.state.totalPage}</Text>}
             >
-              <ScrollView>
-                <ImageZoom
-                  cropWidth={width/1.4}
-                  cropHeight={height/2}
-                  imageWidth={width/1.4}
-                  imageHeight={height/2}
+              <ImageZoom
+                cropWidth={width/1.4}
+                cropHeight={height/2}
+                imageWidth={width/1.4}
+                imageHeight={height/2}
+              >
+                <ImageBackground style={styles.imageContainer}
+                  source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}
                 >
-                  <ImageBackground style={styles.imageContainer}
-                    source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}
-                  >
-                      <Animated.View
-                          style={styles.imageContainer}
-                          {...this.PanResponder.panHandlers}
-                          style={animatedStyle}
-                      >
-                        <Text>Drag Me</Text>
-                      </Animated.View>
-                  </ImageBackground>
-                </ImageZoom>
-              </ScrollView>
+                    <Animated.View
+                        style={styles.imageContainer}
+                        {...this.PanResponder.panHandlers}
+                        style={animatedStyle}
+                    >
+                      <Text>Drag Me</Text>
+                    </Animated.View>
+                </ImageBackground>
+              </ImageZoom>
             </View>
             {
               this.state.data.pages.map((item) => {
@@ -413,7 +376,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     borderColor:'black',
     borderWidth:1,
-    width:'100%',
+    width: '100%',
     height:'100%'
   },
 })
