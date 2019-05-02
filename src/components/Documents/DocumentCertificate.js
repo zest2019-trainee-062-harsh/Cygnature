@@ -207,6 +207,7 @@ const styles = StyleSheet.create({
     mainContainer:{
         height: height*0.87,
         margin: 7,
+        marginTop:-7,
         borderWidth: 2,
         borderRadius:5,
         borderColor: "#003d5a",
