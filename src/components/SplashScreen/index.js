@@ -3,6 +3,7 @@ import {
   AppRegistry, Text, View, StyleSheet, StatusBar, Animated, Dimensions, AsyncStorage, Alert
 } from 'react-native';
 import moment from 'moment';
+
 var {height} = Dimensions.get('window')
 import { StackActions, NavigationActions } from 'react-navigation'
 
@@ -43,6 +44,7 @@ export default class SplashScreen extends Component{
       //this.props.navigation.navigate('Login')
       this.authCheck()
       // this.props.navigation.navigate('FilePreview')
+    
     })
   }
 
@@ -73,7 +75,8 @@ export default class SplashScreen extends Component{
         this.state.auth = auth;
         let fingerprint = await AsyncStorage.getItem('fingerprint')
         this.state.fingerprint = fingerprint
-        this.refreshToken();
+        this.getCount();
+        // this.refreshToken();
       }
     }
   }

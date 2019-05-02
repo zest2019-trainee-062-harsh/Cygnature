@@ -147,22 +147,30 @@ class OTP extends Component {
         }
     }
     checkOTP = async() => {
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Dashboard'})
+            ]
+        })
+        AsyncStorage.setItem('otp_check','done');
+        this.props.navigation.dispatch(resetAction)
         //console.warn(this.state.otp)
-        if(this.state.otp == this.state.defaultotp) {
-            AsyncStorage.setItem('otp_check','done');
-            //this.props.navigation.navigate("Dashboard")
-            const resetAction = StackActions.reset({
-                index: 0,
-                actions: [
-                  NavigationActions.navigate({ routeName: 'Dashboard'})
-                ]
-              })
-              this.props.navigation.dispatch(resetAction)
-        }
-        else {
-            AsyncStorage.setItem('otp_check','not_present');
-            console.warn("OTP does not Match")
-        }
+        // if(this.state.otp == this.state.defaultotp) {
+        //     AsyncStorage.setItem('otp_check','done');
+        //     //this.props.navigation.navigate("Dashboard")
+        //     const resetAction = StackActions.reset({
+        //         index: 0,
+        //         actions: [
+        //           NavigationActions.navigate({ routeName: 'Dashboard'})
+        //         ]
+        //       })
+        //       this.props.navigation.dispatch(resetAction)
+        // }
+        // else {
+        //     AsyncStorage.setItem('otp_check','not_present');
+        //     console.warn("OTP does not Match")
+        // }
     }
 
     

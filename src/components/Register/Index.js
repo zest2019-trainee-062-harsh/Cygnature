@@ -14,9 +14,8 @@ import {
     Linking,
 } from 'react-native'
 
-import { Dropdown } from 'react-native-material-dropdown';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-
+import { Dropdown } from 'react-native-material-dropdown';
 import RNLocation from 'react-native-location';
 
 var width = Dimensions.get('window').width; //full width
@@ -26,7 +25,7 @@ class Register extends Component {
     constructor(props) {
         super(props)
         this.getLoc()
-          
+        this.getCode()
         this.keyboardWillShow = this.keyboardWillShow.bind(this)
         this.keyboardWillHide = this.keyboardWillHide.bind(this)
         
@@ -55,7 +54,28 @@ class Register extends Component {
         rLat: " ",
         rLon: " ",
         isVisible: true,
-            
+        data: [],
+        countryCode: [],
+        gender: []
+    }
+
+    getCode() {
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/setting/get/', {
+            method: 'GET',
+            }).then((response) => response.json())
+            .then((responseJson) => {
+        
+                this.setState({data : responseJson["data"][0]["countries"]})
+                //console.warn(this.state.data)
+                this.state.data.map((y) => {
+                    this.state.countryCode.push(y.countryCode)
+                })
+                
+                //console.warn(this.state.countryCode)
+            })
+            .catch((error) => {
+                console.warn(error);
+            });
     }
 
     getLoc() {
@@ -160,6 +180,7 @@ class Register extends Component {
                         console.warn(error);
                     });
         }
+                return
             }
 
             case "password":{
@@ -205,14 +226,6 @@ class Register extends Component {
                 }
                 return
             }
-            case "jobTitle": {
-                this.setState({jobTitle: text})
-                return
-            } 
-            case "organization": {
-                this.setState({organization: text})
-                return
-            } 
         }
     }
     OTP() {
@@ -281,6 +294,8 @@ class Register extends Component {
     }
     
     register(){
+        console.warn(this.state.countryCode
+            )
         const { register } = this.state
         if (register == null) {
 
@@ -305,11 +320,11 @@ class Register extends Component {
                     email: this.state.rEmail,
                     password: this.state.rPassword,
                     confirmPassword: this.state.rPassword,
-                    countryId: "91",
+                    countryId: this.state.countryCode,
                     phoneNumber: this.state.rPhone,
                     userLatitude: this.state.rLat,
                     userLongitude: this.state.rLon,
-                
+                    gender: this.state.gender
                 }),
                 }).then((responseJson) => {
                     if(responseJson.status == 200) {
@@ -326,36 +341,10 @@ class Register extends Component {
                 });
             }
         }
-        countryCode(){
-            return fetch('http://cygnatureapipoc.stagingapplications.com/api/setting/get/', {
-                method: 'GET',
-                }).then((response) => response.json())
-                .then((responseJson) => {
-            
-                    this.setState({data : responseJson["data"][0]["countries"]})
-                    //console.warn(this.state.data)
-                    
-                    //console.warn(this.state.countryCode)
-                })
-                .catch((error) => {
-                    console.warn(error);
-                });
-    
-        }
-        onChangeHandler = (value) => {
-            // console.warn(this.state.countryCode);
-            // console.warn("Selected value = ", value);
-            this.setState({countryCode: value.replace(/[^0-9]/g, '')})
-            
-            console.warn(this.state.countryCode);
-          }
-    
-    
     
   componentWillMount() {
     this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow)
     this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide)
-    this.countryCode()
   }
 
   componentWillUnmount() {
@@ -374,24 +363,35 @@ class Register extends Component {
       isVisible: true
     })
   }
+    onChangeHandler = (value) => {
+    // console.warn("Selected value = ", value);
+        this.setState({countryCode: value.replace(/[^0-9]/g, '')})
+    //console.warn(this.state.countryCode);   
+    }
+
+    changeGender = (value) => {
+        this.setState({gender: value})
+    }
+
 
     render(){
+        let gender = [
+            {
+                label: "Male",
+                value: 1
+            },
+            {
+                label: "Female",
+                value: 2
+            },
+            {
+                label: "Others",
+                value: 3
+            }
+        ]
         return(
             <View behavior="padding" style={styles.maincontainer}>
              <View style={{flex:0.90, justifyContent:'center'}}>
-            
-            <View style={styles.logoContainer}>
-                <Image
-                    source={require('../../../img/logo-white.png')}
-                />
-                <View style={{marginLeft: 20}}>
-                    <Text style={{ color:"white", marginTop: this.state.titleMarginTop}}>
-                        <Text>• Authenticate &nbsp; &nbsp;</Text>
-                        <Text style={{fontStyle: "italic"}}>• Sign&nbsp; &nbsp;</Text>
-                        <Text>• Protect</Text>
-                    </Text>
-                </View>
-            </View>
 
             <View style={ styles.formContainer }>
             <ProgressDialog
@@ -404,6 +404,18 @@ class Register extends Component {
             />
 
             <ScrollView>
+                <View style={styles.logoContainer}>
+                    <Image
+                        source={require('../../../img/logo-white.png')}
+                    />
+                    <View style={{marginLeft: 20}}>
+                        <Text style={{ color:"white", marginTop: this.state.titleMarginTop}}>
+                            <Text>• Authenticate &nbsp; &nbsp;</Text>
+                            <Text style={{fontStyle: "italic"}}>• Sign&nbsp; &nbsp;</Text>
+                            <Text>• Protect</Text>
+                        </Text>
+                    </View>
+                </View>
                 <View style = { styles.container }>
                     <StatusBar
                         barStyle="#414345" />
@@ -463,6 +475,7 @@ class Register extends Component {
                             returnKeyType="go"
                             ref={(input) => this.REGInput3 = input}
                             onSubmitEditing={() => this.REGInput4.focus()}
+                            onChangeText={text => this.setState({password: text})}
                             onChangeText={text => this.validations(text, "password")}
                             secureTextEntry
                             style= { styles.boxTI }>
@@ -478,6 +491,7 @@ class Register extends Component {
                             returnKeyType="go"
                             ref={(input) => this.REGInput4 = input}
                             onSubmitEditing={() => this.REGInput5.focus()}
+                            onChangeText={text => this.setState({password: text})}
                             onChangeText={text => this.validations(text, "cpassword")}
                             secureTextEntry
                             style= { styles.boxTI }>
@@ -487,50 +501,30 @@ class Register extends Component {
                          <Text style = { styles.errorText }>{this.state.errorCPass}</Text>
                         }
 
-                        
-                        <TextInput
-                            placeholderTextColor='grey'
-                            placeholder = "Job Title"
-                            returnKeyType="next"
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            onChangeText={text => this.validations("jobTitle", text)}
-                            onSubmitEditing={() => this.ref1.focus()}
-                            style= { styles.boxTI }>
-                        </TextInput>
+                        <View style={{flexDirection:'row'}}>
 
-                        <TextInput
-                            placeholderTextColor='grey'
-                            placeholder = "Company Name"
-                            returnKeyType="next"
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            onChangeText={text => this.validations("organization", text)}
-                            onSubmitEditing={() => this.ref1.focus()}
-                            style= { styles.boxTI }>
-                        </TextInput>
-                        
-                        
-                    <View style={styles.mainBox}>
-                       <View style={styles.box1}>
-                        <Dropdown
-                        containerStyle={{
-                            marginBottom: -20,
-                            paddingTop:10
-                        }}
-                        pickerStyle={{
-                            marginBottom: -40,
-                            paddingTop:10
-                        }}
-                        
-                        value="+91"
-                        data = {this.state.data}
-                        valueExtractor = {({countryCode}) => countryCode}
-                        onChangeText = {value => this.onChangeHandler(value)}
-                        selectedItemColor = "red"
+                        <Dropdown 
+                            containerStyle={{
+                                flex:0.2,
+                                backgroundColor: 'rgba(255,255,255,0.7)',
+                                paddingHorizontal: 10,
+                                borderRadius: 30,
+                                height:50,
+                                borderBottomColor: 'rgba(255,255,255,0.7)',
+                            }}
+                            itemTextStyle={{
+                                textAlign:'center'
+                            }}
+                            value={"+91"}
+                            dropdownOffset={{top:15, left:0}}
+                            data = {this.state.data}
+                            fontSize = {14}
+                            selectedItemColor = "black"
+                            disabledItemColor = "grey"
+                            valueExtractor = {({countryCode}) => countryCode}
+                            onChangeText = {value => this.onChangeHandler(value)}
                         />
-                        </View>
-                        <View style={styles.box2}>
+        
                         <TextInput
                             placeholderTextColor='grey'
                             keyboardType="numeric"
@@ -539,16 +533,34 @@ class Register extends Component {
                             autoCapitalize="none"
                             autoCorrect={false}
                             maxLength={10}
-                            style={ styles.boxTI }
                             onChangeText={text => this.validations(text, "phone")}
                             //ref={(input) => this.REGInput7 = input
                             ref={(input) => this.REGInput5 = input
                             }
-                            >
+                            style= {[ styles.boxTI, {flex:0.8, marginLeft:10}] }>
                         </TextInput>
                         </View>
-                       </View> 
-                        
+
+                        <Dropdown 
+                            containerStyle={{
+                                flex:1,
+                                backgroundColor: 'rgba(255,255,255,0.7)',
+                                paddingHorizontal: 10,
+                                borderRadius: 30,
+                                height:50,
+                            }}
+                            itemTextStyle={{
+                                textAlign:'center'
+                            }}
+                            value={"Gender: "}
+                            dropdownOffset={{top:15, left:0}}
+                            data = {gender}
+                            fontSize = {14}
+                            selectedItemColor = "black"
+                            disabledItemColor = "grey"
+                            // valueExtractor = {({Gender}) => value}
+                            onChangeText = {value => this.changeGender(value)}
+                        />
 
                         <Text style={ styles.boxDisc }>
                         By Clicking on 'Register' Button , You agree to the 
@@ -599,29 +611,11 @@ const styles = StyleSheet.create({
         color: 'white',
         textAlign: 'center'
     },
-    mainBox : {
-        //padding:30,
-        //marginBottom: 40,
-        flex:1,
-        flexDirection:"row",
-    },
-    box1:{
-        flex:0.3,
-        backgroundColor: 'rgba(255,255,255,0.7)',
-        paddingHorizontal: 20,
-        marginBottom: 15,
-        fontSize: 12,
-        borderRadius: 30,
-        fontFamily: 'Helvetica'
-    },
-    box2: {
-        flex:0.7,
-    },
     boxTI: {
         backgroundColor: 'rgba(255,255,255,0.7)',
         paddingHorizontal: 20,
         marginBottom: 15,
-        fontSize: 12,
+        fontSize: 14,
         borderRadius: 30,
         fontFamily: 'Helvetica'
     },
@@ -641,7 +635,7 @@ const styles = StyleSheet.create({
         color: '#ff0000',
         marginLeft:15,
         marginBottom:15,
-        fontSize: 11,
+        fontSize: 12,
     },
     bkImg: {
         width: width,

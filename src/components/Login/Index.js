@@ -19,6 +19,7 @@ import {StyleSheet,
 
 import { CheckBox } from 'react-native-elements'
 
+import Icon from 'react-native-vector-icons/FontAwesome'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 
@@ -28,7 +29,7 @@ class Login extends Component {
         this.checkConn()
         this.keyboardWillShow = this.keyboardWillShow.bind(this)
         this.keyboardWillHide = this.keyboardWillHide.bind(this)
-    
+        
     }
     
     static navigationOptions = {
@@ -42,11 +43,13 @@ class Login extends Component {
         val: false,
         anim: false,
         enable: true,
-        resData: {},
-        data: {},
+        resData: {  },
+        data: {  },
         auth: [],
         opacity: 0.5,
-        isVisible: true
+        isVisible: true,
+        passwordIconName: "toggle-on",
+        passwordSecureTextEntry: true
     }
 
     checkConn() {
@@ -67,14 +70,34 @@ class Login extends Component {
         })
     }
 
-   
+    // componentWillMount() {
+    //     BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
+    // }
+
+    // componentWillUnmount(){
+    //     BackHandler.removeEventListener('hardwareBackPress', this.onBackPressed);
+    // }
+
+    // onBackPressed() {
+    //     Alert.alert(
+    //     'Exit App',
+    //     'Do you want to exit?',
+    //     [
+    //         {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+    //         {text: 'Yes', onPress: () => BackHandler.exitApp()},
+    //     ],
+    //     { cancelable: false });
+    //     return true;
+    // }
+
     onChangeCheck() {
-        this.setState({ checked: !this.state.checked})
+        this.setState({ checked: !this.state.checked}) 
     }
 
     validate = (text, value) => {
         switch(value) {
             case "email": {
+                this.setState({email:text})
                 //console.warn(text);
                 let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
                 if(reg.test(text) === false){
@@ -144,6 +167,7 @@ class Login extends Component {
 
     call(text) {
         switch(text){
+            
             case "Register":
             this.props.navigation.navigate('Register')
             return
@@ -153,6 +177,12 @@ class Login extends Component {
             return
 
             case "Login":
+            setTimeout( () => {
+                if(this.state.checked) {
+                    AsyncStorage.setItem('email',this.state.email);
+                    AsyncStorage.setItem('password',this.state.password);
+                } 
+            }, 500);
             this.checkCred()
             this.setState({anim:true})
             if(this.state.val) {
@@ -195,26 +225,31 @@ class Login extends Component {
                     AsyncStorage.setItem('token',this.state.data["token"]);
                     AsyncStorage.setItem('userId',this.state.data["userId"]);
                     this.props.navigation.navigate('OTP',{"data":this.state.data});
-                 
+                    // if(this.state.checked == true){
+                    //     AsyncStorage.setItem('email',this.state.email)
+                    //     AsyncStorage.setItem('stored_password',this.state.password)
+                    // }else{
+                    //     AsyncStorage.setItem('email',null)
+                    //     AsyncStorage.setItem('stored_password',null)
+                    // }
                 }
             })
             .catch((error) => {
-                console.warn(error);
+                console.warn(error.message);
             })
             return
         }
     }
     }
 
-    showData = async()=> {
-        let auth = await AsyncStorage.getItem('stored_password');
-        alert(auth)
-    }
-  
-
-  componentWillMount() {
+  componentWillMount= async() => {
     this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow)
     this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide)
+    
+    let email = await AsyncStorage.getItem('email');
+    let password = await AsyncStorage.getItem('password');
+    this.setState({email: email, password: password})
+    
   }
 
   componentWillUnmount() {
@@ -261,6 +296,7 @@ class Login extends Component {
                     {/* <Text style = { styles.boxLabel }>E-Mail</Text> */}
 
                     <TextInput
+                        value={this.state.email}
                         placeholderTextColor='grey'
                         placeholder = "Email"
                         returnKeyType="next"
@@ -271,33 +307,52 @@ class Login extends Component {
                         onChangeText={text => this.validate(text, "email")}
                         style= { styles.boxTI }>
                     </TextInput>
-                    {/* <Text style = { styles.boxLabel }>Password</Text> */}
-                    <TextInput
-                        placeholderTextColor='grey'
-                        placeholder = "Password"
-                        returnKeyType="done"
-                        ref={(input) => this.passwordInput = input}
-                        onChangeText={text => this.validate(text, "password")}
-                        secureTextEntry
-                        style= { styles.boxTI }>
-                    </TextInput>               
-                    
+
+                    <View style={[styles.boxTI, {justifyContent:'center', alignItems: 'center', flex:1, flexDirection: 'row'}]}>
+                        <TextInput
+                            value={this.state.password}
+                            placeholderTextColor='grey'
+                            placeholder = "Password"
+                            returnKeyType="done"
+                            ref={(input) => this.passwordInput = input}
+                            onChangeText={text => this.validate(text, "password")}
+                            secureTextEntry={this.state.passwordSecureTextEntry}
+                            style={{flex:0.87}}
+                        />
+                        <Icon
+                            style={{flex:0.13}}
+                            name={this.state.passwordIconName}
+                            size={30}
+                            color='black'
+                            onPress= {()=> {
+                                    if(this.state.passwordSecureTextEntry){
+                                        this.setState({passwordIconName:"toggle-off", passwordSecureTextEntry: false})
+                                    } 
+                                    else {
+                                        this.setState({passwordIconName:"toggle-on", passwordSecureTextEntry: true})
+                                    }
+                            
+                                }
+                            }
+                        />  
+                    </View>
+
                     <View style={{flex:1, flexDirection: 'row'}}>
-                    <CheckBox
-                        title='Remember Me'
-                        textStyle={{color: 'white'}}
-                        uncheckedColor="white"
-                        checkedColor="#6eab52"
-                        size={20}
-                        checked={this.state.checked}
-                        containerStyle={{flex:1 , borderColor:'#414345' , backgroundColor:'rgba(255,255,255,0)'}}
-                        onPress={() => this.onChangeCheck()}
-                    />
-                    <TouchableOpacity 
-                        onPress={()=> this.call("Forgot_Pass")} 
-                        style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                            <Text style = { styles.buttonText }>Forgot Password?</Text>
-                    </TouchableOpacity>
+                        <CheckBox
+                            title='Remember Me'
+                            textStyle={{color: 'white'}}
+                            uncheckedColor="white"
+                            checkedColor="#6eab52"
+                            size={20}
+                            checked={this.state.checked}
+                            containerStyle={{flex:1 , borderColor:'#414345' , backgroundColor:'rgba(255,255,255,0)'}}
+                            onPress={() => this.onChangeCheck()}
+                        />
+                        <TouchableOpacity 
+                            onPress={()=> this.call("Forgot_Pass")} 
+                            style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                                <Text style = { styles.buttonText }>Forgot Password?</Text>
+                        </TouchableOpacity>
                     </View>
                     {this.state.anim ? <ActivityIndicator color="white" size="large" /> : null}
 
@@ -356,7 +411,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255,255,255,0.7)',
         paddingHorizontal: 20,
         marginBottom: 15,
-        fontSize: 12,
+        fontSize: 14,
         borderRadius: 30,
         fontFamily: 'Helvetica'
     },

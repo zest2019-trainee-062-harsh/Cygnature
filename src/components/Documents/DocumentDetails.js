@@ -159,11 +159,7 @@ class DocumentDetails extends Component {
             const fs = fetch_blob.fs
             const dirs = fetch_blob.fs.dirs 
             const file_path = dirs.DownloadDir + "/" + this.state.details["documentDetail"]["fileName"]
-            //console.warn(dirs.DocumentDir)  /data/user/0/com.bigjpg/files
-            //console.warn(dirs.CacheDir)     /data/user/0/com.bigjpg/cache
-            //console.warn(dirs.DCIMDir)      /storage/emulated/0/DCIM
-            //console.lowarng(dirs.DownloadDir)  /storage/emulated/0/Download
-            //console.warn(dirs.PictureDir)   /storage/emulated/0/Pictures
+            
             var image_data = this.state.data
                 
             RNFS.writeFile(file_path, image_data, 'base64')
@@ -200,9 +196,9 @@ class DocumentDetails extends Component {
                 console.warn(responseJson)
             } else {
             this.setState({data: responseJson["data"][0]["documentData"]})
-            //console.warn(responseJson["data"][0]["documentData"])
+            
             this.setState({pdVisible: false})
-            // this.props.navigation.navigate('Test', {'data': this.state.data})
+           
             this.props.navigation.navigate('Document_Preview',{'data': this.state.data})
         }
         })

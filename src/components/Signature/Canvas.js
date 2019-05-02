@@ -3,12 +3,23 @@ import { StyleSheet, TouchableOpacity, View, Text, ActivityIndicator, AsyncStora
 
 import SignaturePad from 'react-native-signature-pad';
 
+import { StackActions, NavigationActions } from 'react-navigation'
 import { ProgressDialog } from 'react-native-simple-dialogs';
 export default class Canvas extends Component {
   constructor(props) {
     super(props);
-    this.state = { signature: null, canvas:true, auth: null, pdVisible: false, };
+    this.state.isSignature  = this.props.navigation.getParam('isSignature')
+    this.state.flow  = this.props.navigation.getParam('flow')
+    //console.warn(this.state.isSignature)
   }
+    state = { 
+      signature: null,
+      canvas:true,
+      auth: null,
+      pdVisible: false,
+      isSignature: true,
+      flow: null
+    }
  
   static navigationOptions = {
     title: "Canvas"
@@ -23,36 +34,92 @@ export default class Canvas extends Component {
     this.setState({pdVisible: true})
     let auth = await AsyncStorage.getItem("auth")
     this.setState({auth: auth})
-    return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/update-signature',{
-    method: 'POST',
-    headers: {
-        'Authorization':this.state.auth,
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-        "signatureType": 2,
-        "ImageBytes": this.state.signature
-    }),
-    }).then((response) => response.json())
-    .then((responseJson) => {
-        this.setState({pdVisible: false})
-        if(responseJson['message'] == null) {
-          this._clear()
-          alert("Enroll failed\nPlease check canvas")
-        } else {
-          this._clear()
-          //console.warn(responseJson)
-          this.props.navigation.navigate('Account')
-        }
-    })
-    .catch((error) => {
-        console.warn(error);
-    });
+
+    if(this.state.isSignature) { 
+      return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/update-signature',{
+      method: 'POST',
+      headers: {
+          'Authorization':this.state.auth,
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          "signatureType": 2,
+          "ImageBytes": this.state.signature
+      }),
+      }).then((response) => response.json())
+      .then((responseJson) => {
+          this.setState({pdVisible: false})
+          if(responseJson['message'] == null) {
+            this._clear()
+            alert("Update failed\nPlease check canvas")
+          } else {
+            this._clear()
+            //console.warn(responseJson)
+            //this.props.navigation.navigate('Account')
+            alert("Updated")
+            if(this.state.flow == 1) {
+              const popAction = StackActions.pop({
+                n: 1,
+              });
+              this.props.navigation.dispatch(popAction)
+            } else {
+              const popAction = StackActions.pop({
+                n: 2,
+              });
+              this.props.navigation.dispatch(popAction) 
+            }
+          }
+      })
+      .catch((error) => {
+          console.warn(error);
+      })
+  }
+  else {
+    return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/enroll-signature',{
+      method: 'POST',
+      headers: {
+          'Authorization':this.state.auth,
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          "signatureType": 2,
+          "ImageBytes": this.state.signature
+      }),
+      }).then((response) => response.json())
+      .then((responseJson) => {
+          this.setState({pdVisible: false})
+          if(responseJson['message'] == null) {
+            this._clear()
+            alert("Enroll failed\nPlease check canvas")
+          } else {
+            this._clear()
+            //console.warn(responseJson)
+            //this.props.navigation.navigate('Account')
+            alert("Enrolled")
+            if(this.state.flow == 1) {
+              const popAction = StackActions.pop({
+                n: 1,
+              });
+              this.props.navigation.dispatch(popAction)
+            } else {
+              const popAction = StackActions.pop({
+                n: 2,
+              });
+              this.props.navigation.dispatch(popAction) 
+            }
+          
+          }
+      })
+      .catch((error) => {
+          console.warn(error);
+      })
+  }
+    
   
 }
  
   render() {
-    var pencolor = "#003d5a";
+    var pencolor = "black";
     return (
       <View style={styles.mainContainer}>
 

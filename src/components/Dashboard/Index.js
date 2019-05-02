@@ -9,6 +9,7 @@ import { Dimensions } from "react-native";
 import moment from 'moment';
 import ActionButton from 'react-native-action-button';
 
+import { StackActions, NavigationActions } from 'react-navigation'
 import { NavigationEvents } from 'react-navigation';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 
@@ -18,6 +19,8 @@ import  Documents from '../Documents/Index.js'
 import  Contacts from '../Contacts/Index.js'
 import  Account from '../Account/Index.js'
 import  DocumentVerify from '../Verify/Index.js'
+import AddModal from '../Contacts/AddModal.js';
+import AddSignModal from './AddSignModal.js';
 
 var Spinner = require('react-native-spinkit');
 var width = Dimensions.get('window').width; //full width
@@ -133,6 +136,14 @@ class Dashboard extends Component {
         this.refs.UploadModal.show()
     }
 
+    canvas = async() => {
+        this.refs.AddSignModal.show()
+    }
+
+    addContact = async() => {
+        this.refs.AddContactModal.show()
+    }
+
     showData = (data) => {
         if(data == null)
         {
@@ -141,6 +152,21 @@ class Dashboard extends Component {
             //console.warn("return data"+data["Id"])
             //console.warn("return data"+data["name"])
             this.props.navigation.navigate('Document_Upload',{'data':data})
+        }
+    }
+
+    addSignNavigate(num, param) {
+        this.refs.AddSignModal.close()
+            switch(num) {
+                case 1: 
+                        this.props.navigation.navigate('Canvas', {'isSignature':param, 'flow':1})
+                    break;
+                case 2:
+                        this.props.navigation.navigate('Image', {'isSignature':param, 'flow': 1})
+                    break;
+                case 3:
+                        this.props.navigation.navigate('Fonts')
+                    break;
         }
     }
 
@@ -159,7 +185,6 @@ class Dashboard extends Component {
     }
 
     componentDidMount () {
-        +
         BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
     }
 
@@ -241,7 +266,17 @@ class Dashboard extends Component {
                                     <TouchableOpacity
                                         style={styles.DocumentsList}
                                         key={docs.Id}
-                                        onPress={()=>this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})}
+                                        onPress={()=>{
+                                            this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})
+                                            // const resetAction = StackActions.reset({
+                                            //     index: 0,
+                                            //     actions: [
+                                            //       NavigationActions.navigate({ routeName: 'DocumentDetails', params:{Id: docs.Id, token: this.state.token}, navigationOptions:{tabBarVisible: true} })
+                                            //     ]
+                                            //   })
+                                            //   this.props.navigation.dispatch(resetAction)
+                                            }
+                                        }
                                     >
                                         <View style={{margin: 2}}>
                                             <Text style={[styles.DocumentsListFont, {fontWeight: 'bold'}]}>
@@ -273,15 +308,18 @@ class Dashboard extends Component {
                             <Icon name="md-document" style={styles.actionButtonIcon} />
                         </ActionButton.Item>
                     }
-                        <ActionButton.Item buttonColor="#003d5a" title="Add Signature" onPress={() => {}}>
+                        <ActionButton.Item buttonColor="#003d5a" title="Add Signature" onPress={() => this.canvas()}>
                             <Icon1 name="signature" style={styles.actionButtonIcon} />
                         </ActionButton.Item>
+                        
+                        <ActionButton.Item buttonColor="#003d5a" title="Add Comtact" onPress={() => this.addContact()}>
+                            <Icon name="md-add" style={styles.actionButtonIcon} />
+                        </ActionButton.Item>
                     </ActionButton>
-                    {/* <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
-                        <Text style={styles.floatButtonText}>+</Text>
-                    </TouchableOpacity> */}
                 
                 <UploadModal ref={'UploadModal'}  parentFlatList={this}/>
+                <AddSignModal ref={'AddSignModal'}  parentFlatList={this}/>
+                <AddModal ref={'AddContactModal'} parentFlatList={this}/>
             </View>
             )
         }
@@ -332,7 +370,7 @@ export default createMaterialBottomTabNavigator({
     },
 },
 {
-  //  initialRouteName: 'account',
+    //initialRouteName: 'account',
     barStyle: { backgroundColor: '#003d5a' },
     activeTintColor: 'white',
     navigationOptions: () => ({ header: null })

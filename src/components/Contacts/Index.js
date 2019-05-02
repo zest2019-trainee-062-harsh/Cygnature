@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, Alert, 
     TouchableOpacity,TouchableHighlight, SwipeableFlatList, AsyncStorage} from 'react-native'
-
+import { SearchBar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons'
 import AddModal from './AddModal'
 import UpdateModal from './UpdateModal'
@@ -18,7 +18,8 @@ export default class Contacts extends Component {
         res:[],
         data:[],
         contactId: null,
-        refreshing:false
+        refreshing:false,
+        searchText: ""
     }
 
 
@@ -108,6 +109,27 @@ export default class Contacts extends Component {
         });        
     }
 
+    search (text) {
+        
+        this.setState({searchText:text, refreshing: true})
+        if(this.state.searchText == "" || this.state.searchText.length == 0) {
+            
+            this.view()
+        } else {
+        const newData = this.state.data.filter(function(item) {
+            //applying filter for the inserted text in search bar
+            const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
+            const textData = text.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+          });
+          this.setState({
+            //setting the filtered newData on datasource
+            //After setting the data it will automatically re-render the view
+            data: newData,
+            refreshing:false
+          });
+        }
+    }
     render() {
     if( this.state.contactsCount == 0) {
         return (
@@ -156,10 +178,22 @@ export default class Contacts extends Component {
             renderQuickActions={this._renderQuickActions.bind(this)}
             />
 
+            
+            <SearchBar
+                placeholder="Type Here..."
+                platform="android"
+                containerStyle={{borderRadius:30}}
+                onChangeText={ (text) =>this.search(text)}
+                value={this.state.searchText}
+                onClear = { () => this.view() }
+                onCancel = { () => this.view() }
+                onKeyPress={({ nativeEvent }) => {
+                    nativeEvent.key === 'Backspace' ? console.warn("D") : null
+                }}
+            />
             <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
                         <Text style={styles.floatButtonText}>+</Text>
             </TouchableOpacity>
-
                 <AddModal ref={'AddModal'} parentFlatList={this} />
                 <UpdateModal ref={'UpdateModal'} parentFlatList={this} />
             </View>
@@ -171,10 +205,13 @@ export default class Contacts extends Component {
         return (
             <View style={styles.row}>
                 <View style={styles.rowData}>
-                <TouchableOpacity disabled style={styles.rowDataBg}>
-                        <Text style={styles.rowDataText1}>{item.shortName}</Text>
-                </TouchableOpacity>
-                    <Text style={styles.rowDataText2}>{item.name}</Text>
+                    <TouchableOpacity disabled style={styles.rowDataBg}>
+                            <Text style={styles.rowDataText1}>{item.shortName}</Text>
+                    </TouchableOpacity>
+                    <View style={{flexDirection:'column', flex: 1}}>
+                        <Text style={styles.rowDataText2}>{item.name}</Text>
+                        <Text style={[styles.rowDataText2, {color:'grey', fontSize:12}]}>{item.email}</Text>
+                    </View>
                 </View>
             </View>
         )
@@ -223,8 +260,8 @@ floatButton: {
     height: 50,
     backgroundColor: '#003d5a',
     borderRadius: 30,
-    bottom: 5,
-    right: -1,
+    bottom: 80,
+    right: 6,
     alignItems: 'center',
     justifyContent: 'center',
 },
@@ -242,16 +279,17 @@ row: {
 rowData: {
     flex: 1,
     flexDirection: 'row',
-    margin:7,
+    margin:7, 
 },
 rowDataBg: {
     position: 'absolute',
-    width:30,
-    height: 30,
+    width:40,
+    height: 40,
     backgroundColor: '#003d5a',
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 5
 },
 rowDataText1: {
     fontSize: 14,
@@ -260,7 +298,8 @@ rowDataText1: {
     borderRadius: 5,
 },
 rowDataText2: {
-    fontSize: 20,
+    flex:0.5,
+    fontSize: 15,
     marginLeft: 50,
     fontWeight: '400',
     color: 'black'

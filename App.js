@@ -8,6 +8,7 @@ import Account  from './src/components/Account/Index.js';
 import Profile  from './src/components/Account/Profile.js';
 import Canvas from './src/components/Signature/Canvas.js'
 import Image from './src/components/Signature/ImageP.js'
+import Fonts from './src/components/Signature/Fonts.js'
 import DocumentDetails from './src/components/Documents/DocumentDetails.js'
 import Contacts from './src/components/Contacts/Index.js'
 import Forgot_Pass from './src/components/Login/Forgot_Pass.js'
@@ -18,7 +19,8 @@ import Document_PlaceHolder from './src/components/Documents/DocumentPlaceHolder
 import DocumentVerify from './src/components/Verify/Index.js'
 import DocumentList from './src/components/Verify/DocumentList.js'
 import VerifyDetails from './src/components/Verify/VerifyDetails.js'
-import DocumentCertificate from './src/components/Documents/DocumentCertificate.js'
+import DocumentSignPreview from './src/components/Documents/DocumentSignPreview'
+import DocumentCertificate from './src/components/Documents/DocumentCertificate'
 
 const AppNavigator = createStackNavigator({
   SplashScreen: {screen: SplashScreen},
@@ -30,19 +32,20 @@ const AppNavigator = createStackNavigator({
   Profile: {screen: Profile},
   Canvas: {screen: Canvas},
   Image: {screen: Image},
+  Fonts: {screen: Fonts},
   DocumentDetails: {screen: DocumentDetails},
   Contacts: {screen:Contacts},
   Forgot_Pass: {screen:Forgot_Pass},
   Document_Upload: {screen:Document_Upload},
   Document_Preview: {screen:Document_Preview},
+  fp: {screen:fp},
   Document_PlaceHolder: {screen:Document_PlaceHolder},
   DocumentVerify:{screen:DocumentVerify},
   DocumentList : {screen: DocumentList},  
   VerifyDetails : {screen:VerifyDetails},
-  fp: {screen:fp},
-  DocumentCertificate: {screen:DocumentCertificate}
+  DocumentSignPreview: {screen: DocumentSignPreview},
+  DocumentCertificate:{screen: DocumentCertificate}
 });
-
 
 const AppContainer = createAppContainer(AppNavigator);
 

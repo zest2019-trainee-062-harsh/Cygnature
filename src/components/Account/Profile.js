@@ -166,6 +166,7 @@ class Profile extends Component {
             .then((responseJson) => {
                  this.setState({message:responseJson["message"]})
                 console.warn(this.state.message)
+                
                 this.setState({pdVisible:false})
             })
             .catch((error) => {
@@ -199,12 +200,7 @@ class Profile extends Component {
             ref={"myModal"}
             style={ styles.modal }
             position= 'center'
-            backdrop={true}
-            backdropPressToClose={false}
-            onClosed={() =>{
-                //console.warn("modal closed")
-            }}
-            >
+            backdrop={true}>
             
             <Text style={{marginLeft:14,  fontSize: 18,  color: 'black', fontWeight:'bold'}}>Set Signature</Text>
 
