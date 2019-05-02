@@ -20,8 +20,8 @@ class DocumentDetails extends Component {
         userId: null,
         signButtonDisable: true,
         signButtonOpacity: 0.5,
-        downloadButtonDisable: false,
-        downloadButtonOpacity: 1.0,
+        downloadButtonDisable: true,
+        downloadButtonOpacity: 0.5,
         id: this.props.navigation.state.params.Id,
         details: null,
         data: [],
@@ -39,6 +39,7 @@ class DocumentDetails extends Component {
           const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             console.log('You can use the storage');
+            this.setState({downloadButtonDisable:false, downloadButtonOpacity: 1.0})      
           } else {
             console.log('Storage permission denied');
             Alert.alert(
@@ -74,6 +75,7 @@ class DocumentDetails extends Component {
             }).then((response) => response.json())
             .then((responseJson)=>{
                alert(responseJson["message"])
+               this.documentDetails()
                     
             })     
         .catch((error) => {
@@ -91,7 +93,7 @@ class DocumentDetails extends Component {
         }}).then((response) => response.json())
         .then((responseJson) => {
             this.setState({details: responseJson["data"][0], observers: responseJson["data"][0]["observers"], signers: responseJson["data"][0]["signers"], history: responseJson["data"][0]["documentHistory"]})
-            console.warn(responseJson["data"][0])
+            //console.warnconsole.warn(responseJson["data"][0])
 
             if(responseJson["data"][0]["sequentialFlow"] == true) {
                 //console.warn("yes")
@@ -250,7 +252,10 @@ class DocumentDetails extends Component {
                 // console.warn(responseJson)
                 if(responseJson["data"] == null) {
                     alert(responseJson["error"])
-                } else alert(responseJson["message"])
+                } else {
+                    alert(responseJson["message"])
+                    this.documentDetails()
+                }
             })
             .catch((error) => {
                 console.warn(error.message);
@@ -295,16 +300,7 @@ class DocumentDetails extends Component {
                 />
                 {this.state.details != null ? 
                     <ScrollView>
-                        {/* <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
-                                    File Name
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["documentDetail"]["fileName"]}
-                                </Text>
-                            </View>
-                        </View> */}
+                        
                         <View style={styles.box}>
 
                             <View style = {[{flex: 1, flexDirection:'row'}, ]}>
@@ -357,70 +353,6 @@ class DocumentDetails extends Component {
                             </View>
                             
                         </View>
-                        {/* <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
-                                    Activation Status
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {
-                                        this.state.details["documentDetail"]["isActive"] ? <Text>Yes</Text>
-                                        : <Text>NO</Text>
-                                    }
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
-                                    Uploaded By
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["documentDetail"]["uploadedBy"]}
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
-                                    Document Hash
-                                </Text>
-                                <Text selectable = {true} style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["documentDetail"]["documentFileHash"]}
-                                </Text>
-                            </View>
-                        </View>
-                        {this.state.details["notarization"]["txHash"] ?
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
-                                    Transaction Hash
-                                </Text>
-                                <Text selectable = {true} style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["notarization"]["txHash"]}
-                                </Text>
-                            </View>
-                        </View> : null}
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
-                                    Status
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["documentDetail"]["documentStatus"]}
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {fontWeight:'bold', alignContent: "flex-start"}] }>
-                                    Created at
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["documentDetail"]["creationTime"]}
-                                </Text>
-                            </View>
-                        </View> */}
 
                         <View style={styles.box}>
                         <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> History </Text>
@@ -545,72 +477,7 @@ class DocumentDetails extends Component {
                         </View>
 
                         </View>
-                        {/* <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Signed by current user?
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["signedByCurrentUser"]}
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Signed by all users?
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {
-                                        this.state.details["signedByAll"] ? <Text>Yes</Text>
-                                        : <Text>NO</Text>
-                                    }
-                                </Text>
-                            </View>
-                        </View>  */}
-                        {/* <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Signers </Text>
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    User Email
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["signers"][0]["email"]}
-                                </Text>
-                            </View>
-                        </View> */}
-                        {/* <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    User Name
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["signers"][0]["fullName"]}
-                                </Text>
-                            </View>
-                        </View> */}
-                        {/* <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Observers </Text>
-                        <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Observers
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["observers"]}
-                                </Text>
-                            </View>
-                        </View> */}
-                        {/* <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                    Rejected?
-                                </Text>
-                                <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                    {this.state.details["rejectedByCurrentUser"] ? <Text>Yes</Text>
-                                    : <Text>No</Text>}
-                                </Text>
-                            </View>
-                        </View> */}
+                        
                         <View style={{flex:1, flexDirection:'row', justifyContent: 'center'}}>
 
                         {this.state.details["documentDetail"]["documentStatus"] == 2 ?

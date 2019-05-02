@@ -61,11 +61,11 @@ class UploadModal extends Component {
                  }
                  ).then((response) => response.json())
                  .then((responseJson) => {
-                     //console.warn(responseJson["data"])
+                    //console.warn(responseJson)
                     this.setState({pdVisible: false})
 
                     if(responseJson["data"] == null) {
-                        alert(responseJson["error"])
+                        alert(responseJson["errors"]["Document"])
                     } else {
                         this.props.parentFlatList.showData(responseJson["data"][0])
                     }
@@ -75,8 +75,7 @@ class UploadModal extends Component {
                  })
                  .catch((error) => {
                     this.refs.myModal.close();
-                    //alert(error.message);
-                    console.warn(error.message)
+                    alert(error.message)
                  });      
                 }
           });
