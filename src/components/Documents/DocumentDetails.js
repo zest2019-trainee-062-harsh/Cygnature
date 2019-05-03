@@ -193,12 +193,10 @@ class DocumentDetails extends Component {
                 this.setState({pdVisible: false})
                 alert(responseJson["error"])
             } else {
-            this.setState({data: responseJson["data"][0]["documentData"]})
-            //console.warn(responseJson["data"][0]["documentData"])
-            this.setState({pdVisible: false})
-            // this.props.navigation.navigate('Test', {'data': this.state.data})
-            this.props.navigation.navigate('Document_Preview',{'data': this.state.data})
-        }
+                this.setState({data: responseJson["data"][0]["documentData"]})
+                this.setState({pdVisible: false})
+                this.props.navigation.navigate('Document_Preview',{'data': this.state.data})
+            }
         })
         .catch((error) => {
             console.warn(error.message);
@@ -213,62 +211,15 @@ class DocumentDetails extends Component {
         headers: {
             'Authorization':this.state.auth,
         }}).then((response) => response.json())
-        .then((responseJson) => {
-           
+        .then((responseJson) => {  
             this.setState({pdVisible:false, data: responseJson["data"][0]})
-            this.props.navigation.navigate('Document_Details_Sign',{'data': this.state.data})
-        
+            this.props.navigation.navigate('Document_Details_Sign',{'data': this.state.data, 'Id': this.state.id})
         })
         .catch((error) => {
             console.warn(error.message);
         });
     }
 
-    sign = async() =>{
-        return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
-        method: 'GET',
-        headers: {
-            'Authorization': this.state.auth,
-        },
-        }).then((response) => response.json())
-        .then((responseJson) => {
-            return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/sign',{
-            method: 'POST',
-            headers: {
-                'Authorization': this.state.auth,
-                'Content-Type': "application/json"
-            },
-            body: JSON.stringify({
-                "documentId": this.state.id,
-                "aspectRatio": 1,
-                "isSigner": true,
-                "signatureType": "ESignature",
-                "documentLatitude": 4.092356,
-                "documentLongitude": -56.062161,
-                "userAgent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36",
-                "userIPAddress": "61.12.66.6",
-                "userTimeZoneOffSet": "+05:30",
-                "rememberSign": false,
-                "signData": responseJson["data"][0]["impressions"][0]["imageBytes"]
-            })
-            }).then((response) => response.json())
-            .then((responseJson) => {
-                // console.warn(responseJson)
-                if(responseJson["data"] == null) {
-                    alert(responseJson["error"])
-                } else {
-                    alert(responseJson["message"])
-                    this.documentDetails()
-                }
-            })
-            .catch((error) => {
-                console.warn(error.message);
-            });
-        })
-        .catch((error) => {
-            console.warn(error);
-        });
-    }
 
     copyDH = async() => {
         await Clipboard.setString(this.state.details["documentDetail"]["documentFileHash"]);

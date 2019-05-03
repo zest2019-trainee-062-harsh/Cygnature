@@ -15,7 +15,7 @@ var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
 var ratio = "0.612903225806452";
 
-class Test extends Component {
+class DocumentPlaceHolder extends Component {
   constructor(props) {
     super(props)
     this.state.data = this.props.navigation.getParam('data')
@@ -288,7 +288,7 @@ class Test extends Component {
   }
 }
 
-export default Test
+export default DocumentPlaceHolder
 
 
 const styles = StyleSheet.create({
