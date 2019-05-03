@@ -204,20 +204,24 @@ class DocumentDetails extends Component {
             console.warn(error.message);
         });
     }  
+
     
-    signTheDocument(){
-        Alert.alert(
-            'Alert!',
-            'Make sure to view the document before signing the document.',
-            [
-              {
-                text: 'Cancel',
-                style: 'cancel',
-              },
-              {text: 'OK', onPress: () => this.sign()},
-            ],
-            {cancelable: false},
-        );
+    signTheDocument(){  
+        this.setState({pdTitle:"Previewing", pdVisible: true})
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/sign/'+this.state.id,{
+        method: 'GET',
+        headers: {
+            'Authorization':this.state.auth,
+        }}).then((response) => response.json())
+        .then((responseJson) => {
+           
+            this.setState({pdVisible:false, data: responseJson["data"][0]})
+            this.props.navigation.navigate('Document_Details_Sign',{'data': this.state.data})
+        
+        })
+        .catch((error) => {
+            console.warn(error.message);
+        });
     }
 
     sign = async() =>{
@@ -493,7 +497,7 @@ class DocumentDetails extends Component {
                         </TouchableOpacity> :  
                         <TouchableOpacity  
                             disabled={this.state.signButtonDisable} 
-                            onPress={()=> this.sign()}
+                            onPress={()=> this.signTheDocument()}
                             style = {[styles.buttonContainer, {opacity: this.state.signButtonOpacity}]}>
                             <Text style = { styles.buttonText }>Sign Now</Text>
                         </TouchableOpacity>}

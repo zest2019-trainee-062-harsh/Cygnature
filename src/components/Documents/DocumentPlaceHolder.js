@@ -136,6 +136,7 @@ class Test extends Component {
             "isAnnotation": true,
             "SignatureType": "ESignature"
           }
+          
         ],
         "signingFlowType": 1,
         "signerIds": [
