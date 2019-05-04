@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, Dimensions, Text, TouchableOpacity, AsyncStorage, ActivityIndicator, Alert} from 'react-native'
+import {View, StyleSheet, Dimensions, Text, TouchableOpacity, AsyncStorage, } from 'react-native'
 import Modal from 'react-native-modalbox'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker'
 
 var width = Dimensions.get('window').width
 var height = Dimensions.get('window').height
+
+var Spinner = require('react-native-spinkit');
 
 class UploadModal extends Component {
     constructor(props) {
@@ -91,23 +93,27 @@ class UploadModal extends Component {
                 position= 'center'
                 backdrop={true}
                 backdropPressToClose={false}
-                onClosed={() =>{
-                    //console.warn("modal closed")
-                }}
             >
-            <View style={{alignItems:'flex-end', margin:10}}><Icon name="md-close" color='black' size={30} onPress={()=>this.close()} /></View>
-            <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
+                <View style={{alignItems:'flex-end', margin:10}}><Icon name="md-close" color='black' size={30} onPress={()=>this.close()} /></View>
+                <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
             
-             <Icon name="md-cloud-upload" color='black' size={100} />
-             <Text style={{fontSize: 18,  color: 'red' ,}}>{this.state.fileName}</Text>
-             <Text style={{fontSize: 18,  color: 'black', fontWeight:'bold'}}>Upload a File</Text>
-             {this.state.pdVisible ? <ActivityIndicator color='#003d5a' size="large" /> : null}
+                {this.state.pdVisible 
+                    ?
+                        <View style={{justifyContent:'center', alignItems:'center'}}>
+                            <Spinner size={100} type={'9CubeGrid'} color={'#003d5a'}/>
+                            <Text style={{fontSize: 18,  color: 'black', fontWeight:'bold', marginTop: 20}}>{this.state.fileName}</Text>
+                        </View>
+                    :
+                        <View style={{justifyContent:'center', alignItems:'center'}}>
+                        <Icon name="md-cloud-upload" color='#003d5a' size={100} />
+                            <Text style={{fontSize: 18,  color: 'black', fontWeight:'bold'}}>Upload a File</Text>
+                            <TouchableOpacity style={ styles.btnSave } onPress={this.upload}>
+                                <Text style={styles.textSave}>Upload</Text>
+                            </TouchableOpacity>
+                        </View>
+                }
 
-             <TouchableOpacity style={ styles.btnSave } onPress={this.upload}>
-                    <Text style={styles.textSave}>Upload</Text>
-            </TouchableOpacity>
-
-            </View>
+                </View>
             </Modal>
                 )
          }
