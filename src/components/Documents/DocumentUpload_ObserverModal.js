@@ -25,8 +25,8 @@ class DocumentUpload_SignerModal extends Component {
         data:[],
         contactId: null,
         refreshing:false,
-        signerIds: [],
-        signerIdsWithName: []
+        observersIds: [],
+        observersIdsWithName: []
     }
 
     onRefresh = () => {
@@ -68,17 +68,16 @@ class DocumentUpload_SignerModal extends Component {
     }
 
     addObservers(Id, Name){
-        let ID = "{ "+Id+ " }"
-        let IDWithName = "{ id:"+Id+", name:"+Name+" }"
-        this.state.signerIdsWithName.push(IDWithName)
-        this.state.signerIds.push(ID)
+        let ID = Id
+        this.state.observersIds.push(ID)
         let filteredArray = this.state.data.filter(item => item.Id !== Id)
         this.setState({data: filteredArray});
     }
 
     sendObservers(){
         this.refs.myModal.close();
-        this.props.parentFlatList.addObservers(this.state.signerIds, this.state.signerIdsWithName);
+        this.props.parentFlatList.addObservers(this.state.observersIds);
+        this.state.observersIds = []
     }
 
     render() {

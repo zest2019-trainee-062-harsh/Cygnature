@@ -12,7 +12,6 @@ class DocumentUpload extends Component {
     constructor(props) {
         super(props)
         this.state.data = this.props.navigation.getParam('data')
-        console.warn(this.state.data)
         this.state.currentDate = (moment().utcOffset("+5:30").format("DD-MM-YYYY"))
     }
 
@@ -31,17 +30,40 @@ class DocumentUpload extends Component {
         opacity: 0.5,
         disabled: true,
         signers : [],
-        observors: [],
+        observers: [],
         checked1: false,
         checked2: false,
-        enabled: false,
+        signerViewEnabled: false,
+        signerButtonDisabled: false,
+        observerViewEnabled: false,
+        observerButtonDisabled: false,
     }
 
     static navigationOptions = {
         title: "Document Upload"
     }
+    
+    check(){
+        if(this.state.signerIds != []){
+            this.setState({
+                opacity: 1,
+                disabled: false,
+                signerViewEnabled: true,
+            })
+        }
+
+        if(this.state.observerIds != []){
+            this.setState({
+                opacity: 1,
+                disabled: false,
+                observerViewEnabled: true,
+            })
+        }
+    }
+
 
     addSigners(Ids) {
+        this.state.signerIds = Ids
         Ids.map((item) => {
             return fetch('http://cygnatureapipoc.stagingapplications.com/api/contact/get-contact-by-id/'+item,{
             method: 'GET',
@@ -49,45 +71,49 @@ class DocumentUpload extends Component {
                 'Authorization': this.state.auth
             }}).then((response) => response.json())
             .then((responseJson) => {
-                let data = JSON.parse('{ "label": "'+responseJson["data"][0]["name"]+'", "value": "'+responseJson["data"][0]["Id"]+'"}');
+                //console.warn(responseJson)
+                let data = JSON.parse('{ "label": "'+responseJson["data"][0]["name"]+'","shortName": "'+responseJson["data"][0]["shortName"]+'", "value": "'+responseJson["data"][0]["Id"]+'"}');
+                this.state.signers.push(data)
                 
-                setTimeout(() => {
-                    this.state.signers.push(data)
-                }, 1000);
+                //console.warn(this.state.signers)
+                this.setState({signerViewEnabled:true, signerButtonDisabled: true})
             })
             .catch((error) => {
-                console.warn(error);
+                console.warn(error.message);
             });
         })
-        this.state.signerIds = Ids
-        console.warn(this.state.signers[0])
         this.check();
     }
 
-    check(){
-        if(this.state.signerIds != []){
-            this.setState({
-                opacity: 1,
-                disabled: false,
-                enabled: true,
-            })
-        }
-    }
-
-    addObservers(Ids, Names) {
+    addObservers(Ids) {
         this.state.observerIds = Ids
-        this.state.observerIdsWithNames = Names
+        Ids.map((item) => {
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api/contact/get-contact-by-id/'+item,{
+            method: 'GET',
+            headers: {
+                'Authorization': this.state.auth
+            }}).then((response) => response.json())
+            .then((responseJson) => {
+                //console.warn(responseJson)
+                let data = JSON.parse('{ "label": "'+responseJson["data"][0]["name"]+'","shortName": "'+responseJson["data"][0]["shortName"]+'", "value": "'+responseJson["data"][0]["Id"]+'"}');
+                this.state.observers.push(data)
+                
+                //console.warn(this.state.observers)
+                this.setState({observerViewEnabled:true, observerButtonDisabled: true})
+            })
+            .catch((error) => {
+                console.warn(error.message);
+            });
+        })
+        this.check();
     }
 
-    assignSigners(){
+    assignData(){
         this.props.navigation.navigate('Document_PlaceHolder', {
             'data' : this.state.data,
-            'signers': this.state.signers
+            'signers': this.state.signers,
+            'observors': this.state.observers
         })
-        // this.props.navigation.navigate('Test', {
-        //     'data' : this.state.data,
-        //     'signers': this.state.signers
-        // })
     }
 
     onChangeCheck1() {
@@ -123,7 +149,7 @@ class DocumentUpload extends Component {
 
                 <Text style={styles.textTitle}>Signers: * </Text>
                 {
-                    !this.state.enabled ? 
+                    !this.state.signerViewEnabled ? 
                     <View>
                         <Text style={styles.textData}>
                             No signers present at this moment.{"\n"}
@@ -131,42 +157,63 @@ class DocumentUpload extends Component {
                         </Text>
                     </View>
                     :
-                        <View>
-                        <Text style={styles.textData}>
-                                {this.state.signers["label"]}
-                            </Text>
-                        </View>
-                    
+                    this.state.signers.map((_data, index, _array) => {
+                        return(
+                                <View style={{margin:10,marginBottom:20}} key={this.state.signers[index]["value"]} >
+                                    <TouchableOpacity disabled style={[styles.rowDataBg, {marginLeft:15}]}>
+                                        <Text style={styles.rowDataText1}>{this.state.signers[index]["shortName"]}</Text>
+                                    </TouchableOpacity>
+                                    <View style={{marginTop: 7}}>
+                                        <Text style={[styles.rowDataText2, {marginLeft:60}]}>
+                                            {this.state.signers[index]["label"]}
+                                        </Text>
+                                    </View>
+                                </View>
+                        )
+                    })
                 }
                 <View style={{marginLeft:5}}>
-                    <TouchableOpacity style={{backgroundColor: "#003d5a",borderRadius: 5, width:100, justifyContent:'center', alignItems:'center'}} onPress={() => { this.refs.DocumentUpload_SignerModal.show() }}>
-                        <Text style={[styles.textData, {color:'white'}]}>Select</Text>
+                {this.state.signerButtonDisabled ? null :
+                    <TouchableOpacity
+                        style={{backgroundColor: "#003d5a",borderRadius: 5, width:'auto', justifyContent:'center', alignItems:'center'}}
+                        onPress={() => { this.refs.DocumentUpload_SignerModal.show() }}
+                    >
+                        <Text style={[styles.textData, {color:'white'}]}>Add Signers</Text>
                     </TouchableOpacity>
+                }
                 </View>
 
-                <Text style={styles.textTitle}>Observors:</Text>
+
+                <Text style={styles.textTitle}>Observers:</Text>
                 {
-                    this.state.observors[0] == [] ? 
-                    <View>
-                        <Text>
-                            No signers present at this moment.{"\n"}
-                            *Select at least one contact.
-                        </Text>
-                    </View>
+                    !this.state.observerViewEnabled ? 
+                        null
                     :
-                    this.state.observors.map((index) => {
-                        <View>
-                            <Text>
-                                {index["label"]}
-                            </Text>
-                        </View>
+                    this.state.observers.map((_data, index, _array) => {
+                        return(
+                                <View style={{margin:10,marginBottom:20}} key={this.state.observers[index]["value"]} >
+                                    <TouchableOpacity disabled style={[styles.rowDataBg, {marginLeft:15}]}>
+                                        <Text style={styles.rowDataText1}>{this.state.observers[index]["shortName"]}</Text>
+                                    </TouchableOpacity>
+                                    <View style={{marginTop: 7}}>
+                                        <Text style={[styles.rowDataText2, {marginLeft:60}]}>
+                                            {this.state.observers[index]["label"]}
+                                        </Text>
+                                    </View>
+                                </View>
+                        )
                     })
                 }
 
                 <View style={{marginLeft:5}}>
-                <TouchableOpacity style={{backgroundColor: "#003d5a",borderRadius: 5, width:100, justifyContent:'center', alignItems:'center'}} onPress={() => { this.refs.DocumentUpload_SignerModal.show() }}>
-                        <Text style={[styles.textData, {color:'white'}]}>Select</Text>
+                {this.state.observerButtonDisabled ? null :
+                    <TouchableOpacity 
+                        style={{backgroundColor: "#003d5a",borderRadius: 5, width:'auto', justifyContent:'center', alignItems:'center'}}
+                        onPress={() => { this.refs.DocumentUpload_ObserverModal.show() }}
+                    >
+                            <Text style={[styles.textData, {color:'white'}]}>Add Observors</Text>
                     </TouchableOpacity>
+                }
                 </View>
 
                 <Text style={styles.textTitle}>Due Date: </Text>
@@ -224,7 +271,7 @@ class DocumentUpload extends Component {
                     >
                         <TouchableOpacity
                             style = { styles.buttonContainer}
-                            onPress={() => this.assignSigners()}
+                            onPress={() => this.assignData()}
                             disabled = {this.state.disabled}
                         >
                             <Text style = { styles.buttonText }>Add Placeholder</Text>
@@ -272,6 +319,26 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 17,
         margin:5
+    },
+    rowDataBg: {
+        position: 'absolute',
+        width:35,
+        height: 35,
+        backgroundColor: '#003d5a',
+        borderRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    rowDataText1: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        color: 'white',
+        borderRadius: 5,
+    },
+    rowDataText2: {
+        fontSize: 15,
+        color: 'black',
+        fontWeight: 'bold',
     },
     boxTI: {
         margin: 5,
