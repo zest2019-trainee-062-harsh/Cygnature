@@ -16,7 +16,7 @@ import {StyleSheet,
     AsyncStorage,
     Keyboard
 } from 'react-native'
-
+import { StackActions, NavigationActions } from 'react-navigation'
 import { CheckBox } from 'react-native-elements'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -225,13 +225,6 @@ class Login extends Component {
                     AsyncStorage.setItem('token',this.state.data["token"]);
                     AsyncStorage.setItem('userId',this.state.data["userId"]);
                     this.props.navigation.navigate('OTP',{"data":this.state.data});
-                    // if(this.state.checked == true){
-                    //     AsyncStorage.setItem('email',this.state.email)
-                    //     AsyncStorage.setItem('stored_password',this.state.password)
-                    // }else{
-                    //     AsyncStorage.setItem('email',null)
-                    //     AsyncStorage.setItem('stored_password',null)
-                    // }
                 }
             })
             .catch((error) => {
@@ -248,8 +241,10 @@ class Login extends Component {
     
     let email = await AsyncStorage.getItem('email');
     let password = await AsyncStorage.getItem('password');
-    this.setState({email: email, password: password})
     
+    if(!(email == null || password == null)) {
+        this.setState({enable:false, opacity: 1.0, email: email, password: password})
+    }
   }
 
   componentWillUnmount() {
