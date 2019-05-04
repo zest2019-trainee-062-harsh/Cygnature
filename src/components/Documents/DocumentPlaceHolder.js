@@ -214,42 +214,18 @@ class DocumentPlaceHolder extends Component {
           </View>
         </View>
         <View style={styles.container2}>
-          <Swiper
+        <Swiper
             showsButtons={true}
             activeDotColor={'#003d5a'}
             dotColor={'grey'}
           >
-            <View
-              style={{margin:20, justifyContent:'center', alignItems: 'center'}}
-              title={<Text>{this.state.count+1}/{this.state.totalPage}</Text>}
-            >
-              <ImageZoom
-                cropWidth={width/1.4}
-                cropHeight={height/2}
-                imageWidth={width/1.4}
-                imageHeight={height/2}
-              >
-                <ImageBackground style={styles.imageContainer}
-                  source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}
-                >
-                    <Animated.View
-                        style={styles.imageContainer}
-                        {...this.PanResponder.panHandlers}
-                        style={animatedStyle}
-                    >
-                      <Text>Drag Me</Text>
-                    </Animated.View>
-                </ImageBackground>
-              </ImageZoom>
-            </View>
             {
-              this.state.data.pages.map((item) => {
-                this.state.count = this.state.count + 1
-                if(this.state.count < this.state.totalPage){
+              this.state.data.pages.map((item, index) => {
+                if(index < this.state.totalPage){
                   return(
                     <View
                       style={{margin:20, justifyContent:'center', alignItems: 'center'}}
-                      title={<Text>{this.state.count}/{this.state.totalPage}</Text>}
+                      title={<Text>{index + 1}/{this.state.totalPage}</Text>}
                     >
                       <ImageZoom
                         cropWidth={width/1.4}
@@ -258,8 +234,16 @@ class DocumentPlaceHolder extends Component {
                         imageHeight={height/2}
                       >
                         <ImageBackground style={styles.imageContainer}
-                          source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}
+                          source={{uri: `data:image/png;base64,${this.state.data["pages"][index]}`}}
                         >
+                          {/* {this.state.annotations.map(() =>{
+                            return(
+                              <View>
+                                {this.state.annotations}
+                              </View>
+                            )
+                          })
+                        } */}
                             <Animated.View
                                 {...this.PanResponder.panHandlers}
                                 style={this.state.animatedStyle}
@@ -271,9 +255,6 @@ class DocumentPlaceHolder extends Component {
                     </View>
                   )
                 }
-                else{
-                  null
-                };
               })
             }
           </Swiper>
