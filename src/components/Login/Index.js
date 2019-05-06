@@ -70,26 +70,6 @@ class Login extends Component {
         })
     }
 
-    // componentWillMount() {
-    //     BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
-    // }
-
-    // componentWillUnmount(){
-    //     BackHandler.removeEventListener('hardwareBackPress', this.onBackPressed);
-    // }
-
-    // onBackPressed() {
-    //     Alert.alert(
-    //     'Exit App',
-    //     'Do you want to exit?',
-    //     [
-    //         {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-    //         {text: 'Yes', onPress: () => BackHandler.exitApp()},
-    //     ],
-    //     { cancelable: false });
-    //     return true;
-    // }
-
     onChangeCheck() {
         this.setState({ checked: !this.state.checked}) 
     }

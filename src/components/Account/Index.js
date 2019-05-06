@@ -1,30 +1,33 @@
 import React, {Component} from 'react'
 import {
-    View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, AsyncStorage, ImageBackground
+    View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, AsyncStorage, Alert
 } from 'react-native'
 import { Avatar } from 'react-native-elements';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import ImagePicker from 'react-native-image-crop-picker';
-
+import RNRestart from 'react-native-restart';
+import { NavigationEvents } from 'react-navigation';
 import { StackActions, NavigationActions } from 'react-navigation'
+import FingerprintScanner from 'react-native-fingerprint-scanner'
+import ChangePwd from './ChangePwd.js'
  
 export default class Index extends Component {
     constructor (props) {
         super(props)
-       
     }
 
-    state= {
+    state = {
         switch1: false,
         switch2: false,
         userData: [],
         userDataPic: null,
         pdVisible: true,
         img : null,
-
+        auth: null,
+        updatingProfilePic: false
     }
 
-    componentWillMount= async() => {
+    didFocus= async() => {
         let fingerprint = await AsyncStorage.getItem('fingerprint')
         if(fingerprint == 'enabled') {
             this.state.switch2 = true
@@ -34,41 +37,66 @@ export default class Index extends Component {
         }
         
         let auth = await AsyncStorage.getItem('auth');
+        this.setState({auth:auth})
+        this.view()
+    }
+
+    view () {
+        this.setState({pdVisible:true})
+
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': auth,
+            'Authorization': this.state.auth,
         },
         }).then((response) => response.json())
         .then((responseJson) => {
-            console.warn(responseJson)
-            this.setState({userDataPic: responseJson['data'][0]["profileByte"]})
-            if(responseJson['data'][0]['impressions'][0] == null) {
-                console.warn("sign null")
-            }
-           this.setState({userData: responseJson['data'][0]}) 
-           // this.setState({userData: responseJson['data'][0]['userId']}) 
-
+            this.setState({userData: responseJson['data'][0]})
             this.setState({pdVisible:false})
         })
         .catch((error) => {
-          console.error(error)
+          console.error(error.message)
         });
     }
 
-
    
-    logout = async() => {
+    redirect = () => {
+        //console.warn("Y")
         AsyncStorage.clear();
+        this.props.navigation.navigate("Login")
+    }
+    
+    logout = async() => {
         //this.props.navigation.navigate("Login")
-        const resetAction = StackActions.reset({
-            index: 0,
-            actions: [
-              NavigationActions.navigate({ routeName: 'Login'})
-            ]
-          })
-          this.props.navigation.dispatch(resetAction)
+        Alert.alert(
+            'Are you Sure?',
+            'Clicking yes will redirect you to Login',
+            [
+                
+                {
+                    text: 'No'
+                },
+                {
+                    text: 'Yes', onPress: ()=>{
+                        const resetAction = StackActions.reset({
+                            index: 0,
+                            actions: [
+                              NavigationActions.navigate({ routeName: 'Login'})
+                            ]
+                          })
+                        this.props.navigation.dispatch(resetAction)
+                        //AsyncStorage.clear();
+                        let keys = ['auth', 'otp_check', 'token', 'userId'];
+                        AsyncStorage.multiRemove(keys, (err) => {
+                        // keys k1 & k2 removed, if they existed
+                        // callback to do some action after removal of item
+                        });
+                    }
+                },
+            ],
+            {cancelable: true},
+        );
     }
 
     toggleSwitch1 = () => {
@@ -76,66 +104,83 @@ export default class Index extends Component {
      }
     
      toggleSwitch2 = (value) => {
-        //console.warn(value)
-        this.setState({ switch2: value})
         if(value == true) {
-          AsyncStorage.setItem('fingerprint', 'enabled')
-          //console.warn("y")
+            this.checkSensor()
         }
         if(value == false) {
+            this.setState({ switch2: value})
             AsyncStorage.setItem('fingerprint', 'disabled')
-            //console.warn("n")
+            RNRestart.Restart();
         }
      }
 
+     checkSensor () {
+        FingerprintScanner
+        .isSensorAvailable()
+        .then(biometryType => {
+            this.setState({ switch2: true})
+            AsyncStorage.setItem('fingerprint', 'enabled')
+            RNRestart.Restart();
+        })
+        .catch(error => alert(error.message));
+    
+     }
+
     floatClicked = () => {
-        //console.warn("Sss")
         ImagePicker.openPicker({
             width: 300,
             height: 400,
             cropping: true,
             includeBase64: true
           }).then(image => {
-              this.setState({img: image, imageP: true, userDataPic:image["data"]  })
-              setTimeout( () => { this.setState({ imageP: true }); }, 500);
-           
-          });
-          
-          this.updatepic();
-    }
-
-    updatepic = () => {
-        
-        return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile/'+this.state.userData, {
+            this.setState({img: image, imageP: true, userDataPic:image["data"]  });
+            setTimeout( () => { this.setState({ imageP: true }); }, 500);
+            this.setState({updatingProfilePic:true})
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile/'+this.state.userData["userId"], {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': this.state.auth,
             },
             body: JSON.stringify({
-                userId:this.state.userId,
-                email:this.state.email,
-                firstName:this.state.fname,
-                lastName:this.state.lname,
-                gender:this.state.gender,
-                countryId:this.state.countryId,
-                jobTitle:this.state.jobTitle,
-                organization:this.state.organization,
-                phoneNumber:this.state.phoneNumber,
-                birthDate:this.state.date,    
-                profileByte:this.state.userDataPic
+                "userId": this.state.userData["userId"],
+                "email": this.state.userData["email"],
+                "firstName": this.state.userData["firstName"],
+                "lastName": this.state.userData["lastName"],
+                "gender": this.state.userData["gender"],
+                "phoneNumber": this.state.userData["phoneNumber"],
+                "birthDate": this.state.userData["birthDate"],
+                "isProfileImage": this.state.userData["isProfileImage"],
+                "profileByte": this.state.userDataPic,
             }),
             }).then((response) => response.json())
             .then((responseJson) => {
-                
                 console.warn(responseJson)
-                this.setState({pdVisible:false})
+                let message = responseJson["message"];
+                return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': this.state.auth,
+                },
+                }).then((response) => response.json())
+                .then((responseJson) => {
+                    this.setState({userData: responseJson['data'][0]})
+                    this.setState({updatingProfilePic:false})
+                    alert(message);
+                })
+                .catch((error) => {
+                console.error(error.message)
+                });
             })
             .catch((error) => {
-              console.error(error)
+                console.error(error.message)
             });
+          });
+    }
 
-
+    changePwd = () =>{
+        this.refs.ChangePwd.show()
     }
 
     render() {
@@ -149,13 +194,23 @@ export default class Index extends Component {
                     activityIndicatorSize="large"
                     animationType="slide"
                 />
-
+            <ProgressDialog
+                    visible={this.state.updatingProfilePic}
+                    title="Uploading Profile Picture!"
+                    message="Please wait..."
+                    activityIndicatorColor="#003d5a"
+                    activityIndicatorSize="large"
+                    animationType="slide"
+                />
+                <NavigationEvents
+                onDidFocus={payload => this.didFocus()}/>
                 <ScrollView>
                     
                 <View style={[styles.DocumentsList, {justifyContent: "center", alignItems: "center" } ]}>
-                    {this.state.userDataPic == "" || this.state.userDataPic == null ?
+                    {this.state.userData["isProfileImage"] == false ?
+                    // || this.state.userDataPic == null
                         <Avatar
-                            style={{height:200,width:200}}
+                            style={{height:180,width:180}}
                             source={require('../../../img/profile.png')}
                             rounded
                             showEditButton
@@ -166,7 +221,7 @@ export default class Index extends Component {
                         />:
                         <Avatar
                             style={{height:200,width:200}}
-                            source={{uri: `data:image/png;base64,${this.state.userDataPic}`}}
+                            source={{uri: `data:image/png;base64,${this.state.userData["profileByte"]}`}}
                             rounded
                             showEditButton
                             onEditPress={this.floatClicked}
@@ -180,11 +235,11 @@ export default class Index extends Component {
                 <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Personal Details </Text>
                 <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20}}></View>
                     
-                <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.props.navigation.navigate('Profile',{'userData':this.state.userData})}>
+                <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.props.navigation.navigate('Profile', {"userData": this.state.userData })}>
                         <Text style = { styles.buttonText }>Edit Profile</Text>
                 </TouchableOpacity>
 
-               <TouchableOpacity style = { [styles.buttonContainer]} onPress={() => this.logout()}>
+               <TouchableOpacity style = { [styles.buttonContainer]} onPress={() => this.changePwd()}>
                         <Text style = { styles.buttonText }>Change Password</Text>
                 </TouchableOpacity>
 
@@ -253,6 +308,8 @@ export default class Index extends Component {
                     </View> 
                     
                 </ScrollView>
+                
+                <ChangePwd ref={'ChangePwd'} parentFlatList={this} />
             </View>
         )
     }

@@ -312,7 +312,7 @@ class Dashboard extends Component {
                             <Icon1 name="signature" style={styles.actionButtonIcon} />
                         </ActionButton.Item>
                         
-                        <ActionButton.Item buttonColor="#003d5a" title="Add Comtact" onPress={() => this.addContact()}>
+                        <ActionButton.Item buttonColor="#003d5a" title="Add Contact" onPress={() => this.addContact()}>
                             <Icon name="md-add" style={styles.actionButtonIcon} />
                         </ActionButton.Item>
                     </ActionButton>

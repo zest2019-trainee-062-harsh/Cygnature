@@ -12,7 +12,6 @@ import { Dropdown } from 'react-native-material-dropdown'
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
-var ratio = "0.612903225806452";
 
 class Test extends Component {
   constructor(props) {
@@ -76,16 +75,23 @@ class Test extends Component {
   addAnnotation(){
     let element= (
       <Animated.View key={this.state.key}
-        style={styles.imageContainer}
+        style={{
+          transform: this.Animatedvalue.getTranslateTransform(),
+          borderColor: "black",
+          borderWidth: 1,
+          backgroundColor: "white",
+          opacity: 0.5,
+          height: 20,
+          width: 100,
+          color: "black"
+        }}
         {...this.PanResponder.panHandlers}
-        style={this.state.animatedStyle}
+        // style={this.state.animatedStyle}
       >
         <Text>Drag Me</Text>
       </Animated.View>
     )
-    let annotation = this.state.annotations;
-    console.warn(this.state.annotations)
-    if(placeholder.push(element)){
+    if(this.state.annotations.push(element)){
       this.state.key= this.state.key+1
     }
     else{
@@ -199,7 +205,7 @@ class Test extends Component {
                 containerStyle={{
                   marginLeft:"25%",
                   marginRight:"25%"
-                }}  
+                }}
                 onChangeText={(value) => {
                   this.changeId(value)
                 }}
@@ -212,37 +218,13 @@ class Test extends Component {
             activeDotColor={'#003d5a'}
             dotColor={'grey'}
           >
-            <View
-              style={{margin:20, justifyContent:'center', alignItems: 'center'}}
-              title={<Text>{this.state.count+1}/{this.state.totalPage}</Text>}
-            >
-              <ImageZoom
-                cropWidth={width/1.4}
-                cropHeight={height/2}
-                imageWidth={width/1.4}
-                imageHeight={height/2}
-              >
-                <ImageBackground style={styles.imageContainer}
-                  source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}
-                >
-                    <Animated.View
-                        style={styles.imageContainer}
-                        {...this.PanResponder.panHandlers}
-                        style={animatedStyle}
-                    >
-                      <Text>Drag Me</Text>
-                    </Animated.View>
-                </ImageBackground>
-              </ImageZoom>
-            </View>
             {
-              this.state.data.pages.map((item) => {
-                this.state.count = this.state.count + 1
-                if(this.state.count < this.state.totalPage){
+              this.state.data.pages.map((item, index) => {
+                if(index < this.state.totalPage){
                   return(
                     <View
                       style={{margin:20, justifyContent:'center', alignItems: 'center'}}
-                      title={<Text>{this.state.count}/{this.state.totalPage}</Text>}
+                      title={<Text>{index + 1}/{this.state.totalPage}</Text>}
                     >
                       <ImageZoom
                         cropWidth={width/1.4}
@@ -251,8 +233,9 @@ class Test extends Component {
                         imageHeight={height/2}
                       >
                         <ImageBackground style={styles.imageContainer}
-                          source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}
+                          source={{uri: `data:image/png;base64,${this.state.data["pages"][index]}`}}
                         >
+                       
                             <Animated.View
                                 {...this.PanResponder.panHandlers}
                                 style={this.state.animatedStyle}
@@ -264,9 +247,6 @@ class Test extends Component {
                     </View>
                   )
                 }
-                else{
-                  null
-                };
               })
             }
           </Swiper>

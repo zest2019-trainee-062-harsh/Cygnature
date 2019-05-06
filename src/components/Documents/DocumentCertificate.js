@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet,Text, View,ScrollView, Dimensions , ToastAndroid,TouchableOpacity,Image,AsyncStorage} from 'react-native'
+import { StyleSheet,Text, View,ScrollView, Dimensions ,TouchableOpacity,Image,AsyncStorage} from 'react-native'
 import fetch_blob from 'rn-fetch-blob';
 import Icon1 from 'react-native-vector-icons/Ionicons';
 import RNFS from 'react-native-fs';

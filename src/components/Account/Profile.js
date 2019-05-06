@@ -84,8 +84,6 @@ class Profile extends Component {
         // console.warn("Selected value = ", value);
         this.setState({countryCode: value.replace(/[^0-9]/g, '')})
         
-        console.warn(this.state.countryCode);
-        
     }
 
     validations(text, value)
@@ -167,7 +165,6 @@ class Profile extends Component {
                  this.setState({message:responseJson["message"]})
                 console.warn(this.state.message)
                 
-                this.setState({pdVisible:false})
             })
             .catch((error) => {
               console.error(error)
@@ -400,7 +397,8 @@ class Profile extends Component {
                                 data = {this.state.data}
                                 valueExtractor = {({countryCode}) => countryCode}
                                 onChangeText = {value => this.onChangeHandler(value)}
-                                selectedItemColor = "red"
+                                selectedItemColor = "black"
+                                disabledItemColor = "grey"
                                 />
                         
                             </View>

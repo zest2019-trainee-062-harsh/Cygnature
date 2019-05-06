@@ -51,8 +51,10 @@ export default class SplashScreen extends Component{
   authCheck = async() =>{
     let auth = await AsyncStorage.getItem('auth');
     let otp = await AsyncStorage.getItem('otp_check');
+    let intro = await AsyncStorage.getItem('isIntroDisable');
     if(otp == 'not_present' || otp == null){
         //this.props.navigation.navigate('Login')
+        if(intro == 'TRUE') {
         const resetAction = StackActions.reset({
           index: 0,
           actions: [
@@ -60,17 +62,36 @@ export default class SplashScreen extends Component{
           ]
         })
         this.props.navigation.dispatch(resetAction)
+      } else {
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'Introslider'})
+          ]
+        })
+        this.props.navigation.dispatch(resetAction)
+      }
     }else{
       if(auth == 'not_present' || auth == null){
         //this.props.navigation.navigate('Login')
         
-        const resetAction = StackActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'Login'})
-          ]
-        })
-        this.props.navigation.dispatch(resetAction)
+        if(intro == 'TRUE') {
+          const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'Login'})
+            ]
+          })
+          this.props.navigation.dispatch(resetAction)
+        } else {
+          const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'Introslider'})
+            ]
+          })
+          this.props.navigation.dispatch(resetAction)
+        }
       }else{
         this.state.auth = auth;
         let fingerprint = await AsyncStorage.getItem('fingerprint')

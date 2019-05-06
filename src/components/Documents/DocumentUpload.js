@@ -12,7 +12,6 @@ class DocumentUpload extends Component {
     constructor(props) {
         super(props)
         this.state.data = this.props.navigation.getParam('data')
-        console.warn(this.state.data)
         this.state.currentDate = (moment().utcOffset("+5:30").format("DD-MM-YYYY"))
     }
 
@@ -31,7 +30,7 @@ class DocumentUpload extends Component {
         opacity: 0.5,
         disabled: true,
         signers : [],
-        observors: [],
+        observers: [],
         checked1: false,
         checked2: false,
         enabled: false,
@@ -42,6 +41,7 @@ class DocumentUpload extends Component {
     }
 
     addSigners(Ids) {
+        this.state.signerIds = Ids
         Ids.map((item) => {
             return fetch('http://cygnatureapipoc.stagingapplications.com/api/contact/get-contact-by-id/'+item,{
             method: 'GET',
@@ -50,19 +50,23 @@ class DocumentUpload extends Component {
             }}).then((response) => response.json())
             .then((responseJson) => {
                 let data = JSON.parse('{ "label": "'+responseJson["data"][0]["name"]+'", "value": "'+responseJson["data"][0]["Id"]+'"}');
-                
-                setTimeout(() => {
-                    this.state.signers.push(data)
-                }, 1000);
+                this.state.signers.push(data)
+                // setTimeout(() => {
+                //     this.state.signers.push(data)
+                //     // this.pushSigners(data)
+                // }, 1000);
             })
             .catch((error) => {
                 console.warn(error);
             });
         })
-        this.state.signerIds = Ids
-        console.warn(this.state.signers[0])
         this.check();
     }
+
+    // pushSigners(data){
+    //     this.state.signers.push(data)
+    //     // console.warn(this.state.signers[1]["label"])
+    // }
 
     check(){
         if(this.state.signerIds != []){
@@ -74,9 +78,28 @@ class DocumentUpload extends Component {
         }
     }
 
-    addObservers(Ids, Names) {
+    addObservers(Ids) {
+        console.warn(Ids)
         this.state.observerIds = Ids
-        this.state.observerIdsWithNames = Names
+        Ids.map((item) => {
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api/contact/get-contact-by-id/'+item,{
+            method: 'GET',
+            headers: {
+                'Authorization': this.state.auth
+            }}).then((response) => response.json())
+            .then((responseJson) => {
+                let data = JSON.parse('{ "label": "'+responseJson["data"][0]["name"]+'", "value": "'+responseJson["data"][0]["Id"]+'"}');
+                this.state.observers.push(data)
+                // setTimeout(() => {
+                //     this.state.signers.push(data)
+                //     // this.pushSigners(data)
+                // }, 1000);
+            })
+            .catch((error) => {
+                console.warn(error);
+            });
+        })
+        console.warn(this.state.observers)
     }
 
     assignSigners(){
@@ -84,10 +107,6 @@ class DocumentUpload extends Component {
             'data' : this.state.data,
             'signers': this.state.signers
         })
-        // this.props.navigation.navigate('Test', {
-        //     'data' : this.state.data,
-        //     'signers': this.state.signers
-        // })
     }
 
     onChangeCheck1() {
@@ -131,40 +150,42 @@ class DocumentUpload extends Component {
                         </Text>
                     </View>
                     :
-                        <View>
-                        <Text style={styles.textData}>
-                                {this.state.signers["label"]}
-                            </Text>
-                        </View>
-                    
+                    this.state.signers.map((_data, index, _array) => {
+                        return(
+                            <View>
+                                <Text>
+                                    {this.state.signers[index]["label"]}
+                                </Text>
+                            </View>
+                        )
+                    })
                 }
                 <View style={{marginLeft:5}}>
-                    <TouchableOpacity style={{backgroundColor: "#003d5a",borderRadius: 5, width:100, justifyContent:'center', alignItems:'center'}} onPress={() => { this.refs.DocumentUpload_SignerModal.show() }}>
+                    <TouchableOpacity
+                        style={{backgroundColor: "#003d5a",borderRadius: 5, width:100, justifyContent:'center', alignItems:'center'}}
+                        onPress={() => { this.refs.DocumentUpload_SignerModal.show() }}
+                    >
                         <Text style={[styles.textData, {color:'white'}]}>Select</Text>
                     </TouchableOpacity>
                 </View>
 
-                <Text style={styles.textTitle}>Observors:</Text>
+                <Text style={styles.textTitle}>Observers:</Text>
                 {
-                    this.state.observors[0] == [] ? 
-                    <View>
-                        <Text>
-                            No signers present at this moment.{"\n"}
-                            *Select at least one contact.
-                        </Text>
-                    </View>
-                    :
-                    this.state.observors.map((index) => {
-                        <View>
-                            <Text>
-                                {index["label"]}
-                            </Text>
-                        </View>
+                    this.state.observers.map((_data, index, _array) => {
+                        return(
+                            <View>
+                                <Text>
+                                    {this.state.observers[index]["label"]}
+                                </Text>
+                            </View>
+                        )
                     })
                 }
 
                 <View style={{marginLeft:5}}>
-                <TouchableOpacity style={{backgroundColor: "#003d5a",borderRadius: 5, width:100, justifyContent:'center', alignItems:'center'}} onPress={() => { this.refs.DocumentUpload_SignerModal.show() }}>
+                <TouchableOpacity style={{backgroundColor: "#003d5a",borderRadius: 5, width:100, justifyContent:'center', alignItems:'center'}}
+                    onPress={() => { this.refs.DocumentUpload_ObserverModal.show() }}
+                >
                         <Text style={[styles.textData, {color:'white'}]}>Select</Text>
                     </TouchableOpacity>
                 </View>
