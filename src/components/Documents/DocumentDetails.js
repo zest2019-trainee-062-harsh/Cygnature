@@ -533,8 +533,8 @@ class DocumentDetails extends Component {
                         }
 
                         <TouchableOpacity  onPress={()=> this.certificate()}
-                        style = {styles.buttonContainer}>
-                            <Text style = { styles.buttonText }>Certificate</Text>
+                            style = {styles.buttonContainer}>
+                            <Text style = {[styles.buttonText,]}>Certificate</Text>
                         </TouchableOpacity> 
                         </View>
 

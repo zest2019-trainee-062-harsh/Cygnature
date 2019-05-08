@@ -84,6 +84,8 @@ class Profile extends Component {
         // console.warn("Selected value = ", value);
         this.setState({countryCode: value.replace(/[^0-9]/g, '')})
         
+        
+        
     }
 
     validations(text, value)
@@ -142,6 +144,7 @@ class Profile extends Component {
     }
     
     putprofile = () =>{
+    
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile/'+this.state.userId, {
             method: 'PUT',
             headers: {
@@ -165,6 +168,7 @@ class Profile extends Component {
                  this.setState({message:responseJson["message"]})
                 console.warn(this.state.message)
                 
+                this.setState({pdVisible:false})
             })
             .catch((error) => {
               console.error(error)
@@ -397,8 +401,7 @@ class Profile extends Component {
                                 data = {this.state.data}
                                 valueExtractor = {({countryCode}) => countryCode}
                                 onChangeText = {value => this.onChangeHandler(value)}
-                                selectedItemColor = "black"
-                                disabledItemColor = "grey"
+                                selectedItemColor = "red"
                                 />
                         
                             </View>

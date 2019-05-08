@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {
-    View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, AsyncStorage, Alert
+    View, Text, StyleSheet,ScrollView, TouchableOpacity, Linking, Switch, AsyncStorage, Alert
 } from 'react-native'
 import { Avatar } from 'react-native-elements';
 import { ProgressDialog } from 'react-native-simple-dialogs';
@@ -150,12 +150,12 @@ export default class Index extends Component {
                 "gender": this.state.userData["gender"],
                 "phoneNumber": this.state.userData["phoneNumber"],
                 "birthDate": this.state.userData["birthDate"],
-                "isProfileImage": this.state.userData["isProfileImage"],
+                "isProfileImage": true,
                 "profileByte": this.state.userDataPic,
             }),
             }).then((response) => response.json())
             .then((responseJson) => {
-                console.warn(responseJson)
+                //console.warn(responseJson)
                 let message = responseJson["message"];
                 return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
                 method: 'GET',
@@ -166,7 +166,7 @@ export default class Index extends Component {
                 }).then((response) => response.json())
                 .then((responseJson) => {
                     this.setState({userData: responseJson['data'][0]})
-                    this.setState({updatingProfilePic:false})
+                    this.setState({updatingProfilePic:true})
                     alert(message);
                 })
                 .catch((error) => {
@@ -188,7 +188,7 @@ export default class Index extends Component {
             <View style={styles.mainContainer}>
             <ProgressDialog
                     visible={this.state.pdVisible}
-                    title="Fetching Details !"
+                    title="Fetching Details!"
                     message="Please wait..."
                     activityIndicatorColor="#003d5a"
                     activityIndicatorSize="large"
@@ -196,7 +196,7 @@ export default class Index extends Component {
                 />
             <ProgressDialog
                     visible={this.state.updatingProfilePic}
-                    title="Uploading Profile Picture!"
+                    title="Uploading Profile Picture!"  
                     message="Please wait..."
                     activityIndicatorColor="#003d5a"
                     activityIndicatorSize="large"
@@ -221,6 +221,7 @@ export default class Index extends Component {
                         />:
                         <Avatar
                             style={{height:200,width:200}}
+                            // source={{uri: `data:image/png;base64,${this.state.userData["profileByte"]}`}}
                             source={{uri: `data:image/png;base64,${this.state.userData["profileByte"]}`}}
                             rounded
                             showEditButton

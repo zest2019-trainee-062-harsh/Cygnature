@@ -300,13 +300,7 @@ class Register extends Component {
         if (register == null) {
 
         } else {
-            // console.warn(this.state.rFname)
-            // console.warn(this.state.rLname)
-            // console.warn(this.state.rEmail)
-            // console.warn(this.state.rPassword)
-            // console.warn(register)
-
-                //API
+           
                 this.setState({pdVisible: true})
                
                 return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/register', {
