@@ -20,6 +20,7 @@ import DocumentVerify from './src/components/Verify/Index.js'
 import DocumentList from './src/components/Verify/DocumentList.js'
 import VerifyDetails from './src/components/Verify/VerifyDetails.js'
 import Document_Details_Sign from './src/components/Documents/DocumentDetails_Sign.js'
+import Introslider from './src/components/IntroSlider/Index'
 
 const AppNavigator = createStackNavigator({
   SplashScreen: {screen: SplashScreen},
@@ -43,6 +44,7 @@ const AppNavigator = createStackNavigator({
   DocumentList : {screen: DocumentList},  
   VerifyDetails : {screen:VerifyDetails},  
   Document_Details_Sign : {screen:Document_Details_Sign},
+  Introslider : {screen:Introslider},
 });
 
 const AppContainer = createAppContainer(AppNavigator);

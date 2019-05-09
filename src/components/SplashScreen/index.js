@@ -3,7 +3,7 @@ import {
   AppRegistry, Text, View, StyleSheet, StatusBar, Animated, Dimensions, AsyncStorage, Alert
 } from 'react-native';
 import moment from 'moment';
-import DeviceInfo from 'react-native-device-info';
+
 var {height} = Dimensions.get('window')
 import { StackActions, NavigationActions } from 'react-navigation'
 
@@ -44,23 +44,17 @@ export default class SplashScreen extends Component{
       //this.props.navigation.navigate('Login')
       this.authCheck()
       // this.props.navigation.navigate('FilePreview')
-      DeviceInfo.getIPAddress().then(ip => {
-        //console.warn(ip)
-        AsyncStorage.setItem('ipAddress',ip);
-      });
-      const userAgent = DeviceInfo.getSystemName() + " - " + DeviceInfo.getSystemVersion()
-      //console.warn(userAgent)
-      AsyncStorage.setItem('userAgent',userAgent);
-      //console.warn(DeviceInfo.getTimezone());
-      AsyncStorage.setItem('timeZone',DeviceInfo.getTimezone());
+    
     })
   }
 
   authCheck = async() =>{
     let auth = await AsyncStorage.getItem('auth');
     let otp = await AsyncStorage.getItem('otp_check');
+    let intro = await AsyncStorage.getItem('isIntroDisable');
     if(otp == 'not_present' || otp == null){
         //this.props.navigation.navigate('Login')
+        if(intro == 'TRUE') {
         const resetAction = StackActions.reset({
           index: 0,
           actions: [
@@ -68,22 +62,42 @@ export default class SplashScreen extends Component{
           ]
         })
         this.props.navigation.dispatch(resetAction)
+      } else {
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'Introslider'})
+          ]
+        })
+        this.props.navigation.dispatch(resetAction)
+      }
     }else{
       if(auth == 'not_present' || auth == null){
         //this.props.navigation.navigate('Login')
         
-        const resetAction = StackActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'Login'})
-          ]
-        })
-        this.props.navigation.dispatch(resetAction)
+        if(intro == 'TRUE') {
+          const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'Login'})
+            ]
+          })
+          this.props.navigation.dispatch(resetAction)
+        } else {
+          const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'Introslider'})
+            ]
+          })
+          this.props.navigation.dispatch(resetAction)
+        }
       }else{
         this.state.auth = auth;
         let fingerprint = await AsyncStorage.getItem('fingerprint')
         this.state.fingerprint = fingerprint
-        this.refreshToken();
+        this.getCount();
+        // this.refreshToken();
       }
     }
   }
