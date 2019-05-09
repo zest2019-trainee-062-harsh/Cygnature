@@ -66,11 +66,13 @@ class UploadModal extends Component {
                     }
                     ).then((response) => response.json())
                     .then((responseJson) => {
-                        //console.warn(responseJson)
+                        console.warn(responseJson)
                         this.setState({pdVisible: false})
 
                         if(responseJson["data"] == null) {
-                            alert(responseJson["errors"]["Document"])
+                            if(responseJson["errors"] == null ) {
+                                alert(responseJson["error"])
+                            } else alert(responseJson["errors"]["Document"])
                         } else {
                             this.props.parentFlatList.showData(responseJson["data"][0])
                         }
