@@ -122,12 +122,12 @@ export default class Index extends React.Component {
   }
   on_Done_all_slides = () => {
     this.setState({ show_Login: true });
-    //AsyncStorage.setItem('isIntroDisable','TRUE');
+    AsyncStorage.setItem('isIntroDisable','TRUE');
   };
 
   on_Skip_slides = () => {
     this.setState({ show_Login: true });
-    //AsyncStorage.setItem('isIntroDisable','TRUE');
+    AsyncStorage.setItem('isIntroDisable','TRUE');
   };
   
   render() {
