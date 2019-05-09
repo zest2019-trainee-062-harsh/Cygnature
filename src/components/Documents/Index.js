@@ -85,10 +85,64 @@ class Documents extends Component {
         });
     }
 
+    
+    fetchDataNew = async() =>{
+        this.setState({pdVisible: true}) 
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/documents',{
+        method: 'POST',
+        headers: {
+            'Authorization':this.state.auth,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "documentStatusId": null,
+            "currentPage": this.state.currentPage,
+            "isNext": true,
+            "searchText": "",
+            "startDate": "",
+            "endDate": "",
+            "signatureType": 0,
+            "uploadedBy": "",
+            "signerName": "",
+            "dateDuration": ""
+        }),
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            
+            let posts = this.state.documents.concat(responseJson["data"][0]["documents"]);
+            this.setState({
+                documents: posts ,
+                totalPages: responseJson["data"][0]["totalPages"],
+                currentPage: responseJson["data"][0]["currentPage"],
+                totalRows: responseJson["data"][0]["totalRows"]
+            })
+            this.setState({
+                value: 1,
+                pdVisible: false,
+            })
+            if(this.state.currentPage == this.state.totalPages){
+                this.setState({
+                    nextPage: true,
+                    nextButtonOpacity: 0.5
+                })
+            }
+            if(this.state.currentPage != 1){
+                this.setState({
+                    previousPage: false,
+                    previousButtonOpacity: 1
+                })
+            }
+        })
+        .catch((error) => {
+            console.warn(error);
+        });
+    }
+
     nextPage(){
+        console.warn("Y")
         this.setState({pdVisible: true})
         if(this.state.currentPage < this.state.totalPages){
-            this.fetchData()
+            this.fetchDataNew()
         }
     }
 
@@ -200,6 +254,11 @@ class Documents extends Component {
         this.fetchData()
     }
 
+    onStopScrollList = (event) => {
+        console.warn("event"+event.nativeEvent.layout.height);
+        //this.nextPage();
+    
+    }
 
     render() {
         const navigate = this.props.navigation;
@@ -248,7 +307,12 @@ class Documents extends Component {
                 </Text>
                 {
                     this.state.totalRows != 0 ?
-                    <ScrollView>
+                    <ScrollView
+                    onMomentumScrollEnd={this.onStopScrollList }
+                    onContentSizeChange={( contentWidth, contentHeight ) => {
+                       console.warn(contentHeight)
+                    }}
+                    >
                         {
                             this.state.documents.map((docs)=>{
                                 if(docs.documentStatusForUser == 0){
