@@ -14,7 +14,8 @@ import {StyleSheet,
     BackHandler,
     NetInfo,
     AsyncStorage,
-    Keyboard
+    Keyboard,
+    KeyboardAvoidingViewBase
 } from 'react-native'
 import { StackActions, NavigationActions } from 'react-navigation'
 import { CheckBox } from 'react-native-elements'
@@ -267,7 +268,7 @@ class Login extends Component {
     render(){
         return(
             
-            <View style={styles.maincontainer}>
+            <KeyboardAvoidingView behavior='padding'  style={styles.maincontainer}>
             <View style={{flex:0.90, justifyContent:'center'}}>
             
             <View style={styles.logoContainer}>            
@@ -383,7 +384,7 @@ class Login extends Component {
                     </TouchableOpacity>
                     </View>:null}
                 
-                </View>
+                </KeyboardAvoidingView>
                 
         )
     }

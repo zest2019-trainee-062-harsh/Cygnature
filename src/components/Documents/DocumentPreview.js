@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
-import {View, Text, Image, StyleSheet, ScrollView} from 'react-native'
+import {View, Text, Image, StyleSheet, ImageBackground, AsyncStorage} from 'react-native'
+import { ProgressDialog } from 'react-native-simple-dialogs';
 import { Dimensions } from "react-native"
 import ImageZoom from 'react-native-image-pan-zoom';
+import Swiper from 'react-native-swiper';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
@@ -11,15 +13,13 @@ class DocumentPreview extends Component {
     constructor(props) {
     super(props)
         this.state.data  = this.props.navigation.getParam('data')
+        this.state.Id  = this.props.navigation.getParam('Id')
         this.state.totalPage = this.state.data["pageCount"]
+        this.state.pages = this.state.data["pages"]
     }
 
     static navigationOptions = {
         title: "Document Preview"
-    }
-
-    componentWillMount(){
-        this.getImageSize()
     }
 
     state = {
@@ -31,77 +31,152 @@ class DocumentPreview extends Component {
         previousButtonOpacity : 0.5,
         prevButton: true,
         nextButton: false,
+        auth: [],
+        Id: [],
+        pdVisible: false,
+        renderCount: 0,
+        pages: [],
+        index: 0
     }
 
-    getImageSize(){
-        const image = "data:image/png;base64,"+this.state.data["pages"][0]
-        // console.warn(image)
-        let imageHeight=null; let imageWidth=null
-        Image.getSize(image, (height, width) => {
-            imageHeight = height
-            imageWidth = width
-            console.warn(imageHeight/imageWidth)
-            console.warn(imageWidth+" "+imageHeight)
-        })
+    componentWillMount = async() =>{
+        let auth = await AsyncStorage.getItem('auth');
+        this.state.auth = auth;
+    }
+
+    checkRenderedPages(pageCount){
+        if(this.state.renderCount.length == 0){
+            console.warn("Calling the API first time.")
+            this.state.renderCount.push(pageCount)
+            var pageTo = 0;
+            var difference = 0;
+            if(pageCount + 5 > this.state.totalPage){
+                difference = this.state.totalPage - pageCount;
+                pageTo = pageCount + difference;
+            }
+            else{
+                pageTo = pageCount + 5;
+            }
+            this.getNextPages(pageCount, pageTo);
+        }
+        else{
+            if(this.state.renderCount >= (pageCount-1) / 6){
+                console.warn("Won't load the rendered pages again...");
+            }
+            else{
+                var pageTo = 0;
+                var difference = 0;
+                if(pageCount + 5 > this.state.totalPage){
+                    difference = this.state.totalPage - pageCount;
+                    pageTo = pageCount + difference;
+                }
+                else{
+                    pageTo = pageCount + 5;
+                }
+                this.getNextPages(pageCount, pageTo);
+            }
+        }
+    }
+
+    getNextPages(pageCount, pageTo){
+        if(pageCount-1 !== this.state.totalPage){
+            this.setState({pdVisible: true})
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/next-pages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': this.state.auth
+                },
+                body: JSON.stringify({
+                    "Id": this.state.Id,
+                    "pageFrom": pageCount,
+                    "pageTo": pageTo
+                })
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                var pagesNew = responseJson["data"][0]["pages"];
+                pagesNew.map((item, index) => {
+                    this.state.pages.push(pagesNew[index])
+                })
+                this.setState({index: pageCount-2, renderCount: ((pageCount - 1)/6)})
+                this.setState(this.state)
+                this.setState({pdVisible: false})
+            })
+            .catch((error) => {
+                console.warn(error)
+            });
+        }
     }
 
     render() {
         return(
             <View style={styles.mainContainer}>
+                <ProgressDialog
+                    visible={this.state.pdVisible}
+                    title="Rendering next pages"
+                    message="Please wait..."
+                    activityIndicatorColor="#003d5a"
+                    activityIndicatorSize="small"
+                    animationType="fade"
+                />
                 <Text>{this.state.data["name"]}</Text>
-                <Text>No. of pages: {this.state.totalPage}</Text>
-                <Text>pageFrom {this.state.data["pageFrom"]}</Text>
-                <Text>pageTo {this.state.data["pageTo"]}</Text>
+                {/* <Text>No. of pages: {this.state.totalPage}</Text>
+                <Text>pageFrom {this.state.data["pageFrom"]}</Text> */}
 
-                <Text>
-                    *Note: Only 6 pages can be viewed after uploading the document.
-                    The whole document can be viewed after you create the document.
-                </Text>
+                <Swiper
+                    showsButtons={true}
+                    showsPagination={false}
+                    activeDotColor={'#003d5a'}
+                    dotColor={'grey'}
+                    onIndexChanged = {(index) =>{
+                        if((index + 1)%6 == 0){
+                            this.checkRenderedPages(index+2);
+                        }
+                    }}
+                    index={this.state.index}
+                    bounces={true}
 
-                <ScrollView>
-                    <View style={{margin:20, justifyContent:'center', alignItems: 'center'}}>
-                    <ImageZoom
-                        style={styles.imageContainer}
-                        cropWidth={width/1.4}
-                        cropHeight={height/2}
-                        imageWidth={width/1.4}
-                        imageHeight={height/2}
-                    >
-                        <Image 
-                            style={styles.imageContainer}
-                            source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}
-                        />
-                    </ImageZoom>
-                        <Text>Page: {this.state.count+1}/{this.state.totalPage}</Text>
-                    </View>
-                    {
-                        this.state.data.pages.map(() => {
-                            this.state.count = this.state.count+1
-                            if(this.state.count < this.state.data["pageCount"]){
-                                return(
-                                    <View style={{margin:20, justifyContent:'center', alignItems: 'center'}} key={this.state.count}>
-                                        <ImageZoom
-                                            style={styles.imageContainer}
-                                            cropWidth={width/1.4}
-                                            cropHeight={height/2}
-                                            imageWidth={width/1.4}
-                                            imageHeight={height/2}
-                                        >
-                                            <Image 
-                                                style={styles.imageContainer}
-                                                source={{uri: `data:image/png;base64,${this.state.data["pages"][this.state.count]}`}}
-                                            />
-                                        </ImageZoom>
-                                        <Text>Page: {this.state.count+1}/{this.state.totalPage}</Text>
-                                    </View>
-                                );
-                            }
-                            else{
-                                null
-                            }
-                        })
-                    }
-                </ScrollView>
+                >
+                {
+                    this.state.data.pages.map((key, index) => {
+                        if(index < this.state.totalPage){
+                        return(
+                            <View
+                                key={index}
+                                style={{
+                                    marginTop: 20,
+                                    justifyContent:'center',
+                                    alignItems: 'center',
+                                    backgroundColor: 'grey'
+                                }}
+                            >
+                                <ImageZoom
+                                    cropWidth={width/1.4}
+                                    cropHeight={height*0.7}
+                                    imageWidth={width/1.4}
+                                    imageHeight={height*0.7}
+                                >
+                                    <ImageBackground
+                                        style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            borderColor:'black',
+                                            borderWidth:1,
+                                            marginTop: 10
+                                        }}
+                                        resizeMode= "stretch"
+                                        source={{uri: `data:image/png;base64,${this.state.pages[index]}`}}
+                                    >
+                                    </ImageBackground>
+                                </ImageZoom>
+                                <Text style={{marginBottom: 10}}>Page: {index+1}/{this.state.totalPage}</Text>
+                            </View>
+                        )
+                        }
+                    })
+                }
+                </Swiper>
             </View>
         )
     }
@@ -125,7 +200,7 @@ const styles = StyleSheet.create({
         borderColor:'black',
         borderWidth:1,
         width:width/1.4,
-        height:height/2,
+        height:height*0.7,
     },
     buttonContainer: {
         backgroundColor: "#003d5a",

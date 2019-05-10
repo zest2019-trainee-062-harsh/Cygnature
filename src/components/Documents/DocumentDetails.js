@@ -188,6 +188,7 @@ class DocumentDetails extends Component {
             'Authorization':this.state.auth,
         }}).then((response) => response.json())
         .then((responseJson) => {
+            //console.warn(responseJson)
             if(responseJson["data"] == null)
             {
                 this.setState({pdVisible: false})
@@ -212,9 +213,17 @@ class DocumentDetails extends Component {
             'Authorization':this.state.auth,
         }}).then((response) => response.json())
         .then((responseJson) => {  
-            this.setState({pdVisible:false, data: responseJson["data"][0]})
-            this.props.navigation.navigate('Document_Details_Sign',{'data': this.state.data, 'Id': this.state.id})
-        })
+            //console.warn(responseJson)
+            if(responseJson["data"] == null)
+            {
+                this.setState({pdVisible: false})
+                alert(responseJson["error"])
+            } else {
+                this.setState({data: responseJson["data"][0]})
+                this.setState({pdVisible: false})
+                this.props.navigation.navigate('Document_Details_Sign',{'data': this.state.data, 'Id': this.state.id})
+            }
+            })
         .catch((error) => {
             console.warn(error.message);
         });

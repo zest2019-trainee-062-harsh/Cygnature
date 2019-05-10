@@ -20,34 +20,13 @@ export default class Index extends Component {
         token:null,
         documentList: [],
         totalRows: [],  
-        isVisible: true,
     }
 
     didFocus= async() => {
         this.state.auth = await AsyncStorage.getItem('auth')
-
-        this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow)
-        this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide)
         this.setState({transactionHash:null, fileHash:null, pdVisible1:false, pdVisible2:false, fileName:null})
     }
-       
-       
-    keyboardWillShow = event => {
-        this.setState({
-        isVisible: false
-        })
-    }
 
-    keyboardWillHide = event => {
-        this.setState({
-        isVisible: true
-        })
-    } 
-
-    didBlur = () => {
-        this.keyboardWillShowSub.remove()
-        this.keyboardWillHideSub.remove()
-    }
     search = () =>{    
         this.setState({pdVisible1:true})
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/search-by-hash',{
@@ -213,7 +192,6 @@ export default class Index extends Component {
         <View style={styles.mainContainer}>
         
         <NavigationEvents
-            onDidBlur={payload => this.didBlur()}
             onDidFocus={payload => this.didFocus()}/>
         
         <ProgressDialog
@@ -257,8 +235,8 @@ export default class Index extends Component {
                 </TouchableOpacity>
             </View>
 
-            {this.state.isVisible?
-            <View style={{flex:1, justifyContent: "center", alignItems: "center",marginTop:20}}>
+            
+            <View style={{ justifyContent: "center", alignItems: "center",marginTop:20}}>
                 <Icon name="md-cloud-upload" color='#003d5a' size={70} />
                 <Text style={{fontSize: 22,  color: 'black', fontWeight:'bold'}}>Upload a document to verify</Text>
                 
@@ -270,7 +248,7 @@ export default class Index extends Component {
                         <Text style={styles.textSave}>Choose File</Text>
                 </TouchableOpacity>
 
-            </View>:null}
+            </View>
             
            </View>
       
@@ -280,7 +258,6 @@ export default class Index extends Component {
 }
 const styles = StyleSheet.create({
     mainContainer:{
-        borderWidth:1,
         borderColor:'#003d5a',
         flex:1,
         backgroundColor: 'white',
@@ -321,7 +298,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     textcontain:{
-        flex: 1,
         flexDirection: 'row',
     },
     paste:{
@@ -338,6 +314,5 @@ const styles = StyleSheet.create({
     box: { 
         margin: 5,
         padding: 5,
-        flex:1
     },
 })

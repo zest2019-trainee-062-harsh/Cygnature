@@ -255,7 +255,7 @@ class Documents extends Component {
     }
 
     onStopScrollList = (event) => {
-        console.warn("event"+event.nativeEvent.layout.height);
+        console.warn("event"+event.nativeEvent.contentOffset.y);
         //this.nextPage();
     
     }
@@ -310,7 +310,7 @@ class Documents extends Component {
                     <ScrollView
                     onMomentumScrollEnd={this.onStopScrollList }
                     onContentSizeChange={( contentWidth, contentHeight ) => {
-                       console.warn(contentHeight)
+                       console.warn("height"+contentHeight)
                     }}
                     >
                         {

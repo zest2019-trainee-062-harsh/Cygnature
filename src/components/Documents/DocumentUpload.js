@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity, StyleSheet, TextInput, AsyncStorage} from 
 import DocumentUpload_SignerModal from './DocumentUpload_SignerModal';
 import DocumentUpload_ObserverModal from './DocumentUpload_ObserverModal';
 
+import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
 import DatePicker from 'react-native-datepicker'
@@ -12,6 +13,12 @@ class DocumentUpload extends Component {
     constructor(props) {
         super(props)
         this.state.data = this.props.navigation.getParam('data')
+        var arr =  this.state.data["name"].split(".")
+        var last = arr.pop()
+        var first = arr.join(".")
+        //console.warn(first +"sssss"+last)
+        this.state.fileName = first
+        this.state.fileExt = last
         this.state.currentDate = (moment().utcOffset("+5:30").format("DD-MM-YYYY"))
     }
 
@@ -23,6 +30,9 @@ class DocumentUpload extends Component {
         auth: null,
         data: [],
         count: 0,
+        fileName: "",
+        fileExt: "",
+        documentDescription: "",
         date :null,
         currentDate: null,
         signerIds: [],
@@ -109,12 +119,16 @@ class DocumentUpload extends Component {
     }
 
     assignData(){
-        this.props.navigation.navigate('Document_PlaceHolder', {
-            'data' : this.state.data,
-            'signers': this.state.signers,
-            'observors': this.state.observers
-        })
-    }
+            this.props.navigation.navigate('Document_PlaceHolder', {
+                'data' : this.state.data,
+                'signers': this.state.signers,
+                'documentDescription': this.state.documentDescription,
+                'expiryStartDate': this.state.currentDate,
+                'expiryEndDate': this.state.date,
+                'fileExtension' : this.state.fileExt,
+                'fileName': this.state.fileName,
+            })
+        }
 
     onChangeCheck1() {
         this.setState({ checked2: false})
@@ -131,7 +145,39 @@ class DocumentUpload extends Component {
         return(
             <View style={styles.mainContainer}>
                 <Text style={styles.textTitle}>File Name: </Text>
-                <Text style={styles.textData}>{this.state.data["name"]}</Text>
+                <View style={{flex:1, flexDirection: 'row'}}>
+                    <View style={{flex:0.1, alignContent:'center', justifyContent: 'center' }}>
+                        {this.state.fileExt == "pdf" ?
+                            <Icon
+                                name="file-pdf-o"
+                                size={40}
+                                color="#003d5a"
+                            /> : null
+                        }
+                        {this.state.fileExt == "docx" || this.state.fileExt == "doc" ?
+                            <Icon
+                                name="file-word-o"
+                                size={40}
+                                color="#003d5a"
+                            /> : null
+                        }
+                    </View>
+                    <View style={{flex:0.9,alignContent:'center', justifyContent: 'center' }}>
+                        <TextInput 
+                            placeholderTextColor='black'
+                            keyboardType="name-phone-pad"
+                            placeholder = "Enter file name"
+                            returnKeyType="done"
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            style={styles.boxTINew} 
+                            value={this.state.fileName}
+                            onChangeText={ (text) => {
+                                            this.setState({fileName:text})
+                                        }}
+                        />
+                    </View>
+                </View>
 
                 <Text style={styles.textTitle}>Description: </Text>
                 <TextInput 
@@ -145,6 +191,9 @@ class DocumentUpload extends Component {
                     style={styles.boxTI} 
                     multiline={true} 
                     numberOfLines={3}
+                    onChangeText={ (text) => {
+                        this.setState({documentDescription: text})
+                    }}
                 />
 
                 <Text style={styles.textTitle}>Signers: * </Text>
@@ -342,9 +391,14 @@ const styles = StyleSheet.create({
     },
     boxTI: {
         margin: 5,
-        fontSize: 12,
         borderWidth: 1,
         borderRadius: 10,
+        borderColor: 'black',
+        fontFamily: 'Helvetica',
+        fontSize: 17
+    },
+    boxTINew: {
+        borderBottomWidth: 1,
         borderColor: 'black',
         fontFamily: 'Helvetica',
         fontSize: 17
