@@ -88,6 +88,8 @@ class DocumentUpload_SignerModal extends Component {
                     style={ styles.modal }
                     position= 'center'
                     backdrop={true}
+                    backdropPressToClose={false}
+                    swipeToClose={false}
                 >
                     <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
                         <Icon name="md-alert" color='black' size={100} />

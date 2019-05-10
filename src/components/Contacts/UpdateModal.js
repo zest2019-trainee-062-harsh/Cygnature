@@ -157,9 +157,7 @@ class UpdateModal extends Component {
             position= 'center'
             backdrop={true}
             backdropPressToClose={false}
-            onClosed={() =>{
-                //console.warn("modal closed")
-            }}
+            swipeToClose={false}
             >
           
           <ProgressDialog

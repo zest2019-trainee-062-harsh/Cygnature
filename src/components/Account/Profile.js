@@ -50,6 +50,8 @@ class Profile extends Component {
                 style={ styles.modal }
                 position= 'center'
                 backdrop={true}
+                backdropPressToClose={false}
+                swipeToClose={false}
             >
             
             <Text style={{marginLeft:14,  fontSize: 18,  color: 'black', fontWeight:'bold'}}>Set Signature</Text>

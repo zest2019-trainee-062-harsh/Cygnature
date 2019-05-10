@@ -120,9 +120,7 @@ class AddModal extends Component {
             position= 'center'
             backdrop={true}
             backdropPressToClose={false}
-            onClosed={() =>{
-                //console.warn("modal closed")
-            }}
+            swipeToClose={false}
             >
             <ProgressDialog
             visible={this.state.pdVisible}

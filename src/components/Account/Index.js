@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {
-    View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Linking, Switch, AsyncStorage, Alert
+    View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity,  Switch, AsyncStorage, Alert
 } from 'react-native'
 import { Avatar } from 'react-native-elements';
 import { ProgressDialog } from 'react-native-simple-dialogs';
@@ -10,6 +10,7 @@ import { NavigationEvents } from 'react-navigation';
 import { StackActions, NavigationActions } from 'react-navigation'
 import FingerprintScanner from 'react-native-fingerprint-scanner'
 import ChangePwd from './ChangePwd.js'
+import WebViewModal from './WebViewModal'
  
 export default class Index extends Component {
     constructor (props) {
@@ -25,7 +26,8 @@ export default class Index extends Component {
         pdVisible: true,
         img : null,
         auth: null,
-
+        webviewEnabled:true,
+        webviewSRC: ""
     }
 
     didFocus= async() => {
@@ -157,6 +159,9 @@ export default class Index extends Component {
         this.refs.ChangePwd.show()
     }
 
+    webview = (value) =>{
+        this.refs.WebViewModal.show(value)
+    }
     render() {
         return(
             <View style={styles.mainContainer}>
@@ -244,12 +249,13 @@ export default class Index extends Component {
 
                     <Text style={{fontWeight: "bold", fontSize: 22, color: "black"}}> General </Text>
                     <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20}}></View>
+                   
                     <View style={styles.DocumentsList}>
-                        
+                            
                         <View style={styles.DocumentsList}>
                             <Text
                                 style={[styles.DocumentsListFont, {fontSize: 17, color: "#003d5a", textDecorationLine: "underline"}]}
-                                onPress={() => Linking.openURL('https://account.cygnature.io/Terms-Condition')}
+                                onPress={() => this.webview('https://account.cygnature.io/Terms-Condition')}
                             >
                                 Terms & Conditions
                             </Text>
@@ -257,7 +263,7 @@ export default class Index extends Component {
                         <View style={styles.DocumentsList}>
                             <Text
                                 style={[styles.DocumentsListFont, {fontSize: 17, color: "#003d5a", textDecorationLine: "underline"}]}
-                                onPress={() => Linking.openURL('https://account.cygnature.io/Privacy-Policy')}
+                                onPress={() => this.webview('https://account.cygnature.io/Privacy-Policy')}
                             >
                                 Privacy Policy
                             </Text>
@@ -265,16 +271,19 @@ export default class Index extends Component {
                         <View style={styles.DocumentsList}>
                             <Text
                                 style={[styles.DocumentsListFont, {fontSize: 17, color: "#003d5a", textDecorationLine: "underline"}]}
-                                onPress={() => Linking.openURL('https://www.cygnature.io')}
+                                onPress={() => this.webview('https://www.cygnet-infotech.com/cygnature')}
                             >
                                 About us
                             </Text>
                         </View>
                     </View> 
+                 
+                    
                     
                 </ScrollView>
                 
                 <ChangePwd ref={'ChangePwd'} parentFlatList={this} />
+                <WebViewModal ref={'WebViewModal'} parentFlatList={this} />
             </View>
         )
     }

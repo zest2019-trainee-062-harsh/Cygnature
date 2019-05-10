@@ -98,6 +98,7 @@ class UploadModal extends Component {
                 position= 'center'
                 backdrop={true}
                 backdropPressToClose={false}
+                swipeToClose={false}
             >
                 <View style={{alignItems:'flex-end', margin:10}}><Icon name="md-close" color='black' size={30} onPress={()=>this.close()} /></View>
                 <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>

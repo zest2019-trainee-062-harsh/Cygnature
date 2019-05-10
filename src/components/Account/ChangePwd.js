@@ -137,6 +137,7 @@ class ChangePwd extends Component {
                 position= 'center'
                 backdrop={true}
                 backdropPressToClose={false}
+                swipeToClose={false}
             >
             <ProgressDialog
                 visible={this.state.pdVisible}

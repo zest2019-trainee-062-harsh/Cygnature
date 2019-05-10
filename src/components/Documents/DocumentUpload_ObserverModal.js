@@ -106,6 +106,8 @@ class DocumentUpload_SignerModal extends Component {
                     style={ styles.modal }
                     position= 'center'
                     backdrop={true}
+                    backdropPressToClose={false}
+                    swipeToClose={false}
                 >
                     <Text style={{margin:10, fontSize:17, color: 'black'}}>
                         Contact(s)
