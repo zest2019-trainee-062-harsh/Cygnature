@@ -26,8 +26,7 @@ export default class Index extends Component {
         pdVisible: true,
         img : null,
         auth: null,
-        webviewEnabled:true,
-        webviewSRC: ""
+        pdTitle: "Fetching Details !"
     }
 
     didFocus= async() => {
@@ -45,7 +44,7 @@ export default class Index extends Component {
     }
 
     view () {
-        this.setState({pdVisible:true})
+        this.setState({pdVisible:true, pdTitle: "Fetching Details!"})
 
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
         method: 'GET',
@@ -56,8 +55,7 @@ export default class Index extends Component {
         }).then((response) => response.json())
         .then((responseJson) => {
             //console.warn(responseJson['data'][0]["profileByte"])
-            //this.setState({userDataPic: responseJson['data'][0]["profileByte"]}) 
-           
+            this.setState({userDataPic: responseJson['data'][0]["profileByte"]}) 
             this.setState({userData: responseJson['data'][0]}) 
             //console.warn(this.state.userData)
             this.setState({pdVisible:false})
@@ -141,17 +139,56 @@ export default class Index extends Component {
     
      }
 
-    floatClicked = () => {
-        //console.warn("Sss")
+     floatClicked = () => {
         ImagePicker.openPicker({
             width: 300,
             height: 400,
             cropping: true,
             includeBase64: true
           }).then(image => {
-              this.setState({img: image, imageP: true, userDataPic:image["data"]  })
-              setTimeout( () => { this.setState({ imageP: true }); }, 500);
-           
+            this.setState({img: image, imageP: true, userDataPic:image["data"]  });
+            setTimeout( () => { this.setState({ imageP: true }); }, 500);
+            this.setState({pdVisible:true,  pdTitle: "Updating Profile Pic!"})
+            return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile/'+this.state.userData["userId"], {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': this.state.auth,
+            },
+            body: JSON.stringify({
+                "userId": this.state.userData["userId"],
+                "email": this.state.userData["email"],
+                "firstName": this.state.userData["firstName"],
+                "lastName": this.state.userData["lastName"],
+                "gender": this.state.userData["gender"],
+                "phoneNumber": this.state.userData["phoneNumber"],
+                "birthDate": this.state.userData["birthDate"],
+                "isProfileImage": true,
+                "profileByte": this.state.userDataPic,
+            }),
+            }).then((response) => response.json())
+            .then((responseJson) => {
+                //console.warn(responseJson)
+                let message = responseJson["message"];
+                return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': this.state.auth,
+                },
+                }).then((response) => response.json())
+                .then((responseJson) => {
+                    this.setState({userData: responseJson['data'][0]})
+                    this.setState({pdVisible:false})
+                    alert(message);
+                })
+                .catch((error) => {
+                console.error(error.message)
+                });
+            })
+            .catch((error) => {
+                console.error(error.message)
+            });
           });
     }
 
@@ -167,7 +204,7 @@ export default class Index extends Component {
             <View style={styles.mainContainer}>
             <ProgressDialog
                     visible={this.state.pdVisible}
-                    title="Fetching Details !"
+                    title={this.state.pdTitle}
                     message="Please wait..."
                     activityIndicatorColor="#003d5a"
                     activityIndicatorSize="large"
