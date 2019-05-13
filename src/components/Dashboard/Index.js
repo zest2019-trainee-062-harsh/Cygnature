@@ -370,7 +370,7 @@ export default createMaterialBottomTabNavigator({
     },
 },
 {
-    //initialRouteName: 'contacts',
+    initialRouteName: 'DocumentVerify',
     barStyle: { backgroundColor: '#003d5a' },
     activeTintColor: 'white',
     navigationOptions: () => ({ header: null })

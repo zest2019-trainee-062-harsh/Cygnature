@@ -27,13 +27,15 @@ export default class DocumentList extends Component {
     }
     
     verifydetail = (id) => {
+        this.setState({pdVisible:true})
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/document-detail/'+id,{
         method: 'GET',
         headers: {
             'Authorization': this.state.auth
         }}).then((response) => response.json())
         .then((responseJson) => {
-             this.props.navigation.navigate('VerifyDetails',{'data':responseJson["data"][0]})
+            this.setState({pdVisible:false})
+            this.props.navigation.navigate('VerifyDetails',{'data':responseJson["data"][0]})
         })
         .catch((error) => {
             console.warn(error);
@@ -46,10 +48,10 @@ export default class DocumentList extends Component {
         <View style={styles.mainContainer}>
         <ProgressDialog
             visible={this.state.pdVisible}
-            title="Fetching Documents!"
+            title="Getting Details !"
             message="Please wait..."
             activityIndicatorColor="#003d5a"
-            activityIndicatorSize="large"
+            activityIndicatorSize="small"
             animationType="slide"
         />
         
@@ -106,13 +108,11 @@ export default class DocumentList extends Component {
                                         <Text style={[styles.DocumentsListFont, {fontSize: 17, fontWeight: "bold"}]}>
                                             {docs.name}
                                         </Text>
-                                        <View style={{flexDirection: "row"}}>
+                                        <View style={{flexDirection: "row", marginTop:10}}>
                                             <Text style={ [styles.DocumentsListFont, {alignContent: "flex-start"}] }>
-                                                Uploaded By:{"\n"}
                                                 Time of Creation:
                                             </Text>
                                             <Text style={ [styles.DocumentsListFont, {alignContent: "flex-end"}] }>
-                                                {docs.uploadedBy}{"\n"}
                                                 {docs.creationTime}
                                             </Text>
                                         </View>
