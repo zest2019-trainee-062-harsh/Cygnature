@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     },
     DocumentsList:{
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#f5f5f5',
         marginLeft: 10,
         marginRight: 10,
         marginTop: 5,
@@ -272,6 +272,7 @@ const styles = StyleSheet.create({
         borderColor: "#003d5a",
         borderWidth: 2,
         borderWidth: 2,
+        backgroundColor: '#f5f5f5'
     },
     rowDataBg: {
         position: 'absolute',

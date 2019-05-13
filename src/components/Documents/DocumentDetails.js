@@ -196,7 +196,7 @@ class DocumentDetails extends Component {
             } else {
                 this.setState({data: responseJson["data"][0]["documentData"]})
                 this.setState({pdVisible: false})
-                this.props.navigation.navigate('Document_Preview',{'data': this.state.data})
+                this.props.navigation.navigate('Document_Preview',{'data': this.state.data, 'Id': this.state.id})
             }
         })
         .catch((error) => {
@@ -505,7 +505,7 @@ const styles = StyleSheet.create({
     },
     DocumentsList:{
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#f5f5f5',
         marginLeft: 10,
         marginRight: 10,
         marginTop: 5,
@@ -523,6 +523,7 @@ const styles = StyleSheet.create({
         borderColor: "#003d5a",
         borderWidth: 2,
         borderWidth: 2,
+        backgroundColor: '#f5f5f5'
     },
     buttonContainer: {
         flex: 0.5,
