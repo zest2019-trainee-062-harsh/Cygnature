@@ -1,5 +1,5 @@
 import React from 'react';
-import  Ionicons  from 'react-native-vector-icons/Ionicons';
+import  Ionicons  from 'react-native-vector-icons/FontAwesome5';
 import Icons from 'react-native-vector-icons/Ionicons';
 import { StyleSheet, View, Text, StatusBar, AsyncStorage } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
@@ -43,21 +43,21 @@ const slides = [
     key: 'Screen 1',
     title: 'Signing Documents',
     text: 'Sign with Electronic Signature\nSign with Digital Signature\nGuest Signing',
-    icon: 'md-tablet-portrait',
+    icon: 'file-signature',
     colors: ['#63E2FF', '#B066FE'],
   },
   {
     key: 'Screen 2',
     title: 'Sending Documents for Signing',
     text: 'Extensive document file type support\nDocument Tracking\nAdvanced Document Options',
-    icon: 'md-send',
+    icon: 'paper-plane',
     colors: ['#A3A1FF', '#3A3897'],
   },
   {
     key: 'Screen 3',
     title: 'Security',
     text: 'Security and Blockchain\nCertificate of Completion\nTwo-factor OTP Authentication\nTwo step Verification',
-    icon: 'md-lock',
+    icon: 'user-secret',
     colors: ['#29ABE2', '#4F00BC'],
   },
 ];
@@ -111,7 +111,7 @@ export default class Index extends React.Component {
   _renderDoneButton = () => {
     return (
       <View style={styles.buttonCircle}>
-        <Ionicons
+        <Icons
           name="md-checkmark"
           color="rgba(255, 255, 255, .9)"
           size={24}

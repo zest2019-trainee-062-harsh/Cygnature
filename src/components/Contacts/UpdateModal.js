@@ -33,7 +33,9 @@ class UpdateModal extends Component {
         status: false,
         contactId: null,
         pdVisible: false,
-        
+        errorName: null,
+        errorJT: null,
+        errorJD: null,
     }
 
     show = (text) => {
@@ -127,8 +129,18 @@ class UpdateModal extends Component {
         
         switch(value) {
             case "name": {
-                this.setState({uName: text})
-                break;
+                
+                let reg = /^([a-zA-z\s]{0,32})$/ ;
+            
+                if(reg.test(text) === false)
+                {
+                   this.setState({errorName: "Only alphabets allows"})
+                }
+                else {
+                    this.setState({errorName:null, uName: text})
+                }
+                break
+                return
             }
             case "email": {
                 this.setState({uEmail: text})
@@ -139,11 +151,31 @@ class UpdateModal extends Component {
                 break;
             }
             case "jobT": {
-                this.setState({uJobT: text})
+                let reg = /^([a-zA-z\s]{0,32})$/ ;
+            
+                if(reg.test(text) === false)
+                {
+                   this.setState({errorJT: "Only alphabets allows"})
+                }
+                else {
+                    this.setState({errorJT:null, uJobT: text})
+                }
+                break
+                return
                 break;
             }
             case "jobD": {
-                this.setState({uJobD: text})
+                let reg = /^([a-zA-z\s]{0,32})$/ ;
+            
+                if(reg.test(text) === false)
+                {
+                   this.setState({errorJD: "Only alphabets allows"})
+                }
+                else {
+                    this.setState({errorJD:null, uJobD: text})
+                }
+                break
+                return
                 break;
             }
         }
@@ -190,7 +222,10 @@ class UpdateModal extends Component {
                 onSubmitEditing={() => this.ref1.focus()}
                 value={this.state.uName}
                 />: null}
-
+                {this.state.errorName==null || this.state.errorName==" " ?
+                null:
+                <Text style = { styles.errorText }>{this.state.errorName}</Text>
+                }
              {this.state.status ?
             <TextInput
                 editable={false}
@@ -209,6 +244,7 @@ class UpdateModal extends Component {
 
             {this.state.status ?
             <TextInput
+                editable={false}
                 style={ styles.textIn }
                 placeholder="Enter Mobile Number *"
                 underlineColor= "green"
@@ -240,7 +276,10 @@ class UpdateModal extends Component {
                 ref={(input) => this.ref3 = input}
                 value={this.state.uJobT}
                 /> : null}
-
+                {this.state.errorJT==null || this.state.errorJT==" " ?
+                null:
+                <Text style = { styles.errorText }>{this.state.errorJT}</Text>
+                }
             {this.state.status ?
             <TextInput
                 style={ styles.textIn }
@@ -255,7 +294,10 @@ class UpdateModal extends Component {
                 value={this.state.uJobD}
                 /> : null}
 
-
+                {this.state.errorJD==null || this.state.errorJD==" " ?
+                null:
+                <Text style = { styles.errorText }>{this.state.errorJD}</Text>
+                }
            <TouchableOpacity style={ styles.btnSave } onPress={this.add}>
                     <Text style={styles.textSave}>Update Contact</Text>
             </TouchableOpacity>
@@ -299,5 +341,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#ffffff',
         fontWeight: 'bold'
+    },
+    errorText: {
+        color: '#ff0000',
+        marginLeft:30,
+        fontSize: 12,
     },
 })

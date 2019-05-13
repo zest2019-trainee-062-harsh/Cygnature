@@ -15,7 +15,6 @@ import {StyleSheet,
     NetInfo,
     AsyncStorage,
     Keyboard,
-    KeyboardAvoidingViewBase
 } from 'react-native'
 import { StackActions, NavigationActions } from 'react-navigation'
 import { CheckBox } from 'react-native-elements'
