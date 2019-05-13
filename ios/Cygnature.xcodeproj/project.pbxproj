@@ -69,6 +69,7 @@
 		8999D443FD3B4F709987DB61 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFEC3F14FFBA4B5AB868E1B0 /* libRNDeviceInfo.a */; };
 		927514B1477F4D79850750B3 /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77E8D5FBD0A04973A37B3B46 /* libRNDeviceInfo-tvOS.a */; };
 		6A59CAA426EE4693AA0E926A /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF144A23893A470D96ADC68D /* libBVLinearGradient.a */; };
+		44DDFFBC7CC0480AB1CFC117 /* libRNNetworkInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2D63C9E22AB44A4A3AC2102 /* libRNNetworkInfo.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -419,6 +420,8 @@
 		77E8D5FBD0A04973A37B3B46 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; name = "libRNDeviceInfo-tvOS.a"; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		D5C5C855BE964AF79ABE90FC /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; name = "BVLinearGradient.xcodeproj"; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		AF144A23893A470D96ADC68D /* libBVLinearGradient.a */ = {isa = PBXFileReference; name = "libBVLinearGradient.a"; path = "libBVLinearGradient.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		BBA0434BA9B946D783D93C57 /* RNNetworkInfo.xcodeproj */ = {isa = PBXFileReference; name = "RNNetworkInfo.xcodeproj"; path = "../node_modules/react-native-network-info/ios/RNNetworkInfo.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		C2D63C9E22AB44A4A3AC2102 /* libRNNetworkInfo.a */ = {isa = PBXFileReference; name = "libRNNetworkInfo.a"; path = "libRNNetworkInfo.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -460,6 +463,7 @@
 				13342D82C6C04AA38A543EF4 /* libRCTRestart.a in Frameworks */,
 				8999D443FD3B4F709987DB61 /* libRNDeviceInfo.a in Frameworks */,
 				6A59CAA426EE4693AA0E926A /* libBVLinearGradient.a in Frameworks */,
+				44DDFFBC7CC0480AB1CFC117 /* libRNNetworkInfo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -664,6 +668,7 @@
 				7B14B0C92FF1497DA5EDE0A7 /* RCTRestart.xcodeproj */,
 				25A5E893E5F648F1835607E1 /* RNDeviceInfo.xcodeproj */,
 				D5C5C855BE964AF79ABE90FC /* BVLinearGradient.xcodeproj */,
+				BBA0434BA9B946D783D93C57 /* RNNetworkInfo.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1345,6 +1350,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1361,6 +1367,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
 					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
 					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
+					"$(SRCROOT)\..\node_modules\react-native-network-info\ios",
 				);
 			};
 			name = Debug;
@@ -1397,6 +1404,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1413,6 +1421,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
 					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
 					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
+					"$(SRCROOT)\..\node_modules\react-native-network-info\ios",
 				);
 			};
 			name = Release;
@@ -1448,6 +1457,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
 					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
 					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
+					"$(SRCROOT)\..\node_modules\react-native-network-info\ios",
 				);
 			};
 			name = Debug;
@@ -1482,6 +1492,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
 					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
 					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
+					"$(SRCROOT)\..\node_modules\react-native-network-info\ios",
 				);
 			};
 			name = Release;
@@ -1526,6 +1537,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1542,6 +1554,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
 					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
 					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
+					"$(SRCROOT)\..\node_modules\react-native-network-info\ios",
 				);
 			};
 			name = Debug;
@@ -1586,6 +1599,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1602,6 +1616,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
 					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
 					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
+					"$(SRCROOT)\..\node_modules\react-native-network-info\ios",
 				);
 			};
 			name = Release;
@@ -1645,6 +1660,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1661,6 +1677,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
 					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
 					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
+					"$(SRCROOT)\..\node_modules\react-native-network-info\ios",
 				);
 			};
 			name = Debug;
@@ -1704,6 +1721,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1720,6 +1738,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
 					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
 					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
+					"$(SRCROOT)\..\node_modules\react-native-network-info\ios",
 				);
 			};
 			name = Release;
