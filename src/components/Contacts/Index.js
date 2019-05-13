@@ -263,7 +263,7 @@ floatButton: {
     height: 50,
     backgroundColor: '#003d5a',
     borderRadius: 30,
-    bottom: 80,
+    bottom: 20,
     right: 6,
     alignItems: 'center',
     justifyContent: 'center',
