@@ -9,6 +9,7 @@ import { NavigationEvents } from 'react-navigation';
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
  
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 class Documents extends Component {
 
     state = {
@@ -249,8 +250,7 @@ class Documents extends Component {
         let token = await AsyncStorage.getItem('token');
         this.state.auth = auth;
         this.state.token = token;
-        this.setState({currentPage: 0})
-        //this.state.totalPages = null;
+        this.setState({currentPage: 0, documents: []})
         this.fetchData()
     }
 
@@ -291,7 +291,7 @@ class Documents extends Component {
         return(
             <View style={styles.mainContainer}>
                 <ProgressDialog
-                    visible={this.state.pdVisible}
+                    visible={false}
                     title="Fetching Documents!"
                     message="Please wait..."
                     activityIndicatorColor="#003d5a"
@@ -305,6 +305,73 @@ class Documents extends Component {
                 <Text style={{fontWeight: "bold", fontSize: 10, color: "black"}}>
                     {this.state.currentPage}/{this.state.totalPages}
                 </Text>
+{this.state.pdVisible ? 
+    <ScrollView>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        
+        </ScrollView>
+    : null}
+
+
                 {
                     this.state.totalRows != 0 ?
                     <ScrollView
