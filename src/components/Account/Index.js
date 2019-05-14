@@ -12,6 +12,10 @@ import FingerprintScanner from 'react-native-fingerprint-scanner'
 import ChangePwd from './ChangePwd.js'
 import WebViewModal from './WebViewModal'
  
+var width = Dimensions.get('window').width; //full width
+var height = Dimensions.get('window').height; //full height
+ 
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 export default class Index extends Component {
     constructor (props) {
         super(props)
@@ -215,6 +219,13 @@ export default class Index extends Component {
                 <ScrollView>
                     
                 <View style={[styles.DocumentsList, {justifyContent: "center", alignItems: "center" } ]}>
+                {this.state.pdVisible ?
+                    <ShimmerPlaceHolder autoRun={true}  
+                        style={{height:180,width:180, borderRadius:100}}
+                        colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']}
+                        height={180} width={180}/>                
+               :
+                    <View>
                     {this.state.userDataPic == "" || this.state.userDataPic == null ?
                         <Avatar
                             style={{height:180,width:180}}
@@ -237,6 +248,8 @@ export default class Index extends Component {
                             overlayContainerStyle={{backgroundColor:'white'}}
                         />
                     }
+                    </View>
+                }
                 </View>
                    
                 <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Personal Details </Text>
