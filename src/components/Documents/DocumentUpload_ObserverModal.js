@@ -23,7 +23,7 @@ class DocumentUpload_SignerModal extends Component {
         contactsCount : 0,
         res:[],
         data:[],
-        contactId: null,
+        contactIds: [],
         refreshing:false,
         observersIds: [],
         observersIdsWithName: []
@@ -67,16 +67,19 @@ class DocumentUpload_SignerModal extends Component {
         });      
     }
 
-    addObservers(Id, Name){
+
+    addObservers(Id, name, userId){
         let ID = Id
-        this.state.observersIds.push(ID)
+        let uid = userId
+        this.state.contactIds.push(ID)
+        this.state.observersIds.push(uid)
         let filteredArray = this.state.data.filter(item => item.Id !== Id)
         this.setState({data: filteredArray});
     }
 
     sendObservers(){
         this.refs.myModal.close();
-        this.props.parentFlatList.addObservers(this.state.observersIds);
+        this.props.parentFlatList.addObservers(this.state.contactIds, this.state.observersIds);
         this.state.observersIds = []
     }
 
@@ -136,7 +139,7 @@ class DocumentUpload_SignerModal extends Component {
     _renderItem({ item }) {
         return (
             <View style={styles.row}>
-                <TouchableOpacity onPress={() => this.addObservers(item.Id, item.name)}>
+                <TouchableOpacity onPress={() => this.addObservers(item.Id, item.name, item.userId)}>
                     <Text style={styles.rowDataText1}>{item.name}</Text>
                     <Text style={styles.rowDataText2}>{item.email}</Text>
                 </TouchableOpacity>

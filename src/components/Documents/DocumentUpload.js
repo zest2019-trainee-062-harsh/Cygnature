@@ -33,8 +33,12 @@ class DocumentUpload extends Component {
         fileName: "",
         fileExt: "",
         documentDescription: "",
-        date :null,
+        expiryStartDate :null,
+        expiryEndDate :null,
+        signingDueDate :null,
         currentDate: null,
+        reminderBefore: 1,
+        contactIds: [],
         signerIds: [],
         observerIds: [],
         opacity: 0.5,
@@ -72,9 +76,10 @@ class DocumentUpload extends Component {
     }
 
 
-    addSigners(Ids) {
-        this.state.signerIds = Ids
-        Ids.map((item) => {
+    addSigners(CIds, SIds) {
+        this.state.contactIds.push(CIds)
+        this.state.signerIds.push(SIds)
+        CIds.map((item) => {
             return fetch('http://cygnatureapipoc.stagingapplications.com/api/contact/get-contact-by-id/'+item,{
             method: 'GET',
             headers: {
@@ -85,7 +90,6 @@ class DocumentUpload extends Component {
                 let data = JSON.parse('{ "label": "'+responseJson["data"][0]["name"]+'","shortName": "'+responseJson["data"][0]["shortName"]+'", "value": "'+responseJson["data"][0]["Id"]+'"}');
                 this.state.signers.push(data)
                 
-                //console.warn(this.state.signers)
                 this.setState({signerViewEnabled:true, signerButtonDisabled: true})
             })
             .catch((error) => {
@@ -95,9 +99,9 @@ class DocumentUpload extends Component {
         this.check();
     }
 
-    addObservers(Ids) {
-        this.state.observerIds = Ids
-        Ids.map((item) => {
+    addObservers(CIds, OIds) {
+        this.state.observerIds.push(OIds)
+        CIds.map((item) => {
             return fetch('http://cygnatureapipoc.stagingapplications.com/api/contact/get-contact-by-id/'+item,{
             method: 'GET',
             headers: {
@@ -122,11 +126,16 @@ class DocumentUpload extends Component {
             this.props.navigation.navigate('Document_PlaceHolder', {
                 'data' : this.state.data,
                 'signers': this.state.signers,
+                'signerIds': this.state.signerIds,
+                'observerIds': this.state.observerIds,
                 'documentDescription': this.state.documentDescription,
-                'expiryStartDate': this.state.currentDate,
-                'expiryEndDate': this.state.date,
-                'fileExtension' : this.state.fileExt,
-                'fileName': this.state.fileName,
+                'expiryStartDate': this.state.expiryStartDate,
+                'expiryEndDate': this.state.expiryEndDate,
+                'signingDueDate': this.state.signingDueDate,
+                'reminderBefore': this.state.reminderBefore,
+                'extension' : "."+this.state.fileExt,
+                'fileName':this.state.fileName,
+                'name' : this.state.fileName,
             })
         }
 
@@ -144,8 +153,8 @@ class DocumentUpload extends Component {
     render() {
         return(
             <View style={styles.mainContainer}>
-                <Text style={styles.textTitle}>File Name: </Text>
-                <View style={{flex:1, flexDirection: 'row'}}>
+                <Text style={styles.textTitle}>File Name: * </Text>
+                <View style={{flex:0.3, flexDirection: 'row', marginBottom:5}}>
                     <View style={{flex:0.1, alignContent:'center', justifyContent: 'center' }}>
                         {this.state.fileExt == "pdf" ?
                             <Icon
@@ -162,7 +171,7 @@ class DocumentUpload extends Component {
                             /> : null
                         }
                     </View>
-                    <View style={{flex:0.9,alignContent:'center', justifyContent: 'center' }}>
+                    <View style={{flex:0.85,alignContent:'center', justifyContent: 'center', marginLeft: 20 }}>
                         <TextInput 
                             placeholderTextColor='black'
                             keyboardType="name-phone-pad"
@@ -199,12 +208,7 @@ class DocumentUpload extends Component {
                 <Text style={styles.textTitle}>Signers: * </Text>
                 {
                     !this.state.signerViewEnabled ? 
-                    <View>
-                        <Text style={styles.textData}>
-                            No signers present at this moment.{"\n"}
-                            *Select at least one contact.
-                        </Text>
-                    </View>
+                        null
                     :
                     this.state.signers.map((_data, index, _array) => {
                         return(
@@ -264,32 +268,105 @@ class DocumentUpload extends Component {
                     </TouchableOpacity>
                 }
                 </View>
+                <View style={{flex:0.5 ,flexDirection: 'row'}}>
+                    <View style={{flex: 0.5}}>
+                        <Text style={styles.textTitle}>Expiry Start Date: * </Text>
+                        <DatePicker
+                            style={{width: 150}}
+                            date={this.state.expiryStartDate}
+                            mode="date"
+                            placeholder="Select Date"
+                            format="YYYY-MM-DD"
+                            minDate={this.state.currentDate}
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                                dateIcon: {
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 4,
+                                    marginLeft: 0
+                                },
+                                dateInput: {
+                                    marginLeft: 36
+                                }
+                            }}
+                            onDateChange={(date) => {this.setState({expiryStartDate: date})}}
+                        />
+                    </View>
+                    <View style={{flex: 0.5}}>
+                        <Text style={styles.textTitle}>Expiry End Date: * </Text>
+                        <DatePicker
+                            style={{width: 150}}
+                            date={this.state.expiryEndDate}
+                            mode="date"
+                            placeholder="Select Date"
+                            format="YYYY-MM-DD"
+                            minDate={this.state.currentDate}
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                                dateIcon: {
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 4,
+                                    marginLeft: 0
+                                },
+                                dateInput: {
+                                    marginLeft: 36
+                                }
+                            }}
+                            onDateChange={(date) => {this.setState({expiryEndDate: date})}}
+                        />
+                    </View>
+                </View>
 
-                <Text style={styles.textTitle}>Due Date: </Text>
-                <DatePicker
-                    style={{width: 200}}
-                    date={this.state.date}
-                    mode="date"
-                    placeholder="Select Date"
-                    format="DD-MM-YYYY"
-                    minDate={this.state.currentDate}
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                        dateIcon: {
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0
-                        },
-                        dateInput: {
-                            marginLeft: 36
-                        }
-                    }}
-                    onDateChange={(date) => {this.setState({date: date})}}
-                />
+                <View style={{flex:0.5 ,flexDirection: 'row'}}>
+                    <View style={{flex: 0.5}}>
+                        <Text style={styles.textTitle}>Signing Due Date: * </Text>
+                        <DatePicker
+                            style={{width: 150}}
+                            date={this.state.signingDueDate}
+                            mode="date"
+                            placeholder="Select Date"
+                            format="YYYY-MM-DD"
+                            minDate={this.state.expiryStartDate}
+                            maxDate={this.state.expiryEndDate}
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                                dateIcon: {
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 4,
+                                    marginLeft: 0
+                                },
+                                dateInput: {
+                                    marginLeft: 36
+                                }
+                            }}
+                            onDateChange={(date) => {this.setState({signingDueDate: date})}}
+                        />
+                    </View>
+                    <View style={{flex: 0.5, justifyContent:'center', alignItems:'center'}}>
+                        <Text style={styles.textTitle}>Reminder Before: * </Text>
+                        <TextInput 
+                            placeholderTextColor='black'
+                            keyboardType="number-pad"
+                            returnKeyType="done"
+                            autoCapitalize="none"
+                            maxLength={1}
+                            autoCorrect={false}
+                            style={[styles.boxTINew, {width:50, textAlign: 'center'}]} 
+                            onChangeText={ (text) => {
+                                            this.setState({reminderBefore:text})
+                                        }}
+                        />
+                    </View>
+                </View>
+
                 <View style={{flex:1}}>
-                    <Text style={styles.textTitle}>Signature Flow: </Text>
+                    <Text style={styles.textTitle}>Signature Flow: * </Text>
                     <CheckBox
                         title='Sequential'
                         textStyle={{color: 'black', fontWeight: 'normal', fontSize:17}}

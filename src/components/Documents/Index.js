@@ -88,7 +88,7 @@ class Documents extends Component {
 
     
     fetchDataNew = async() =>{
-        this.setState({pdVisible: true}) 
+        this.setState({pdVisible: true, docuemnts: []}) 
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/documents',{
         method: 'POST',
         headers: {
@@ -140,15 +140,15 @@ class Documents extends Component {
     }
 
     nextPage(){
-        console.warn("Y")
-        this.setState({pdVisible: true})
+        //console.warn("Y")
+        this.setState({pdVisible: true, documents: []})
         if(this.state.currentPage < this.state.totalPages){
             this.fetchDataNew()
         }
     }
 
     previousPage() {
-        this.setState({pdVisible: true})
+        this.setState({pdVisible: true, documents: []})
         if(this.state.currentPage <= this.state.totalPages){
             let currentPageNo = this.state.currentPage;
             this.setState({currentPage: currentPageNo - 1})
@@ -198,7 +198,7 @@ class Documents extends Component {
     }
 
     onChangeHandler = (value) => {
-        this.setState({pdVisible: true})
+        this.setState({pdVisible: true, documents: []})
         this.setState({documentStatusId: value})
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/documents',{
         method: 'POST',
@@ -377,7 +377,7 @@ class Documents extends Component {
                     <ScrollView
                     onMomentumScrollEnd={this.onStopScrollList }
                     onContentSizeChange={( contentWidth, contentHeight ) => {
-                       console.warn("height"+contentHeight)
+                       //console.warn("height"+contentHeight)
                     }}
                     >
                         {

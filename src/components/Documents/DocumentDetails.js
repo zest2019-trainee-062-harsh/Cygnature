@@ -93,7 +93,6 @@ class DocumentDetails extends Component {
         }}).then((response) => response.json())
         .then((responseJson) => {
             this.setState({details: responseJson["data"][0], observers: responseJson["data"][0]["observers"], signers: responseJson["data"][0]["signers"], history: responseJson["data"][0]["documentHistory"]})
-            //console.warnconsole.warn(responseJson["data"][0])
 
             if(responseJson["data"][0]["sequentialFlow"] == true) {
                 //console.warn("yes")
@@ -346,11 +345,11 @@ class DocumentDetails extends Component {
                         <View style={styles.box}>
                         <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Signers </Text>
                         <Text style={{fontSize: 15, color: "grey", marginLeft: 5}}> {this.state.sequentialFlow} </Text>
-                        <View style={styles.DocumentsList}>
+                        
                         <ScrollView>
                         {
                             this.state.signers.map((signers)=>{
-
+                                    
                                 return(
                                 <View style={{margin:10}} key={signers.userId} >
                                     <TouchableOpacity disabled style={[styles.rowDataBg, {marginLeft:20}]}>
@@ -363,19 +362,19 @@ class DocumentDetails extends Component {
                         );
                         })}
                         </ScrollView>
-                        </View>
+                       
                         </View>
 
                         <View style={styles.box}>
                         <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Observers </Text>
-                        <View style={styles.DocumentsList}>
+                        
                         {this.state.isObservers ?
                         <ScrollView>
                         {
                             this.state.observers.map((observers)=>{
                                 
                                 return(
-                                <View key={observers.userId} >
+                                <View style={{margin:10}} key={observers.userId} >
                                     <TouchableOpacity disabled style={[styles.rowDataBg, {marginLeft:20}]}>
                                         <Text style={styles.rowDataText1}>{observers.profileShortName}</Text>
                                     </TouchableOpacity>
@@ -393,7 +392,7 @@ class DocumentDetails extends Component {
                             </View> 
                         }
                         </View>
-                        </View>
+                        
 
                         <View style={styles.box}>
                         <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Notarization </Text>
