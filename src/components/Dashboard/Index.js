@@ -204,10 +204,13 @@ class Dashboard extends Component {
                         {this.state.loadingCount ? 
                         <Spinner style={styles.spinner} isVisible={true} size={40} type={'ThreeBounce'} color={'white'}/>
                         :
-                            <Text style={styles.box1Text}>
-                            {this.state.count["awaitingMySign"]}
-                               {"\n"}{"\n"} Need to Sign
-                            </Text>
+                        
+                            <TouchableOpacity onPress={ ()=> this.props.navigation.navigate('documents',{"dropDownValue": parseInt("0")}) } >
+                                <Text style={styles.box1Text}>
+                                {this.state.count["awaitingMySign"]}
+                                {"\n"}{"\n"} Need to Sign
+                                </Text>
+                            </TouchableOpacity>
                         }
                         </View>
 
@@ -216,10 +219,12 @@ class Dashboard extends Component {
                         {this.state.loadingCount ? 
                         <Spinner style={styles.spinner} isVisible={true} size={40} type={'ThreeBounce'} color={'white'}/>
                         :
-                            <Text style={styles.box1Text}>
-                            {this.state.count["awaitingOthers"]}
-                               {"\n"}{"\n"} Waiting for others
-                            </Text>
+                            <TouchableOpacity onPress={ ()=> this.props.navigation.navigate('documents',{"dropDownValue": parseInt("3")}) } >
+                                <Text style={styles.box1Text}>
+                                {this.state.count["awaitingOthers"]}
+                                {"\n"}{"\n"} Waiting for others
+                                </Text>
+                            </TouchableOpacity>
                         }
 
                         </View>
@@ -231,10 +236,12 @@ class Dashboard extends Component {
                         {this.state.loadingCount ? 
                         <Spinner style={styles.spinner} isVisible={true} size={40} type={'ThreeBounce'} color={'white'}/>
                         :
-                            <Text style={styles.box1Text}>
-                            {this.state.count["completed"]}
-                               {"\n"}{"\n"} Completed
-                            </Text>
+                            <TouchableOpacity onPress={ ()=> this.props.navigation.navigate('documents',{"dropDownValue": parseInt("2")}) } >
+                                <Text style={styles.box1Text}>
+                                {this.state.count["completed"]}
+                                {"\n"}{"\n"} Completed
+                                </Text>
+                            </TouchableOpacity>
                         }
                         </View>
                         <View style={[styles.boxHalf, {justifyContent:'center', alignItems: 'center'}]}>
@@ -242,10 +249,12 @@ class Dashboard extends Component {
                         {this.state.loadingCount ? 
                         <Spinner style={styles.spinner} isVisible={true} size={40} type={'ThreeBounce'} color={'white'}/>
                         :
-                            <Text style={styles.box1Text}>
-                            {this.state.count["expireSoon"]}
-                               {"\n"}{"\n"} Expire Soon
-                            </Text>
+                            <TouchableOpacity onPress={ ()=> this.props.navigation.navigate('documents',{"dropDownValue": parseInt("6")}) } >
+                                <Text style={styles.box1Text}>
+                                {this.state.count["expireSoon"]}
+                                {"\n"}{"\n"} Expire Soon
+                                </Text>
+                            </TouchableOpacity>
                         }
                         </View>
                     </View>

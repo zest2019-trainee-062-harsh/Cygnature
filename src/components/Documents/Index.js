@@ -25,6 +25,7 @@ class Documents extends Component {
         documentStatusId: null,
         totalRows: null,
         documentColor: null,
+        dropDownValue: null,
     }
 
     // componentWillMount = async() =>{
@@ -45,7 +46,7 @@ class Documents extends Component {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            "documentStatusId": null,
+            "documentStatusId": this.state.dropDownValue,
             "currentPage": this.state.currentPage,
             "isNext": true,
             "searchText": "",
@@ -251,6 +252,12 @@ class Documents extends Component {
         this.state.auth = auth;
         this.state.token = token;
         this.setState({currentPage: 0, documents: []})
+        var dropDownValue = this.props.navigation.getParam('dropDownValue')
+        //console.warn(dropDownValue)
+        if(dropDownValue === null){
+            console.warn("NULL")
+        } else this.state.dropDownValue  = dropDownValue;
+        
         this.fetchData()
     }
 
@@ -458,7 +465,7 @@ class Documents extends Component {
                     style={{borderColor: "#003d5a", borderWidth: 0.5, marginBottom: 5, marginTop: 5, padding: 10}}
                 >
                     <Dropdown
-                        value={null}
+                        value={this.state.dropDownValue}
                         itemCount={6}
                         label="Select the status"
                         data={data}
