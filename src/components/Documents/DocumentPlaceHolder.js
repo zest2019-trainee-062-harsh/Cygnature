@@ -39,6 +39,10 @@ class DocumentPlaceHolder extends Component {
     this.state.totalPage = this.state.data["pageCount"]
     this.state.imageHeight = 1078.0487
     this.state.imageWidth = 760
+    if(this.state.observerIds == null || this.state.observerIds.length < 1) {
+      this.state.observerIdsNull = true
+    }
+
   }
 
   componentWillMount= async() => {
@@ -79,8 +83,10 @@ class DocumentPlaceHolder extends Component {
     maxPages: 6,
     totalPage: 0,
     pdVisible: false,
+    pdTitle: null,
     signerIds: [],
     observerIds: [],
+    observerIdsNull: false,
     data : [],
     currentSigner: [],
     key : 1,
@@ -197,7 +203,7 @@ class DocumentPlaceHolder extends Component {
 
   getNextPages(pageCount, pageTo){
     if(pageCount-1 !== this.state.totalPage){
-      this.setState({pdVisible: true})
+      this.setState({pdVisible: true, pdTitle: "Rendering next pages"})
       return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/next-pages', {
         method: 'POST',
         headers: {
@@ -217,16 +223,15 @@ class DocumentPlaceHolder extends Component {
             this.state.pages.push(pagesNew[index])
         })
         this.setState({index: pageCount-2, renderCount: ((pageCount - 1)/6)})
-        this.setState(this.state)
         this.setState({pdVisible: false})
       })
       .catch((error) => {
-          console.warn(error)
+          console.warn(error.message)
       });
     }
   }
 
-  review = async() => {
+  create = async() => {
       const realWidth = width/1.4
       const realHeight = height/2
       const xPercentage = ((this._value.x * 100)/realWidth)
@@ -236,6 +241,9 @@ class DocumentPlaceHolder extends Component {
       const wPercentage = (100/(width/1.4))*100
       const hPercentage = (100/realHeight)*100
       let auth = await AsyncStorage.getItem("auth")
+
+      
+      this.setState({pdVisible: true, pdTitle: "Create"})
       return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/create',{
       method: 'POST',
       headers: {
@@ -272,7 +280,7 @@ class DocumentPlaceHolder extends Component {
         ],
         "signingFlowType": 1,
         "signerIds": this.state.signerIds[0],
-        "observerIds": this.state.observerIds[0],
+        "observerIds": this.state.observerIdsNull? [] : this.state.observerIds[0] ,
         "signatures": [
             3
         ],
@@ -286,13 +294,19 @@ class DocumentPlaceHolder extends Component {
       })
       }).then((response) => response.json())
       .then((responseJson) => {
-        console.warn(responseJson)
-        alert(responseJson["message"])
-        const popAction = StackActions.pop({
-          n: 2,
-        });
-        this.props.navigation.dispatch(popAction)    
-       
+        this.setState({pdVisible: false})
+
+        if(responseJson["message"]) {
+          alert(responseJson["message"])
+          const popAction = StackActions.pop({
+            n: 2,
+          });
+          this.props.navigation.dispatch(popAction)    
+        }
+        else {
+          console.warn(responseJson)
+          alert(responseJson["error"])
+        }
       })
       .catch((error) => {
           console.warn(error.message)
@@ -315,7 +329,7 @@ class DocumentPlaceHolder extends Component {
       <View style={styles.mainContainer}>
        <ProgressDialog
           visible={this.state.pdVisible}
-          title="Rendering next pages"
+          title={this.state.pdTitle}
           message="Please wait..."
           activityIndicatorColor="#003d5a"
           activityIndicatorSize="small"
@@ -408,8 +422,8 @@ class DocumentPlaceHolder extends Component {
           </Swiper>
         </View>
         <View style={styles.container3}>
-          <TouchableOpacity style = { styles.footerbuttonContainer} onPress={() => this.review()}>
-            <Text style = { styles.footerbuttonText }>Review & Create</Text>
+          <TouchableOpacity style = { styles.footerbuttonContainer} onPress={() => this.create()}>
+            <Text style = { styles.footerbuttonText }>Create</Text>
           </TouchableOpacity>
         </View>
       </View>
