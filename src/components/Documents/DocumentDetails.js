@@ -93,7 +93,7 @@ class DocumentDetails extends Component {
         }}).then((response) => response.json())
         .then((responseJson) => {
             this.setState({details: responseJson["data"][0], observers: responseJson["data"][0]["observers"], signers: responseJson["data"][0]["signers"], history: responseJson["data"][0]["documentHistory"]})
-
+            console.warn(responseJson)
             if(responseJson["data"][0]["sequentialFlow"] == true) {
                 //console.warn("yes")
                 this.setState({sequentialFlow: "Sequential Flow"})
@@ -385,7 +385,7 @@ class DocumentDetails extends Component {
                         );
                         })} 
                         </ScrollView> :
-                            <View>
+                            <View style={styles.DocumentsList}>
                                 <Text style={styles.DocumentsListFont}>
                                     There are no Observers
                                 </Text>

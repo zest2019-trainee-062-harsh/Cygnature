@@ -162,6 +162,7 @@ class DocumentPreview extends Component {
                     }}
                     index={this.state.index}
                     bounces={true}
+                    loop={false}
                 >
                 {
                     this.state.data.pages.map((key, index) => {

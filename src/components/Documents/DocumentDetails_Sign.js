@@ -240,6 +240,7 @@ class DocumentDetails_Sign extends Component {
                 }}
                 index={this.state.index}
                 bounces={true}
+                loop={false}
             >
                 {
                     this.state.pages.map((item, index) => {

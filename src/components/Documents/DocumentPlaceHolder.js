@@ -351,15 +351,17 @@ class DocumentPlaceHolder extends Component {
           <View style={styles.container1_sub2}>
               <Dropdown
                 value={this.state.signers[0]["label"]}
-                label="Select signer"
+                label="Select Signer"
                 data={this.state.signers}
                 selectedItemColor="#003d5a"
                 rippleCentered={true}
                 itemTextStyle={"helvetica"}
                 containerStyle={{
                   marginLeft:"25%",
-                  marginRight:"25%"
+                  marginRight:"25%",
                 }}  
+                textColor='white'
+                baseColor='white'
                 onChangeText={(value) => {
                   this.changeId(value)
                 }}
@@ -379,6 +381,7 @@ class DocumentPlaceHolder extends Component {
             }}
             index={this.state.index}
             bounces={true}
+            loop={false}
           >
             {
               this.state.data.pages.map((item, index) => {
@@ -387,7 +390,7 @@ class DocumentPlaceHolder extends Component {
                     <View
                       key={index}
                       style={{margin:20, justifyContent:'center', alignItems: 'center'}}
-                      title={<Text>{index + 1}/{this.state.totalPage}</Text>}
+                      title={<Text style={{color:'black'}}>{index + 1}/{this.state.totalPage}</Text>}
                     >
                       <ImageZoom
                         cropWidth={width/1.4}
