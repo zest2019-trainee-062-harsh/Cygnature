@@ -64,7 +64,7 @@ class DocumentPlaceHolder extends Component {
         null, {dx : this.Animatedvalue.x , dy : this.Animatedvalue.y}
       ]),
       onPanResponderRelease: (e, gestureState) =>{
-        console.warn(this._value)
+        //console.warn(this._value)
       },
     })
     let auth = await AsyncStorage.getItem("auth")
@@ -111,29 +111,37 @@ class DocumentPlaceHolder extends Component {
   }
 
   deviceInfo() {
-    // RNLocation.configure({
-    //     distanceFilter: 100, // Meters
-    //     desiredAccuracy: {
-    //       ios: "best",
-    //       android: "balancedPowerAccuracy"
-    //     },
-    //     // Android only
-    //     androidProvider: "auto",
-    //     maxWaitTime: 5000, // Milliseconds
-    // })
+    RNLocation.configure({
+      distanceFilter: 100, // Meters
+      desiredAccuracy: {
+        ios: "best",
+        android: "balancedPowerAccuracy"
+      },
+      // Android only
+      androidProvider: "auto",
+      maxWaitTime: 5000, // Milliseconds
+      // iOS Only
+      activityType: "other",
+      allowsBackgroundLocationUpdates: false,
+      headingFilter: 1, // Degrees
+      headingOrientation: "portrait",
+      pausesLocationUpdatesAutomatically: false,
+      showsBackgroundLocationIndicator: false,
+  })
 
-    // RNLocation.requestPermission({
-    //   android: {
-    //     detail: "coarse"
-    //   }
-    // })
-    // .then(granted => {
-    //   if (granted) {
-    //     this.locationSubscription = RNLocation.subscribeToLocationUpdates(locations => {
-    //       this.setState({rLon: locations[0]["longitude"], rLat: locations[0]["latitude"]})
-    //     })
-    //   }
-    // })
+  RNLocation.requestPermission({
+    ios: "whenInUse",
+    android: {
+      detail: "coarse"
+    }
+  }).then(granted => {
+      if (granted) {
+        this.locationSubscription = RNLocation.subscribeToLocationUpdates(locations => {
+                this.setState({rLon: locations[0]["longitude"], rLat: locations[0]["latitude"] })
+        })
+      }
+      else this.setState({rLon: "-56.062161", rLat: "4.092356" })
+    })
 
     NetworkInfo.getIPV4Address(ipv4 => {
       this.setState({
@@ -144,7 +152,7 @@ class DocumentPlaceHolder extends Component {
   }
 
   changeId(value){
-    console.warn(value)
+    //console.warn(value)
     this.state.currentSigner = value
   }
 
@@ -170,7 +178,7 @@ class DocumentPlaceHolder extends Component {
 
   checkRenderedPages(pageCount){
     if(this.state.renderCount == 0){
-      console.warn("Calling the API first time.")
+      //console.warn("Calling the API first time.")
       var pageTo = 0;
       var difference = 0;
       if(pageCount + 5 > this.state.totalPage){
@@ -184,7 +192,7 @@ class DocumentPlaceHolder extends Component {
     }
     else{
       if(this.state.renderCount >= (pageCount-1) / 6){
-        console.warn("Won't load the rendered pages again...");
+        //console.warn("Won't load the rendered pages again...");
       }
       else{
         var pageTo = 0;
@@ -243,7 +251,7 @@ class DocumentPlaceHolder extends Component {
       let auth = await AsyncStorage.getItem("auth")
 
       
-      this.setState({pdVisible: true, pdTitle: "Create"})
+      this.setState({pdVisible: true, pdTitle: "Creating Document !"})
       return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/create',{
       method: 'POST',
       headers: {
@@ -284,10 +292,10 @@ class DocumentPlaceHolder extends Component {
         "signatures": [
             3
         ],
-        "documentLatitude": 4.092356,
-        "documentLongitude": -56.062161,
-        "userAgent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36",
-        "userIPAddress": "61.12.66.6",
+        "documentLatitude": this.state.rLat,
+        "documentLongitude": this.state.rLon,
+        "userAgent": this.state.userAgent,
+        "userIPAddress": this.state.ip,
         "authenticationTypes": [
             1
         ]

@@ -108,6 +108,7 @@ class Register extends Component {
                         this.setState({rLon: locations[0]["longitude"], rLat: locations[0]["latitude"] })
                 })
               }
+              else this.setState({rLon: "-56.062161", rLat: "4.092356" })
             })
     }
 
