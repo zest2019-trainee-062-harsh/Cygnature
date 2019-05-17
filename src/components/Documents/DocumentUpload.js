@@ -153,21 +153,35 @@ class DocumentUpload extends Component {
     render() {
         return(
             <View style={styles.mainContainer}>
-                <Text style={styles.textTitle}>File Name: * </Text>
-                <View style={{flex:0.3, flexDirection: 'row', marginBottom:5}}>
+                <Text style={styles.textTitle}>File Name: <Text style={{color:'red'}}> * </Text> </Text>
+                <View style={{flex:0.3, flexDirection: 'row', margin:5}}>
                     <View style={{flex:0.1, alignContent:'center', justifyContent: 'center' }}>
                         {this.state.fileExt == "pdf" ?
                             <Icon
                                 name="file-pdf-o"
                                 size={40}
-                                color="#003d5a"
+                                color="red"
                             /> : null
                         }
                         {this.state.fileExt == "docx" || this.state.fileExt == "doc" ?
                             <Icon
                                 name="file-word-o"
                                 size={40}
-                                color="#003d5a"
+                                color="blue"
+                            /> : null
+                        }
+                        {this.state.fileExt == "pptx" || this.state.fileExt == "ppt" ?
+                            <Icon
+                                name="file-powerpoint-o"
+                                size={40}
+                                color="orange"
+                            /> : null
+                        }
+                        {this.state.fileExt == "xlsx" || this.state.fileExt == "xls" ?
+                            <Icon
+                                name="file-excel-o"
+                                size={40}
+                                color="green"
                             /> : null
                         }
                     </View>
@@ -205,7 +219,7 @@ class DocumentUpload extends Component {
                     }}
                 />
 
-                <Text style={styles.textTitle}>Signers: * </Text>
+                <Text style={styles.textTitle}>Signers: <Text style={{color:'red'}}> * </Text> </Text>
                 <View style={{maxHeight:"50%"}}>
                 <ScrollView horizontal={true}>
                 {
@@ -277,7 +291,7 @@ class DocumentUpload extends Component {
                 </View>
                 <View style={{flex:0.5 ,flexDirection: 'row'}}>
                     <View style={{flex: 0.5}}>
-                        <Text style={styles.textTitle}>Expiry Start Date: * </Text>
+                        <Text style={styles.textTitle}>Expiry Start Date: <Text style={{color:'red'}}> * </Text> </Text>
                         <DatePicker
                             style={{width: 150}}
                             date={this.state.expiryStartDate}
@@ -302,7 +316,7 @@ class DocumentUpload extends Component {
                         />
                     </View>
                     <View style={{flex: 0.5}}>
-                        <Text style={styles.textTitle}>Expiry End Date: * </Text>
+                        <Text style={styles.textTitle}>Expiry End Date: <Text style={{color:'red'}}> * </Text> </Text>
                         <DatePicker
                             style={{width: 150}}
                             date={this.state.expiryEndDate}
@@ -330,7 +344,7 @@ class DocumentUpload extends Component {
 
                 <View style={{flex:0.5 ,flexDirection: 'row'}}>
                     <View style={{flex: 0.5}}>
-                        <Text style={styles.textTitle}>Signing Due Date: * </Text>
+                        <Text style={styles.textTitle}>Signing Due Date: <Text style={{color:'red'}}> * </Text> </Text>
                         <DatePicker
                             style={{width: 150}}
                             date={this.state.signingDueDate}
@@ -355,25 +369,28 @@ class DocumentUpload extends Component {
                             onDateChange={(date) => {this.setState({signingDueDate: date})}}
                         />
                     </View>
-                    <View style={{flex: 0.5, justifyContent:'center', alignItems:'center'}}>
-                        <Text style={styles.textTitle}>Reminder Before: * </Text>
-                        <TextInput 
-                            placeholderTextColor='black'
-                            keyboardType="number-pad"
-                            returnKeyType="done"
-                            autoCapitalize="none"
-                            maxLength={1}
-                            autoCorrect={false}
-                            style={[styles.boxTINew, {width:50, textAlign: 'center'}]} 
-                            onChangeText={ (text) => {
-                                            this.setState({reminderBefore:text})
-                                        }}
-                        />
+                    <View style={{flex: 0.5}}>
+                        <Text style={styles.textTitle}>Reminder Before: <Text style={{color:'red'}}> * </Text> </Text>
+                        <View style={{alignItems:'center', justifyContent:'center'}}>
+                            <TextInput 
+                                placeholderTextColor='black'
+                                placeholder='-'
+                                keyboardType="number-pad"
+                                returnKeyType="done"
+                                autoCapitalize="none"
+                                maxLength={1}
+                                autoCorrect={false}
+                                style={[styles.boxTINew, {width:50, textAlign: 'center'}]} 
+                                onChangeText={ (text) => {
+                                                this.setState({reminderBefore:text})
+                                            }}
+                            />
+                        </View>
                     </View>
                 </View>
 
                 <View style={{flex:1}}>
-                    <Text style={styles.textTitle}>Signature Flow: * </Text>
+                    <Text style={styles.textTitle}>Signature Flow: <Text style={{color:'red'}}> * </Text> </Text>
                     <CheckBox
                         title='Sequential'
                         textStyle={{color: 'black', fontWeight: 'normal', fontSize:17}}

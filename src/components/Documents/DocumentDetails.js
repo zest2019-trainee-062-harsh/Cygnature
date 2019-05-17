@@ -279,9 +279,24 @@ class DocumentDetails extends Component {
                                         <Icon
                                             name="file-word-o"
                                             size={30}
-                                            color="red"
+                                            color="blue"
                                         /> : null
                                     } 
+                                    {this.state.details["documentDetail"]["extension"] == ".pptx" || this.state.details["documentDetail"]["extension"] == ".ppt" ?
+                                        <Icon
+                                            name="file-powerpoint-o"
+                                            size={30}
+                                            color="orange"
+                                        /> : null
+                                    } 
+                                    {this.state.details["documentDetail"]["extension"] == ".xlsx" || this.state.details["documentDetail"]["extension"] == ".xls" ?
+                                        <Icon
+                                            name="file-excel-o"
+                                            size={30}
+                                            color="green"
+                                        /> : null
+                                    } 
+                                    
                                 </View>
 
                             <View style={[{flex:0.8},styles.DocumentsList]}>

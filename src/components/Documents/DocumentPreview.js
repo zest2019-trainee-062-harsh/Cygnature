@@ -134,14 +134,28 @@ class DocumentPreview extends Component {
                             <Icon
                                 name="file-pdf-o"
                                 size={40}
-                                color="#003d5a"
+                                color="red"
                             /> : null
                         }
                         {this.state.fileExt == "docx" || this.state.fileExt == "doc" ?
                             <Icon
                                 name="file-word-o"
                                 size={40}
-                                color="#003d5a"
+                                color="blue"
+                            /> : null
+                        }
+                        {this.state.fileExt == "pptx" || this.state.fileExt == "ppt" ?
+                            <Icon
+                                name="file-powerpoint-o"
+                                size={40}
+                                color="orange"
+                            /> : null
+                        }
+                        {this.state.fileExt == "xlsx" || this.state.fileExt == "xls" ?
+                            <Icon
+                                name="file-excel-o"
+                                size={40}
+                                color="green"
                             /> : null
                         }
                     </View>
