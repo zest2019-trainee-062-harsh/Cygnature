@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import 
-    {View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, ImageBackground, AsyncStorage}
+    {View, StyleSheet, Text, TouchableOpacity, Dimensions, Alert, ImageBackground, AsyncStorage}
 from 'react-native'
 import ImageZoom from 'react-native-image-pan-zoom';
 import { ProgressDialog } from 'react-native-simple-dialogs';
@@ -8,7 +8,7 @@ import Swiper from 'react-native-swiper';
 import DeviceInfo from 'react-native-device-info'
 import RNLocation from 'react-native-location';
 import { NetworkInfo } from 'react-native-network-info';
-
+import SignaturePad from 'react-native-signature-pad';
 import { StackActions, NavigationActions } from 'react-navigation'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
@@ -31,6 +31,7 @@ class DocumentDetails_Sign extends Component {
         this.state.auth = auth;
         this.state.userId = userId;
         this.deviceInfo();
+        this.getData();
     }
 
     static navigationOptions = {
@@ -42,17 +43,60 @@ class DocumentDetails_Sign extends Component {
         Id: this.props.navigation.state.params.Id,
         count: 0,
         totalPage: 0,
-        pdVisible: true,
+        pdVisible: false,
+        pdTitle: "Getting things ready !",
         fulldata : [],
         data : [],
-        pdVisible: false,
         renderCount: 0,
         pages: [],
         index: 0,
         ip: [],
         userAgent: [],
         rLon: [],
-        rLat: []
+        rLat: [],
+        signData: null,
+        signDataRemeber: false,
+        canvasVisible: false,
+    }
+    getData() {
+        this.setState({pdVisible:true, pdTitle: "Getting things ready !"})
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
+        method: 'GET',
+        headers: {
+            'Authorization': this.state.auth,
+        },
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({pdVisible:false})
+
+            if(responseJson['data'][0]['impressions'][0] == null) {
+                this.setState({canvasVisible: true})
+            } else {
+               
+                Alert.alert(
+                    'Do you want to do new signature ?',
+                    'Clicking yes will you need to provide sign in canvas',
+                    [
+                        
+                        {
+                            text: 'No', onPress: ()=>{
+                                this.setState({signData: responseJson["data"][0]["impressions"][0]["imageBytes"] })
+                            }
+                        },
+                        {
+                            text: 'Yes', onPress: ()=>{
+                                this.setState({canvasVisible: true})
+                            }
+                        },
+                    ],
+                    {cancelable: true},
+                );
+            }
+        })
+        .catch((error) => {
+            console.warn(error);
+        });
+
     }
 
     deviceInfo() {
@@ -123,7 +167,7 @@ class DocumentDetails_Sign extends Component {
 
     getNextPages(pageCount, pageTo){
         if(pageCount-1 !== this.state.totalPage){
-            this.setState({pdVisible: true})
+            this.setState({pdVisible: true, pdTitle: "Rendering next Pages !"})
             return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/next-pages', {
                 method: 'POST',
                 headers: {
@@ -153,14 +197,8 @@ class DocumentDetails_Sign extends Component {
     }
 
     sign = async() =>{
-        return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
-        method: 'GET',
-        headers: {
-            'Authorization': this.state.auth,
-        },
-        }).then((response) => response.json())
-        .then((responseJson) => {
-            return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/sign',{
+        this.setState({pdVisible: true, pdTitle: "Finishing Up !"})
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/sign',{
             method: 'POST',
             headers: {
                 'Authorization': this.state.auth,
@@ -176,28 +214,29 @@ class DocumentDetails_Sign extends Component {
                 "userAgent": this.state.userAgent,
                 "userIPAddress": this.state.ip,
                 "userTimeZoneOffSet": "+05:30",
-                "rememberSign": false,
-                "signData": responseJson["data"][0]["impressions"][0]["imageBytes"]
+                "rememberSign": this.state.signDataRemeber,
+                "signData": this.state.signData
             })
             }).then((response) => response.json())
             .then((responseJson) => {
+                this.setState({pdVisible: false})
                 if(responseJson["data"] == null) {
                     alert(responseJson["error"])
                 } else {
                     alert(responseJson["message"])
-                    this.props.navigation.navigate("DocumentDetails",{Id: this.state.Id})
+                    const popAction = StackActions.pop({
+                        n: 1,
+                      });
+                      this.props.navigation.dispatch(popAction)
                 }
             })
             .catch((error) => {
                 console.warn(error.message);
             });
-        })
-        .catch((error) => {
-            console.warn(error);
-        });
     }
 
     render() {  
+        var pencolor= 'black'
         const animatedStyle = {
             borderColor: "black",
             borderWidth: 1,
@@ -210,22 +249,25 @@ class DocumentDetails_Sign extends Component {
         <View style={styles.mainContainer}>
             <ProgressDialog
                 visible={this.state.pdVisible}
-                title="Rendering next pages"
+                title={this.state.pdTitle}
                 message="Please wait..."
                 activityIndicatorColor="#003d5a"
                 activityIndicatorSize="small"
                 animationType="fade"
             />
             <View style={styles.container1}>
-                <Text
-                    style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignContent: "center"
-                    }}
-                >
-                    {this.state.data["name"]}
-                </Text>
+                {this.state.canvasVisible 
+                 ?
+                    <View style={styles.pad}>
+                        <Text style={{color:'white', textAlign: 'center', fontSize: 14,}}> Please draw signature here </Text>
+                        <SignaturePad 
+                            penColor={pencolor}
+                            onError={this._signaturePadError}
+                            onChange={this._signaturePadChange} />
+                    </View>
+                : 
+                    null
+                }   
             </View>
             <View style={styles.container2}>
             <Swiper
@@ -248,6 +290,7 @@ class DocumentDetails_Sign extends Component {
                         if(index < this.state.totalPage){
                         return(
                             <View
+                                key={index}
                                 style={{margin:20, justifyContent:'center', alignItems: 'center'}}
                                 title={<Text>{index + 1}/{this.state.totalPage}</Text>}
                             >
@@ -303,6 +346,29 @@ class DocumentDetails_Sign extends Component {
         </View>
         )
     }
+
+    _signaturePadError = (error) => {
+       alert(error);
+      }
+     
+      _signaturePadChange = ({base64DataUrl}) => {
+        var string = base64DataUrl
+        string = string.replace(/^data:image/, "");
+        string = string.replace('/', "");
+        string = string.replace(/^png;base64,/, "");
+
+        this.setState({signData: string})
+        //console.warn(string);
+      }
+    
+     _getSig = () => {
+        this.enrollSign()
+      }
+      _clear = () => {
+        this.setState({ canvas: false, signature: null }); 
+        setTimeout( () => { this.setState({ canvas: true }); }, 500);
+      }
+
 }
 
 export default DocumentDetails_Sign
@@ -397,5 +463,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize:15,
         alignItems: 'center',
+    },
+    pad: {
+      flex: 1, 
+      margin:5,
+      borderWidth: 1,
+      borderRadius:5,
+      borderColor: "grey",
     },
 })

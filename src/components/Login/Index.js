@@ -49,7 +49,7 @@ class Login extends Component {
         auth: [],
         opacity: 0.5,
         isVisible: true,
-        passwordIconName: "toggle-on",
+        passwordIconName: "eye-slash",
         passwordSecureTextEntry: true
     }
 
@@ -322,10 +322,10 @@ class Login extends Component {
                             color='black'
                             onPress= {()=> {
                                     if(this.state.passwordSecureTextEntry){
-                                        this.setState({passwordIconName:"toggle-off", passwordSecureTextEntry: false})
+                                        this.setState({passwordIconName:"eye", passwordSecureTextEntry: false})
                                     } 
                                     else {
-                                        this.setState({passwordIconName:"toggle-on", passwordSecureTextEntry: true})
+                                        this.setState({passwordIconName:"eye-slash", passwordSecureTextEntry: true})
                                     }
                             
                                 }

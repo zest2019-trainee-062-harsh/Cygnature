@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Ionicons';
 import fetch_blob from 'rn-fetch-blob';
 import RNFS from 'react-native-fs';
-
+import { NavigationEvents } from 'react-navigation';
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
  
@@ -93,7 +93,7 @@ class DocumentDetails extends Component {
         }}).then((response) => response.json())
         .then((responseJson) => {
             this.setState({details: responseJson["data"][0], observers: responseJson["data"][0]["observers"], signers: responseJson["data"][0]["signers"], history: responseJson["data"][0]["documentHistory"]})
-            console.warn(responseJson)
+            //console.warn(responseJson)
             if(responseJson["data"][0]["sequentialFlow"] == true) {
                 //console.warn("yes")
                 this.setState({sequentialFlow: "Sequential Flow"})
@@ -250,6 +250,9 @@ class DocumentDetails extends Component {
         
     }
 
+    didFocus = async() => {
+      this.documentDetails()
+    }
     render() {
         return (
             <View style={styles.mainContainer}>
@@ -261,6 +264,9 @@ class DocumentDetails extends Component {
                     activityIndicatorSize="small"
                     animationType="fade"
                 />
+                 <NavigationEvents
+                    onDidFocus={payload => this.didFocus()}/>
+                
                 {this.state.details != null ? 
                     <ScrollView>
                         
