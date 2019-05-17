@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity, StyleSheet, TextInput, AsyncStorage} from 'react-native'
+import {View, Text, TouchableOpacity, StyleSheet, TextInput, AsyncStorage, ScrollView} from 'react-native'
 import DocumentUpload_SignerModal from './DocumentUpload_SignerModal';
 import DocumentUpload_ObserverModal from './DocumentUpload_ObserverModal';
 
@@ -206,6 +206,8 @@ class DocumentUpload extends Component {
                 />
 
                 <Text style={styles.textTitle}>Signers: * </Text>
+                <View style={{maxHeight:"50%"}}>
+                <ScrollView horizontal={true}>
                 {
                     !this.state.signerViewEnabled ? 
                         null
@@ -225,6 +227,8 @@ class DocumentUpload extends Component {
                         )
                     })
                 }
+                </ScrollView>
+                </View>
                 <View style={{marginLeft:5}}>
                 {this.state.signerButtonDisabled ? null :
                     <TouchableOpacity
@@ -238,6 +242,8 @@ class DocumentUpload extends Component {
 
 
                 <Text style={styles.textTitle}>Observers:</Text>
+                <View style={{maxHeight:"50%"}}>
+                <ScrollView horizontal={true}>
                 {
                     !this.state.observerViewEnabled ? 
                         null
@@ -257,7 +263,8 @@ class DocumentUpload extends Component {
                         )
                     })
                 }
-
+                </ScrollView>
+                </View>
                 <View style={{marginLeft:5}}>
                 {this.state.observerButtonDisabled ? null :
                     <TouchableOpacity 
