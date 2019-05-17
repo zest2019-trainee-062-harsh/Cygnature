@@ -271,7 +271,7 @@ class DocumentUpload extends Component {
                         style={{backgroundColor: "#003d5a",borderRadius: 5, width:'auto', justifyContent:'center', alignItems:'center'}}
                         onPress={() => { this.refs.DocumentUpload_ObserverModal.show() }}
                     >
-                            <Text style={[styles.textData, {color:'white'}]}>Add Observors</Text>
+                            <Text style={[styles.textData, {color:'white'}]}>Add Observers</Text>
                     </TouchableOpacity>
                 }
                 </View>

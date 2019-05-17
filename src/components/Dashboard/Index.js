@@ -117,6 +117,7 @@ class Dashboard extends Component {
         {this.state.isExpired == 'true' ?
             alert("Your account is expired")
         :null}
+        this.uploadDocument()
     }
     
 

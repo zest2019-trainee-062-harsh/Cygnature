@@ -4,6 +4,7 @@ import Modal from 'react-native-modalbox'
 
 import Icon from 'react-native-vector-icons/Ionicons'
 
+import AddModal from '../Contacts/AddModal.js'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
  
@@ -14,7 +15,8 @@ class DocumentUpload_SignerModal extends Component {
     }
         
     show = () => {
-        this.refs.myModal.open()
+        this.refs.myModalNew.open()
+        this.onRefresh()
     }
 
     state = {
@@ -78,22 +80,39 @@ class DocumentUpload_SignerModal extends Component {
     }
 
     sendSigners(){
-        this.refs.myModal.close();
+        this.refs.myModalNew.close();
         this.props.parentFlatList.addSigners(this.state.contactIds, this.state.signerIds);
         this.state.signerIds = []
+    }
+
+    floatClicked=() => {
+        this.refs.AddModal.show()
+    }
+    
+    close = () => {
+        this.refs.myModalNew.close()
     }
 
     render() {
         if( this.state.contactsCount == 0) {
             return (
                 <Modal
-                    ref={"myModal"}
+                    ref={"myModalNew"}
                     style={ styles.modal }
                     position= 'center'
                     backdrop={true}
                     backdropPressToClose={false}
                     swipeToClose={false}
                 >
+                <View style={{ margin:10, flex:.1, flexDirection: 'row'}}>
+                    <View style={{flex:0.5,}}>
+                        <Text style={{marginLeft:4, fontSize: 18,  color: 'black', fontWeight:'bold'}}>Signer(s)</Text>
+                    </View>
+                    <View style={{flex:0.5,alignItems:'flex-end'}}>
+                        <Icon name="md-close" color='black' size={30} onPress={()=>this.close()} />
+                    </View>
+                </View>
+           
                     <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
                         <Icon name="md-alert" color='black' size={100} />
                         <Text style={{ fontSize:17, fontWeight: 'bold'}}> NO Contacts </Text>
@@ -101,27 +120,36 @@ class DocumentUpload_SignerModal extends Component {
                             You can add contacts by clicking "+" button at bottom right.
                         </Text>
                     </View>
+                    <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
+                        <Text style={styles.floatButtonText}>+</Text>
+                    </TouchableOpacity>
+                    <AddModal ref={'AddModal'} parentFlatList={this} />
                 </Modal>
             )
         }
         else {
             return (
-                <Modal
-                    ref={"myModal"}
+                <Modal 
+                    ref={"myModalNew"}
                     style={ styles.modal }
                     position= 'center'
                     backdrop={true}
+                    backdropPressToClose={false}
+                    swipeToClose={false}
                 >
-                    <Text style={{margin:10, fontSize:17, color: 'black'}}>
-                        Contact(s)
-                    </Text>
+                 <View style={{ margin:10, flex:.1, flexDirection: 'row'}}>
+                    <View style={{flex:0.5,}}>
+                        <Text style={{marginLeft:4, fontSize: 18,  color: 'black', fontWeight:'bold'}}>Signer(s)</Text>
+                    </View>
+                    <View style={{flex:0.5,alignItems:'flex-end'}}>
+                        <Icon name="md-close" color='black' size={30} onPress={()=>this.close()} />
+                    </View>
+                </View>
                     <FlatList
                         refreshing={this.state.refreshing}
                         onRefresh={this.onRefresh}
                         data={this.state.data}
                         keyExtractor={(item, index) => item.Id}
-                        bounceFirstRowOnMount
-                        maxSwipeDistance={160}
                         renderItem={this._renderItem.bind(this)}
                     />
                     <TouchableOpacity style={ styles.btnSave }
@@ -173,24 +201,42 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     rowDataText2: {
-        marginLeft:25,
+        marginLeft:20,
         fontSize: 15,
         color: 'black'
     },
     btnSave: {
         backgroundColor: '#003d5a',
-        marginLeft: "25%",
-        marginRight: "25%",
+        marginLeft: "33%",
+        marginRight: "33%",
         height:40,
         marginTop: 20,
-        padding: 20,
+        marginBottom: 20,
         justifyContent: 'center',
-        borderRadius: 5
     },
     textSave: {
         justifyContent: 'center',
         textAlign: 'center',
         color: '#ffffff',
         fontWeight: 'bold'
+    },
+    floatButton: {
+        position: 'absolute',
+        width:50,
+        height: 50,
+        backgroundColor: '#003d5a',
+        borderRadius: 30,
+        bottom: 20,
+        right: 6,
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: -5
+    },
+    floatButtonText: {
+        color: 'white',
+        fontSize: 30,
+        textAlign: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',   
     },
 })
