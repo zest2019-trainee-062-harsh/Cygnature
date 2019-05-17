@@ -52,6 +52,9 @@ export default class SplashScreen extends Component{
     let auth = await AsyncStorage.getItem('auth');
     let otp = await AsyncStorage.getItem('otp_check');
     let intro = await AsyncStorage.getItem('isIntroDisable');
+    if(intro === null ||intro == "" || intro == undefined) {
+      AsyncStorage.setItem('isIntroDisable','FALSE');
+    }
     if(otp == 'not_present' || otp == null){
         //this.props.navigation.navigate('Login')
         if(intro == 'TRUE') {
@@ -184,7 +187,7 @@ export default class SplashScreen extends Component{
   render(){
     return(
       <View style={Styles.container}>
-      <StatusBar backgroundColor="#414345" barStyle="light-content" />
+      <StatusBar backgroundColor="#003d5a" barStyle="light-content" />
         <View style={Styles.container}>
           <Animated.Image
                 source={require('../../../img/logo-white.png')}
@@ -209,7 +212,7 @@ const Styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#414345',
+    backgroundColor: '#003d5a',
   },
 });
 

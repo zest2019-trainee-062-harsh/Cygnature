@@ -161,7 +161,7 @@ export default Forgot_Pass
 
 const styles = StyleSheet.create({
     maincontainer: {
-        backgroundColor: '#414345',
+        backgroundColor: '#003d5a',
         width: width,
         height: height,
         flex: 1,

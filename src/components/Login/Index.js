@@ -19,6 +19,7 @@ import {StyleSheet,
 import { StackActions, NavigationActions } from 'react-navigation'
 import { CheckBox } from 'react-native-elements'
 
+import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
@@ -287,12 +288,12 @@ class Login extends Component {
 
             <ScrollView>
             <View style = { styles.container }>
-                <StatusBar backgroundColor="#6eab52" barStyle="light-content" />
+                <StatusBar backgroundColor="#003d5a" barStyle="light-content" />
                     {/* <Text style = { styles.boxLabel }>E-Mail</Text> */}
 
                     <TextInput
                         value={this.state.email}
-                        placeholderTextColor='grey'
+                        placeholderTextColor='black'
                         placeholder = "Email"
                         returnKeyType="next"
                         keyboardType="email-address"
@@ -306,7 +307,7 @@ class Login extends Component {
                     <View style={[styles.boxTI, {justifyContent:'center', alignItems: 'center', flex:1, flexDirection: 'row'}]}>
                         <TextInput
                             value={this.state.password}
-                            placeholderTextColor='grey'
+                            placeholderTextColor='black'
                             placeholder = "Password"
                             returnKeyType="done"
                             ref={(input) => this.passwordInput = input}
@@ -340,7 +341,7 @@ class Login extends Component {
                             checkedColor="#6eab52"
                             size={20}
                             checked={this.state.checked}
-                            containerStyle={{flex:1 , borderColor:'#414345' , backgroundColor:'rgba(255,255,255,0)'}}
+                            containerStyle={{flex:1 , borderColor:'#003d5a' , backgroundColor:'rgba(255,255,255,0)'}}
                             onPress={() => this.onChangeCheck()}
                         />
                         <TouchableOpacity 
@@ -371,6 +372,7 @@ class Login extends Component {
                     </View>
                     </ScrollView>
                     </View>
+                   
                     </View>
                     
                     {this.state.isVisible?
@@ -382,7 +384,6 @@ class Login extends Component {
                             <Text style = {{ color: 'white' }}>Create an account</Text>
                     </TouchableOpacity>
                     </View>:null}
-                
                 </KeyboardAvoidingView>
                 
         )
@@ -427,7 +428,7 @@ const styles = StyleSheet.create({
         resizeMode: 'cover'
     },
     maincontainer: {
-        backgroundColor: '#414345',
+        backgroundColor: '#003d5a',
         width: width,
         height: height,
         flex:1 ,

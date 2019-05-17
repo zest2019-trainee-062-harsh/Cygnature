@@ -403,7 +403,7 @@ class Register extends Component {
                     <StatusBar
                         barStyle="#414345" />
                         <TextInput
-                            placeholderTextColor='grey'
+                            placeholderTextColor='black'
                             placeholder = "First Name *"
                             returnKeyType="next"
                             autoCapitalize="none"
@@ -419,7 +419,7 @@ class Register extends Component {
                         }
 
                         <TextInput
-                            placeholderTextColor='grey'
+                            placeholderTextColor='black'
                             placeholder = "Last Name *"
                             returnKeyType="next"
                             autoCapitalize="none"
@@ -435,7 +435,7 @@ class Register extends Component {
                         }
 
                         <TextInput
-                            placeholderTextColor='grey'
+                            placeholderTextColor='black'
                             placeholder = "Email *"
                             returnKeyType="next"
                             keyboardType="email-address"
@@ -453,7 +453,7 @@ class Register extends Component {
                         }
 
                         <TextInput
-                            placeholderTextColor='grey'
+                            placeholderTextColor='black'
                             placeholder = "Password *"
                             returnKeyType="go"
                             ref={(input) => this.REGInput3 = input}
@@ -469,7 +469,7 @@ class Register extends Component {
                         }
 
                         <TextInput
-                            placeholderTextColor='grey'
+                            placeholderTextColor='black'
                             placeholder = "Confirm Password *"
                             returnKeyType="go"
                             ref={(input) => this.REGInput4 = input}
@@ -486,7 +486,7 @@ class Register extends Component {
 
                         {/*
                         <TextInput
-                            placeholderTextColor='grey'
+                            placeholderTextColor='black'
                             placeholder = "Job Title"
                             returnKeyType="next"
                             autoCapitalize="none"
@@ -497,7 +497,7 @@ class Register extends Component {
                         </TextInput>
 
                         <TextInput
-                            placeholderTextColor='grey'
+                            placeholderTextColor='black'
                             placeholder = "Company Name"
                             returnKeyType="next"
                             autoCapitalize="none"
@@ -532,9 +532,9 @@ class Register extends Component {
                         />
         
                         <TextInput
-                            placeholderTextColor='grey'
+                            placeholderTextColor='black'
                             keyboardType="numeric"
-                            placeholder = "Phone Input *"
+                            placeholder = "Phone Number *"
                             returnKeyType="done"
                             autoCapitalize="none"
                             autoCorrect={false}
@@ -620,7 +620,7 @@ const styles = StyleSheet.create({
         color: '#ff0000',
         marginLeft:15,
         marginBottom:15,
-        fontSize: 12,
+        fontSize: 14,
     },
     bkImg: {
         width: width,
@@ -628,7 +628,7 @@ const styles = StyleSheet.create({
         resizeMode: 'cover'
     },
     maincontainer: {
-        backgroundColor: '#414345',
+        backgroundColor: '#003d5a',
         width: width,
         height: height,
         flex:1,
@@ -646,7 +646,7 @@ const styles = StyleSheet.create({
     },
     boxDisc: {
         color: 'white',
-        fontSize: 12,
+        fontSize: 14,
         margin: 5,
         marginLeft: 15,
     },

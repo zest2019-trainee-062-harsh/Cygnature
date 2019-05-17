@@ -176,7 +176,7 @@ class OTP extends Component {
             <KeyboardAvoidingView behavior="padding">
              <View style={styles.container}>
                 <StatusBar
-                    backgroundColor="#6eab52"
+                    backgroundColor="#003d5a"
                     barStyle="light-content" 
                 />
                 <View  style={styles.logoContainer}>
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
     container: {
         width: width,
         height: height,
-        backgroundColor: "#414345",
+        backgroundColor: "#003d5a",
         fontFamily: "Helvetica"
     },
     logoContainer: {

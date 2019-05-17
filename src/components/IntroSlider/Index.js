@@ -11,10 +11,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
   },
-  image: {
-    width: 320,
-    height: 320,
-  },
   text: {
     color: 'rgba(255, 255, 255, 0.8)',
     backgroundColor: 'transparent',
@@ -23,6 +19,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
+    fontFamily: 'monospace',
+    fontWeight: 'bold',
     color: 'white',
     backgroundColor: 'transparent',
     textAlign: 'center',
@@ -60,6 +58,13 @@ const slides = [
     icon: 'user-secret',
     colors: ['#29ABE2', '#4F00BC'],
   },
+  // {
+  //   key: 'Screen 4',
+  //   title: 'Additional Features',
+  //   text: 'Screenshots Restricted\nFingerprint\nTwo-factor OTP Authentication\nTwo step Verification',
+  //   icon: 'user-secret',
+  //   colors: ['#29ABE2', '#4F00BC'],
+  // },
 ];
  
 export default class Index extends React.Component {
