@@ -10,6 +10,7 @@ import RNLocation from 'react-native-location';
 import { NetworkInfo } from 'react-native-network-info';
 import SignaturePad from 'react-native-signature-pad';
 import { StackActions, NavigationActions } from 'react-navigation'
+import { CheckBox } from 'react-native-elements'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
 var ratio = "0.612903225806452";
@@ -55,7 +56,7 @@ class DocumentDetails_Sign extends Component {
         rLon: [],
         rLat: [],
         signData: null,
-        signDataRemeber: false,
+        signDataRemember: false,
         canvasVisible: false,
     }
     getData() {
@@ -214,7 +215,7 @@ class DocumentDetails_Sign extends Component {
                 "userAgent": this.state.userAgent,
                 "userIPAddress": this.state.ip,
                 "userTimeZoneOffSet": "+05:30",
-                "rememberSign": this.state.signDataRemeber,
+                "rememberSign": this.state.signDataRemember,
                 "signData": this.state.signData
             })
             }).then((response) => response.json())
@@ -233,6 +234,10 @@ class DocumentDetails_Sign extends Component {
             .catch((error) => {
                 console.warn(error.message);
             });
+    }
+
+    onChangeCheck() {
+        this.setState({ signDataRemember: !this.state.signDataRemember})
     }
 
     render() {  
@@ -339,7 +344,24 @@ class DocumentDetails_Sign extends Component {
             </Swiper>
             </View>
             <View style={styles.container3}>
-            <TouchableOpacity style = { styles.footerbuttonContainer} onPress={() => this.sign()}>
+            {this.state.canvasVisible 
+             ?
+            <View style={{flex: 0.7}}>
+                <CheckBox
+                    title='Remember Signature'
+                    textStyle={{color: 'black', fontWeight: 'normal', fontSize:17}}
+                    uncheckedColor="black"
+                    checkedColor="#003d5a"
+                    size={20}
+                    checked={this.state.signDataRemember}
+                    containerStyle={{ backgroundColor:'white', borderColor: 'white' }}
+                    onPress={() => this.onChangeCheck()}
+                />  
+            </View>
+             :
+            null
+            }
+            <TouchableOpacity style = { styles.footerbuttonContainer } onPress={() => this.sign()}>
                 <Text style = { styles.footerbuttonText }>Sign All</Text>
             </TouchableOpacity>
             </View>
@@ -438,12 +460,15 @@ const styles = StyleSheet.create({
     container3: {
         flex: 0.1,
         margin:5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row'
     },
     footerbuttonContainer: {
         backgroundColor: '#003d5a',
         paddingVertical: 10,
         margin: 5,
-        marginLeft: "66%",
+        flex: 0.3,
         borderRadius: 5
     },
     footerbuttonText: {
