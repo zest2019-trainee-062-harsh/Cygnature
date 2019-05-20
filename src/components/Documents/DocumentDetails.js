@@ -203,6 +203,21 @@ class DocumentDetails extends Component {
         });
     }  
 
+    certificate = async() => {
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/certificate/'+this.state.id,{
+            method: 'GET',
+            headers: {
+                'Authorization':this.state.auth,
+            }}).then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({data: responseJson["data"][0]})
+                this.props.navigation.navigate('Document_Certificate',{'data': this.state.data})    
+            })
+            .catch((error) => {
+                console.warn(error);
+            });
+    }
+
     
     signTheDocument(){  
         this.setState({pdTitle:"Previewing", pdVisible: true})
@@ -499,6 +514,18 @@ class DocumentDetails extends Component {
                                     />
                             </TouchableOpacity>
                         }
+                        {this.state.details["documentDetail"]["documentStatus"] == 2 ?
+                        <TouchableOpacity  
+                            disabled={this.state.downloadButtonDisable}
+                            onPress={()=> this.certificate()}
+                            style = {[styles.buttonContainer, {opacity:this.state.downloadButtonOpacity, flex: 0.2, alignItems:'center'}]}>
+                                <Icon1
+                                    name="md-ribbon"
+                                    size={15}
+                                    color="white"
+                                />
+                                </TouchableOpacity>
+                                :null}
                         </View>
 
                     </ScrollView>
