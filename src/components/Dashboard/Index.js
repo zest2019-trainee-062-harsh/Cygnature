@@ -25,7 +25,7 @@ import AddSignModal from './AddSignModal.js';
 var Spinner = require('react-native-spinkit');
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
-
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 class Dashboard extends Component {
     constructor(props) {
         super(props)
@@ -117,6 +117,7 @@ class Dashboard extends Component {
         {this.state.isExpired == 'true' ?
             alert("Your account is expired")
         :null}
+        this.uploadDocument()
     }
     
 
@@ -198,17 +199,19 @@ class Dashboard extends Component {
                 
                 <StatusBar backgroundColor="#003d58" barStyle="light-content" />
                 <View style={styles.mainContainer}>
-                
                     <View style={styles.box1}>
                         <View style={[styles.boxHalf, {justifyContent:'center', alignItems: 'center'}]}>
                         
                         {this.state.loadingCount ? 
                         <Spinner style={styles.spinner} isVisible={true} size={40} type={'ThreeBounce'} color={'white'}/>
                         :
-                            <Text style={styles.box1Text}>
-                            {this.state.count["awaitingMySign"]}
-                               {"\n"}{"\n"} Need to Sign
-                            </Text>
+                        
+                            <TouchableOpacity onPress={ ()=> this.props.navigation.navigate('documents',{"dropDownValue": parseInt("0")}) } >
+                                <Text style={styles.box1Text}>
+                                {this.state.count["awaitingMySign"]}
+                                {"\n"}{"\n"} Need to Sign
+                                </Text>
+                            </TouchableOpacity>
                         }
                         </View>
 
@@ -217,10 +220,12 @@ class Dashboard extends Component {
                         {this.state.loadingCount ? 
                         <Spinner style={styles.spinner} isVisible={true} size={40} type={'ThreeBounce'} color={'white'}/>
                         :
-                            <Text style={styles.box1Text}>
-                            {this.state.count["awaitingOthers"]}
-                               {"\n"}{"\n"} Waiting for others
-                            </Text>
+                            <TouchableOpacity onPress={ ()=> this.props.navigation.navigate('documents',{"dropDownValue": parseInt("3")}) } >
+                                <Text style={styles.box1Text}>
+                                {this.state.count["awaitingOthers"]}
+                                {"\n"}{"\n"} Waiting for others
+                                </Text>
+                            </TouchableOpacity>
                         }
 
                         </View>
@@ -232,10 +237,12 @@ class Dashboard extends Component {
                         {this.state.loadingCount ? 
                         <Spinner style={styles.spinner} isVisible={true} size={40} type={'ThreeBounce'} color={'white'}/>
                         :
-                            <Text style={styles.box1Text}>
-                            {this.state.count["completed"]}
-                               {"\n"}{"\n"} Completed
-                            </Text>
+                            <TouchableOpacity onPress={ ()=> this.props.navigation.navigate('documents',{"dropDownValue": parseInt("2")}) } >
+                                <Text style={styles.box1Text}>
+                                {this.state.count["completed"]}
+                                {"\n"}{"\n"} Completed
+                                </Text>
+                            </TouchableOpacity>
                         }
                         </View>
                         <View style={[styles.boxHalf, {justifyContent:'center', alignItems: 'center'}]}>
@@ -243,10 +250,12 @@ class Dashboard extends Component {
                         {this.state.loadingCount ? 
                         <Spinner style={styles.spinner} isVisible={true} size={40} type={'ThreeBounce'} color={'white'}/>
                         :
-                            <Text style={styles.box1Text}>
-                            {this.state.count["expireSoon"]}
-                               {"\n"}{"\n"} Expire Soon
-                            </Text>
+                            <TouchableOpacity onPress={ ()=> this.props.navigation.navigate('documents',{"dropDownValue": parseInt("6")}) } >
+                                <Text style={styles.box1Text}>
+                                {this.state.count["expireSoon"]}
+                                {"\n"}{"\n"} Expire Soon
+                                </Text>
+                            </TouchableOpacity>
                         }
                         </View>
                     </View>
@@ -254,27 +263,57 @@ class Dashboard extends Component {
                     <View style={styles.box2}>
                         <Text style={styles.box2Text1}>Recent Documents</Text>
                         {this.state.loading ? 
-                        <View style={{flex: 1,padding:"10%",justifyContent: 'center', alignContent:'center'}}> 
-                            <ActivityIndicator color="#003d5a" size="large" /> 
-                        </View> 
+                        <ScrollView>
+                            <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+                                borderColor: "#003d5a",
+                                borderRadius: 5,
+                                margin: 5,
+                                backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={40} width={width-55}/>
+                            <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+                                borderColor: "#003d5a",
+                                borderRadius: 5,
+                                margin: 5,
+                                backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={40} width={width-55}/>
+                            <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+                                borderColor: "#003d5a",
+                                borderRadius: 5,
+                                margin: 5,
+                                backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={40} width={width-55}/>
+                            <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+                                borderColor: "#003d5a",
+                                borderRadius: 5,
+                                margin: 5,
+                                backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={40} width={width-55}/>
+                            <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+                                borderColor: "#003d5a",
+                                borderRadius: 5,
+                                margin: 5,
+                                backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={40} width={width-55}/>
+                            <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+                                borderColor: "#003d5a",
+                                borderRadius: 5,
+                                margin: 5,
+                                backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={40} width={width-55}/>
+                            <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+                                borderColor: "#003d5a",
+                                borderRadius: 5,
+                                margin: 5,
+                                backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={40} width={width-55}/>
+                            
+                            </ScrollView>
                         : null}
                         {this.state.documents ?
                         <ScrollView>
                         {
                             this.state.documents.map((docs)=>{
                                 return(
+                                    
+                                   
                                     <TouchableOpacity
                                         style={styles.DocumentsList}
                                         key={docs.Id}
                                         onPress={()=>{
                                             this.props.navigation.navigate("DocumentDetails", {Id: docs.Id, token: this.state.token})
-                                            // const resetAction = StackActions.reset({
-                                            //     index: 0,
-                                            //     actions: [
-                                            //       NavigationActions.navigate({ routeName: 'DocumentDetails', params:{Id: docs.Id, token: this.state.token}, navigationOptions:{tabBarVisible: true} })
-                                            //     ]
-                                            //   })
-                                            //   this.props.navigation.dispatch(resetAction)
                                             }
                                         }
                                     >
@@ -292,6 +331,7 @@ class Dashboard extends Component {
                                             </View>
                                         </View>
                                     </TouchableOpacity>
+                                    
                                 )
                             })
                         }
@@ -370,7 +410,7 @@ export default createMaterialBottomTabNavigator({
     },
 },
 {
-    //initialRouteName: 'account',
+    //initialRouteName: 'DocumentVerify',
     barStyle: { backgroundColor: '#003d5a' },
     activeTintColor: 'white',
     navigationOptions: () => ({ header: null })

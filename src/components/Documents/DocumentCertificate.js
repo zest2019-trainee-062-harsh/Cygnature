@@ -59,146 +59,16 @@ export default class DocumentCertificate extends Component {
   render() {
     return (
       <View style={styles.mainContainer}>
-      <View style={styles.header}>
-        <Image source={require('../../../img/logo-white.png')} style={{marginLeft:5,marginTop:5}}/>
-        <Text style={{marginTop:10,color:"white",fontWeight:"bold",marginLeft:10}}> {this.state.data["documentDetail"]["name"]}</Text>
-      </View>
-      <ScrollView>             
-        <View style={styles.box}>
 
-            <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Document Info </Text>
-        
-            <View style={styles.DocumentsList}>
-                <Text style={ [styles.DocumentsListFont] }>
-                    Document Id
-                </Text>
-                <Text style={ [styles.DocumentsListFont,{color:"grey"}] }>
-                    {this.state.data["documentDetail"]["Id"]}
-                </Text>
-            </View>
-            <View style={styles.DocumentsList}>
-                <Text style={ [styles.DocumentsListFont] }>
-                    Document Status
-                </Text>
-                <Text style={ [styles.DocumentsListFont,{color:"grey"}] }>
-                     Signed
-                </Text>
-            </View>
-        </View> 
-        <View style={styles.box}>
-
-        <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Signer </Text>
-            
-        <View style={styles.DocumentsList}>
-            <TouchableOpacity disabled style={[styles.rowDataBg,{marginLeft:10}]}>
-                <Text style={styles.rowDataText1}>{this.state.data["signers"][0]["profileShortName"]}</Text>
-            </TouchableOpacity>
-            <Text style={[styles.DocumentsListFont, {marginLeft:40,fontWeight: "bold"}]}>
-                {this.state.data["signers"][0]["fullName"]}
-            </Text>
-                
-        </View>
-
-        <View style={styles.DocumentsList}>
-            <Text style={ [styles.DocumentsListFont] }>
-                Email
-            </Text>
-            <Text style={ [styles.DocumentsListFont,{color:"grey"}] }>
-                {this.state.data["signers"][0]["email"]}
-            </Text>
-        </View>
-        <View style={styles.DocumentsList}>
-            <Text style={ [styles.DocumentsListFont] }>
-                Signature Provided
-            </Text>
-            <Text style={ [styles.DocumentsListFont,{color:"grey"}] }>
-                E-Signature
-            </Text>
-        </View>
-        </View>              
-        <View style={styles.box}>
-
-            <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Timestamping </Text>
-
-            <View style={styles.DocumentsList}>
-                <Text style={ [styles.DocumentsListFont] }>
-                    Block Id
-                </Text>
-                <Text style={ [styles.DocumentsListFont,{color:"grey"}] }>
-                    {this.state.data["notarization"]["blockId"]}
-                </Text>
-            </View>
-            <View style={styles.DocumentsList}>
-                <Text style={ [styles.DocumentsListFont] }>
-                    Timestamped On
-                </Text>
-                <Text style={ [styles.DocumentsListFont,{color:"grey"}] }>
-                    {this.state.data["notarization"]["notarizedOn"]}
-                </Text>
-            </View>
-            <View style={styles.DocumentsList}>
-                <Text style={ [styles.DocumentsListFont] }>
-                    Document Hash
-                </Text>
-                <Text style={ [styles.DocumentsListFont,{color:"grey"}] }>
-                    {this.state.data["documentDetail"]["documentFileHash"]}
-                </Text>
-            </View> 
-            <View style={styles.DocumentsList}>
-                <Text style={ [styles.DocumentsListFont] }>
-                    Transaction Hash
-                </Text>
-                <Text style={ [styles.DocumentsListFont,{color:"grey"}] }>
-                    {this.state.data["notarization"]["txHash"]}
-                </Text>
-            </View>   
-        </View> 
-        <View style={styles.box}>
-
-        <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Document Owner Info </Text>
-
-        <View style={styles.DocumentsList}>
-            <Text style={ [styles.DocumentsListFont] }>
-                Name
-            </Text>
-            <Text style={ [styles.DocumentsListFont,{color:"grey"}] }>
-                {this.state.data["ownerName"]}
-            </Text>
-        </View>
-        <View style={styles.DocumentsList}>
-            <Text style={ [styles.DocumentsListFont] }>
-                Email
-            </Text>
-            <Text style={ [styles.DocumentsListFont,{color:"grey"}] }>
-                {this.state.data["ownerEmail"]}
-            </Text>
-        </View> 
-        <View style={styles.DocumentsList}>
-            <Text style={ [styles.DocumentsListFont] }>
-                IP Address
-            </Text>
-            <Text style={ [styles.DocumentsListFont,{color:"grey"}] }>
-                {this.state.data["ownerIPAddress"]}
-            </Text>
-        </View>   
-        <View style={styles.DocumentsList}>
-            <Text style={ [styles.DocumentsListFont] }>
-                Device
-            </Text>
-            <Text style={ [styles.DocumentsListFont,{color:"grey"}] }>
-                {this.state.data["ownerDevice"]}
-            </Text>
-        </View>         
-        </View>
-                        
-      </ScrollView> 
+    <Image source={{uri: `data:image/gif;base64,${this.state.data['documentHistory'][0]["profileImage"]}`}} />
+      
       <TouchableOpacity style={styles.floatButton} onPress={this.download}>
         <Icon1
             name="md-cloud-download"
             size={25}
             color="white"
         />
-    </TouchableOpacity>        
+      </TouchableOpacity>        
      </View>
     )}
 }
