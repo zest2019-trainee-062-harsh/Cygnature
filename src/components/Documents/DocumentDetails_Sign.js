@@ -58,6 +58,7 @@ class DocumentDetails_Sign extends Component {
         signData: null,
         signDataRemember: false,
         canvasVisible: false,
+        padText: null,
     }
     getData() {
         this.setState({pdVisible:true, pdTitle: "Getting things ready !"})
@@ -76,21 +77,21 @@ class DocumentDetails_Sign extends Component {
                
                 Alert.alert(
                     'Do you want to do new signature ?',
-                    'Clicking yes will you need to provide sign in canvas',
+                    'Clicking yes will you need to provide sign',
                     [
                         
                         {
                             text: 'No', onPress: ()=>{
-                                this.setState({signData: responseJson["data"][0]["impressions"][0]["imageBytes"] })
+                                this.setState({padText: "This signature will be used", signData: responseJson["data"][0]["impressions"][0]["imageBytes"] })
                             }
                         },
                         {
                             text: 'Yes', onPress: ()=>{
-                                this.setState({canvasVisible: true})
+                                this.setState({padText: "Please draw signature below", canvasVisible: true})
                             }
                         },
                     ],
-                    {cancelable: true},
+                    {cancelable: false},
                 );
             }
         })
@@ -261,17 +262,17 @@ class DocumentDetails_Sign extends Component {
                 animationType="fade"
             />
             <View style={styles.container1}>
+            <Text style={{color:'white', textAlign: 'center', fontSize: 14,}}>{this.state.padText} </Text>
                 {this.state.canvasVisible 
                  ?
                     <View style={styles.pad}>
-                        <Text style={{color:'white', textAlign: 'center', fontSize: 14,}}> Please draw signature here </Text>
                         <SignaturePad 
                             penColor={pencolor}
                             onError={this._signaturePadError}
                             onChange={this._signaturePadChange} />
                     </View>
                 : 
-                    null
+                <ImageBackground style={styles.signContainer} source={{uri: `data:image/png;base64,${this.state.signData}`}}/>
                 }   
             </View>
             <View style={styles.container2}>
@@ -495,5 +496,12 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       borderRadius:5,
       borderColor: "grey",
+    },
+    signContainer: {
+        borderWidth:1,
+        borderRadius:5,
+        flex: 1, 
+        margin:5,
+        borderColor: "grey",
     },
 })
