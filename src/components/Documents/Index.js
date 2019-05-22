@@ -432,6 +432,18 @@ class Documents extends Component {
                                                             size={30}
                                                         /> : null
                                                     }
+                                                    {docs.extension == ".pptx" || docs.extension == ".ppt" ?
+                                                        <Icon
+                                                            name="file-powerpoint-o"
+                                                            size={30}
+                                                        /> : null
+                                                    }
+                                                    {docs.extension == ".xlsx" || docs.extension == ".xls" ?
+                                                        <Icon
+                                                            name="file-excel-o"
+                                                            size={30}
+                                                        /> : null
+                                                    }
                                                 </View>
                                             </View>
                                             <View style={{flex: 0.9}}>

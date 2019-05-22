@@ -204,12 +204,14 @@ class DocumentDetails extends Component {
     }  
 
     certificate = async() => {
+        this.setState({pdTitle:"Fetching Details", pdVisible: true})
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/certificate/'+this.state.id,{
             method: 'GET',
             headers: {
                 'Authorization':this.state.auth,
             }}).then((response) => response.json())
             .then((responseJson) => {
+                this.setState({pdVisible: false})
                 this.setState({data: responseJson["data"][0]})
                 this.props.navigation.navigate('Document_Certificate',{'data': this.state.data})    
             })

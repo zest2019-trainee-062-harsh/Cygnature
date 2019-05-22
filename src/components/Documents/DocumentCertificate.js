@@ -3,6 +3,7 @@ import { StyleSheet,Text, View,ScrollView, Dimensions ,TouchableOpacity,Image,As
 import fetch_blob from 'rn-fetch-blob';
 import Icon1 from 'react-native-vector-icons/Ionicons';
 import RNFS from 'react-native-fs';
+import { ProgressDialog } from 'react-native-simple-dialogs';
 
 var height = Dimensions.get('window').height; //full height
 
@@ -14,16 +15,17 @@ export default class DocumentCertificate extends Component {
     }
 
     static navigationOptions = {
-        header:null
+        title:"Document Certificate"
     }
     state = {
         data: [],
         Id:"",
-        pdVisible:true,
-        newData: ""
+        pdVisible:false,
+        newData: "",
     }
 
     download = () => {
+        this.setState({pdVisible:true})
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/certificate-download/'+this.state.Id, {
         method: 'GET',
         headers: {
@@ -31,21 +33,22 @@ export default class DocumentCertificate extends Component {
         },
         }).then((response) => response.json())
         .then((responseJson) => {
-            
+            this.setState({pdVisible:false})
+
             const fs = fetch_blob.fs
             const dirs = fetch_blob.fs.dirs 
-            const file_path = dirs.DownloadDir + "/" + "Certficiate_"+this.state.data["documentDetail"]["fileName"]+"_"+this.state.data["documentDetail"]["creationTime"]
+            const file_path = dirs.DownloadDir + "/" + "Certificate - " + this.state.data["documentDetail"]["name"] + ".pdf"
             
             RNFS.writeFile(file_path, responseJson["data"][0], 'base64')
                 .then((success) => {
-                    alert('Document Saved!');
+                    alert('Certificate Saved!');
                 })
                 .catch((error) => {
                     alert(JSON.stringify(error.message));
             });
         })
         .catch((error) => {
-            console.warn(error);
+            console.warn(error.message);
         });
     }
     
@@ -59,6 +62,15 @@ export default class DocumentCertificate extends Component {
   render() {
     return (
       <View style={styles.mainContainer}>
+      <ProgressDialog
+          visible={this.state.pdVisible}
+          title="Downloading Certificate !"
+          message="Please wait..."
+          activityIndicatorColor="#003d5a"
+          activityIndicatorSize="small"
+          animationType="fade"
+      />
+
       <View style={styles.header}>
         <Image source={require('../../../img/logo-white.png')} style={{marginLeft:5,marginTop:5}}/>
         <Text style={{marginTop:10,color:"white",fontWeight:"bold",marginLeft:10}}> {this.state.data["documentDetail"]["name"]}</Text>
@@ -192,7 +204,7 @@ export default class DocumentCertificate extends Component {
         </View>
                         
       </ScrollView> 
-      <TouchableOpacity style={styles.floatButton} onPress={this.download}>
+      <TouchableOpacity style={styles.floatButton} onPress={ ()=> this.download()}>
         <Icon1
             name="md-cloud-download"
             size={25}
@@ -254,6 +266,7 @@ const styles = StyleSheet.create({
         borderColor: "#003d5a",
         borderWidth: 2,
         borderWidth: 2,
+        backgroundColor: '#f5f5f5'
     },
     rowDataBg: {
         position: 'absolute',

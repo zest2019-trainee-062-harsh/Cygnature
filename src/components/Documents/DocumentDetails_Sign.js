@@ -11,6 +11,9 @@ import { NetworkInfo } from 'react-native-network-info';
 import SignaturePad from 'react-native-signature-pad';
 import { StackActions, NavigationActions } from 'react-navigation'
 import { CheckBox } from 'react-native-elements'
+import Modal from 'react-native-modalbox'
+import Icon from 'react-native-vector-icons/Ionicons'
+import FingerprintScanner from 'react-native-fingerprint-scanner';
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
 var ratio = "0.612903225806452";
@@ -59,6 +62,8 @@ class DocumentDetails_Sign extends Component {
         signDataRemember: false,
         canvasVisible: false,
         padText: null,
+        text: "Scan your finger",
+        attemptCounter: 3
     }
     getData() {
         this.setState({pdVisible:true, pdTitle: "Getting things ready !"})
@@ -87,6 +92,7 @@ class DocumentDetails_Sign extends Component {
                         },
                         {
                             text: 'Yes', onPress: ()=>{
+                                this._clear()
                                 this.setState({padText: "Please draw signature below", canvasVisible: true})
                             }
                         },
@@ -99,6 +105,11 @@ class DocumentDetails_Sign extends Component {
             console.warn(error);
         });
 
+    }
+
+    _clear = () => {
+        this.setState({ canvasVisible: false, signData: null }); 
+        setTimeout( () => { this.setState({ canvasVisible: true }); }, 500);
     }
 
     deviceInfo() {
@@ -237,6 +248,47 @@ class DocumentDetails_Sign extends Component {
             });
     }
 
+    openModal() {
+        this.setState({
+            text: "Scan your finger",
+            attemptCounter: 3
+        })
+        this.refs.myModal.open()
+        FingerprintScanner
+        .authenticate({ onAttempt: this.handleAuthenticationAttempted })
+        .then(() => {
+            this.setState({
+                text: "Match found."
+            })
+            FingerprintScanner.release();
+            this.refs.myModal.close()
+            this.sign()
+       
+        })
+        .catch((error) => {
+            this.setState({
+                text: "Match not found. Try again!"
+            })
+        });
+    }
+
+    
+    handleAuthenticationAttempted = (error) => {
+        alert("Match not found. Try again!")
+        this.state.text = "Match not found. Try again!"
+        this.setState({attemptCounter: this.state.attemptCounter-1})
+        if(this.state.attemptCounter == 0) {
+            FingerprintScanner.release();
+            this.refs.myModal.close()
+        }
+    };
+
+
+    closeModal = () => {
+        FingerprintScanner.release();
+        this.refs.myModal.close()
+    }
+
     onChangeCheck() {
         this.setState({ signDataRemember: !this.state.signDataRemember})
     }
@@ -261,6 +313,33 @@ class DocumentDetails_Sign extends Component {
                 activityIndicatorSize="small"
                 animationType="fade"
             />
+             <Modal
+                ref={"myModal"}
+                style={ styles.modal }
+                position= 'center'
+                backdrop={true}
+                backdropPressToClose={false}
+                swipeToClose={false}
+            >
+                 <View style={{ margin:10, flex:.1, flexDirection: 'row', }}>
+                    <View style={{flex:0.5,}}>
+                        <Text style={{marginLeft:4, fontSize: 18,  color: 'black', fontWeight:'bold'}}>Provide Fingerprint</Text>
+                    </View>
+                    <View style={{flex:0.5,alignItems:'flex-end'}}>
+                        <Icon name="md-close" color='black' size={30} onPress={()=>this.closeModal()} />
+                    </View>
+                </View>
+
+                <View style={{flex:1 ,alignItems: 'center', justifyContent: 'center'}}>
+                    <Icon name="md-finger-print" color='black' size={100} />
+                    <Text style={{fontSize:18, color:'black'}}>
+                        {this.state.text}
+                    </Text>
+                    <Text style={{fontSize:18, color:'black'}}>
+                        Remaining Attempt(s): {this.state.attemptCounter}
+                    </Text>
+                </View>
+            </Modal>
             <View style={styles.container1}>
             <Text style={{color:'white', textAlign: 'center', fontSize: 14,}}>{this.state.padText} </Text>
                 {this.state.canvasVisible 
@@ -298,7 +377,7 @@ class DocumentDetails_Sign extends Component {
                             <View
                                 key={index}
                                 style={{margin:20, justifyContent:'center', alignItems: 'center'}}
-                                title={<Text>{index + 1}/{this.state.totalPage}</Text>}
+                                title={<Text style={{color:'black'}}>{index + 1}/{this.state.totalPage}</Text>}
                             >
                             <ImageZoom
                                 cropWidth={width/1.4}
@@ -327,7 +406,14 @@ class DocumentDetails_Sign extends Component {
                                                                 top: yCoordinate
                                                             }
                                                         ]}
-                                                    ></View>
+                                                    >
+                                                        <TouchableOpacity onPress={()=>{this.state.signData == "" || this.state.signData == null ? alert("Please Provide Signature") :   this.openModal()} } style={{flex:2}}>
+                                                            <Text style={{flex: 1, fontSize:8, color: 'black', fontWeight: 'bold',}}>{this.state.fulldata["annotationShapes"][index]["userName"]}</Text>
+                                                            <View style={{flex:1, alignContent:'flex-end', justifyContent:'flex-end', alignItems: 'flex-end'}}>
+                                                                <Text style={{fontSize:8, color: 'black', fontWeight: 'bold',}}> Click Here</Text>
+                                                            </View>
+                                                        </TouchableOpacity>
+                                                    </View>
                                                 )
                                             }
                                             else{
@@ -362,9 +448,6 @@ class DocumentDetails_Sign extends Component {
              :
             null
             }
-            <TouchableOpacity style = { styles.footerbuttonContainer } onPress={() => this.sign()}>
-                <Text style = { styles.footerbuttonText }>Sign All</Text>
-            </TouchableOpacity>
             </View>
         </View>
         )
@@ -503,5 +586,13 @@ const styles = StyleSheet.create({
         flex: 1, 
         margin:5,
         borderColor: "grey",
+    },
+    modal:{
+        shadowRadius:20,
+        width:width-80,
+        height:height*.5,
+        borderColor:'#003d5a',
+        borderWidth: 1,
+        borderRadius:5,
     },
 })

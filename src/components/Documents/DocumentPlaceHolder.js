@@ -274,9 +274,9 @@ class DocumentPlaceHolder extends Component {
             "xPercentage": xPercentage,
             "y": realyPercentage,
             "yPercentage": yPercentage,
-            "w": 100,
+            "w": 50,
             "wPercentage": wPercentage,
-            "h": 100,
+            "h": 30,
             "hPercentage": hPercentage,
             "p": 1,
             "ratio": "0.612903225806452",
@@ -326,8 +326,7 @@ class DocumentPlaceHolder extends Component {
       transform: this.Animatedvalue.getTranslateTransform(),
       borderColor: "black",
       borderWidth: 1,
-      backgroundColor: "white",
-      opacity: 0.5,
+      backgroundColor: "rgba(255,255,255,0.7)",
       height: 20,
       width: 100,
       color: "black"
@@ -421,7 +420,13 @@ class DocumentPlaceHolder extends Component {
                                 {...this.PanResponder.panHandlers}
                                 style={this.state.animatedStyle}
                             >
-                              <Text>Drag Me</Text>
+                               <View style={{ flexDirection:'row', flex:1}}>            
+                                <Image
+                                  style={{marginLeft:5, width:20, height:18}}
+                                  source={require('../../../img/logo-crop.png')}
+                                />
+                                <Text style={{marginLeft:5, color:'black', fontWeight: 'bold'}}>Drag ME</Text>
+                              </View>
                             </Animated.View>
                         </ImageBackground>
                       </ImageZoom>

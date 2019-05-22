@@ -252,7 +252,7 @@ export default class Index extends Component {
                 }
                 </View>
                    
-                <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Personal Details </Text>
+                <Text style={{fontWeight: "bold", fontSize: 22, color: "black"}}> Personal Details </Text>
                 <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20}}></View>
                     
                 <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.props.navigation.navigate('Profile', {"userData": this.state.userData })}>
@@ -267,11 +267,11 @@ export default class Index extends Component {
                         <Text style = { styles.buttonText }>Logout</Text>
                 </TouchableOpacity>
 
-                <Text style={{fontWeight: "bold", fontSize: 25, color: "black"}}> Security </Text>
+                <Text style={{fontWeight: "bold", fontSize: 22, color: "black"}}> Security </Text>
                 <View style={{borderColor: "#003d5a", borderWidth: 1, margin: 20}}></View>
                     <View style={styles.DocumentsList}>
                         <View style={styles.DocumentsList}>
-                            <View style={{flexDirection: "row"}}>
+                            {/* <View style={{flexDirection: "row"}}>
                                 <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
                                     Allow Screenshots
                                 </Text>
@@ -282,7 +282,7 @@ export default class Index extends Component {
                                     thumbColor = "#003d5a"
                                     trackColor = "#003d5a"
                                 />
-                            </View>
+                            </View> */}
                             <View style={{flexDirection: "row"}}>
                                 <Text style={[styles.DocumentsListFont, {fontSize: 17}]}>
                                     Allow FingerPrint
