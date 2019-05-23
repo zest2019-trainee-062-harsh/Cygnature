@@ -1,21 +1,17 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity,
-    Alert, AsyncStorage, TextInput, ImageBackground} from 'react-native'
+     AsyncStorage, TextInput, ImageBackground} from 'react-native'
 import Moment from 'moment';
 import { Dropdown } from 'react-native-material-dropdown'; 
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';  
 import DatePicker from 'react-native-datepicker';
-<<<<<<< HEAD
-
-=======
 import { ProgressDialog } from 'react-native-simple-dialogs';
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 import Modal from 'react-native-modalbox'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Icon1 from 'react-native-vector-icons/FontAwesome5'
-import { StackActions, NavigationActions } from 'react-navigation'
+import { StackActions} from 'react-navigation'
 class Profile extends Component {
     constructor(props) {
         super(props)
@@ -34,15 +30,7 @@ class Profile extends Component {
         gender:"",
         userId:"",
         valueIndex: "",
-        date:"",
-<<<<<<< HEAD
-        message:""
-    }
-    componentWillMount = async() => {
-        
-            this.state.auth = await AsyncStorage.getItem('auth')
-       
-=======
+        birthDate:"",
         message:"",
         pdTitle: "Getting Profile !",
         pdVisible: false
@@ -50,7 +38,6 @@ class Profile extends Component {
     componentWillMount = async() => {
         this.setState({pdTitle: "Getting Profile !", pdVisible:true})
         this.state.auth = await AsyncStorage.getItem('auth')
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
         if(this.state.userData['impressions'][0] == null) {
             console.warn("null")
         }
@@ -71,16 +58,10 @@ class Profile extends Component {
         this.setState({jobTitle: this.state.userData['jobTitle']})
         this.setState({organization: this.state.userData['organization']})
         this.setState({birthDate: this.state.userData['birthDate']})
-<<<<<<< HEAD
-        this.setState({visible:true})
-
-        this.countryCode()
-=======
         this.setState({profileByte: this.state.userData["profileByte"]})
         this.setState({visible:true})
         this.countryCode()
         this.setState({pdVisible:false})
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     
     }
 
@@ -89,43 +70,19 @@ class Profile extends Component {
                 method: 'GET',
                 }).then((response) => response.json())
                 .then((responseJson) => {
-<<<<<<< HEAD
-            
-                    this.setState({data : responseJson["data"][0]["countries"]})
-                    //console.warn(this.state.data)
-                    
-                    //console.warn(this.state.countryCode)
-                })
-                .catch((error) => {
-                    console.warn(error);
-=======
                     this.setState({data : responseJson["data"][0]["countries"]})
                 })
                 .catch((error) => {
                     console.warn(error.message);
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                 });
     
         }
 
     onChangeHandler = (value) => {
-<<<<<<< HEAD
-        
-        // console.warn("Selected value = ", value);
-        this.setState({countryCode: value.replace(/[^0-9]/g, '')})
-        
-        
-        
-    }
-
-    validations(text, value)
-    {
-=======
         this.setState({countryCode: value.replace(/[^0-9]/g, '')})
     }
 
     validations(text, value){
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
         switch(value) {
 
             case "fname": {
@@ -180,11 +137,6 @@ class Profile extends Component {
     }
     
     putprofile = () =>{
-<<<<<<< HEAD
-    
-=======
-       console.warn(this.state.profileByte)
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile/'+this.state.userId, {
             method: 'PUT',
             headers: {
@@ -197,39 +149,32 @@ class Profile extends Component {
                 firstName:this.state.fname,
                 lastName:this.state.lname,
                 gender:this.state.gender,
-                countryId:this.state.countryId,
+                countryId:this.state.countryCode,
                 jobTitle:this.state.jobTitle,
                 organization:this.state.organization,
                 phoneNumber:this.state.phoneNumber,
-<<<<<<< HEAD
-                birthDate:this.state.date,    
+                birthDate:this.state.birthDate,
+                isProfileImage: true,
+                profileByte:this.state.profileByte
             }),
             }).then((response) => response.json())
             .then((responseJson) => {
-                 this.setState({message:responseJson["message"]})
-                console.warn(this.state.message)
-                
-                this.setState({pdVisible:false})
-            })
-            .catch((error) => {
-              console.error(error)
-=======
-                birthDate:this.state.date, 
-                profileByte:this.state.profileByte   
-            }),
-            }).then((response) => response.json())
-            .then((responseJson) => {
-                console.warn(responseJson)
-                this.setState({message:responseJson["message"]})
-                console.warn(this.state.message)
+                this.setState({message:responseJson})
+                this.alert1()
                 
             })
             .catch((error) => {
               console.error(error.message)
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
             });
 
 
+    }
+    alert1 = () => {
+        alert('profile updated successfully')
+        const popAction = StackActions.pop({
+            n: 1,
+        });
+        this.props.navigation.dispatch(popAction)
     }
  
     static navigationOptions = {
@@ -265,12 +210,6 @@ class Profile extends Component {
                     animationType="fade"
                 />
             <Modal
-<<<<<<< HEAD
-            ref={"myModal"}
-            style={ styles.modal }
-            position= 'center'
-            backdrop={true}>
-=======
                 ref={"myModal"}
                 style={ styles.modal }
                 position= 'center'
@@ -278,7 +217,6 @@ class Profile extends Component {
                 backdropPressToClose={false}
                 swipeToClose={false}
             >
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
             
             <View style={{ margin:10, flex:1, flexDirection: 'row'}}>
                 <View style={{flex:0.5,}}>

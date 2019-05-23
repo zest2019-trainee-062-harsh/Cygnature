@@ -1,10 +1,6 @@
 import React, {Component} from 'react'
 import {
-<<<<<<< HEAD
-    View, Text, StyleSheet,ScrollView, TouchableOpacity, Linking, Switch, AsyncStorage, Alert
-=======
     View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity,  Switch, AsyncStorage, Alert
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 } from 'react-native'
 import { Avatar } from 'react-native-elements';
 import { ProgressDialog } from 'react-native-simple-dialogs';
@@ -14,10 +10,7 @@ import { NavigationEvents } from 'react-navigation';
 import { StackActions, NavigationActions } from 'react-navigation'
 import FingerprintScanner from 'react-native-fingerprint-scanner'
 import ChangePwd from './ChangePwd.js'
-<<<<<<< HEAD
-=======
 import WebViewModal from './WebViewModal'
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
  
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
@@ -26,9 +19,10 @@ import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 export default class Index extends Component {
     constructor (props) {
         super(props)
+       
     }
 
-    state = {
+    state= {
         switch1: false,
         switch2: false,
         userData: [],
@@ -36,11 +30,7 @@ export default class Index extends Component {
         pdVisible: true,
         img : null,
         auth: null,
-<<<<<<< HEAD
-        updatingProfilePic: false
-=======
         pdTitle: "Fetching Details !"
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     }
 
     didFocus= async() => {
@@ -58,11 +48,7 @@ export default class Index extends Component {
     }
 
     view () {
-<<<<<<< HEAD
-        this.setState({pdVisible:true})
-=======
         this.setState({pdVisible:true, pdTitle: "Fetching Details!"})
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
         method: 'GET',
@@ -72,14 +58,9 @@ export default class Index extends Component {
         },
         }).then((response) => response.json())
         .then((responseJson) => {
-<<<<<<< HEAD
-            this.setState({userData: responseJson['data'][0]})
-=======
             //console.warn(responseJson['data'][0]["profileByte"])
             this.setState({userDataPic: responseJson['data'][0]["profileByte"]}) 
-            this.setState({userData: responseJson['data'][0]}) 
-            //console.warn(this.state.userData)
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
+            this.setState({userData: responseJson['data'][0]})
             this.setState({pdVisible:false})
         })
         .catch((error) => {
@@ -124,11 +105,8 @@ export default class Index extends Component {
             ],
             {cancelable: true},
         );
-<<<<<<< HEAD
-=======
 
         
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     }
 
     toggleSwitch1 = () => {
@@ -136,17 +114,23 @@ export default class Index extends Component {
      }
     
      toggleSwitch2 = (value) => {
+        //console.warn(value)
         if(value == true) {
             this.checkSensor()
+            //AsyncStorage.setItem('fingerprint', 'enabled')
+            //console.warn("y")
+            //RNRestart.Restart();
         }
         if(value == false) {
             this.setState({ switch2: value})
             AsyncStorage.setItem('fingerprint', 'disabled')
+            //console.warn("n")
             RNRestart.Restart();
         }
      }
 
      checkSensor () {
+        //console.warn("y")
         FingerprintScanner
         .isSensorAvailable()
         .then(biometryType => {
@@ -158,11 +142,7 @@ export default class Index extends Component {
     
      }
 
-<<<<<<< HEAD
-    floatClicked = () => {
-=======
      floatClicked = () => {
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
         ImagePicker.openPicker({
             width: 300,
             height: 400,
@@ -171,11 +151,7 @@ export default class Index extends Component {
           }).then(image => {
             this.setState({img: image, imageP: true, userDataPic:image["data"]  });
             setTimeout( () => { this.setState({ imageP: true }); }, 500);
-<<<<<<< HEAD
-            this.setState({updatingProfilePic:true})
-=======
             this.setState({pdVisible:true,  pdTitle: "Updating Profile Pic!"})
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
             return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile/'+this.state.userData["userId"], {
             method: 'PUT',
             headers: {
@@ -206,11 +182,7 @@ export default class Index extends Component {
                 }).then((response) => response.json())
                 .then((responseJson) => {
                     this.setState({userData: responseJson['data'][0]})
-<<<<<<< HEAD
-                    this.setState({updatingProfilePic:true})
-=======
                     this.setState({pdVisible:false})
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                     alert(message);
                 })
                 .catch((error) => {
@@ -227,30 +199,15 @@ export default class Index extends Component {
         this.refs.ChangePwd.show()
     }
 
-<<<<<<< HEAD
-=======
     webview = (value) =>{
         this.refs.WebViewModal.show(value)
     }
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     render() {
         return(
             <View style={styles.mainContainer}>
             <ProgressDialog
                     visible={this.state.pdVisible}
-<<<<<<< HEAD
-                    title="Fetching Details!"
-                    message="Please wait..."
-                    activityIndicatorColor="#003d5a"
-                    activityIndicatorSize="large"
-                    animationType="slide"
-                />
-            <ProgressDialog
-                    visible={this.state.updatingProfilePic}
-                    title="Uploading Profile Picture!"  
-=======
                     title={this.state.pdTitle}
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                     message="Please wait..."
                     activityIndicatorColor="#003d5a"
                     activityIndicatorSize="large"
@@ -261,10 +218,6 @@ export default class Index extends Component {
                 <ScrollView>
                     
                 <View style={[styles.DocumentsList, {justifyContent: "center", alignItems: "center" } ]}>
-<<<<<<< HEAD
-                    {this.state.userData["isProfileImage"] == false ?
-                    // || this.state.userDataPic == null
-=======
                 {this.state.pdVisible ?
                     <ShimmerPlaceHolder autoRun={true}  
                         style={{height:180,width:180, borderRadius:100}}
@@ -272,8 +225,7 @@ export default class Index extends Component {
                         height={180} width={180}/>                
                :
                     <View>
-                    {this.state.userDataPic == "" || this.state.userDataPic == null ?
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
+                    {this.state.userData["isProfileImage"] == false ?
                         <Avatar
                             style={{height:180,width:180}}
                             source={require('../../../img/profile.png')}
@@ -286,8 +238,7 @@ export default class Index extends Component {
                         />:
                         <Avatar
                             style={{height:200,width:200}}
-                            // source={{uri: `data:image/png;base64,${this.state.userData["profileByte"]}`}}
-                            source={{uri: `data:image/png;base64,${this.state.userData["profileByte"]}`}}
+                            source={{uri: `data:image/png;base64,${this.state.userDataPic}`}}
                             rounded
                             showEditButton
                             onEditPress={this.floatClicked}
@@ -381,10 +332,7 @@ export default class Index extends Component {
                 </ScrollView>
                 
                 <ChangePwd ref={'ChangePwd'} parentFlatList={this} />
-<<<<<<< HEAD
-=======
                 <WebViewModal ref={'WebViewModal'} parentFlatList={this} />
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
             </View>
         )
     }

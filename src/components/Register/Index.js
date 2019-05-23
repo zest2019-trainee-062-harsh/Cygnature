@@ -56,30 +56,7 @@ class Register extends Component {
         isVisible: true,
         data: [],
         countryCode: [],
-<<<<<<< HEAD
-        gender: []
-    }
-
-    getCode() {
-        return fetch('http://cygnatureapipoc.stagingapplications.com/api/setting/get/', {
-            method: 'GET',
-            }).then((response) => response.json())
-            .then((responseJson) => {
-        
-                this.setState({data : responseJson["data"][0]["countries"]})
-                //console.warn(this.state.data)
-                this.state.data.map((y) => {
-                    this.state.countryCode.push(y.countryCode)
-                })
-                
-                //console.warn(this.state.countryCode)
-            })
-            .catch((error) => {
-                console.warn(error);
-            });
-=======
             
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     }
 
     getCode() {
@@ -324,7 +301,13 @@ class Register extends Component {
         if (register == null) {
 
         } else {
-           
+            // console.warn(this.state.rFname)
+            // console.warn(this.state.rLname)
+            // console.warn(this.state.rEmail)
+            // console.warn(this.state.rPassword)
+            // console.warn(register)
+
+                //API
                 this.setState({pdVisible: true})
                
                 return fetch('http://cygnatureapipoc.stagingapplications.com/api/account/register', {
@@ -342,7 +325,7 @@ class Register extends Component {
                     phoneNumber: this.state.rPhone,
                     userLatitude: this.state.rLat,
                     userLongitude: this.state.rLon,
-                    gender: this.state.gender
+                
                 }),
                 }).then((responseJson) => {
                     if(responseJson.status == 200) {
@@ -381,43 +364,29 @@ class Register extends Component {
       isVisible: true
     })
   }
-<<<<<<< HEAD
-    onChangeHandler = (value) => {
-    // console.warn("Selected value = ", value);
-        this.setState({countryCode: value.replace(/[^0-9]/g, '')})
-    //console.warn(this.state.countryCode);   
-    }
-
-    changeGender = (value) => {
-        this.setState({gender: value})
-    }
-
-=======
   onChangeHandler = (value) => {     
     // console.warn("Selected value = ", value);
     this.setState({countryCode: value.replace(/[^0-9]/g, '')})
     //console.warn(this.state.countryCode);   
 }
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 
     render(){
-        let gender = [
-            {
-                label: "Male",
-                value: 1
-            },
-            {
-                label: "Female",
-                value: 2
-            },
-            {
-                label: "Others",
-                value: 3
-            }
-        ]
         return(
             <View behavior="padding" style={styles.maincontainer}>
              <View style={{flex:0.90, justifyContent:'center'}}>
+            
+            <View style={styles.logoContainer}>
+                <Image
+                    source={require('../../../img/logo-white.png')}
+                />
+                <View style={{marginLeft: 20}}>
+                    <Text style={{ color:"white", marginTop: this.state.titleMarginTop}}>
+                        <Text>• Authenticate &nbsp; &nbsp;</Text>
+                        <Text style={{fontStyle: "italic"}}>• Sign&nbsp; &nbsp;</Text>
+                        <Text>• Protect</Text>
+                    </Text>
+                </View>
+            </View>
 
             <View style={ styles.formContainer }>
             <ProgressDialog
@@ -430,18 +399,6 @@ class Register extends Component {
             />
 
             <ScrollView>
-                <View style={styles.logoContainer}>
-                    <Image
-                        source={require('../../../img/logo-white.png')}
-                    />
-                    <View style={{marginLeft: 20}}>
-                        <Text style={{ color:"white", marginTop: this.state.titleMarginTop}}>
-                            <Text>• Authenticate &nbsp; &nbsp;</Text>
-                            <Text style={{fontStyle: "italic"}}>• Sign&nbsp; &nbsp;</Text>
-                            <Text>• Protect</Text>
-                        </Text>
-                    </View>
-                </View>
                 <View style = { styles.container }>
                     <StatusBar
                         barStyle="#414345" />
@@ -527,8 +484,6 @@ class Register extends Component {
                          <Text style = { styles.errorText }>{this.state.errorCPass}</Text>
                         }
 
-<<<<<<< HEAD
-=======
                         {/*
                         <TextInput
                             placeholderTextColor='black'
@@ -552,7 +507,6 @@ class Register extends Component {
                             style= { styles.boxTI }>
                         </TextInput>
                         */}
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                         <View style={{flexDirection:'row'}}>
 
                         <Dropdown 
@@ -592,30 +546,6 @@ class Register extends Component {
                             style= {[ styles.boxTI, {flex:0.8, marginLeft:10}] }>
                         </TextInput>
                         </View>
-<<<<<<< HEAD
-
-                        <Dropdown 
-                            containerStyle={{
-                                flex:1,
-                                backgroundColor: 'rgba(255,255,255,0.7)',
-                                paddingHorizontal: 10,
-                                borderRadius: 30,
-                                height:50,
-                            }}
-                            itemTextStyle={{
-                                textAlign:'center'
-                            }}
-                            value={"Gender: "}
-                            dropdownOffset={{top:15, left:0}}
-                            data = {gender}
-                            fontSize = {14}
-                            selectedItemColor = "black"
-                            disabledItemColor = "grey"
-                            // valueExtractor = {({Gender}) => value}
-                            onChangeText = {value => this.changeGender(value)}
-                        />
-=======
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 
                         <Text style={ styles.boxDisc }>
                         By Clicking on 'Register' Button , You agree to the 
@@ -690,11 +620,7 @@ const styles = StyleSheet.create({
         color: '#ff0000',
         marginLeft:15,
         marginBottom:15,
-<<<<<<< HEAD
-        fontSize: 12,
-=======
         fontSize: 14,
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     },
     bkImg: {
         width: width,

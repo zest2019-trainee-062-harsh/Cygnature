@@ -52,12 +52,9 @@ export default class SplashScreen extends Component{
     let auth = await AsyncStorage.getItem('auth');
     let otp = await AsyncStorage.getItem('otp_check');
     let intro = await AsyncStorage.getItem('isIntroDisable');
-<<<<<<< HEAD
-=======
     if(intro === null ||intro == "" || intro == undefined) {
       AsyncStorage.setItem('isIntroDisable','FALSE');
     }
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     if(otp == 'not_present' || otp == null){
         //this.props.navigation.navigate('Login')
         if(intro == 'TRUE') {

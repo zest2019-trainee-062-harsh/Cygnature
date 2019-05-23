@@ -14,6 +14,7 @@ import DeviceInfo from 'react-native-device-info'
 import RNLocation from 'react-native-location';
 import { NetworkInfo } from 'react-native-network-info';
 import { StackActions, NavigationActions } from 'react-navigation'
+import Gestures from 'react-native-easy-gestures';
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
 var ratio = "0.612903225806452";
@@ -39,45 +40,16 @@ class DocumentPlaceHolder extends Component {
     this.state.totalPage = this.state.data["pageCount"]
     this.state.imageHeight = 1078.0487
     this.state.imageWidth = 760
-<<<<<<< HEAD
-  }
-
-  componentWillMount(){
-=======
+    this.state.currentPage = 1
     if(this.state.observerIds == null || this.state.observerIds.length < 1) {
       this.state.observerIdsNull = true
     }
-
   }
 
   componentWillMount= async() => {
     this.deviceInfo()
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
-    this.Animatedvalue = new Animated.ValueXY();
-    this._value = {x: 0, y: 0}
-    this.Animatedvalue.addListener((value)=> this._value = value)
-    this.PanResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onPanResponderGrant: (e, gestureState) => {
-        this.Animatedvalue.setOffset({
-          x: this._value.x,
-          y: this._value.y
-        })
-        this.Animatedvalue.setValue({x: 0, y:0})
-      },
-      onPanResponderMove: Animated.event([
-        null, {dx : this.Animatedvalue.x , dy : this.Animatedvalue.y}
-      ]),
-      onPanResponderRelease: (e, gestureState) =>{
-        //console.warn(this._value)
-      },
-    })
-<<<<<<< HEAD
-=======
     let auth = await AsyncStorage.getItem("auth")
     this.state.auth = auth
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
   }
 
   static navigationOptions = {
@@ -103,7 +75,7 @@ class DocumentPlaceHolder extends Component {
     animatedStyle: [],
     height: [],
     width: [],
-    annotations:[],
+    pageCount: [],
     name: [],
     extension: [],
     fileName: [],
@@ -116,7 +88,14 @@ class DocumentPlaceHolder extends Component {
     index: 0, 
     expiryStartDate: null,
     expiryEndDate: null,
-    signingDueDate: null
+    signingDueDate: null,
+    elements: null,
+    annotations: [],
+    currentPage: 1,
+    x: 0,
+    y:0,
+    annotationCount: 0,
+    key: []
   }
 
   deviceInfo() {
@@ -136,22 +115,22 @@ class DocumentPlaceHolder extends Component {
       headingOrientation: "portrait",
       pausesLocationUpdatesAutomatically: false,
       showsBackgroundLocationIndicator: false,
-  })
+    })
 
-  RNLocation.requestPermission({
-    ios: "whenInUse",
-    android: {
-      detail: "coarse"
-    }
-  }).then(granted => {
+    RNLocation.requestPermission({
+      ios: "whenInUse",
+      android: {
+        detail: "coarse"
+      }
+    })
+    .then(granted => {
       if (granted) {
         this.locationSubscription = RNLocation.subscribeToLocationUpdates(locations => {
-                this.setState({rLon: locations[0]["longitude"], rLat: locations[0]["latitude"] })
+          this.setState({rLon: locations[0]["longitude"], rLat: locations[0]["latitude"] })
         })
       }
       else this.setState({rLon: "-56.062161", rLat: "4.092356" })
     })
-
     NetworkInfo.getIPV4Address(ipv4 => {
       this.setState({
         ip: ipv4,
@@ -165,36 +144,71 @@ class DocumentPlaceHolder extends Component {
     this.state.currentSigner = value
   }
 
-  addAnnotation(){
-    let element= (
-      <Animated.View key={this.state.key}
-        style={{
-          transform: this.Animatedvalue.getTranslateTransform(),
-          borderColor: "black",
-          borderWidth: 1,
-          backgroundColor: "white",
-          opacity: 0.5,
-          height: 20,
-          width: 100,
-          color: "black"
+  addAnnotation = props =>{
+    // console.warn(this.state.currentPage)
+    this.state.annotationCount = this.state.annotationCount + 1
+    var element =
+      <Gestures
+        draggable={{
+          x: true,
+          y: true
         }}
-        {...this.PanResponder.panHandlers}
-        // style={this.state.animatedStyle}
-      >
-        <Text>Drag Me</Text>
-      </Animated.View>
-    )
-    if(this.state.annotations.push(element)){
-      this.state.key= this.state.key+1
+        key={this.state.annotationCount}
+        rotatable={false}
+        onStart={()=>{
+          this.state.key.push(this.state.annotationCount)
+        }}
+        onEnd={(event, styles) => {
+          this.state.annotations.map((key, index) => {
+            if(this.state.key[index] == this.state.annotations[index]["annotationNumber"]){
+              this.state.x = styles["left"]
+              this.state.y = styles["top"]
+              this.changeDimensions(index+1)
+            }
+          })
+        }}>
+        <View style={styles.animatedStyle}>
+          <Text>Drag Me</Text>
+        </View>
+      </Gestures>
+    const realWidth = width/1.4
+    const realHeight = height/2
+    const wPercentage = (100/realWidth)*100
+    const hPercentage = (100/realHeight)*100
+    const xPercentage = ((this.state.x * 100)/realWidth)
+    const yPercentage = ((this.state.y * 100)/realHeight)
+    const realxCoordinate = (xPercentage * this.state.imageWidth)/100
+    const realyCoordinate = (yPercentage * this.state.imageHeight)/100
+    var element1 = {
+      "annotationNumber": this.state.annotationCount,
+      "element": element,
+      "pageNo" : this.state.currentPage,
+      "annotations": { 
+        "x": realxCoordinate,
+        "xPercentage": ((this.state.x * 100)/realWidth),
+        "y": realyCoordinate,
+        "yPercentage": ((this.state.y * 100)/realHeight),
+        "w": 100,
+        "wPercentage": wPercentage,
+        "h": 100,
+        "hPercentage": hPercentage,
+        "p": this.state.currentPage,
+        "ratio": "0.612903225806452",
+        "userId": this.state.signerIds[0][0],
+        "isAnnotation": true,
+        "SignatureType": "ESignature"
+      }
     }
-    else{
-      alert("Nahi hua bro!")
-    }
+    this.state.annotations.push(element1)
+    console.warn(this.state.annotationCount)
+    console.warn(this.state.annotations)
+    this.setState(this.state)
   }
 
-<<<<<<< HEAD
-  review = async() => {
-=======
+  changeDimensions(index){
+    console.warn(index)
+  }
+
   checkRenderedPages(pageCount){
     if(this.state.renderCount == 0){
       //console.warn("Calling the API first time.")
@@ -259,7 +273,6 @@ class DocumentPlaceHolder extends Component {
   }
 
   create = async() => {
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
       const realWidth = width/1.4
       const realHeight = height/2
       const xPercentage = ((this._value.x * 100)/realWidth)
@@ -300,15 +313,10 @@ class DocumentPlaceHolder extends Component {
             "hPercentage": hPercentage,
             "p": 1,
             "ratio": "0.612903225806452",
-<<<<<<< HEAD
-            "userId": "E1255565-0444-462F-8EC3-F47A74D4D45E",
-=======
             "userId": this.state.signerIds[0][0],
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
             "isAnnotation": true,
             "SignatureType": "ESignature"
           }
-          
         ],
         "signingFlowType": 1,
         "signerIds": this.state.signerIds[0],
@@ -345,18 +353,7 @@ class DocumentPlaceHolder extends Component {
       });
   }
 
-  render() {  
-    const animatedStyle = {
-      transform: this.Animatedvalue.getTranslateTransform(),
-      borderColor: "black",
-      borderWidth: 1,
-      backgroundColor: "white",
-      opacity: 0.5,
-      height: 20,
-      width: 100,
-      color: "black"
-    }
-    this.state.animatedStyle = animatedStyle
+  render() {
     return (
       <View style={styles.mainContainer}>
        <ProgressDialog
@@ -407,9 +404,10 @@ class DocumentPlaceHolder extends Component {
             activeDotColor={'#003d5a'}
             dotColor={'grey'}
             onIndexChanged = {(index) =>{
-                if((index + 1)%6 == 0){
-                    this.checkRenderedPages(index+2);
-                }
+              this.state.currentPage = index + 1
+              if((index + 1)%6 == 0){
+                  this.checkRenderedPages(index+2);
+              }
             }}
             index={this.state.index}
             bounces={true}
@@ -422,11 +420,7 @@ class DocumentPlaceHolder extends Component {
                     <View
                       key={index}
                       style={{margin:20, justifyContent:'center', alignItems: 'center'}}
-<<<<<<< HEAD
-                      title={<Text>{index + 1}/{this.state.totalPage}</Text>}
-=======
                       title={<Text style={{color:'black'}}>{index + 1}/{this.state.totalPage}</Text>}
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                     >
                       <ImageZoom
                         cropWidth={width/1.4}
@@ -435,28 +429,23 @@ class DocumentPlaceHolder extends Component {
                         imageHeight={height/2}
                       >
                         <ImageBackground style={styles.imageContainer}
-<<<<<<< HEAD
-                          source={{uri: `data:image/png;base64,${this.state.data["pages"][index]}`}}
-                        >
-                       
-=======
                           source={{uri: `data:image/png;base64,${this.state.pages[index]}`}}
                         >
-                          {/* {this.state.annotations.map(() =>{
-                            return(
-                              <View>
-                                {this.state.annotations}
-                              </View>
-                            )
-                          })
-                        } */}
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
-                            <Animated.View
-                                {...this.PanResponder.panHandlers}
-                                style={this.state.animatedStyle}
-                            >
-                              <Text>Drag Me</Text>
-                            </Animated.View>
+                          {
+                            this.state.annotations.map((key, index) => {
+                              // console.warn(this.state.annotations[index]["pageNo"])
+                              // console.warn(this.state.currentPage)
+                              if(this.state.annotations[index]["pageNo"] == this.state.currentPage){
+                                return(
+                                  <View key={index}>
+                                    {this.state.annotations[index]["element"]}
+                                  </View>
+                                )
+                              }else{
+                                console.warn("none")
+                              }
+                            })
+                          }
                         </ImageBackground>
                       </ImageZoom>
                     </View>
@@ -568,4 +557,13 @@ const styles = StyleSheet.create({
     width: '100%',
     height:'100%'
   },
+  animatedStyle: {
+    borderColor: "black",
+    borderWidth: 1,
+    backgroundColor: "white",
+    opacity: 0.5,
+    height: 20,
+    width: 100,
+    color: "black"
+  }
 })

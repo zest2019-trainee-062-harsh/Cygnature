@@ -17,15 +17,12 @@ class DocumentPreview extends Component {
         this.state.Id  = this.props.navigation.getParam('Id')
         this.state.totalPage = this.state.data["pageCount"]
         this.state.pages = this.state.data["pages"]
-<<<<<<< HEAD
-=======
         var arr =  this.state.data["name"].split(".")
         var last = arr.pop()
         var first = arr.join(".")
         //console.warn(first +"sssss"+last)
         this.state.fileName = first
         this.state.fileExt = last
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     }
 
     static navigationOptions = {
@@ -46,13 +43,9 @@ class DocumentPreview extends Component {
         pdVisible: false,
         renderCount: 0,
         pages: [],
-<<<<<<< HEAD
-        index: 0
-=======
         index: 0,
         fileName: "",
         fileExt: "",
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     }
 
     componentWillMount = async() =>{
@@ -61,14 +54,8 @@ class DocumentPreview extends Component {
     }
 
     checkRenderedPages(pageCount){
-<<<<<<< HEAD
-        if(this.state.renderCount.length == 0){
-            console.warn("Calling the API first time.")
-            this.state.renderCount.push(pageCount)
-=======
         if(this.state.renderCount == 0){
             console.warn("Calling the API first time.")
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
             var pageTo = 0;
             var difference = 0;
             if(pageCount + 5 > this.state.totalPage){
@@ -141,10 +128,6 @@ class DocumentPreview extends Component {
                     activityIndicatorSize="small"
                     animationType="fade"
                 />
-<<<<<<< HEAD
-                <Text>{this.state.data["name"]}</Text>
-            
-=======
                <View style={{flex:0.1, flexDirection: 'row', backgroundColor: '#f5f5f5'}}>
                     <View style={{flex:0.1, alignContent:'center', justifyContent: 'center', marginLeft:10 }}>
                         {this.state.fileExt == "pdf" ?
@@ -180,7 +163,6 @@ class DocumentPreview extends Component {
                         <Text style={{color: 'black', fontSize: 17, fontWeight: 'bold'}}>{this.state.data["name"]}</Text>
                     </View>
                 </View>
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 
                 <Swiper
                     showsButtons={true}
@@ -194,11 +176,7 @@ class DocumentPreview extends Component {
                     }}
                     index={this.state.index}
                     bounces={true}
-<<<<<<< HEAD
-
-=======
                     loop={false}
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                 >
                 {
                     this.state.data.pages.map((key, index) => {
@@ -207,11 +185,7 @@ class DocumentPreview extends Component {
                             <View
                                 key={index}
                                 style={{
-<<<<<<< HEAD
-                                    marginTop: 20,
-=======
                                     margin: 20,
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                                     justifyContent:'center',
                                     alignItems: 'center',
                                     backgroundColor: 'grey'
@@ -236,11 +210,7 @@ class DocumentPreview extends Component {
                                     >
                                     </ImageBackground>
                                 </ImageZoom>
-<<<<<<< HEAD
-                                <Text style={{marginBottom: 10}}>Page: {index+1}/{this.state.totalPage}</Text>
-=======
                                 <Text style={{margin: 10, fontSize: 17, fontWeight: 'bold', color: 'white'}}>Page: {index+1}/{this.state.totalPage}</Text>
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                             </View>
                         )
                         }

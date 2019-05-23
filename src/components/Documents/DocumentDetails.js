@@ -24,10 +24,7 @@ class DocumentDetails extends Component {
         downloadButtonOpacity: 0.5,
         id: this.props.navigation.state.params.Id,
         details: null,
-        cancel:null,
-        Document:[],
         data: [],
-        user:null,
         pdVisible: true,
         pdTitle: "Getting the info",
         history: [],
@@ -35,7 +32,6 @@ class DocumentDetails extends Component {
         observers: [],
         isObservers: false,
         sequentialFlow: null,
-        notarized:[],
     }
     
     requestStoragePermission = async() => {
@@ -64,7 +60,6 @@ class DocumentDetails extends Component {
           console.warn(err);
         }
       }
-
     decline= async() =>{
 
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/decline',{
@@ -75,18 +70,12 @@ class DocumentDetails extends Component {
             },
             body: JSON.stringify({
                 documentId: this.state.id,
-                declineReason: "don't want to sign"
+                declineReason: "Don't want to sign"
             }),
             }).then((response) => response.json())
             .then((responseJson)=>{
-<<<<<<< HEAD
-               
-                    console.warn(responseJson)
-    
-=======
                alert(responseJson["message"])
                this.documentDetails()
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                     
             })     
         .catch((error) => {
@@ -139,7 +128,6 @@ class DocumentDetails extends Component {
         });
     }
 
-
     download = () => {
         this.setState({pdTitle:"Downloading", pdVisible: true})
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/download',{
@@ -164,7 +152,11 @@ class DocumentDetails extends Component {
             const fs = fetch_blob.fs
             const dirs = fetch_blob.fs.dirs 
             const file_path = dirs.DownloadDir + "/" + this.state.details["documentDetail"]["fileName"]
-            
+            //console.warn(dirs.DocumentDir)  /data/user/0/com.bigjpg/files
+            //console.warn(dirs.CacheDir)     /data/user/0/com.bigjpg/cache
+            //console.warn(dirs.DCIMDir)      /storage/emulated/0/DCIM
+            //console.lowarng(dirs.DownloadDir)  /storage/emulated/0/Download
+            //console.warn(dirs.PictureDir)   /storage/emulated/0/Pictures
             var image_data = this.state.data
                 
             RNFS.writeFile(file_path, image_data, 'base64')
@@ -183,7 +175,7 @@ class DocumentDetails extends Component {
         .catch((error) => {
             console.warn(error.message);
         });
-    
+
 
     }
 
@@ -201,55 +193,35 @@ class DocumentDetails extends Component {
                 this.setState({pdVisible: false})
                 alert(responseJson["error"])
             } else {
-<<<<<<< HEAD
-            this.setState({data: responseJson["data"][0]["documentData"]})
-            
-            this.setState({pdVisible: false})
-           
-            this.props.navigation.navigate('Document_Preview',{'data': this.state.data})
-        }
-=======
                 this.setState({data: responseJson["data"][0]["documentData"]})
                 this.setState({pdVisible: false})
                 this.props.navigation.navigate('Document_Preview',{'data': this.state.data, 'Id': this.state.id})
             }
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
         })
         .catch((error) => {
             console.warn(error.message);
         });
     }  
 
-<<<<<<< HEAD
-    certificate = () =>{
-        if(this.state.details["notarization"]["isNotarized"] == true)
-        {
-            return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/certificate/'+this.state.id,{
-                method: 'GET',
-                headers: {
-                    'Authorization':this.state.auth,
-                }}).then((response) => response.json())
-                .then((responseJson) => {
-                    this.setState({data: responseJson["data"][0]})
-                    this.props.navigation.navigate('DocumentCertificate',{'data': this.state.data})    
-                })
-                .catch((error) => {
-                    console.warn(error);
-                });
-        }
-        else{
-            alert('Document is not yet Notarized');
-        }
+    certificate = async() => {
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/certificate/'+this.state.id,{
+            method: 'GET',
+            headers: {
+                'Authorization':this.state.auth,
+            }}).then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({data: responseJson["data"][0]})
+                this.props.navigation.navigate('Document_Certificate',{'data': this.state.data})    
+            })
+            .catch((error) => {
+                console.warn(error);
+            });
     }
 
-    sign = async() =>{
-        return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
-=======
     
     signTheDocument(){  
         this.setState({pdTitle:"Previewing", pdVisible: true})
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/sign/'+this.state.id,{
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
         method: 'GET',
         headers: {
             'Authorization':this.state.auth,
@@ -312,11 +284,7 @@ class DocumentDetails extends Component {
                 
                 {this.state.details != null ? 
                     <ScrollView>
-<<<<<<< HEAD
-        
-=======
                         
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                         <View style={styles.box}>
 
                             <View style = {[{flex: 1, flexDirection:'row'}, ]}>
@@ -508,10 +476,7 @@ class DocumentDetails extends Component {
                         </View>
 
                         </View>
-<<<<<<< HEAD
-=======
                         
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                         <View style={{flex:1, flexDirection:'row', justifyContent: 'center'}}>
 
                         {this.state.details["documentDetail"]["documentStatus"] == 2 ?
@@ -549,11 +514,18 @@ class DocumentDetails extends Component {
                                     />
                             </TouchableOpacity>
                         }
-
-                        <TouchableOpacity  onPress={()=> this.certificate()}
-                            style = {styles.buttonContainer}>
-                            <Text style = {[styles.buttonText,]}>Certificate</Text>
-                        </TouchableOpacity> 
+                        {this.state.details["documentDetail"]["documentStatus"] == 2 ?
+                        <TouchableOpacity  
+                            disabled={this.state.downloadButtonDisable}
+                            onPress={()=> this.certificate()}
+                            style = {[styles.buttonContainer, {opacity:this.state.downloadButtonOpacity, flex: 0.2, alignItems:'center'}]}>
+                                <Icon1
+                                    name="md-ribbon"
+                                    size={15}
+                                    color="white"
+                                />
+                                </TouchableOpacity>
+                                :null}
                         </View>
 
                     </ScrollView>

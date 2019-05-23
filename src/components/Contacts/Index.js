@@ -1,10 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, Alert, 
-<<<<<<< HEAD
-    TouchableOpacity,TouchableHighlight, SwipeableFlatList, AsyncStorage} from 'react-native'
-=======
     TouchableOpacity,TouchableHighlight, SwipeableFlatList, AsyncStorage, KeyboardAvoidingView} from 'react-native'
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 import { SearchBar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons'
 import AddModal from './AddModal'
@@ -197,22 +193,7 @@ export default class Contacts extends Component {
             />
 
             
-<<<<<<< HEAD
-            <SearchBar
-                placeholder="Type Here..."
-                platform="android"
-                containerStyle={{borderRadius:30}}
-                onChangeText={ (text) =>this.search(text)}
-                value={this.state.searchText}
-                onClear = { () => this.view() }
-                onCancel = { () => this.view() }
-                onKeyPress={({ nativeEvent }) => {
-                    nativeEvent.key === 'Backspace' ? console.warn("D") : null
-                }}
-            />
-=======
             
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
             <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
                         <Text style={styles.floatButtonText}>+</Text>
             </TouchableOpacity>
@@ -230,11 +211,7 @@ export default class Contacts extends Component {
                     <TouchableOpacity disabled style={styles.rowDataBg}>
                             <Text style={styles.rowDataText1}>{item.shortName}</Text>
                     </TouchableOpacity>
-<<<<<<< HEAD
-                    <View style={{flexDirection:'column', flex: 1}}>
-=======
                     <View style={{flexDirection:'column', flex: 1, marginTop:5}}>
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                         <Text style={styles.rowDataText2}>{item.name}</Text>
                         <Text style={[styles.rowDataText2, {color:'grey', fontSize:12}]}>{item.email}</Text>
                     </View>
@@ -286,11 +263,7 @@ floatButton: {
     height: 50,
     backgroundColor: '#003d5a',
     borderRadius: 30,
-<<<<<<< HEAD
-    bottom: 80,
-=======
     bottom: 20,
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     right: 6,
     alignItems: 'center',
     justifyContent: 'center',

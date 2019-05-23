@@ -47,14 +47,10 @@ class DocumentUpload extends Component {
         observers: [],
         checked1: false,
         checked2: false,
-<<<<<<< HEAD
-        enabled: false,
-=======
         signerViewEnabled: false,
         signerButtonDisabled: false,
         observerViewEnabled: false,
         observerButtonDisabled: false,
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     }
 
     static navigationOptions = {
@@ -70,11 +66,6 @@ class DocumentUpload extends Component {
             })
         }
 
-<<<<<<< HEAD
-    addSigners(Ids) {
-        this.state.signerIds = Ids
-        Ids.map((item) => {
-=======
         if(this.state.observerIds != []){
             this.setState({
                 opacity: 1,
@@ -89,7 +80,6 @@ class DocumentUpload extends Component {
         this.state.contactIds.push(CIds)
         this.state.signerIds.push(SIds)
         CIds.map((item) => {
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
             return fetch('http://cygnatureapipoc.stagingapplications.com/api/contact/get-contact-by-id/'+item,{
             method: 'GET',
             headers: {
@@ -99,15 +89,8 @@ class DocumentUpload extends Component {
                 //console.warn(responseJson)
                 let data = JSON.parse('{ "label": "'+responseJson["data"][0]["name"]+'","shortName": "'+responseJson["data"][0]["shortName"]+'", "value": "'+responseJson["data"][0]["Id"]+'"}');
                 this.state.signers.push(data)
-<<<<<<< HEAD
-                // setTimeout(() => {
-                //     this.state.signers.push(data)
-                //     // this.pushSigners(data)
-                // }, 1000);
-=======
                 
                 this.setState({signerViewEnabled:true, signerButtonDisabled: true})
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
             })
             .catch((error) => {
                 console.warn(error.message);
@@ -116,19 +99,6 @@ class DocumentUpload extends Component {
         this.check();
     }
 
-<<<<<<< HEAD
-    // pushSigners(data){
-    //     this.state.signers.push(data)
-    //     // console.warn(this.state.signers[1]["label"])
-    // }
-
-    check(){
-        if(this.state.signerIds != []){
-            this.setState({
-                opacity: 1,
-                disabled: false,
-                enabled: true,
-=======
     addObservers(CIds, OIds) {
         this.state.observerIds.push(OIds)
         CIds.map((item) => {
@@ -144,7 +114,6 @@ class DocumentUpload extends Component {
                 
                 //console.warn(this.state.observers)
                 this.setState({observerViewEnabled:true, observerButtonDisabled: true})
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
             })
             .catch((error) => {
                 console.warn(error.message);
@@ -153,37 +122,6 @@ class DocumentUpload extends Component {
         this.check();
     }
 
-<<<<<<< HEAD
-    addObservers(Ids) {
-        console.warn(Ids)
-        this.state.observerIds = Ids
-        Ids.map((item) => {
-            return fetch('http://cygnatureapipoc.stagingapplications.com/api/contact/get-contact-by-id/'+item,{
-            method: 'GET',
-            headers: {
-                'Authorization': this.state.auth
-            }}).then((response) => response.json())
-            .then((responseJson) => {
-                let data = JSON.parse('{ "label": "'+responseJson["data"][0]["name"]+'", "value": "'+responseJson["data"][0]["Id"]+'"}');
-                this.state.observers.push(data)
-                // setTimeout(() => {
-                //     this.state.signers.push(data)
-                //     // this.pushSigners(data)
-                // }, 1000);
-            })
-            .catch((error) => {
-                console.warn(error);
-            });
-        })
-        console.warn(this.state.observers)
-    }
-
-    assignSigners(){
-        this.props.navigation.navigate('Document_PlaceHolder', {
-            'data' : this.state.data,
-            'signers': this.state.signers
-        })
-=======
     assignData(){
             this.props.navigation.navigate('Document_PlaceHolder', {
                 'data' : this.state.data,
@@ -209,23 +147,12 @@ class DocumentUpload extends Component {
     onChangeCheck2() {
         this.setState({ checked1: false})
         this.setState({ checked2: !this.state.checked2})
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
-    }
-    
-
-    onChangeCheck1() {
-        this.setState({ checked2: false})
-        this.setState({ checked1: !this.state.checked1})
-    }
-
-    onChangeCheck2() {
-        this.setState({ checked1: false})
-        this.setState({ checked2: !this.state.checked2})
     }
     
 
     render() {
         return(
+            <ScrollView>
             <View style={styles.mainContainer}>
                 <Text style={styles.textTitle}>File Name: <Text style={{color:'red'}}> * </Text> </Text>
                 <View style={{flex:0.3, flexDirection: 'row', margin:5}}>
@@ -297,81 +224,6 @@ class DocumentUpload extends Component {
                 <View style={{maxHeight:"50%"}}>
                 <ScrollView horizontal={true}>
                 {
-<<<<<<< HEAD
-                    !this.state.enabled ? 
-                    <View>
-                        <Text style={styles.textData}>
-                            No signers present at this moment.{"\n"}
-                            *Select at least one contact.
-                        </Text>
-                    </View>
-                    :
-                    this.state.signers.map((_data, index, _array) => {
-                        return(
-                            <View>
-                                <Text>
-                                    {this.state.signers[index]["label"]}
-                                </Text>
-                            </View>
-                        )
-                    })
-                }
-                <View style={{marginLeft:5}}>
-                    <TouchableOpacity
-                        style={{backgroundColor: "#003d5a",borderRadius: 5, width:100, justifyContent:'center', alignItems:'center'}}
-                        onPress={() => { this.refs.DocumentUpload_SignerModal.show() }}
-                    >
-                        <Text style={[styles.textData, {color:'white'}]}>Select</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <Text style={styles.textTitle}>Observers:</Text>
-                {
-                    this.state.observers.map((_data, index, _array) => {
-                        return(
-                            <View>
-                                <Text>
-                                    {this.state.observers[index]["label"]}
-                                </Text>
-                            </View>
-                        )
-                    })
-                }
-
-                <View style={{marginLeft:5}}>
-                <TouchableOpacity style={{backgroundColor: "#003d5a",borderRadius: 5, width:100, justifyContent:'center', alignItems:'center'}}
-                    onPress={() => { this.refs.DocumentUpload_ObserverModal.show() }}
-                >
-                        <Text style={[styles.textData, {color:'white'}]}>Select</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <Text style={styles.textTitle}>Due Date: </Text>
-                <DatePicker
-                    style={{width: 200}}
-                    date={this.state.date}
-                    mode="date"
-                    placeholder="Select Date"
-                    format="DD-MM-YYYY"
-                    minDate={this.state.currentDate}
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                        dateIcon: {
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0
-                        },
-                        dateInput: {
-                            marginLeft: 36
-                        }
-                    }}
-                    onDateChange={(date) => {this.setState({date: date})}}
-                />
-                <View style={{flex:1}}>
-                    <Text style={styles.textTitle}>Signature Flow: </Text>
-=======
                     !this.state.signerViewEnabled ? 
                         null
                     :
@@ -540,7 +392,6 @@ class DocumentUpload extends Component {
 
                 <View style={{flex:1}}>
                     <Text style={styles.textTitle}>Signature Flow: <Text style={{color:'red'}}> * </Text> </Text>
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                     <CheckBox
                         title='Sequential'
                         textStyle={{color: 'black', fontWeight: 'normal', fontSize:17}}
@@ -592,6 +443,7 @@ class DocumentUpload extends Component {
                 
                 <DocumentUpload_ObserverModal ref={'DocumentUpload_ObserverModal'}  parentFlatList={this}/>
             </View>
+            </ScrollView>
         )
     }
 }
@@ -647,15 +499,12 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         fontFamily: 'Helvetica',
         fontSize: 17
-<<<<<<< HEAD
-=======
     },
     boxTINew: {
         borderBottomWidth: 1,
         borderColor: 'black',
         fontFamily: 'Helvetica',
         fontSize: 17
->>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     },
     buttonContainer: {
         backgroundColor: "#003d5a",
