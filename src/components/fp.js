@@ -82,7 +82,7 @@ class fp extends Component {
 
   render() {
     return (
-      <View style={{flex:1 ,alignItems: 'center', justifyContent: 'center', backgroundColor: '#414345'}}>
+      <View style={{flex:1 ,alignItems: 'center', justifyContent: 'center', backgroundColor: '#003d5a'}}>
         <Icon name="md-finger-print" color='white' size={100} />
           <Text style={{fontSize:18, color:'white'}}>
             {this.state.text}
