@@ -36,6 +36,7 @@ class DocumentDetails_Sign extends Component {
         this.state.userId = userId;
         this.deviceInfo();
         this.getData();
+        this.checkSensor();
     }
 
     static navigationOptions = {
@@ -63,7 +64,8 @@ class DocumentDetails_Sign extends Component {
         canvasVisible: false,
         padText: null,
         text: "Scan your finger",
-        attemptCounter: 3
+        attemptCounter: 3,
+        fpAvailb: false
     }
     getData() {
         this.setState({pdVisible:true, pdTitle: "Getting things ready !"})
@@ -74,7 +76,6 @@ class DocumentDetails_Sign extends Component {
         },
         }).then((response) => response.json())
         .then((responseJson) => {
-            this.setState({pdVisible:false})
 
             if(responseJson['data'][0]['impressions'][0] == null) {
                 this.setState({canvasVisible: true})
@@ -106,6 +107,18 @@ class DocumentDetails_Sign extends Component {
         });
 
     }
+
+    checkSensor () {
+        this.setState({pdVisible:false})
+
+        FingerprintScanner
+        .isSensorAvailable()
+        .then(biometryType => {
+            this.setState({ fpAvailb: true})
+        })
+        .catch(error => alert(error.message));
+    
+     }
 
     _clear = () => {
         this.setState({ canvasVisible: false, signData: null }); 
@@ -246,6 +259,13 @@ class DocumentDetails_Sign extends Component {
             .catch((error) => {
                 console.warn(error.message);
             });
+    }
+    check() {
+        if(this.state.fpAvailb) {
+            this.openModal()
+        }
+        else this.sign()
+
     }
 
     openModal() {
@@ -407,7 +427,7 @@ class DocumentDetails_Sign extends Component {
                                                             }
                                                         ]}
                                                     >
-                                                        <TouchableOpacity onPress={()=>{this.state.signData == "" || this.state.signData == null ? alert("Please Provide Signature") :   this.openModal()} } style={{flex:2}}>
+                                                        <TouchableOpacity onPress={()=>{this.state.signData == "" || this.state.signData == null ? alert("Please Provide Signature") :   this.check()} } style={{flex:2}}>
                                                             <Text style={{flex: 1, fontSize:8, color: 'black', fontWeight: 'bold',}}>{this.state.fulldata["annotationShapes"][index]["userName"]}</Text>
                                                             <View style={{flex:1, alignContent:'flex-end', justifyContent:'flex-end', alignItems: 'flex-end'}}>
                                                                 <Text style={{fontSize:8, color: 'black', fontWeight: 'bold',}}> Click Here</Text>
