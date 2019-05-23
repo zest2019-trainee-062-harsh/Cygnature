@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Ionicons';
 import fetch_blob from 'rn-fetch-blob';
 import RNFS from 'react-native-fs';
-
+import { NavigationEvents } from 'react-navigation';
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
  
@@ -20,8 +20,8 @@ class DocumentDetails extends Component {
         userId: null,
         signButtonDisable: true,
         signButtonOpacity: 0.5,
-        downloadButtonDisable: false,
-        downloadButtonOpacity: 1.0,
+        downloadButtonDisable: true,
+        downloadButtonOpacity: 0.5,
         id: this.props.navigation.state.params.Id,
         details: null,
         cancel:null,
@@ -43,6 +43,7 @@ class DocumentDetails extends Component {
           const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             console.log('You can use the storage');
+            this.setState({downloadButtonDisable:false, downloadButtonOpacity: 1.0})      
           } else {
             console.log('Storage permission denied');
             Alert.alert(
@@ -78,9 +79,14 @@ class DocumentDetails extends Component {
             }),
             }).then((response) => response.json())
             .then((responseJson)=>{
+<<<<<<< HEAD
                
                     console.warn(responseJson)
     
+=======
+               alert(responseJson["message"])
+               this.documentDetails()
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                     
             })     
         .catch((error) => {
@@ -98,8 +104,7 @@ class DocumentDetails extends Component {
         }}).then((response) => response.json())
         .then((responseJson) => {
             this.setState({details: responseJson["data"][0], observers: responseJson["data"][0]["observers"], signers: responseJson["data"][0]["signers"], history: responseJson["data"][0]["documentHistory"]})
-            //console.warn(responseJson["data"][0])
-
+            //console.warn(responseJson)
             if(responseJson["data"][0]["sequentialFlow"] == true) {
                 //console.warn("yes")
                 this.setState({sequentialFlow: "Sequential Flow"})
@@ -190,37 +195,32 @@ class DocumentDetails extends Component {
             'Authorization':this.state.auth,
         }}).then((response) => response.json())
         .then((responseJson) => {
+            //console.warn(responseJson)
             if(responseJson["data"] == null)
             {
                 this.setState({pdVisible: false})
-                console.warn(responseJson)
+                alert(responseJson["error"])
             } else {
+<<<<<<< HEAD
             this.setState({data: responseJson["data"][0]["documentData"]})
             
             this.setState({pdVisible: false})
            
             this.props.navigation.navigate('Document_Preview',{'data': this.state.data})
         }
+=======
+                this.setState({data: responseJson["data"][0]["documentData"]})
+                this.setState({pdVisible: false})
+                this.props.navigation.navigate('Document_Preview',{'data': this.state.data, 'Id': this.state.id})
+            }
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
         })
         .catch((error) => {
             console.warn(error.message);
         });
     }  
-      signTheDocument(){
-        Alert.alert(
-            'Alert!',
-            'Make sure to view the document before signing the document.',
-            [
-              {
-                text: 'Cancel',
-                style: 'cancel',
-              },
-              {text: 'OK', onPress: () => this.sign()},
-            ],
-            {cancelable: false},
-        );
-    }
 
+<<<<<<< HEAD
     certificate = () =>{
         if(this.state.details["notarization"]["isNotarized"] == true)
         {
@@ -244,44 +244,33 @@ class DocumentDetails extends Component {
 
     sign = async() =>{
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile', {
+=======
+    
+    signTheDocument(){  
+        this.setState({pdTitle:"Previewing", pdVisible: true})
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/sign/'+this.state.id,{
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
         method: 'GET',
         headers: {
-            'Authorization': this.state.auth,
-        },
-        }).then((response) => response.json())
-        .then((responseJson) => {
-            return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/sign',{
-            method: 'POST',
-            headers: {
-                'Authorization': this.state.auth,
-                'Content-Type': "application/json"
-            },
-            body: JSON.stringify({
-                "documentId": this.state.id,
-                "aspectRatio": 1,
-                "isSigner": true,
-                "signatureType": "ESignature",
-                "documentLatitude": 4.092356,
-                "documentLongitude": -56.062161,
-                "userAgent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36",
-                "userIPAddress": "61.12.66.6",
-                "userTimeZoneOffSet": "+05:30",
-                "rememberSign": false,
-                "signData": responseJson["data"][0]["impressions"][0]["imageBytes"]
+            'Authorization':this.state.auth,
+        }}).then((response) => response.json())
+        .then((responseJson) => {  
+            //console.warn(responseJson)
+            if(responseJson["data"] == null)
+            {
+                this.setState({pdVisible: false})
+                alert(responseJson["error"])
+            } else {
+                this.setState({data: responseJson["data"][0]})
+                this.setState({pdVisible: false})
+                this.props.navigation.navigate('Document_Details_Sign',{'data': this.state.data, 'Id': this.state.id})
+            }
             })
-            }).then((response) => response.json())
-            .then((responseJson) => {
-                // console.warn(responseJson)
-                alert(responseJson["message"])
-            })
-            .catch((error) => {
-                console.warn(error.message);
-            });
-        })
         .catch((error) => {
-            console.warn(error);
+            console.warn(error.message);
         });
     }
+
 
     copyDH = async() => {
         await Clipboard.setString(this.state.details["documentDetail"]["documentFileHash"]);
@@ -304,6 +293,9 @@ class DocumentDetails extends Component {
         
     }
 
+    didFocus = async() => {
+      this.documentDetails()
+    }
     render() {
         return (
             <View style={styles.mainContainer}>
@@ -315,9 +307,16 @@ class DocumentDetails extends Component {
                     activityIndicatorSize="small"
                     animationType="fade"
                 />
+                 <NavigationEvents
+                    onDidFocus={payload => this.didFocus()}/>
+                
                 {this.state.details != null ? 
                     <ScrollView>
+<<<<<<< HEAD
         
+=======
+                        
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                         <View style={styles.box}>
 
                             <View style = {[{flex: 1, flexDirection:'row'}, ]}>
@@ -333,9 +332,24 @@ class DocumentDetails extends Component {
                                         <Icon
                                             name="file-word-o"
                                             size={30}
-                                            color="red"
+                                            color="blue"
                                         /> : null
                                     } 
+                                    {this.state.details["documentDetail"]["extension"] == ".pptx" || this.state.details["documentDetail"]["extension"] == ".ppt" ?
+                                        <Icon
+                                            name="file-powerpoint-o"
+                                            size={30}
+                                            color="orange"
+                                        /> : null
+                                    } 
+                                    {this.state.details["documentDetail"]["extension"] == ".xlsx" || this.state.details["documentDetail"]["extension"] == ".xls" ?
+                                        <Icon
+                                            name="file-excel-o"
+                                            size={30}
+                                            color="green"
+                                        /> : null
+                                    } 
+                                    
                                 </View>
 
                             <View style={[{flex:0.8},styles.DocumentsList]}>
@@ -399,11 +413,11 @@ class DocumentDetails extends Component {
                         <View style={styles.box}>
                         <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Signers </Text>
                         <Text style={{fontSize: 15, color: "grey", marginLeft: 5}}> {this.state.sequentialFlow} </Text>
-                        <View style={styles.DocumentsList}>
+                        
                         <ScrollView>
                         {
                             this.state.signers.map((signers)=>{
-
+                                    
                                 return(
                                 <View style={{margin:10}} key={signers.userId} >
                                     <TouchableOpacity disabled style={[styles.rowDataBg, {marginLeft:20}]}>
@@ -416,19 +430,19 @@ class DocumentDetails extends Component {
                         );
                         })}
                         </ScrollView>
-                        </View>
+                       
                         </View>
 
                         <View style={styles.box}>
                         <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Observers </Text>
-                        <View style={styles.DocumentsList}>
+                        
                         {this.state.isObservers ?
                         <ScrollView>
                         {
                             this.state.observers.map((observers)=>{
                                 
                                 return(
-                                <View key={observers.userId} >
+                                <View style={{margin:10}} key={observers.userId} >
                                     <TouchableOpacity disabled style={[styles.rowDataBg, {marginLeft:20}]}>
                                         <Text style={styles.rowDataText1}>{observers.profileShortName}</Text>
                                     </TouchableOpacity>
@@ -439,14 +453,14 @@ class DocumentDetails extends Component {
                         );
                         })} 
                         </ScrollView> :
-                            <View>
+                            <View style={styles.DocumentsList}>
                                 <Text style={styles.DocumentsListFont}>
                                     There are no Observers
                                 </Text>
                             </View> 
                         }
                         </View>
-                        </View>
+                        
 
                         <View style={styles.box}>
                         <Text style={{fontWeight: "bold", fontSize: 17, color: "black"}}> Notarization </Text>
@@ -494,6 +508,10 @@ class DocumentDetails extends Component {
                         </View>
 
                         </View>
+<<<<<<< HEAD
+=======
+                        
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                         <View style={{flex:1, flexDirection:'row', justifyContent: 'center'}}>
 
                         {this.state.details["documentDetail"]["documentStatus"] == 2 ?
@@ -509,7 +527,7 @@ class DocumentDetails extends Component {
                         </TouchableOpacity> :  
                         <TouchableOpacity  
                             disabled={this.state.signButtonDisable} 
-                            onPress={()=> this.sign()}
+                            onPress={()=> this.signTheDocument()}
                             style = {[styles.buttonContainer, {opacity: this.state.signButtonOpacity}]}>
                             <Text style = { styles.buttonText }>Sign Now</Text>
                         </TouchableOpacity>}
@@ -562,7 +580,7 @@ const styles = StyleSheet.create({
     },
     DocumentsList:{
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#f5f5f5',
         marginLeft: 10,
         marginRight: 10,
         marginTop: 5,
@@ -580,6 +598,7 @@ const styles = StyleSheet.create({
         borderColor: "#003d5a",
         borderWidth: 2,
         borderWidth: 2,
+        backgroundColor: '#f5f5f5'
     },
     buttonContainer: {
         flex: 0.5,

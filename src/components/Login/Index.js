@@ -14,11 +14,15 @@ import {StyleSheet,
     BackHandler,
     NetInfo,
     AsyncStorage,
-    Keyboard
+    Keyboard,
 } from 'react-native'
 import { StackActions, NavigationActions } from 'react-navigation'
 import { CheckBox } from 'react-native-elements'
 
+<<<<<<< HEAD
+=======
+import LinearGradient from 'react-native-linear-gradient';
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 import Icon from 'react-native-vector-icons/FontAwesome'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
@@ -48,7 +52,11 @@ class Login extends Component {
         auth: [],
         opacity: 0.5,
         isVisible: true,
+<<<<<<< HEAD
         passwordIconName: "toggle-on",
+=======
+        passwordIconName: "eye-slash",
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
         passwordSecureTextEntry: true
     }
 
@@ -267,7 +275,7 @@ class Login extends Component {
     render(){
         return(
             
-            <View style={styles.maincontainer}>
+            <KeyboardAvoidingView behavior='padding'  style={styles.maincontainer}>
             <View style={{flex:0.90, justifyContent:'center'}}>
             
             <View style={styles.logoContainer}>            
@@ -287,12 +295,16 @@ class Login extends Component {
 
             <ScrollView>
             <View style = { styles.container }>
-                <StatusBar backgroundColor="#6eab52" barStyle="light-content" />
+                <StatusBar backgroundColor="#003d5a" barStyle="light-content" />
                     {/* <Text style = { styles.boxLabel }>E-Mail</Text> */}
 
                     <TextInput
                         value={this.state.email}
+<<<<<<< HEAD
                         placeholderTextColor='grey'
+=======
+                        placeholderTextColor='black'
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                         placeholder = "Email"
                         returnKeyType="next"
                         keyboardType="email-address"
@@ -306,7 +318,11 @@ class Login extends Component {
                     <View style={[styles.boxTI, {justifyContent:'center', alignItems: 'center', flex:1, flexDirection: 'row'}]}>
                         <TextInput
                             value={this.state.password}
+<<<<<<< HEAD
                             placeholderTextColor='grey'
+=======
+                            placeholderTextColor='black'
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                             placeholder = "Password"
                             returnKeyType="done"
                             ref={(input) => this.passwordInput = input}
@@ -321,10 +337,17 @@ class Login extends Component {
                             color='black'
                             onPress= {()=> {
                                     if(this.state.passwordSecureTextEntry){
+<<<<<<< HEAD
                                         this.setState({passwordIconName:"toggle-off", passwordSecureTextEntry: false})
                                     } 
                                     else {
                                         this.setState({passwordIconName:"toggle-on", passwordSecureTextEntry: true})
+=======
+                                        this.setState({passwordIconName:"eye", passwordSecureTextEntry: false})
+                                    } 
+                                    else {
+                                        this.setState({passwordIconName:"eye-slash", passwordSecureTextEntry: true})
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                                     }
                             
                                 }
@@ -340,7 +363,11 @@ class Login extends Component {
                             checkedColor="#6eab52"
                             size={20}
                             checked={this.state.checked}
+<<<<<<< HEAD
                             containerStyle={{flex:1 , borderColor:'#414345' , backgroundColor:'rgba(255,255,255,0)'}}
+=======
+                            containerStyle={{flex:1 , borderColor:'#003d5a' , backgroundColor:'rgba(255,255,255,0)'}}
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                             onPress={() => this.onChangeCheck()}
                         />
                         <TouchableOpacity 
@@ -371,6 +398,7 @@ class Login extends Component {
                     </View>
                     </ScrollView>
                     </View>
+                   
                     </View>
                     
                     {this.state.isVisible?
@@ -382,8 +410,7 @@ class Login extends Component {
                             <Text style = {{ color: 'white' }}>Create an account</Text>
                     </TouchableOpacity>
                     </View>:null}
-                
-                </View>
+                </KeyboardAvoidingView>
                 
         )
     }
@@ -427,7 +454,7 @@ const styles = StyleSheet.create({
         resizeMode: 'cover'
     },
     maincontainer: {
-        backgroundColor: '#414345',
+        backgroundColor: '#003d5a',
         width: width,
         height: height,
         flex:1 ,

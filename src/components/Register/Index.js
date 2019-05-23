@@ -56,7 +56,30 @@ class Register extends Component {
         isVisible: true,
         data: [],
         countryCode: [],
+<<<<<<< HEAD
         gender: []
+    }
+
+    getCode() {
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/setting/get/', {
+            method: 'GET',
+            }).then((response) => response.json())
+            .then((responseJson) => {
+        
+                this.setState({data : responseJson["data"][0]["countries"]})
+                //console.warn(this.state.data)
+                this.state.data.map((y) => {
+                    this.state.countryCode.push(y.countryCode)
+                })
+                
+                //console.warn(this.state.countryCode)
+            })
+            .catch((error) => {
+                console.warn(error);
+            });
+=======
+            
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     }
 
     getCode() {
@@ -108,6 +131,7 @@ class Register extends Component {
                         this.setState({rLon: locations[0]["longitude"], rLat: locations[0]["latitude"] })
                 })
               }
+              else this.setState({rLon: "-56.062161", rLat: "4.092356" })
             })
     }
 
@@ -357,6 +381,7 @@ class Register extends Component {
       isVisible: true
     })
   }
+<<<<<<< HEAD
     onChangeHandler = (value) => {
     // console.warn("Selected value = ", value);
         this.setState({countryCode: value.replace(/[^0-9]/g, '')})
@@ -367,6 +392,13 @@ class Register extends Component {
         this.setState({gender: value})
     }
 
+=======
+  onChangeHandler = (value) => {     
+    // console.warn("Selected value = ", value);
+    this.setState({countryCode: value.replace(/[^0-9]/g, '')})
+    //console.warn(this.state.countryCode);   
+}
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 
     render(){
         let gender = [
@@ -414,7 +446,7 @@ class Register extends Component {
                     <StatusBar
                         barStyle="#414345" />
                         <TextInput
-                            placeholderTextColor='grey'
+                            placeholderTextColor='black'
                             placeholder = "First Name *"
                             returnKeyType="next"
                             autoCapitalize="none"
@@ -430,7 +462,7 @@ class Register extends Component {
                         }
 
                         <TextInput
-                            placeholderTextColor='grey'
+                            placeholderTextColor='black'
                             placeholder = "Last Name *"
                             returnKeyType="next"
                             autoCapitalize="none"
@@ -446,7 +478,7 @@ class Register extends Component {
                         }
 
                         <TextInput
-                            placeholderTextColor='grey'
+                            placeholderTextColor='black'
                             placeholder = "Email *"
                             returnKeyType="next"
                             keyboardType="email-address"
@@ -464,7 +496,7 @@ class Register extends Component {
                         }
 
                         <TextInput
-                            placeholderTextColor='grey'
+                            placeholderTextColor='black'
                             placeholder = "Password *"
                             returnKeyType="go"
                             ref={(input) => this.REGInput3 = input}
@@ -480,7 +512,7 @@ class Register extends Component {
                         }
 
                         <TextInput
-                            placeholderTextColor='grey'
+                            placeholderTextColor='black'
                             placeholder = "Confirm Password *"
                             returnKeyType="go"
                             ref={(input) => this.REGInput4 = input}
@@ -495,6 +527,32 @@ class Register extends Component {
                          <Text style = { styles.errorText }>{this.state.errorCPass}</Text>
                         }
 
+<<<<<<< HEAD
+=======
+                        {/*
+                        <TextInput
+                            placeholderTextColor='black'
+                            placeholder = "Job Title"
+                            returnKeyType="next"
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            ref={(input) => this.REGInput5 = input}
+                            onSubmitEditing={() => this.REGInput6.focus()}
+                            style= { styles.boxTI }>
+                        </TextInput>
+
+                        <TextInput
+                            placeholderTextColor='black'
+                            placeholder = "Company Name"
+                            returnKeyType="next"
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            ref={(input) => this.REGInput6 = input}
+                            onSubmitEditing={() => this.REGInput7.focus()}
+                            style= { styles.boxTI }>
+                        </TextInput>
+                        */}
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                         <View style={{flexDirection:'row'}}>
 
                         <Dropdown 
@@ -520,9 +578,9 @@ class Register extends Component {
                         />
         
                         <TextInput
-                            placeholderTextColor='grey'
+                            placeholderTextColor='black'
                             keyboardType="numeric"
-                            placeholder = "Phone Input *"
+                            placeholder = "Phone Number *"
                             returnKeyType="done"
                             autoCapitalize="none"
                             autoCorrect={false}
@@ -534,6 +592,7 @@ class Register extends Component {
                             style= {[ styles.boxTI, {flex:0.8, marginLeft:10}] }>
                         </TextInput>
                         </View>
+<<<<<<< HEAD
 
                         <Dropdown 
                             containerStyle={{
@@ -555,6 +614,8 @@ class Register extends Component {
                             // valueExtractor = {({Gender}) => value}
                             onChangeText = {value => this.changeGender(value)}
                         />
+=======
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 
                         <Text style={ styles.boxDisc }>
                         By Clicking on 'Register' Button , You agree to the 
@@ -629,7 +690,11 @@ const styles = StyleSheet.create({
         color: '#ff0000',
         marginLeft:15,
         marginBottom:15,
+<<<<<<< HEAD
         fontSize: 12,
+=======
+        fontSize: 14,
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     },
     bkImg: {
         width: width,
@@ -637,7 +702,7 @@ const styles = StyleSheet.create({
         resizeMode: 'cover'
     },
     maincontainer: {
-        backgroundColor: '#414345',
+        backgroundColor: '#003d5a',
         width: width,
         height: height,
         flex:1,
@@ -655,7 +720,7 @@ const styles = StyleSheet.create({
     },
     boxDisc: {
         color: 'white',
-        fontSize: 12,
+        fontSize: 14,
         margin: 5,
         marginLeft: 15,
     },

@@ -114,6 +114,12 @@ android {
             }
         }
     }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+    
     splits {
         abi {
             reset()
@@ -144,6 +150,9 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-network-info')
+    implementation project(':react-native-linear-gradient')
+    implementation project(':react-native-device-info')
     implementation project(':rn-fetch-blob')
     implementation project(':react-native-restart')
     implementation project(':react-native-spinkit')

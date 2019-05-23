@@ -5,15 +5,20 @@ import Moment from 'moment';
 import { Dropdown } from 'react-native-material-dropdown'; 
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';  
 import DatePicker from 'react-native-datepicker';
+<<<<<<< HEAD
 
+=======
+import { ProgressDialog } from 'react-native-simple-dialogs';
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
 import Modal from 'react-native-modalbox'
+import Icon from 'react-native-vector-icons/Ionicons'
+import Icon1 from 'react-native-vector-icons/FontAwesome5'
 import { StackActions, NavigationActions } from 'react-navigation'
 class Profile extends Component {
     constructor(props) {
         super(props)
-
         this.state.userData  = this.props.navigation.getParam('userData')
     }
     state = {
@@ -30,12 +35,22 @@ class Profile extends Component {
         userId:"",
         valueIndex: "",
         date:"",
+<<<<<<< HEAD
         message:""
     }
     componentWillMount = async() => {
         
             this.state.auth = await AsyncStorage.getItem('auth')
        
+=======
+        message:"",
+        pdTitle: "Getting Profile !",
+        pdVisible: false
+    }
+    componentWillMount = async() => {
+        this.setState({pdTitle: "Getting Profile !", pdVisible:true})
+        this.state.auth = await AsyncStorage.getItem('auth')
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
         if(this.state.userData['impressions'][0] == null) {
             console.warn("null")
         }
@@ -56,9 +71,16 @@ class Profile extends Component {
         this.setState({jobTitle: this.state.userData['jobTitle']})
         this.setState({organization: this.state.userData['organization']})
         this.setState({birthDate: this.state.userData['birthDate']})
+<<<<<<< HEAD
         this.setState({visible:true})
 
         this.countryCode()
+=======
+        this.setState({profileByte: this.state.userData["profileByte"]})
+        this.setState({visible:true})
+        this.countryCode()
+        this.setState({pdVisible:false})
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     
     }
 
@@ -67,6 +89,7 @@ class Profile extends Component {
                 method: 'GET',
                 }).then((response) => response.json())
                 .then((responseJson) => {
+<<<<<<< HEAD
             
                     this.setState({data : responseJson["data"][0]["countries"]})
                     //console.warn(this.state.data)
@@ -75,11 +98,18 @@ class Profile extends Component {
                 })
                 .catch((error) => {
                     console.warn(error);
+=======
+                    this.setState({data : responseJson["data"][0]["countries"]})
+                })
+                .catch((error) => {
+                    console.warn(error.message);
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                 });
     
         }
 
     onChangeHandler = (value) => {
+<<<<<<< HEAD
         
         // console.warn("Selected value = ", value);
         this.setState({countryCode: value.replace(/[^0-9]/g, '')})
@@ -90,6 +120,12 @@ class Profile extends Component {
 
     validations(text, value)
     {
+=======
+        this.setState({countryCode: value.replace(/[^0-9]/g, '')})
+    }
+
+    validations(text, value){
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
         switch(value) {
 
             case "fname": {
@@ -144,7 +180,11 @@ class Profile extends Component {
     }
     
     putprofile = () =>{
+<<<<<<< HEAD
     
+=======
+       console.warn(this.state.profileByte)
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile/'+this.state.userId, {
             method: 'PUT',
             headers: {
@@ -161,6 +201,7 @@ class Profile extends Component {
                 jobTitle:this.state.jobTitle,
                 organization:this.state.organization,
                 phoneNumber:this.state.phoneNumber,
+<<<<<<< HEAD
                 birthDate:this.state.date,    
             }),
             }).then((response) => response.json())
@@ -172,6 +213,20 @@ class Profile extends Component {
             })
             .catch((error) => {
               console.error(error)
+=======
+                birthDate:this.state.date, 
+                profileByte:this.state.profileByte   
+            }),
+            }).then((response) => response.json())
+            .then((responseJson) => {
+                console.warn(responseJson)
+                this.setState({message:responseJson["message"]})
+                console.warn(this.state.message)
+                
+            })
+            .catch((error) => {
+              console.error(error.message)
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
             });
 
 
@@ -185,6 +240,11 @@ class Profile extends Component {
         this.refs.myModal.open()
     }
 
+    close = () => {
+        
+        this.refs.myModal.close()
+    }
+
     render() {
 
         var radio_props = [
@@ -196,36 +256,62 @@ class Profile extends Component {
         var dt = this.state.birthDate
         return(
             <View style={styles.mainContainer}>
-            
+             <ProgressDialog
+                    visible={this.state.pdVisible}
+                    title={this.state.pdTitle}
+                    message="Please wait..."
+                    activityIndicatorColor="#003d5a"
+                    activityIndicatorSize="small"
+                    animationType="fade"
+                />
             <Modal
+<<<<<<< HEAD
             ref={"myModal"}
             style={ styles.modal }
             position= 'center'
             backdrop={true}>
+=======
+                ref={"myModal"}
+                style={ styles.modal }
+                position= 'center'
+                backdrop={true}
+                backdropPressToClose={false}
+                swipeToClose={false}
+            >
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
             
-            <Text style={{marginLeft:14,  fontSize: 18,  color: 'black', fontWeight:'bold'}}>Set Signature</Text>
-
+            <View style={{ margin:10, flex:1, flexDirection: 'row'}}>
+                <View style={{flex:0.5,}}>
+                    <Text style={{marginLeft:4, fontSize: 18,  color: 'black', fontWeight:'bold'}}>Set Signature</Text>
+                </View>
+                <View style={{flex:0.5,alignItems:'flex-end'}}>
+                    <Icon name="md-close" color='black' size={30} onPress={()=>this.close()} />
+                </View>
+            </View>
            
             <TouchableOpacity style={styles.modalTI} onPress={() =>
-                 //this.props.navigation.navigate('Canvas')
-                {
-                    const resetAction = StackActions.reset({
-                    index: 0,
-                    actions: [
-                      NavigationActions.navigate({ routeName: 'Canvas'})
-                    ]
-                  })
-                  this.props.navigation.dispatch(resetAction)
-                }
+                this.props.navigation.navigate('Canvas')
+                // {
+                //     const resetAction = StackActions.reset({
+                //     index: 0,
+                //     actions: [
+                //       NavigationActions.navigate({ routeName: 'Canvas'})
+                //     ]
+                //   })
+                //   this.props.navigation.dispatch(resetAction)
+                // }
                 }>
+                <Icon1 name="pen" color='black' size={25} />    
                 <Text style={styles.modalText}>Draw</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.modalTI} onPress={() => this.props.navigation.navigate('Image')}>
+                <Icon1 name="camera" color='black' size={25} />
                 <Text style={styles.modalText}>Capture</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.modalTI} onPress={() => this.sendtoCanvas()}>
+            <TouchableOpacity style={styles.modalTI} onPress={() => this.props.navigation.navigate('Fonts')}>
+                <Icon1 name="font" color='black' size={25} />
                 <Text style={styles.modalText}>Type</Text>
             </TouchableOpacity> 
             
@@ -546,7 +632,7 @@ const styles = StyleSheet.create({
     modal:{
         shadowRadius:20,
         width:width-80,
-        height:height*.5,
+        height:'auto',
         borderColor:'#003d5a',
         borderWidth: 1,
         borderRadius:5,
@@ -561,10 +647,14 @@ const styles = StyleSheet.create({
         borderColor:'black',
         alignItems: 'center',
         justifyContent: 'center',
+        flex:1,
+        flexDirection: 'row'
     },
     modalText: {
         textAlign: 'center',
         color: 'black',
+        fontSize:16,
+        flex:0.90
     },
       ImageContainer: {
         width: 400,

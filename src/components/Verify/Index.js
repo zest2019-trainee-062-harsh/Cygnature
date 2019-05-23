@@ -5,6 +5,7 @@ import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker
 import { NavigationEvents } from 'react-navigation';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 
+var Spinner = require('react-native-spinkit');
 export default class Index extends Component {
     constructor(props) {
         super(props)
@@ -20,34 +21,13 @@ export default class Index extends Component {
         token:null,
         documentList: [],
         totalRows: [],  
-        isVisible: true,
     }
 
     didFocus= async() => {
         this.state.auth = await AsyncStorage.getItem('auth')
-
-        this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow)
-        this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide)
         this.setState({transactionHash:null, fileHash:null, pdVisible1:false, pdVisible2:false, fileName:null})
-    }
-       
-       
-    keyboardWillShow = event => {
-        this.setState({
-        isVisible: false
-        })
-    }
-
-    keyboardWillHide = event => {
-        this.setState({
-        isVisible: true
-        })
     } 
 
-    didBlur = () => {
-        this.keyboardWillShowSub.remove()
-        this.keyboardWillHideSub.remove()
-    }
     search = () =>{    
         this.setState({pdVisible1:true})
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/verify/search-by-hash',{
@@ -213,7 +193,6 @@ export default class Index extends Component {
         <View style={styles.mainContainer}>
         
         <NavigationEvents
-            onDidBlur={payload => this.didBlur()}
             onDidFocus={payload => this.didFocus()}/>
         
         <ProgressDialog
@@ -226,13 +205,13 @@ export default class Index extends Component {
         />
 
             <View style={styles.box}>
-                <Text style= {{fontWeight: "bold", fontSize: 22, color: "black"}}>Document Hash</Text>
+                <Text style= {{fontWeight: "bold", fontSize: 20, color: "black"}}>Document Hash</Text>
                 <TextInput
                     placeholderTextColor='grey'
                     placeholder = "Enter hashcode"
                     onChangeText = {text => this.update("fileHash",text)} 
                     value = {this.state.fileHash}     
-                    returnKeyType="next"
+                    returnKeyType="go"
                     style={styles.boxTI} 
                 />
                 <TouchableOpacity style={styles.btnSave} onPress={this.search}>
@@ -241,15 +220,15 @@ export default class Index extends Component {
             </View>
 
             <View style={styles.box}>
-                <Text style= {{fontWeight: "bold", fontSize: 22, color: "black"}}>Transaction Hash</Text>
+                <Text style= {{fontWeight: "bold", fontSize: 20, color: "black"}}>Transaction Hash</Text>
                 <TextInput
-                editable={true} 
-                selectTextOnFocus={true}
+                    editable={true} 
+                    selectTextOnFocus={true}
                     placeholderTextColor='grey'
                     placeholder = "Enter hashcode"
                     onChangeText = {text => this.update("transactionHash",text)}
                     value = {this.state.transactionHash}
-                    returnKeyType="next"
+                    returnKeyType="go"
                     style={styles.boxTI} 
                 />
                 <TouchableOpacity style={styles.btnSave} onPress={this.search2}>
@@ -257,20 +236,26 @@ export default class Index extends Component {
                 </TouchableOpacity>
             </View>
 
-            {this.state.isVisible?
-            <View style={{flex:1, justifyContent: "center", alignItems: "center",marginTop:20}}>
-                <Icon name="md-cloud-upload" color='#003d5a' size={70} />
-                <Text style={{fontSize: 22,  color: 'black', fontWeight:'bold'}}>Upload a document to verify</Text>
-                
-                {this.state.pdVisible2 ? <ActivityIndicator color='#003d5a' size="large" /> : null}
+            <View style={{flex:0.4, justifyContent: "center", alignItems: "center", marginBottom:70}}>
+                {this.state.pdVisible2 
+                    ?
+                        <View style={{justifyContent:'center', alignItems:'center'}}>
+                            <Spinner size={100} type={'Bounce'} color={'#003d5a'}/>
+                            <Text style={{fontSize: 18,  color: 'black', fontWeight:'bold', marginTop: 20}}>{this.state.fileName}</Text>
+                        </View>
+                    :
+                    <View style={{justifyContent:'center', alignItems:'center'}}>
+                        <Icon name="md-cloud-upload" color='#003d5a' size={100} s/>
+                        <Text style={{fontSize: 22,  color: 'black'}}>Upload a document to verify</Text>
+                        
+                        <Text style={{fontSize: 20,  color: 'black' ,}}>{this.state.fileName}</Text>
 
-                <Text style={{fontSize: 20,  color: 'red' ,}}>{this.state.fileName}</Text>
-
-                <TouchableOpacity style={ styles.btnSave } onPress={this.upload}>
-                        <Text style={styles.textSave}>Choose File</Text>
-                </TouchableOpacity>
-
-            </View>:null}
+                        <TouchableOpacity style={ styles.btnSave } onPress={this.upload}>
+                                <Text style={styles.textSave}>Choose File</Text>
+                        </TouchableOpacity>
+                    </View>
+                }
+            </View>
             
            </View>
       
@@ -280,7 +265,6 @@ export default class Index extends Component {
 }
 const styles = StyleSheet.create({
     mainContainer:{
-        borderWidth:1,
         borderColor:'#003d5a',
         flex:1,
         backgroundColor: 'white',
@@ -292,8 +276,8 @@ const styles = StyleSheet.create({
     },
     boxTI: {
         backgroundColor: 'rgba(255,255,255,0.7)',
-        margin: 15,
-        borderRadius: 30,
+        marginTop:10,
+        marginBottom: 15,
         borderWidth:1,
         fontFamily: 'Helvetica',
         fontSize:20,
@@ -302,14 +286,12 @@ const styles = StyleSheet.create({
         textAlign:'center',
         alignItems:'center',
         fontWeight:'bold',
-        marginTop:5
     },
     btnSave: {
         backgroundColor: '#003d5a',
         marginLeft: "25%",
         marginRight: "25%",
         height:40,
-        marginTop: 20,
         padding: 20,
         justifyContent: 'center',
         borderRadius: 5
@@ -318,26 +300,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
         color: '#ffffff',
-        fontWeight: 'bold'
-    },
-    textcontain:{
-        flex: 1,
-        flexDirection: 'row',
-    },
-    paste:{
-        borderWidth:1,
-        borderColor:'black',
-        borderRadius:8,   
-        flex:0.2,
-        height:30,
-        marginTop:20,
-        textAlign:'center',
-        backgroundColor:'#003d5a',
-        justifyContent:'center'
+        fontWeight: 'bold',
     },
     box: { 
         margin: 5,
-        padding: 5,
-        flex:1
+        flex:0.30,
     },
 })

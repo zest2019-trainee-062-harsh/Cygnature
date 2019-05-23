@@ -60,6 +60,10 @@ class AddSignModal extends Component {
                 position= 'center'
                 backdrop={true}
                 backdropPressToClose={false}
+<<<<<<< HEAD
+=======
+                swipeToClose={false}
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
             >
             
             <View style={{ margin:10, flex:1, flexDirection: 'row'}}>

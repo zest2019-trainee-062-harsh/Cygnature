@@ -9,6 +9,7 @@ import { NavigationEvents } from 'react-navigation';
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full height
  
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 class Documents extends Component {
 
     state = {
@@ -24,6 +25,7 @@ class Documents extends Component {
         documentStatusId: null,
         totalRows: null,
         documentColor: null,
+        dropDownValue: null,
     }
 
     // componentWillMount = async() =>{
@@ -44,7 +46,7 @@ class Documents extends Component {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            "documentStatusId": null,
+            "documentStatusId": this.state.dropDownValue,
             "currentPage": this.state.currentPage,
             "isNext": true,
             "searchText": "",
@@ -85,15 +87,69 @@ class Documents extends Component {
         });
     }
 
+    
+    fetchDataNew = async() =>{
+        this.setState({pdVisible: true, docuemnts: []}) 
+        return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/documents',{
+        method: 'POST',
+        headers: {
+            'Authorization':this.state.auth,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "documentStatusId": null,
+            "currentPage": this.state.currentPage,
+            "isNext": true,
+            "searchText": "",
+            "startDate": "",
+            "endDate": "",
+            "signatureType": 0,
+            "uploadedBy": "",
+            "signerName": "",
+            "dateDuration": ""
+        }),
+        }).then((response) => response.json())
+        .then((responseJson) => {
+            
+            let posts = this.state.documents.concat(responseJson["data"][0]["documents"]);
+            this.setState({
+                documents: posts ,
+                totalPages: responseJson["data"][0]["totalPages"],
+                currentPage: responseJson["data"][0]["currentPage"],
+                totalRows: responseJson["data"][0]["totalRows"]
+            })
+            this.setState({
+                value: 1,
+                pdVisible: false,
+            })
+            if(this.state.currentPage == this.state.totalPages){
+                this.setState({
+                    nextPage: true,
+                    nextButtonOpacity: 0.5
+                })
+            }
+            if(this.state.currentPage != 1){
+                this.setState({
+                    previousPage: false,
+                    previousButtonOpacity: 1
+                })
+            }
+        })
+        .catch((error) => {
+            console.warn(error);
+        });
+    }
+
     nextPage(){
-        this.setState({pdVisible: true})
+        //console.warn("Y")
+        this.setState({pdVisible: true, documents: []})
         if(this.state.currentPage < this.state.totalPages){
-            this.fetchData()
+            this.fetchDataNew()
         }
     }
 
     previousPage() {
-        this.setState({pdVisible: true})
+        this.setState({pdVisible: true, documents: []})
         if(this.state.currentPage <= this.state.totalPages){
             let currentPageNo = this.state.currentPage;
             this.setState({currentPage: currentPageNo - 1})
@@ -143,7 +199,7 @@ class Documents extends Component {
     }
 
     onChangeHandler = (value) => {
-        this.setState({pdVisible: true})
+        this.setState({pdVisible: true, documents: []})
         this.setState({documentStatusId: value})
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/documents',{
         method: 'POST',
@@ -195,11 +251,21 @@ class Documents extends Component {
         let token = await AsyncStorage.getItem('token');
         this.state.auth = auth;
         this.state.token = token;
-        this.setState({currentPage: 0})
-        //this.state.totalPages = null;
+        this.setState({currentPage: 0, documents: []})
+        var dropDownValue = this.props.navigation.getParam('dropDownValue')
+        //console.warn(dropDownValue)
+        if(dropDownValue === null){
+            console.warn("NULL")
+        } else this.state.dropDownValue  = dropDownValue;
+        
         this.fetchData()
     }
 
+    onStopScrollList = (event) => {
+        console.warn("event"+event.nativeEvent.contentOffset.y);
+        //this.nextPage();
+    
+    }
 
     render() {
         const navigate = this.props.navigation;
@@ -232,7 +298,7 @@ class Documents extends Component {
         return(
             <View style={styles.mainContainer}>
                 <ProgressDialog
-                    visible={this.state.pdVisible}
+                    visible={false}
                     title="Fetching Documents!"
                     message="Please wait..."
                     activityIndicatorColor="#003d5a"
@@ -246,9 +312,81 @@ class Documents extends Component {
                 <Text style={{fontWeight: "bold", fontSize: 10, color: "black"}}>
                     {this.state.currentPage}/{this.state.totalPages}
                 </Text>
+{this.state.pdVisible ? 
+    <ScrollView>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        <ShimmerPlaceHolder autoRun={true} style={{ borderWidth: 0.5,
+            borderColor: "#003d5a",
+            borderRadius: 5,
+            margin: 5,
+            backgroundColor: '#DCDCDC'}} colorShimmer={['#DCDCDC', 'grey', '#DCDCDC']} height={60} width={width-55}/>
+        
+        </ScrollView>
+    : null}
+
+
                 {
                     this.state.totalRows != 0 ?
-                    <ScrollView>
+                    <ScrollView
+                    onMomentumScrollEnd={this.onStopScrollList }
+                    onContentSizeChange={( contentWidth, contentHeight ) => {
+                       //console.warn("height"+contentHeight)
+                    }}
+                    >
                         {
                             this.state.documents.map((docs)=>{
                                 if(docs.documentStatusForUser == 0){
@@ -327,7 +465,7 @@ class Documents extends Component {
                     style={{borderColor: "#003d5a", borderWidth: 0.5, marginBottom: 5, marginTop: 5, padding: 10}}
                 >
                     <Dropdown
-                        value={null}
+                        value={this.state.dropDownValue}
                         itemCount={6}
                         label="Select the status"
                         data={data}

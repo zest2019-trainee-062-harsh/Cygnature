@@ -19,9 +19,14 @@ import Document_PlaceHolder from './src/components/Documents/DocumentPlaceHolder
 import DocumentVerify from './src/components/Verify/Index.js'
 import DocumentList from './src/components/Verify/DocumentList.js'
 import VerifyDetails from './src/components/Verify/VerifyDetails.js'
+<<<<<<< HEAD
 import DocumentSignPreview from './src/components/Documents/DocumentSignPreview'
 import DocumentCertificate from './src/components/Documents/DocumentCertificate'
 import Introslider from './src/components/Introslider/Index'
+=======
+import Document_Details_Sign from './src/components/Documents/DocumentDetails_Sign.js'
+import Introslider from './src/components/IntroSlider/Index'
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 
 const AppNavigator = createStackNavigator({
   SplashScreen: {screen: SplashScreen},
@@ -43,10 +48,16 @@ const AppNavigator = createStackNavigator({
   Document_PlaceHolder: {screen:Document_PlaceHolder},
   DocumentVerify:{screen:DocumentVerify},
   DocumentList : {screen: DocumentList},  
+<<<<<<< HEAD
   VerifyDetails : {screen:VerifyDetails},
   DocumentSignPreview: {screen: DocumentSignPreview},
   DocumentCertificate:{screen: DocumentCertificate},
   Introslider: {screen: Introslider}
+=======
+  VerifyDetails : {screen:VerifyDetails},  
+  Document_Details_Sign : {screen:Document_Details_Sign},
+  Introslider : {screen:Introslider},
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 });
 
 const AppContainer = createAppContainer(AppNavigator);

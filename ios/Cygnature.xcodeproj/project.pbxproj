@@ -66,6 +66,10 @@
 		BD68EF36A9F8493F8F9FE789 /* libRNCWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 551E714512F241FEA2E12DA3 /* libRNCWebView.a */; };
 		D98361BEE629461183740D77 /* libRNSpinkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB33803539F4BF782931820 /* libRNSpinkit.a */; };
 		13342D82C6C04AA38A543EF4 /* libRCTRestart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77EC6F9A496344F6875756BD /* libRCTRestart.a */; };
+		8999D443FD3B4F709987DB61 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFEC3F14FFBA4B5AB868E1B0 /* libRNDeviceInfo.a */; };
+		927514B1477F4D79850750B3 /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77E8D5FBD0A04973A37B3B46 /* libRNDeviceInfo-tvOS.a */; };
+		6A59CAA426EE4693AA0E926A /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF144A23893A470D96ADC68D /* libBVLinearGradient.a */; };
+		44DDFFBC7CC0480AB1CFC117 /* libRNNetworkInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2D63C9E22AB44A4A3AC2102 /* libRNNetworkInfo.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -441,7 +445,17 @@
 		9CB33803539F4BF782931820 /* libRNSpinkit.a */ = {isa = PBXFileReference; name = "libRNSpinkit.a"; path = "libRNSpinkit.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		7B14B0C92FF1497DA5EDE0A7 /* RCTRestart.xcodeproj */ = {isa = PBXFileReference; name = "RCTRestart.xcodeproj"; path = "../node_modules/react-native-restart/ios/RCTRestart.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		77EC6F9A496344F6875756BD /* libRCTRestart.a */ = {isa = PBXFileReference; name = "libRCTRestart.a"; path = "libRCTRestart.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+<<<<<<< HEAD
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+		25A5E893E5F648F1835607E1 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; name = "RNDeviceInfo.xcodeproj"; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		AFEC3F14FFBA4B5AB868E1B0 /* libRNDeviceInfo.a */ = {isa = PBXFileReference; name = "libRNDeviceInfo.a"; path = "libRNDeviceInfo.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		77E8D5FBD0A04973A37B3B46 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; name = "libRNDeviceInfo-tvOS.a"; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		D5C5C855BE964AF79ABE90FC /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; name = "BVLinearGradient.xcodeproj"; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		AF144A23893A470D96ADC68D /* libBVLinearGradient.a */ = {isa = PBXFileReference; name = "libBVLinearGradient.a"; path = "libBVLinearGradient.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		BBA0434BA9B946D783D93C57 /* RNNetworkInfo.xcodeproj */ = {isa = PBXFileReference; name = "RNNetworkInfo.xcodeproj"; path = "../node_modules/react-native-network-info/ios/RNNetworkInfo.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		C2D63C9E22AB44A4A3AC2102 /* libRNNetworkInfo.a */ = {isa = PBXFileReference; name = "libRNNetworkInfo.a"; path = "libRNNetworkInfo.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -503,7 +517,13 @@
 =======
 				D98361BEE629461183740D77 /* libRNSpinkit.a in Frameworks */,
 				13342D82C6C04AA38A543EF4 /* libRCTRestart.a in Frameworks */,
+<<<<<<< HEAD
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+				8999D443FD3B4F709987DB61 /* libRNDeviceInfo.a in Frameworks */,
+				6A59CAA426EE4693AA0E926A /* libBVLinearGradient.a in Frameworks */,
+				44DDFFBC7CC0480AB1CFC117 /* libRNNetworkInfo.a in Frameworks */,
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,6 +541,7 @@
 				2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */,
 				2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */,
 				FC8692257D604AFF8C81BB39 /* libRNVectorIcons-tvOS.a in Frameworks */,
+				927514B1477F4D79850750B3 /* libRNDeviceInfo-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -727,7 +748,13 @@
 =======
 				6FE8F82DAF7B4462A52B2F0D /* RNSpinkit.xcodeproj */,
 				7B14B0C92FF1497DA5EDE0A7 /* RCTRestart.xcodeproj */,
+<<<<<<< HEAD
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+				25A5E893E5F648F1835607E1 /* RNDeviceInfo.xcodeproj */,
+				D5C5C855BE964AF79ABE90FC /* BVLinearGradient.xcodeproj */,
+				BBA0434BA9B946D783D93C57 /* RNNetworkInfo.xcodeproj */,
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1416,10 +1443,16 @@
 =======
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
 >>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
 =======
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1456,7 +1489,13 @@
 =======
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+<<<<<<< HEAD
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
+					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
+					"$(SRCROOT)\..\node_modules\react-native-network-info\ios",
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 				);
 			};
 			name = Debug;
@@ -1499,11 +1538,18 @@
 >>>>>>> 2f74a44a8bde6794c7bf2cb83d77baed90f7ea29
 =======
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
 >>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
 =======
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1540,7 +1586,13 @@
 =======
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+<<<<<<< HEAD
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
+					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
+					"$(SRCROOT)\..\node_modules\react-native-network-info\ios",
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 				);
 			};
 			name = Release;
@@ -1596,7 +1648,13 @@
 =======
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+<<<<<<< HEAD
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
+					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
+					"$(SRCROOT)\..\node_modules\react-native-network-info\ios",
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 				);
 			};
 			name = Debug;
@@ -1651,7 +1709,13 @@
 =======
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+<<<<<<< HEAD
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
+					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
+					"$(SRCROOT)\..\node_modules\react-native-network-info\ios",
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 				);
 			};
 			name = Release;
@@ -1707,7 +1771,14 @@
 =======
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1744,7 +1815,13 @@
 =======
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+<<<<<<< HEAD
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
+					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
+					"$(SRCROOT)\..\node_modules\react-native-network-info\ios",
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 				);
 			};
 			name = Debug;
@@ -1799,7 +1876,14 @@
 >>>>>>> 0fdfc475f7c291423fed2f8a856612fc6e0b3c4e
 =======
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1836,7 +1920,13 @@
 =======
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+<<<<<<< HEAD
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
+					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
+					"$(SRCROOT)\..\node_modules\react-native-network-info\ios",
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 				);
 			};
 			name = Release;
@@ -1890,7 +1980,14 @@
 =======
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1927,7 +2024,13 @@
 =======
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+<<<<<<< HEAD
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
+					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
+					"$(SRCROOT)\..\node_modules\react-native-network-info\ios",
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 				);
 			};
 			name = Debug;
@@ -1982,7 +2085,13 @@
 =======
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2019,7 +2128,13 @@
 =======
 					"$(SRCROOT)\..\node_modules\react-native-spinkit\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-restart\ios\RCTRestart",
+<<<<<<< HEAD
 >>>>>>> 8cc4971510ab4ee5382cb9f877768fe8340fc841
+=======
+					"$(SRCROOT)\..\node_modules\react-native-device-info\ios\RNDeviceInfo",
+					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
+					"$(SRCROOT)\..\node_modules\react-native-network-info\ios",
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 				);
 			};
 			name = Release;

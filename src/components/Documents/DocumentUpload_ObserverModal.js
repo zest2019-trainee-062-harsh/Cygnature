@@ -4,6 +4,7 @@ import Modal from 'react-native-modalbox'
 
 import Icon from 'react-native-vector-icons/Ionicons'
 
+import AddModal from '../Contacts/AddModal.js'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
  
@@ -14,7 +15,8 @@ class DocumentUpload_SignerModal extends Component {
     }
         
     show = () => {
-        this.refs.myModal.open()
+        this.refs.myModalNew.open()
+        this.onRefresh()
     }
 
     state = {
@@ -23,10 +25,10 @@ class DocumentUpload_SignerModal extends Component {
         contactsCount : 0,
         res:[],
         data:[],
-        contactId: null,
+        contactIds: [],
         refreshing:false,
-        signerIds: [],
-        signerIdsWithName: []
+        observersIds: [],
+        observersIdsWithName: []
     }
 
     onRefresh = () => {
@@ -67,57 +69,87 @@ class DocumentUpload_SignerModal extends Component {
         });      
     }
 
-    addObservers(Id, Name){
-        let ID = "{ "+Id+ " }"
-        let IDWithName = "{ id:"+Id+", name:"+Name+" }"
-        this.state.signerIdsWithName.push(IDWithName)
-        this.state.signerIds.push(ID)
+
+    addObservers(Id, name, userId){
+        let ID = Id
+        let uid = userId
+        this.state.contactIds.push(ID)
+        this.state.observersIds.push(uid)
         let filteredArray = this.state.data.filter(item => item.Id !== Id)
         this.setState({data: filteredArray});
     }
 
     sendObservers(){
-        this.refs.myModal.close();
-        this.props.parentFlatList.addObservers(this.state.signerIds, this.state.signerIdsWithName);
+        this.refs.myModalNew.close();
+        this.props.parentFlatList.addObservers(this.state.contactIds, this.state.observersIds);
+        this.state.observersIds = []
+    }
+
+    floatClicked=() => {
+        this.refs.AddModal.show()
+    }
+    
+    close = () => {
+        this.refs.myModalNew.close()
     }
 
     render() {
         if( this.state.contactsCount == 0) {
             return (
                 <Modal
-                    ref={"myModal"}
+                    ref={"myModalNew"}
                     style={ styles.modal }
                     position= 'center'
                     backdrop={true}
+                    backdropPressToClose={false}
+                    swipeToClose={false}
                 >
-                    <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
+                    <View style={{ margin:10, flex:.1, flexDirection: 'row'}}>
+                    <View style={{flex:0.5,}}>
+                        <Text style={{marginLeft:4, fontSize: 18,  color: 'black', fontWeight:'bold'}}>Observer(s)</Text>
+                    </View>
+                    <View style={{flex:0.5,alignItems:'flex-end'}}>
+                        <Icon name="md-close" color='black' size={30} onPress={()=>this.close()} />
+                    </View>
+                </View>
+                <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
                         <Icon name="md-alert" color='black' size={100} />
                         <Text style={{ fontSize:17, fontWeight: 'bold'}}> NO Contacts </Text>
                         <Text style={{marginLeft:"20%", marginRight:"20%", fontSize:17, fontStyle: 'italic' }}>
                             You can add contacts by clicking "+" button at bottom right.
                         </Text>
                     </View>
+                    <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
+                        <Text style={styles.floatButtonText}>+</Text>
+                    </TouchableOpacity>
+                    <AddModal ref={'AddModal'} parentFlatList={this} />
+                
                 </Modal>
             )
         }
         else {
             return (
                 <Modal
-                    ref={"myModal"}
+                    ref={"myModalNew"}
                     style={ styles.modal }
                     position= 'center'
                     backdrop={true}
+                    backdropPressToClose={false}
+                    swipeToClose={false}
                 >
-                    <Text style={{margin:10, fontSize:17, color: 'black'}}>
-                        Contact(s)
-                    </Text>
+                     <View style={{ margin:10, flex:.1, flexDirection: 'row'}}>
+                        <View style={{flex:0.5,}}>
+                            <Text style={{marginLeft:4, fontSize: 18,  color: 'black', fontWeight:'bold'}}>Observer(s)</Text>
+                        </View>
+                        <View style={{flex:0.5,alignItems:'flex-end'}}>
+                            <Icon name="md-close" color='black' size={30} onPress={()=>this.close()} />
+                        </View>
+                    </View>
                     <FlatList
                         refreshing={this.state.refreshing}
                         onRefresh={this.onRefresh}
                         data={this.state.data}
                         keyExtractor={(item, index) => item.Id}
-                        bounceFirstRowOnMount
-                        maxSwipeDistance={160}
                         renderItem={this._renderItem.bind(this)}
                     />
                     <TouchableOpacity style={ styles.btnSave }
@@ -135,7 +167,7 @@ class DocumentUpload_SignerModal extends Component {
     _renderItem({ item }) {
         return (
             <View style={styles.row}>
-                <TouchableOpacity onPress={() => this.addObservers(item.Id, item.name)}>
+                <TouchableOpacity onPress={() => this.addObservers(item.Id, item.name, item.userId)}>
                     <Text style={styles.rowDataText1}>{item.name}</Text>
                     <Text style={styles.rowDataText2}>{item.email}</Text>
                 </TouchableOpacity>
@@ -169,24 +201,42 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     rowDataText2: {
-        marginLeft:25,
+        marginLeft:20,
         fontSize: 15,
         color: 'black'
     },
     btnSave: {
         backgroundColor: '#003d5a',
-        marginLeft: "25%",
-        marginRight: "25%",
+        marginLeft: "33%",
+        marginRight: "33%",
         height:40,
         marginTop: 20,
-        padding: 20,
+        marginBottom: 20,
         justifyContent: 'center',
-        borderRadius: 5
     },
     textSave: {
         justifyContent: 'center',
         textAlign: 'center',
         color: '#ffffff',
         fontWeight: 'bold'
+    },
+    floatButton: {
+        position: 'absolute',
+        width:50,
+        height: 50,
+        backgroundColor: '#003d5a',
+        borderRadius: 30,
+        bottom: 20,
+        right: 6,
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: -5
+    },
+    floatButtonText: {
+        color: 'white',
+        fontSize: 25,
+        textAlign: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',   
     },
 })

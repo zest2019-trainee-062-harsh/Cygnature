@@ -24,6 +24,12 @@ class AddModal extends Component {
         auth: null,
         rMes: null,
         pdVisible: false,
+        errorName: null,
+        errorEmail: null,
+        errorJT: null,
+        errorJD: null,
+        btnDisable: true,
+        btnOpacity: 0.5
     }
 
     show = () => {
@@ -35,13 +41,6 @@ class AddModal extends Component {
         this.refs.myModal.close()
     }
     add = () => {
-        //console.warn("add contact api")
-        
-        // console.warn(this.state.name)
-        // console.warn(this.state.email)
-        // console.warn(this.state.mobNu)
-        // console.warn(this.state.jobT)
-        // console.warn(this.state.jobD)
         this.setState({pdVisible:true})
                     
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/contact/add', {
@@ -61,12 +60,24 @@ class AddModal extends Component {
             }),
             }).then((response) => response.json())
             .then((responseJson) => {
-                if(responseJson == null) {
-                    console.warn("Failed")
+                if(responseJson["errors"]) {
+                    this.setState({
+                        name: '',
+                        email: '',
+                        mobNu: '',
+                        jobT: '',
+                        jobD: '',
+                        pdVisible:false})
+                    console.warn(responseJson["errors"])
+
+                    if(alert(responseJson["errors"]["Contact"])){
+                        alert(responseJson["errors"]["Contact"])
+                    }
                 }
-                else {
-                    //console.warn("yes")
-                    //console.warn(responseJson["message"])
+                if(responseJson == null) {
+                   alert("Try Again")
+                }
+                if(responseJson["message"]) {
                     this.refs.myModal.close()
                     this.setState({
                         name: '',
@@ -90,11 +101,29 @@ class AddModal extends Component {
     update=(value, text)=> {
         switch(value) {
             case "name": {
-                this.setState({name: text})
+                
+                let reg = /^([a-zA-z\s]{0,32})$/ ;
+            
+                if(reg.test(text) === false)
+                {
+                   this.setState({errorName: "Only alphabets allows", btnDisable:true, btnOpacity:0.5})
+                }
+                else {
+                    this.setState({errorName:null, name: text, btnDisable:false, btnOpacity: 1.0})
+                }
+                break
                 return
             }
             case "email": {
-                this.setState({email: text})
+                let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
+        
+                if(reg.test(text) === false)
+                {
+                    this.setState({errorEmail: "Invalid Email", btnDisable:true, btnOpacity:0.5})
+                } else {
+                    this.setState({errorEmail:null, email: text, btnDisable:false, btnOpacity: 1.0})
+                }
+                break
                 return
             }
             case "mobNu": {
@@ -102,11 +131,29 @@ class AddModal extends Component {
                 return
             }
             case "jobT": {
-                this.setState({jobT: text})
+                let reg = /^([a-zA-z\s]{0,32})$/ ;
+            
+                if(reg.test(text) === false)
+                {
+                   this.setState({errorJT: "Only alphabets allows"})
+                }
+                else {
+                    this.setState({errorJT:null, jobT: text})
+                }
+                break
                 return
             }
             case "jobD": {
-                this.setState({jobD: text})
+                let reg = /^([a-zA-z\s]{0,32})$/ ;
+            
+                if(reg.test(text) === false)
+                {
+                   this.setState({errorJD: "Only alphabets allows"})
+                }
+                else {
+                    this.setState({errorJD:null, jobD: text})
+                }
+                break
                 return
             }
         }
@@ -120,9 +167,7 @@ class AddModal extends Component {
             position= 'center'
             backdrop={true}
             backdropPressToClose={false}
-            onClosed={() =>{
-                //console.warn("modal closed")
-            }}
+            swipeToClose={false}
             >
             <ProgressDialog
             visible={this.state.pdVisible}
@@ -140,7 +185,7 @@ class AddModal extends Component {
                 <Icon name="md-close" color='black' size={30} onPress={()=>this.close()} />
             </View>
         </View>
-         <TextInput
+            <TextInput
                 style={ styles.textIn }
                 placeholder="Enter Name *"
                 placeholderTextColor='grey'
@@ -150,8 +195,11 @@ class AddModal extends Component {
                 autoCorrect={false}
                 onSubmitEditing={() => this.ref1.focus()}
                 onChangeText={text => this.update("name",text)}
-                value={this.state.name}
                 />
+                {this.state.errorName==null || this.state.errorName==" " ?
+                null:
+                <Text style = { styles.errorText }>{this.state.errorName}</Text>
+                }
             <TextInput
                 style={ styles.textIn }
                 placeholder="Enter Email *"
@@ -163,8 +211,11 @@ class AddModal extends Component {
                 onSubmitEditing={() => this.ref2.focus()}
                 ref={(input) => this.ref1 = input}
                 onChangeText={text => this.update("email",text)}
-                value={this.state.email}
                 />
+                {this.state.errorEmail==null || this.state.errorEmail==" " ?
+                null:
+                <Text style = { styles.errorText }>{this.state.errorEmail}</Text>
+                }
             <TextInput
                 style={ styles.textIn }
                 placeholder="Enter Mobile Number *"
@@ -178,7 +229,6 @@ class AddModal extends Component {
                 onSubmitEditing={() => this.ref3.focus()}
                 ref={(input) => this.ref2 = input}
                 onChangeText={text => this.update("mobNu",text)}
-                value={this.state.mobNu}
                 />
             <TextInput
                 style={ styles.textIn }
@@ -191,8 +241,11 @@ class AddModal extends Component {
                 onSubmitEditing={() => this.ref4.focus()}
                 ref={(input) => this.ref3 = input}
                 onChangeText={text => this.update("jobT",text)}
-                value={this.state.jobT}
                 />
+                {this.state.errorJT==null || this.state.errorJT==" " ?
+                null:
+                <Text style = { styles.errorText }>{this.state.errorJT}</Text>
+                }
             <TextInput
                 style={ styles.textIn }
                 placeholder="Enter Job Desc"
@@ -203,9 +256,15 @@ class AddModal extends Component {
                 autoCorrect={false}
                 ref={(input) => this.ref4 = input}
                 onChangeText={text => this.update("jobD",text)}
-                value={this.state.jobD}
                 />
-           <TouchableOpacity style={ styles.btnSave } onPress={this.add}>
+                {this.state.errorJD==null || this.state.errorJD==" " ?
+                null:
+                <Text style = { styles.errorText }>{this.state.errorJD}</Text>
+                }
+            <TouchableOpacity 
+                disabled={this.state.btnDisable}
+                style={ [styles.btnSave, {opacity: this.state.btnOpacity}] } 
+                onPress={this.add}>
                     <Text style={styles.textSave}>Add Contact</Text>
             </TouchableOpacity>
 
@@ -248,5 +307,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#ffffff',
         fontWeight: 'bold'
+    },
+    errorText: {
+        color: '#ff0000',
+        marginLeft:30,
+        fontSize: 12,
     },
 })

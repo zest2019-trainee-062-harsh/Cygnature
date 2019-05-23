@@ -1,6 +1,10 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, Alert, 
+<<<<<<< HEAD
     TouchableOpacity,TouchableHighlight, SwipeableFlatList, AsyncStorage} from 'react-native'
+=======
+    TouchableOpacity,TouchableHighlight, SwipeableFlatList, AsyncStorage, KeyboardAvoidingView} from 'react-native'
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
 import { SearchBar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons'
 import AddModal from './AddModal'
@@ -153,7 +157,7 @@ export default class Contacts extends Component {
         }
         else {
         return (
-            <View style={{
+            <KeyboardAvoidingView behavior='padding'  style={{
                 borderColor:'#003d5a',
                 borderWidth: 2,
                 borderRadius:5,
@@ -164,21 +168,36 @@ export default class Contacts extends Component {
             }>
             <NavigationEvents
                 onDidFocus={payload => this.didFocus()}/>
-            <Text style={{margin:10, fontSize:24, fontWeight: 'bold', color: 'black'}}>
-                Contact(s)
-            </Text>
+            <View style={{flex:0.1, flexDirection:'row', justifyContent:'center', alignItems: 'center'}}>
+                <Text style={{flex:0.3, margin:10, fontSize:22, fontWeight: 'bold', color: 'black'}}>
+                    Contact(s)
+                </Text>
+                <SearchBar
+                    placeholder="Search Here..."
+                    platform="android"
+                    containerStyle={{flex:0.7, borderRadius:30, backgroundColor: 'rgba(255,255,255,1.0)'}}
+                    onChangeText={ (text) =>this.search(text)}
+                    value={this.state.searchText}
+                    onClear = { () => this.view() }
+                    onCancel = { () => this.view() }
+                    onKeyPress={({ nativeEvent }) => {
+                        nativeEvent.key === 'Backspace' ? console.warn("D") : null
+                    }}
+                />
+            </View>
             <SwipeableFlatList
-            refreshing={this.state.refreshing}
-            onRefresh={this.onRefresh}
-            data={this.state.data}
-            keyExtractor={(item, index) => item.Id}
-            bounceFirstRowOnMount
-            maxSwipeDistance={160}
-            renderItem={this._renderItem.bind(this)}
-            renderQuickActions={this._renderQuickActions.bind(this)}
+                refreshing={this.state.refreshing}
+                onRefresh={this.onRefresh}
+                data={this.state.data}
+                keyExtractor={(item, index) => item.Id}
+                bounceFirstRowOnMount
+                maxSwipeDistance={160}
+                renderItem={this._renderItem.bind(this)}
+                renderQuickActions={this._renderQuickActions.bind(this)}
             />
 
             
+<<<<<<< HEAD
             <SearchBar
                 placeholder="Type Here..."
                 platform="android"
@@ -191,12 +210,15 @@ export default class Contacts extends Component {
                     nativeEvent.key === 'Backspace' ? console.warn("D") : null
                 }}
             />
+=======
+            
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
             <TouchableOpacity style={styles.floatButton} onPress={this.floatClicked}>
                         <Text style={styles.floatButtonText}>+</Text>
             </TouchableOpacity>
                 <AddModal ref={'AddModal'} parentFlatList={this} />
                 <UpdateModal ref={'UpdateModal'} parentFlatList={this} />
-            </View>
+            </KeyboardAvoidingView>
             
                 )
         }
@@ -208,7 +230,11 @@ export default class Contacts extends Component {
                     <TouchableOpacity disabled style={styles.rowDataBg}>
                             <Text style={styles.rowDataText1}>{item.shortName}</Text>
                     </TouchableOpacity>
+<<<<<<< HEAD
                     <View style={{flexDirection:'column', flex: 1}}>
+=======
+                    <View style={{flexDirection:'column', flex: 1, marginTop:5}}>
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                         <Text style={styles.rowDataText2}>{item.name}</Text>
                         <Text style={[styles.rowDataText2, {color:'grey', fontSize:12}]}>{item.email}</Text>
                     </View>
@@ -260,7 +286,11 @@ floatButton: {
     height: 50,
     backgroundColor: '#003d5a',
     borderRadius: 30,
+<<<<<<< HEAD
     bottom: 80,
+=======
+    bottom: 20,
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     right: 6,
     alignItems: 'center',
     justifyContent: 'center',

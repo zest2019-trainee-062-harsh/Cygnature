@@ -4,26 +4,55 @@ import
     Animated, PanResponder, Image}
 from 'react-native'
 import ImageZoom from 'react-native-image-pan-zoom';
+import { ProgressDialog } from 'react-native-simple-dialogs';
 
 import Swiper from 'react-native-swiper';
 import Icon1 from 'react-native-vector-icons/FontAwesome5'
 import Icon2 from 'react-native-vector-icons/Ionicons'
 import { Dropdown } from 'react-native-material-dropdown'
-
+import DeviceInfo from 'react-native-device-info'
+import RNLocation from 'react-native-location';
+import { NetworkInfo } from 'react-native-network-info';
+import { StackActions, NavigationActions } from 'react-navigation'
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full width
+var ratio = "0.612903225806452";
 
-class Test extends Component {
+class DocumentPlaceHolder extends Component {
   constructor(props) {
     super(props)
     this.state.data = this.props.navigation.getParam('data')
+    this.state.pages = this.state.data["pages"]
     this.state.signers = this.props.navigation.getParam('signers')
+    this.state.signerIds = this.props.navigation.getParam('signerIds')
+    this.state.observerIds = this.props.navigation.getParam('observerIds')
+    this.state.id = this.state.data["Id"]
+    this.state.description = this.props.navigation.getParam('documentDescription')
+    this.state.name = this.props.navigation.getParam('name')
+    this.state.fileName = this.props.navigation.getParam('fileName')
+    this.state.extension = this.props.navigation.getParam('extension')
+    this.state.expiryStartDate = this.props.navigation.getParam('expiryStartDate')
+    this.state.expiryEndDate = this.props.navigation.getParam('expiryEndDate')
+    this.state.signingDueDate = this.props.navigation.getParam('signingDueDate')
+    this.state.reminderBefore = this.props.navigation.getParam('reminderBefore')
+    this.state.currentSigner = this.state.signers[0]["value"]
     this.state.totalPage = this.state.data["pageCount"]
     this.state.imageHeight = 1078.0487
     this.state.imageWidth = 760
+<<<<<<< HEAD
   }
 
   componentWillMount(){
+=======
+    if(this.state.observerIds == null || this.state.observerIds.length < 1) {
+      this.state.observerIdsNull = true
+    }
+
+  }
+
+  componentWillMount= async() => {
+    this.deviceInfo()
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
     this.Animatedvalue = new Animated.ValueXY();
     this._value = {x: 0, y: 0}
     this.Animatedvalue.addListener((value)=> this._value = value)
@@ -41,14 +70,20 @@ class Test extends Component {
         null, {dx : this.Animatedvalue.x , dy : this.Animatedvalue.y}
       ]),
       onPanResponderRelease: (e, gestureState) =>{
-        console.warn(this._value)
+        //console.warn(this._value)
       },
     })
+<<<<<<< HEAD
+=======
+    let auth = await AsyncStorage.getItem("auth")
+    this.state.auth = auth
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
   }
 
   static navigationOptions = {
     title: "Document Placeholder"
   }
+
 
   state = {
     auth: null,
@@ -56,8 +91,11 @@ class Test extends Component {
     count: 0,
     maxPages: 6,
     totalPage: 0,
-    pdVisible: true,
+    pdVisible: false,
+    pdTitle: null,
     signerIds: [],
+    observerIds: [],
+    observerIdsNull: false,
     data : [],
     currentSigner: [],
     key : 1,
@@ -65,10 +103,65 @@ class Test extends Component {
     animatedStyle: [],
     height: [],
     width: [],
-    annotations:[]
+    annotations:[],
+    name: [],
+    extension: [],
+    fileName: [],
+    rLat: [],
+    rLon: [],
+    ip: [],
+    userAgent: [],
+    pages: [],
+    reminderBefore: null,
+    index: 0, 
+    expiryStartDate: null,
+    expiryEndDate: null,
+    signingDueDate: null
+  }
+
+  deviceInfo() {
+    RNLocation.configure({
+      distanceFilter: 100, // Meters
+      desiredAccuracy: {
+        ios: "best",
+        android: "balancedPowerAccuracy"
+      },
+      // Android only
+      androidProvider: "auto",
+      maxWaitTime: 5000, // Milliseconds
+      // iOS Only
+      activityType: "other",
+      allowsBackgroundLocationUpdates: false,
+      headingFilter: 1, // Degrees
+      headingOrientation: "portrait",
+      pausesLocationUpdatesAutomatically: false,
+      showsBackgroundLocationIndicator: false,
+  })
+
+  RNLocation.requestPermission({
+    ios: "whenInUse",
+    android: {
+      detail: "coarse"
+    }
+  }).then(granted => {
+      if (granted) {
+        this.locationSubscription = RNLocation.subscribeToLocationUpdates(locations => {
+                this.setState({rLon: locations[0]["longitude"], rLat: locations[0]["latitude"] })
+        })
+      }
+      else this.setState({rLon: "-56.062161", rLat: "4.092356" })
+    })
+
+    NetworkInfo.getIPV4Address(ipv4 => {
+      this.setState({
+        ip: ipv4,
+        userAgent: DeviceInfo.getUserAgent()
+      })
+    });
   }
 
   changeId(value){
+    //console.warn(value)
     this.state.currentSigner = value
   }
 
@@ -99,7 +192,74 @@ class Test extends Component {
     }
   }
 
+<<<<<<< HEAD
   review = async() => {
+=======
+  checkRenderedPages(pageCount){
+    if(this.state.renderCount == 0){
+      //console.warn("Calling the API first time.")
+      var pageTo = 0;
+      var difference = 0;
+      if(pageCount + 5 > this.state.totalPage){
+          difference = this.state.totalPage - pageCount;
+          pageTo = pageCount + difference;
+      }
+      else{
+          pageTo = pageCount + 5;
+      }
+      this.getNextPages(pageCount, pageTo);
+    }
+    else{
+      if(this.state.renderCount >= (pageCount-1) / 6){
+        //console.warn("Won't load the rendered pages again...");
+      }
+      else{
+        var pageTo = 0;
+        var difference = 0;
+        if(pageCount + 5 > this.state.totalPage){
+            difference = this.state.totalPage - pageCount;
+            pageTo = pageCount + difference;
+        }
+        else{
+            pageTo = pageCount + 5;
+        }
+        this.getNextPages(pageCount, pageTo);
+      }
+    }
+  }
+
+  getNextPages(pageCount, pageTo){
+    if(pageCount-1 !== this.state.totalPage){
+      this.setState({pdVisible: true, pdTitle: "Rendering next pages"})
+      return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/next-pages', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': this.state.auth
+        },
+        body: JSON.stringify({
+            "Id": this.state.id,
+            "pageFrom": pageCount,
+            "pageTo": pageTo
+        })
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        var pagesNew = responseJson["data"][0]["pages"];
+        pagesNew.map((item, index) => {
+            this.state.pages.push(pagesNew[index])
+        })
+        this.setState({index: pageCount-2, renderCount: ((pageCount - 1)/6)})
+        this.setState({pdVisible: false})
+      })
+      .catch((error) => {
+          console.warn(error.message)
+      });
+    }
+  }
+
+  create = async() => {
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
       const realWidth = width/1.4
       const realHeight = height/2
       const xPercentage = ((this._value.x * 100)/realWidth)
@@ -109,6 +269,9 @@ class Test extends Component {
       const wPercentage = (100/(width/1.4))*100
       const hPercentage = (100/realHeight)*100
       let auth = await AsyncStorage.getItem("auth")
+
+      
+      this.setState({pdVisible: true, pdTitle: "Creating Document !"})
       return fetch('http://cygnatureapipoc.stagingapplications.com/api/document/create',{
       method: 'POST',
       headers: {
@@ -117,14 +280,14 @@ class Test extends Component {
       },
       body: JSON.stringify({
         "processDocumentId": this.state.data["Id"],
-        "name": "Sample Cygnature Document",
-        "fileName": "Sample Document",
-        "extension": ".pdf",
-        "description": "This is test description",
-        "expiryStartDate": "2018-11-19 11:42:59.803",
-        "expiryEndDate": "2018-11-19 11:42:59.803",
-        "signingDueDate": "2018-11-19 11:42:59.803",
-        "reminderBefore": 3,
+        "name": this.state.name,
+        "fileName": this.state.fileName,
+        "extension": this.state.extension,
+        "description": this.state.description,
+        "expiryStartDate": this.state.expiryStartDate,
+        "expiryEndDate": this.state.expiryEndDate,
+        "signingDueDate": this.state.signingDueDate,
+        "reminderBefore": this.state.reminderBefore,
         "documentShapeModel": [
           { 
             "x": realxPercentage,
@@ -137,31 +300,45 @@ class Test extends Component {
             "hPercentage": hPercentage,
             "p": 1,
             "ratio": "0.612903225806452",
+<<<<<<< HEAD
             "userId": "E1255565-0444-462F-8EC3-F47A74D4D45E",
+=======
+            "userId": this.state.signerIds[0][0],
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
             "isAnnotation": true,
             "SignatureType": "ESignature"
           }
+          
         ],
         "signingFlowType": 1,
-        "signerIds": [
-          "E1255565-0444-462F-8EC3-F47A74D4D45E"
-        ],
-        "observerIds": [],
+        "signerIds": this.state.signerIds[0],
+        "observerIds": this.state.observerIdsNull? [] : this.state.observerIds[0] ,
         "signatures": [
             3
         ],
-        "documentLatitude": 4.092356,
-        "documentLongitude": -56.062161,
-        "userAgent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36",
-        "userIPAddress": "61.12.66.6",
+        "documentLatitude": this.state.rLat,
+        "documentLongitude": this.state.rLon,
+        "userAgent": this.state.userAgent,
+        "userIPAddress": this.state.ip,
         "authenticationTypes": [
             1
         ]
       })
       }).then((response) => response.json())
       .then((responseJson) => {
+        this.setState({pdVisible: false})
+
+        if(responseJson["message"]) {
           alert(responseJson["message"])
-          this.props.navigation.navigate("DocumentDetails", {"Id": responseJson["data"][0]["documentId"]})
+          const popAction = StackActions.pop({
+            n: 2,
+          });
+          this.props.navigation.dispatch(popAction)    
+        }
+        else {
+          console.warn(responseJson)
+          alert(responseJson["error"])
+        }
       })
       .catch((error) => {
           console.warn(error.message)
@@ -182,6 +359,14 @@ class Test extends Component {
     this.state.animatedStyle = animatedStyle
     return (
       <View style={styles.mainContainer}>
+       <ProgressDialog
+          visible={this.state.pdVisible}
+          title={this.state.pdTitle}
+          message="Please wait..."
+          activityIndicatorColor="#003d5a"
+          activityIndicatorSize="small"
+          animationType="fade"
+        />
         <View style={styles.container1}>
           <View style={styles.container1_sub1}>
             <TouchableOpacity style = { styles.buttonContainer} onPress={() => this.addAnnotation()}>
@@ -197,15 +382,18 @@ class Test extends Component {
           </View>
           <View style={styles.container1_sub2}>
               <Dropdown
-                label="Select signer"
+                value={this.state.signers[0]["label"]}
+                label="Select Signer"
                 data={this.state.signers}
                 selectedItemColor="#003d5a"
                 rippleCentered={true}
                 itemTextStyle={"helvetica"}
                 containerStyle={{
                   marginLeft:"25%",
-                  marginRight:"25%"
-                }}
+                  marginRight:"25%",
+                }}  
+                textColor='white'
+                baseColor='white'
                 onChangeText={(value) => {
                   this.changeId(value)
                 }}
@@ -213,18 +401,32 @@ class Test extends Component {
           </View>
         </View>
         <View style={styles.container2}>
-          <Swiper
+        <Swiper
             showsButtons={true}
+            showsPagination={false}
             activeDotColor={'#003d5a'}
             dotColor={'grey'}
+            onIndexChanged = {(index) =>{
+                if((index + 1)%6 == 0){
+                    this.checkRenderedPages(index+2);
+                }
+            }}
+            index={this.state.index}
+            bounces={true}
+            loop={false}
           >
             {
               this.state.data.pages.map((item, index) => {
                 if(index < this.state.totalPage){
                   return(
                     <View
+                      key={index}
                       style={{margin:20, justifyContent:'center', alignItems: 'center'}}
+<<<<<<< HEAD
                       title={<Text>{index + 1}/{this.state.totalPage}</Text>}
+=======
+                      title={<Text style={{color:'black'}}>{index + 1}/{this.state.totalPage}</Text>}
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                     >
                       <ImageZoom
                         cropWidth={width/1.4}
@@ -233,9 +435,22 @@ class Test extends Component {
                         imageHeight={height/2}
                       >
                         <ImageBackground style={styles.imageContainer}
+<<<<<<< HEAD
                           source={{uri: `data:image/png;base64,${this.state.data["pages"][index]}`}}
                         >
                        
+=======
+                          source={{uri: `data:image/png;base64,${this.state.pages[index]}`}}
+                        >
+                          {/* {this.state.annotations.map(() =>{
+                            return(
+                              <View>
+                                {this.state.annotations}
+                              </View>
+                            )
+                          })
+                        } */}
+>>>>>>> 29f9655849f9251d98e398a701d22bd6a7052557
                             <Animated.View
                                 {...this.PanResponder.panHandlers}
                                 style={this.state.animatedStyle}
@@ -252,8 +467,8 @@ class Test extends Component {
           </Swiper>
         </View>
         <View style={styles.container3}>
-          <TouchableOpacity style = { styles.footerbuttonContainer} onPress={() => this.review()}>
-            <Text style = { styles.footerbuttonText }>Review & Create</Text>
+          <TouchableOpacity style = { styles.footerbuttonContainer} onPress={() => this.create()}>
+            <Text style = { styles.footerbuttonText }>Create</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -261,7 +476,7 @@ class Test extends Component {
   }
 }
 
-export default Test
+export default DocumentPlaceHolder
 
 
 const styles = StyleSheet.create({
