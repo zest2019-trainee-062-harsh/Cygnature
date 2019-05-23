@@ -10,7 +10,6 @@ export default class Canvas extends Component {
     super(props);
     this.state.isSignature  = this.props.navigation.getParam('isSignature')
     this.state.flow  = this.props.navigation.getParam('flow')
-    //console.warn(this.state.isSignature)
   }
     state = { 
       signature: null,
@@ -34,7 +33,6 @@ export default class Canvas extends Component {
     this.setState({pdVisible: true})
     let auth = await AsyncStorage.getItem("auth")
     this.setState({auth: auth})
-
     if(this.state.isSignature) { 
       return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/update-signature',{
       method: 'POST',
@@ -132,18 +130,21 @@ export default class Canvas extends Component {
                 animationType="slide"
             />
 
-      <View style={{flex:0.9}}>
         <View style={styles.pad}>
-        {this.state.canvas?
+        {this.state.canvas
+            ?
           <SignaturePad 
+            style={{flex:1,}}
             penColor={pencolor}
             onError={this._signaturePadError}
-            onChange={this._signaturePadChange} />:
-              <View style={{flex: 1,justifyContent: 'center', alignContent:'center'}}> 
-                <ActivityIndicator color="#003d5a" size="large" /> 
-              </View>}
-        </View>
+            onChange={this._signaturePadChange} />
+            :
+          <View style={{flex: 1,justifyContent: 'center', alignContent:'center'}}> 
+            <ActivityIndicator color="#003d5a" size="large" /> 
+          </View>
+        }
       </View>
+       
 
       <View style={styles.footerContainer}>       
       <TouchableOpacity style = { styles.footerbuttonContainer} onPress={this._clear}>
@@ -197,12 +198,12 @@ const styles = StyleSheet.create({
       padding: 10
   },
   pad: {
-    flex: 0.9, 
-    //backgroundColor: 'green',
-    margin:10,
+    flex:0.3,
     borderWidth: 1,
     borderRadius:5,
     borderColor: "#003d5a",
+    margin:10,
+    marginBottom: 30
   },
   footerContainer:{
     flex:0.1,

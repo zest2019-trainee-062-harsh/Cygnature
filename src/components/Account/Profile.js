@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity,
-    Alert, AsyncStorage, TextInput, ImageBackground} from 'react-native'
+     AsyncStorage, TextInput, ImageBackground} from 'react-native'
 import Moment from 'moment';
 import { Dropdown } from 'react-native-material-dropdown'; 
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';  
@@ -11,7 +11,7 @@ var height = Dimensions.get('window').height; //full height
 import Modal from 'react-native-modalbox'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Icon1 from 'react-native-vector-icons/FontAwesome5'
-import { StackActions, NavigationActions } from 'react-navigation'
+import { StackActions} from 'react-navigation'
 class Profile extends Component {
     constructor(props) {
         super(props)
@@ -30,7 +30,7 @@ class Profile extends Component {
         gender:"",
         userId:"",
         valueIndex: "",
-        date:"",
+        birthDate:"",
         message:"",
         pdTitle: "Getting Profile !",
         pdVisible: false
@@ -137,7 +137,6 @@ class Profile extends Component {
     }
     
     putprofile = () =>{
-       console.warn(this.state.profileByte)
         return fetch('http://cygnatureapipoc.stagingapplications.com/api/user/profile/'+this.state.userId, {
             method: 'PUT',
             headers: {
@@ -150,18 +149,18 @@ class Profile extends Component {
                 firstName:this.state.fname,
                 lastName:this.state.lname,
                 gender:this.state.gender,
-                countryId:this.state.countryId,
+                countryId:this.state.countryCode,
                 jobTitle:this.state.jobTitle,
                 organization:this.state.organization,
                 phoneNumber:this.state.phoneNumber,
-                birthDate:this.state.date, 
-                profileByte:this.state.profileByte   
+                birthDate:this.state.birthDate,
+                isProfileImage: true,
+                profileByte:this.state.profileByte
             }),
             }).then((response) => response.json())
             .then((responseJson) => {
-                console.warn(responseJson)
-                this.setState({message:responseJson["message"]})
-                console.warn(this.state.message)
+                this.setState({message:responseJson})
+                this.alert1()
                 
             })
             .catch((error) => {
@@ -169,6 +168,13 @@ class Profile extends Component {
             });
 
 
+    }
+    alert1 = () => {
+        alert('profile updated successfully')
+        const popAction = StackActions.pop({
+            n: 1,
+        });
+        this.props.navigation.dispatch(popAction)
     }
  
     static navigationOptions = {
@@ -222,7 +228,7 @@ class Profile extends Component {
             </View>
            
             <TouchableOpacity style={styles.modalTI} onPress={() =>
-                this.props.navigation.navigate('Canvas')
+                this.props.navigation.navigate('Canvas', {'isSignature': this.state.isSignature})
                 // {
                 //     const resetAction = StackActions.reset({
                 //     index: 0,
@@ -237,7 +243,7 @@ class Profile extends Component {
                 <Text style={styles.modalText}>Draw</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.modalTI} onPress={() => this.props.navigation.navigate('Image')}>
+            <TouchableOpacity style={styles.modalTI} onPress={() => this.props.navigation.navigate('Image', {'isSignature': this.state.isSignature})}>
                 <Icon1 name="camera" color='black' size={25} />
                 <Text style={styles.modalText}>Capture</Text>
             </TouchableOpacity>
@@ -256,12 +262,12 @@ class Profile extends Component {
                         <View style={styles.DocumentsList}>
                             <View style={{flexDirection: "row"}}>
                             {this.state.visible?
-                                <ImageBackground style={styles.signContainer} source={{uri: `data:image/png;base64,${this.state.signature}`}}>
+                                <ImageBackground style={styles.signContainer} resizeMode='contain' source={{uri: `data:image/png;base64,${this.state.signature}`}}>
                                     <TouchableOpacity style={styles.floatButton} onPress={this.showModal}>
                                         <Text style={styles.floatButtonText}>+</Text>
                                     </TouchableOpacity>
                                 </ImageBackground>
-                            :<ImageBackground style={styles.signContainer} >
+                            :<ImageBackground style={styles.signContainer}  >
                             <TouchableOpacity style={styles.floatButton} onPress={this.showModal}>
                                 <Text style={styles.floatButtonText}>+</Text>
                             </TouchableOpacity>
@@ -269,7 +275,7 @@ class Profile extends Component {
                             </View>
                           
                         </View>
-                        </View>    
+                        </View>  
                    
 
 
