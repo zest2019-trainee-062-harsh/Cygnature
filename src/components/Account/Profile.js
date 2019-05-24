@@ -33,17 +33,19 @@ class Profile extends Component {
         birthDate:"",
         message:"",
         pdTitle: "Getting Profile !",
-        pdVisible: false
+        pdVisible: false,
+        isSignature: false
     }
     componentWillMount = async() => {
         this.setState({pdTitle: "Getting Profile !", pdVisible:true})
         this.state.auth = await AsyncStorage.getItem('auth')
         if(this.state.userData['impressions'][0] == null) {
             console.warn("null")
+            this.setState({isSignature:false})
         }
         else {
         this.setState({signature: this.state.userData['impressions'][0]['imageBytes']})
-        this.setState({visible:true}) 
+        this.setState({visible:true, isSignature: true}) 
         }
         this.setState({userId: this.state.userData['userId']})
         this.setState({email: this.state.userData['email']})
