@@ -145,14 +145,16 @@ class Dashboard extends Component {
         this.refs.AddContactModal.show()
     }
 
-    showData = (data) => {
+    showData = (data, navigation) => {
         if(data == null)
         {
             console.warn("no data")
         }else {
             //console.warn("return data"+data["Id"])
             //console.warn("return data"+data["name"])
-            this.props.navigation.navigate('Document_Upload',{'data':data})
+            if(navigation) {
+                this.props.navigation.navigate('Document_Upload',{'data':data})
+            }
         }
     }
 

@@ -17,12 +17,14 @@ class UploadModal extends Component {
         pdVisible: false,
         fileName: "",
         fileSize: null,
+        navigation:true
     }
     show = () => {
         this.refs.myModal.open()
     }
     
     close = () => {
+        this.setState({navigation:false})
         this.refs.myModal.close()
     }
     upload = async() => {
@@ -74,7 +76,7 @@ class UploadModal extends Component {
                                 alert(responseJson["error"])
                             } else alert(responseJson["errors"]["Document"])
                         } else {
-                            this.props.parentFlatList.showData(responseJson["data"][0])
+                            this.props.parentFlatList.showData(responseJson["data"][0], this.state.navigation)
                         }
 
                         this.refs.myModal.close()
