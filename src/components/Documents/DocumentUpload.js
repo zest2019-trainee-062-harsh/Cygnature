@@ -291,14 +291,13 @@ class DocumentUpload extends Component {
                 </View>
                 <View style={{flex:0.5 ,flexDirection: 'row'}}>
                     <View style={{flex: 0.5}}>
-                        <Text style={styles.textTitle}>Expiry Start Date: <Text style={{color:'red'}}> * </Text> </Text>
+                        <Text style={styles.textTitle}>Expiry Start Date:  </Text>
                         <DatePicker
                             style={{width: 150}}
                             date={this.state.expiryStartDate}
                             mode="date"
                             placeholder="Select Date"
                             format="YYYY-MM-DD"
-                            minDate={this.state.currentDate}
                             confirmBtnText="Confirm"
                             cancelBtnText="Cancel"
                             customStyles={{
@@ -316,14 +315,13 @@ class DocumentUpload extends Component {
                         />
                     </View>
                     <View style={{flex: 0.5}}>
-                        <Text style={styles.textTitle}>Expiry End Date: <Text style={{color:'red'}}> * </Text> </Text>
+                        <Text style={styles.textTitle}>Expiry End Date:   </Text>
                         <DatePicker
                             style={{width: 150}}
                             date={this.state.expiryEndDate}
                             mode="date"
                             placeholder="Select Date"
                             format="YYYY-MM-DD"
-                            minDate={this.state.currentDate}
                             confirmBtnText="Confirm"
                             cancelBtnText="Cancel"
                             customStyles={{
@@ -344,7 +342,7 @@ class DocumentUpload extends Component {
 
                 <View style={{flex:0.5 ,flexDirection: 'row'}}>
                     <View style={{flex: 0.5}}>
-                        <Text style={styles.textTitle}>Signing Due Date: <Text style={{color:'red'}}> * </Text> </Text>
+                        <Text style={styles.textTitle}>Signing Due Date:   </Text>
                         <DatePicker
                             style={{width: 150}}
                             date={this.state.signingDueDate}
@@ -370,7 +368,7 @@ class DocumentUpload extends Component {
                         />
                     </View>
                     <View style={{flex: 0.5}}>
-                        <Text style={styles.textTitle}>Reminder Before: <Text style={{color:'red'}}> * </Text> </Text>
+                        <Text style={styles.textTitle}>Reminder Before:   </Text>
                         <View style={{alignItems:'center', justifyContent:'center'}}>
                             <TextInput 
                                 placeholderTextColor='black'
