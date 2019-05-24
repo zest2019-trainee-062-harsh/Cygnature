@@ -6,7 +6,11 @@ class Fonts extends Component {
     constructor(props) {
         super(props)
        
+    } 
+    static navigationOptions = {
+        title: "Fonts"
     }
+
 
     state = {
         name: null
@@ -17,12 +21,13 @@ class Fonts extends Component {
              <View style={styles.mainContainer}>
                 <TextInput
                     placeholderTextColor='grey'
-                            returnKeyType="next"
-                            underlineColorAndroid="black"
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            onChangeText={text => this.setState({name:text})}
-                            style= { styles.boxTI }>
+                    placeholder="Input text"
+                    returnKeyType="go"
+                    underlineColorAndroid="black"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    onChangeText={text => this.setState({name:text})}
+                    style= { styles.boxTI }>
                 </TextInput>
                 <ScrollView>
                     <Text style={{ color:'black', fontFamily: 'Iowan Old Style' }}>{this.state.name}</Text>
