@@ -61,8 +61,8 @@ const slides = [
   {
     key: 'Screen 4',
     title: 'Additional Features',
-    text: 'Screenshots Restricted\nFingerprint\nTwo-factor OTP Authentication\nTwo step Verification',
-    icon: 'user-secret',
+    text: 'Screenshots Restricted\nFingerprint',
+    icon: 'list',
     colors: ['#29ABE2', '#4F00BC'],
   },
 ];
